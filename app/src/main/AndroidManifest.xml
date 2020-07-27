@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="aukde.food.gestordepedidos">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"></activity>
+        <activity android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver" />
+        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido" />
+        <activity
+            android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"
+            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+        <activity
+            android:name=".paquetes.Actividades.Pedidos.RealizarPedido"
+            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+        <activity android:name=".paquetes.Menus.MenuProveedor" />
+        <activity android:name=".paquetes.Menus.MenuAukdeliver" />
+        <activity android:name=".paquetes.Menus.MenuAdmin" />
+        <activity
+            android:name=".paquetes.Actividades.Registros.RegistroProveedor"
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
+        <activity
+            android:name=".paquetes.Actividades.Registros.RegistroAukdeliver"
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
+        <activity
+            android:name=".paquetes.Actividades.Registros.MenuRegistros"
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin" />
+        <activity
+            android:name=".paquetes.Actividades.Registros.RegistroAdmin"
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.LoginProveedor"
+            android:parentActivityName=".paquetes.Actividades.Inicio" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.LoginAukdeliver"
+            android:parentActivityName=".paquetes.Actividades.Inicio" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.LoginAdmin"
+            android:parentActivityName=".paquetes.Actividades.Inicio" />
+        <activity
+            android:name=".paquetes.Actividades.Inicio"
+            android:theme="@style/splashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDh7U0aNiNGd0oLz7CLzdluscfw2ojSnsc" />
+    </application>
+
+</manifest>

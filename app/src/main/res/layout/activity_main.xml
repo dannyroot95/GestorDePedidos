@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    tools:context=".paquetes.Actividades.Inicio">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/aukdefoodpng"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Aplicación de gestión de pedidos\nAUKDEFOOD"
+            android:textAlignment="center"
+            android:layout_margin="40dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:layout_margin="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/btnAukdeliver"
+                android:background="@drawable/redondo"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#5bbd00"
+                android:textColor="#FFFFFF"
+                android:layout_marginRight="5dp"
+                android:text="Aukdeliver"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/btnProveedor"
+                android:background="@drawable/redondo"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="#ffffff"
+                android:backgroundTint="#5bbd00"
+                android:text="Proveedor"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/btnAdmin"
+                android:background="@drawable/redondo"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#5bbd00"
+                android:layout_marginLeft="5dp"
+                android:textColor="#ffffff"
+                android:layout_marginRight="5dp"
+                android:text="Admin"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

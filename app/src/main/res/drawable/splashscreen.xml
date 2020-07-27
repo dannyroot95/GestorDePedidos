@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  cambiamos a tipo layer-list
+  - creamos un item de tipo drawable , antes previamente importado nuestra imagen desde image asset
+  -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorBlanco"></item> <!-- creamos un xml con un fondo blanco -->
+    <item>
+        <bitmap android:src="@drawable/aukdefoodpng"
+            android:gravity="center"
+            />  <!-- hacemos el llamado al recurso que hemos creado (imagen) y lo centramos -->
+    </item>
+</layer-list>

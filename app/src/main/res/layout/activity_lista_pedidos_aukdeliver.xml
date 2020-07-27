@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver">
+
+    <include layout="@layout/toolbar"/>
+
+    <androidx.appcompat.widget.SearchView
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_width="match_parent"
+        android:id="@+id/searchPedidosAukdeliver"
+        app:queryHint="Buscar pedido.."
+        app:iconifiedByDefault="false"
+        android:layout_margin="10dp"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerPedidosAukdeliver"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

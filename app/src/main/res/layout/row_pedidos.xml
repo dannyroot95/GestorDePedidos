@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="15dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/pos1"
+                    android:layout_width="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/numPedido"
+                    android:layout_width="match_parent"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pos2"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/listHora"
+                android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:textSize="16sp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/pos3"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/listFecha"
+                android:layout_width="match_parent"
+                android:textColor="#000"
+                android:gravity="right"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pos4"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/listCliente"
+                android:layout_width="match_parent"
+                android:gravity="right"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/pos5"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/listDireccion"
+                android:layout_width="match_parent"
+                android:gravity="right"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/pos6"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/listEstado"
+                    android:layout_width="match_parent"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+<!-- *********************** Contenedor ************************  -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/linearContenedorExtra"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/idTelefonoList"
+                    android:textColor="#fff"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/idHoraRegistro"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idFechaRegistro"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idTotalPagoProducto"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idClientePaga"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idTotalCobro"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idVuelto"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idRepartidor"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/idProveedor"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/idProducto"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/idProductoDescripcion"
+                    android:visibility="visible"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idPrecio1"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idPrecio2"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idPrecio3"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idDelivery1"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idDelivery2"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idDelivery3"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+<!-- **************************************************************  -->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:id="@+id/linearButtons"
+                android:visibility="invisible"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="VER DETALLES"
+                    android:gravity="center"
+                    android:textColor="#A2A2A2"
+                    android:textSize="14sp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_detalle"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
