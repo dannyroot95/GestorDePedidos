@@ -5,8 +5,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +64,7 @@ public class ListaDePedidos extends AppCompatActivity {
                         PedidoLlamada pd = snapshot.getValue(PedidoLlamada.class);
                         listPedidos.add(pd);
                     }
+
                     adapterPedidoPorLlamada.notifyDataSetChanged();
                     mDialogActualizeData.dismiss();
                 }
@@ -104,6 +108,13 @@ public class ListaDePedidos extends AppCompatActivity {
         }
         AdapterPedidoPorLlamada adapter = new AdapterPedidoPorLlamada(lista);
         recyclerViewPedidos.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }

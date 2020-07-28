@@ -86,7 +86,6 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
                     bundle.putSerializable("key",ls);
                     intent.putExtras(bundle);
                     v.getContext().startActivity(intent);
-
                 }
             });
 

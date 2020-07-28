@@ -65,6 +65,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -169,10 +170,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         fechaPedido.setText(formatoFecha);
         edtNombreCliente = findViewById(R.id.nombreCliente);
         edtProveedor = findViewById(R.id.nombresProveedor);
+
         edtProductos = findViewById(R.id.nombresProducto);
         edtDescripcion = findViewById(R.id.descripcion);
         edtNumPedido = findViewById(R.id.numPedido);
-        edtNumPedido.requestFocus();
+        edtNumPedido.setEnabled(false);
 
         btnCalcularTotal = findViewById(R.id.calcularTotal);
         btnCalcularVuelto = findViewById(R.id.calcularVuelto);
@@ -192,6 +194,24 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
 
+        Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().limitToLast(1);
+        ultimoDato.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String num = childSnapshot.child("numPedido").getValue().toString();
+                    int numToString = Integer.parseInt(num);
+                    int newNumPedido = numToString + 1;
+                    String stNewNumPedido = String.valueOf(newNumPedido);
+                    edtNumPedido.setText(stNewNumPedido);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         int alto = 0;
         mLinearMap =findViewById(R.id.map_container);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
@@ -205,11 +225,25 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this,R.
                 array.estado,android.R.layout.simple_spinner_item);
         estado = findViewById(R.id.txtEstado);
+
+
         mSpinnerEstado.setAdapter(adapterSpinnerEstado);
         mSpinnerEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 estado.setText(parent.getItemAtPosition(position).toString());
+                String stSpinnerEstado = estado.getText().toString();
+                if (stSpinnerEstado.equals("En espera")){
+                    estado.setTextColor(Color.parseColor("#2E86C1"));
+                }
+                if (stSpinnerEstado.equals("Completado")){
+                    estado.setTextColor(Color.parseColor("#5bbd00"));
+                }
+                if (stSpinnerEstado.equals("Cancelado")){
+                    estado.setTextColor(Color.parseColor("#E74C3C"));
+                }
+
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -893,6 +927,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
                 pedidoParaAukdeliver.child("Usuarios").child("Aukdeliver").child(StAukdeliver).child("pedidos").push().setValue(map);
     }
+
 
     @Override
     public void onBackPressed()
