@@ -65,7 +65,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:gravity="center"
+                    android:gravity="left"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content">
 
@@ -407,7 +408,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
@@ -418,7 +419,6 @@
                     android:text="Dirección :"
                     android:textSize="16sp"
                     android:textColor="#000"
-                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -426,6 +426,8 @@
                     android:layout_width="wrap_content"
                     android:textColor="#000"
                     android:textSize="16sp"
+                    android:padding="7dp"
+                    android:gravity="center"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

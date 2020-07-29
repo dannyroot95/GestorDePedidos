@@ -1,31 +1,60 @@
 package aukde.food.gestordepedidos.paquetes.Actividades.Pedidos;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import es.dmoral.toasty.Toasty;
 
-public class DetallePedidoAukdeliver extends AppCompatActivity {
-    TextView listNumPedido, listNumPedido2, listNombreCliente, listTelefonoCliente, listHoraRegistro, listFechaRegistro, listHoraEntrega, listFechaEntrega, listTotalPagoProducto, listDireccion, listPagoCliente, listTotalACobrar, listVuelto, listRepartidor, listProveedores, listProducto, listDescripcion, listPrecio1, listPrecio2, listPrecio3, listDelivery1, listDelivery2, listDelivery3;
+public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+    TextView listNumPedido, listNumPedido2, listNombreCliente, listTelefonoCliente, listHoraRegistro,
+            listFechaRegistro, listHoraEntrega, listFechaEntrega, listTotalPagoProducto, listDireccion,
+            listPagoCliente, listTotalACobrar, listVuelto, listRepartidor, listProveedores, listProducto,
+            listDescripcion, listPrecio1, listPrecio2, listPrecio3, listDelivery1,
+            listDelivery2, listDelivery3, listEstado;
 
     Button mButtonShow;
     Button mButtonShow2;
+    Button bottonEstado, btnError;
 
+    private DatabaseReference mDatabase;
     private LinearLayout mLinearProductos, mLinearProductos1, mLinearProductos2, mLinearProductos3;
+    private FirebaseAuth mAuth;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -33,6 +62,10 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_pedido_aukdeliver);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+
         listHoraRegistro = findViewById(R.id.detalleHoraRegistro);
         listFechaRegistro = findViewById(R.id.detalleFechaRegistro);
         listHoraEntrega = findViewById(R.id.detalleHoraEntrega);
@@ -56,9 +89,12 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         listDelivery1 = findViewById(R.id.detalleDelivery1);
         listDelivery2 = findViewById(R.id.detalleDelivery2);
         listDelivery3 = findViewById(R.id.detalleDelivery3);
+        listEstado = findViewById(R.id.detalleEstado);
 
         mButtonShow = findViewById(R.id.showProducto);
         mButtonShow2 = findViewById(R.id.showDetalle);
+        bottonEstado = findViewById(R.id.btnEstado);
+        btnError = findViewById(R.id.btnReporte);
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
@@ -90,9 +126,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         PedidoLlamada pedidoLlamada = (PedidoLlamada) bundle.getSerializable("key");
         ArrayList<String> arrayList = new ArrayList<>();
-
-
-        arrayList.add("#" + pedidoLlamada.getNumPedido());
+        arrayList.add(pedidoLlamada.getNumPedido());
         arrayList.add(pedidoLlamada.getHoraPedido());
         arrayList.add(pedidoLlamada.getFechaPedido());
         arrayList.add(pedidoLlamada.getHoraEntrega());
@@ -114,6 +148,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         arrayList.add(pedidoLlamada.getDelivery1());
         arrayList.add(pedidoLlamada.getDelivery2());
         arrayList.add(pedidoLlamada.getDelivery3());
+        arrayList.add(pedidoLlamada.getEstado());
 
 
         listNumPedido.setText(arrayList.get(0));
@@ -139,6 +174,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         listDelivery1.setText(arrayList.get(19));
         listDelivery2.setText(arrayList.get(20));
         listDelivery3.setText(arrayList.get(21));
+        listEstado.setText(arrayList.get(22));
 
 
         String stPrecio1 = listPrecio1.getText().toString();
@@ -147,6 +183,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         String stDelivery1 = listDelivery1.getText().toString();
         String stDelivery2 = listDelivery2.getText().toString();
         String stDelivery3 = listDelivery3.getText().toString();
+
+        String stEstado = listEstado.getText().toString();
 
         if (stPrecio1.equals("0") && stDelivery1.equals("0")) {
             LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
@@ -163,7 +201,182 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
             mLinearProductos3.setLayoutParams(params3);
         }
 
+        if (stEstado.equals("Completado")) {
+            listEstado.setTextColor(Color.parseColor("#000000"));
+            bottonEstado.setVisibility(View.INVISIBLE);
+            btnError.setVisibility(View.VISIBLE);
+        }
+        if (stEstado.equals("Cancelado")) {
+            listEstado.setTextColor(Color.parseColor("#E74C3C"));
+            bottonEstado.setVisibility(View.INVISIBLE);
+            btnError.setVisibility(View.VISIBLE);
+        }
+        if (stEstado.equals("En espera")) {
+            listEstado.setTextColor(Color.parseColor("#232C9B"));
+            btnError.setVisibility(View.INVISIBLE);
+        }
+
+
     }
+
+    public void showPopupEstado(View view) {
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.popup_menu_estado_aukdeliver);
+        popupMenu.show();
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item1:
+                estadoCompletadoAdmin();
+                estadoCompletadoAukdeliver();
+                finish();
+                return true;
+
+            case R.id.item2:
+                estadoCanceladoAdmin();
+                estadoCanceladoAukdeliver();
+                finish();
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    // Crear un query para su usuario Con firebase Auth
+    // ocultar el boton al decir si el pedido esta completo
+
+    private void estadoCompletadoAdmin() {
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "Completado");
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void estadoCompletadoAukdeliver() {
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "Completado");
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toasty.success(DetallePedidoAukdeliver.this, "PEDIDO COMPLETADO!", Toast.LENGTH_LONG, true).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toasty.info(DetallePedidoAukdeliver.this, "Error al actualizar estado", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void estadoCanceladoAdmin() {
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "Cancelado");
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void estadoCanceladoAukdeliver() {
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "Cancelado");
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toasty.error(DetallePedidoAukdeliver.this, "PEDIDO CANCELADO!", Toast.LENGTH_LONG, true).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toasty.info(DetallePedidoAukdeliver.this, "Error al actualizar estado", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void onClickLlamada(View v) {
+        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:992997223"));
+        startActivity(i);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -186,5 +399,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity {
         builder.create();
         builder.show();
     }
+
 
 }

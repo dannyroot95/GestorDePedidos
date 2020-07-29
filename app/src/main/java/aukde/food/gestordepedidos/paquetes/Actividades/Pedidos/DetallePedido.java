@@ -201,6 +201,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         }
 
 
+
 }
 
     public void showPopupEstado(View view){
@@ -216,16 +217,19 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     public boolean onMenuItemClick(MenuItem item){
         switch (item.getItemId()){
             case R.id.item1:
+                estadoCompletadoRepartidor();
                 estadoCompletado();
                 finish();
                 return true;
 
             case R.id.item2:
+                estadoCanceladoRepartidor();
                 estadoCancelado();
                 finish();
                 return true;
 
             case R.id.item3:
+                estadoEsperaRepartidor();
                 estadoEspera();
                 finish();
                 return true;
@@ -264,8 +268,52 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
             }
         });
-
     }
+
+    private void estadoCompletadoRepartidor(){
+        String dataNombres = listRepartidor.getText().toString();
+        final String dataNumPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").orderByChild("nombres").equalTo(dataNombres);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                   final String key=childSnapshot.getKey();
+                    Query reference2= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(key).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+                    reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot2: dataSnapshot.getChildren()) {
+                                String key2=childSnapshot2.getKey();
+                                Map<String , Object> map = new HashMap<>();
+                                map.put("estado","Completado");
+                                mDatabase.child("Usuarios").child("Aukdeliver").child(key).child("pedidos").child(key2).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void estadoCancelado(){
         String dataNumPedido = listNumPedido.getText().toString();
@@ -296,7 +344,50 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
             }
         });
+    }
 
+    private void estadoCanceladoRepartidor(){
+        String dataNombres = listRepartidor.getText().toString();
+        final String dataNumPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").orderByChild("nombres").equalTo(dataNombres);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    final String key=childSnapshot.getKey();
+                    Query reference2= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(key).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+                    reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot2: dataSnapshot.getChildren()) {
+                                String key2=childSnapshot2.getKey();
+                                Map<String , Object> map = new HashMap<>();
+                                map.put("estado","Cancelado");
+                                mDatabase.child("Usuarios").child("Aukdeliver").child(key).child("pedidos").child(key2).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void estadoEspera(){
@@ -329,6 +420,50 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             }
         });
 
+    }
+
+    private void estadoEsperaRepartidor(){
+        String dataNombres = listRepartidor.getText().toString();
+        final String dataNumPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").orderByChild("nombres").equalTo(dataNombres);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    final String key=childSnapshot.getKey();
+                    Query reference2= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(key).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+                    reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot2: dataSnapshot.getChildren()) {
+                                String key2=childSnapshot2.getKey();
+                                Map<String , Object> map = new HashMap<>();
+                                map.put("estado","En espera");
+                                mDatabase.child("Usuarios").child("Aukdeliver").child(key).child("pedidos").child(key2).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

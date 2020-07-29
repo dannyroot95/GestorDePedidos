@@ -5,19 +5,17 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
@@ -60,11 +58,12 @@ public class ListaDePedidos extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    listPedidos.clear();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                         PedidoLlamada pd = snapshot.getValue(PedidoLlamada.class);
                         listPedidos.add(pd);
                     }
-
+                    Collections.reverse(listPedidos);
                     adapterPedidoPorLlamada.notifyDataSetChanged();
                     mDialogActualizeData.dismiss();
                 }

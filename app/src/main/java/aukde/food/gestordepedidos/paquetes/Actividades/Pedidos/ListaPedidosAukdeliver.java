@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
+import java.util.Collections;
 
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamadaAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
@@ -65,10 +62,13 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    listPedidos.clear();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                         PedidoLlamada pd = snapshot.getValue(PedidoLlamada.class);
                         listPedidos.add(pd);
                     }
+
+                    Collections.reverse(listPedidos);
                     adapterPedidoPorLlamadaAukdeliver.notifyDataSetChanged();
                     mDialogActualizeData.dismiss();
                 }
@@ -83,6 +83,7 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
                 Toast.makeText(ListaPedidosAukdeliver.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         searchViewPedidos.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -112,6 +113,13 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
         }
         AdapterPedidoPorLlamadaAukdeliver adapter = new AdapterPedidoPorLlamadaAukdeliver(lista);
         recyclerViewPedidos.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }

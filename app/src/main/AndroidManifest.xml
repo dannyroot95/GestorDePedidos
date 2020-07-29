@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="aukde.food.gestordepedidos">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"></activity>
-        <activity android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver" />
+        <activity android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver" />
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"

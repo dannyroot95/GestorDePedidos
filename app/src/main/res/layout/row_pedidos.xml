@@ -127,6 +127,7 @@
                 android:id="@+id/listDireccion"
                 android:layout_width="match_parent"
                 android:gravity="right"
+                android:maxLength="44"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000"

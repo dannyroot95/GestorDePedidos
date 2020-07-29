@@ -23,6 +23,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -78,6 +79,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
@@ -195,7 +199,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
 
         Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().limitToLast(1);
-        ultimoDato.addListenerForSingleValueEvent(new ValueEventListener() {
+        ultimoDato.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
@@ -204,6 +208,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     int newNumPedido = numToString + 1;
                     String stNewNumPedido = String.valueOf(newNumPedido);
                     edtNumPedido.setText(stNewNumPedido);
+                    Toast.makeText(RealizarPedido.this, ""+stNewNumPedido, Toast.LENGTH_SHORT).show();
                 }
             }
 
