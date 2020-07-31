@@ -28,6 +28,7 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 public class LoginAukdeliver extends AppCompatActivity {
 
@@ -93,21 +94,21 @@ public class LoginAukdeliver extends AppCompatActivity {
                                         mAuth.signOut();
                                         startActivity(new Intent(LoginAukdeliver.this, Inicio.class));
                                         finish();
-                                        Toast.makeText(LoginAukdeliver.this, "No es un usuario permitido", Toast.LENGTH_LONG).show();
+                                        Toasty.error(LoginAukdeliver.this, "No es un usuario permitido", Toast.LENGTH_SHORT, true).show();
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
                                     mDialog.dismiss();
-                                    Toast.makeText(LoginAukdeliver.this, "Error de servidor", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(LoginAukdeliver.this, "Error de servidor", Toast.LENGTH_SHORT, true).show();
                                 }
                             });
 
                         }
                         //task
                         else {
-                            Toast.makeText(LoginAukdeliver.this,"El correo o la contraseña son incorrectos",Toast.LENGTH_LONG).show();
+                            Toasty.error(LoginAukdeliver.this, "El correo o la contraseña son incorrectos", Toast.LENGTH_SHORT, true).show();
                             mDialog.dismiss();
                         }
 
@@ -116,14 +117,14 @@ public class LoginAukdeliver extends AppCompatActivity {
             }
 
             else {
-                Toast.makeText(LoginAukdeliver.this,"La contraseña debe tener mas de 6 caracteres",Toast.LENGTH_LONG).show();
+                Toasty.error(LoginAukdeliver.this, "La contraseña debe tener más de 6 caracteres", Toast.LENGTH_SHORT, true).show();
                 mDialog.dismiss();
             }
 
         }
 
         else {
-            Toast.makeText(LoginAukdeliver.this,"Complete los campos",Toast.LENGTH_LONG).show();
+            Toasty.error(LoginAukdeliver.this, "Complete los campos", Toast.LENGTH_SHORT, true).show();
             mDialog.dismiss();
         }
     }

@@ -32,18 +32,20 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 
 public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
+    private TokenProvider mTokenProvider;
+    private AuthProviders mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
-
-        mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mTokenProvider = new TokenProvider();
+        mAuth = new AuthProviders();
 
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,13 +93,14 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             }
         });
 
+        generarToken();
         getDataUser();
 
     }
 
 
     private void getDataUser(){
-        String id = mAuth.getCurrentUser().getUid();
+        String id = mAuth.getId();
         mDatabase.child("Usuarios").child("Administrador").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -165,4 +168,11 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 return false;
         }
     }
+
+
+    void generarToken(){
+        mTokenProvider.create(mAuth.getId());
+    }
+
+
 }

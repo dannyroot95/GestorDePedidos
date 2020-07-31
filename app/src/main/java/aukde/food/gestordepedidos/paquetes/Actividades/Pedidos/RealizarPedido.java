@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -23,12 +22,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -79,15 +76,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import aukde.food.gestordepedidos.paquetes.Providers.GoogleApiProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.PedidoProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DecodePoints;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -137,6 +136,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     TextView txtEncargado , idAukdeliver;
     String stEncargado = "";
 
+    private NotificationProvider notificationProvider;
+    private TokenProvider tokenProvider;
+    private FirebaseAuth mAuth ;
+
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -163,6 +167,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realizar_pedido);
+        mAuth = FirebaseAuth.getInstance();
         horaPedido = findViewById(R.id.horaPedido);
         fechaPedido = findViewById(R.id.fechaPedido);
         horaEntrega = findViewById(R.id.horaEntrega);
@@ -197,6 +202,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         txtEncargado = findViewById(R.id.txtRepartidor);
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
+        notificationProvider = new NotificationProvider();
+        tokenProvider = new TokenProvider();
+
 
         Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().limitToLast(1);
         ultimoDato.addValueEventListener(new ValueEventListener() {
@@ -208,10 +216,8 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     int newNumPedido = numToString + 1;
                     String stNewNumPedido = String.valueOf(newNumPedido);
                     edtNumPedido.setText(stNewNumPedido);
-                    Toast.makeText(RealizarPedido.this, ""+stNewNumPedido, Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -811,6 +817,55 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
+    private void sendNotificaction(){
+        final String numPedNotify = edtNumPedido.getText().toString();
+        tokenProvider.getToken(idAukdeliver.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Nuevo pedido #"+numPedNotify);
+                    map.put("body","Usted tiene un nuevo pedido"+"\n"+"Nombre del cliente : "
+                            +edtNombreCliente.getText().toString()+"\n"+"Teléfono : "+edtTelefono.getText().toString());
+                    map.put("idClient",mAuth.getUid());
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toast.makeText(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(RealizarPedido.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     private void clickRegistroPedido(){
 
@@ -842,23 +897,26 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
 
         if( !nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty()){
+            sendNotificaction();
             if(!numeroPedido.isEmpty()){
-            mDialog.show();
-            mDialog.setMessage("Registrando pedido...");
+                mDialog.show();
+                mDialog.setMessage("Registrando pedido...");
             //metodos
             registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
                     producto, descripción, precio1, precio2, precio3, delivery1, delivery2, delivery3,
                     totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion,numeroPedido,encargado,estadoPedido);
-                clickRegistroPedidoAukdeliver();
+
+            clickRegistroPedidoAukdeliver();
         }
         else {
-                Toast.makeText(this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_SHORT).show();
+
+                Toasty.warning(RealizarPedido.this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_LONG, true).show();
             }
         }
 
         else {
             mDialog.dismiss();
-            Toast.makeText(this, "Verifique que los campos no estén vacios", Toast.LENGTH_SHORT).show();
+            Toasty.warning(RealizarPedido.this, "Verifique que los campos no estén vacios", Toast.LENGTH_LONG, true).show();
         }
 
     }
@@ -891,12 +949,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 mDialog.dismiss();
                 startActivity(new Intent( RealizarPedido.this , MenuAdmin.class));
                 finish();
-                Toast.makeText(RealizarPedido.this, "Registro exitoso", Toast.LENGTH_LONG).show();
-                  }
+                Toasty.success(RealizarPedido.this, "REGISTRO EXITOSO", Toast.LENGTH_LONG, true).show();
+                }
 
               else {
                 mDialog.dismiss();
-                Toast.makeText(RealizarPedido.this, "No se pudo registar el pedido", Toast.LENGTH_SHORT).show();
+                Toasty.warning(RealizarPedido.this, "No se pudo registar el pedido", Toast.LENGTH_LONG, true).show();
                 }
 
             }
@@ -934,6 +992,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
+
     @Override
     public void onBackPressed()
     {
@@ -957,4 +1016,5 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         builder.create();
         builder.show();
     }
+
 }

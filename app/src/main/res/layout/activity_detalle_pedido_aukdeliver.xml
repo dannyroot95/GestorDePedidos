@@ -276,6 +276,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearCliente"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center"
@@ -301,6 +302,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearTelefono"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center"
@@ -424,6 +426,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearDireccion"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
@@ -454,6 +457,7 @@
                     android:background="@drawable/redondo"
                     android:backgroundTint="#5bbd00"
                     android:id="@+id/showProducto"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:textColor="#fff"
                     android:elevation="6dp"

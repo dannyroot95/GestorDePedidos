@@ -15,6 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".paquetes.Receptor.AcceptReceiver" android:enabled="true"/>
+        <receiver android:name=".paquetes.Receptor.CancelReceiver" android:enabled="true"/>
+
+        <service android:name=".paquetes.Servicios.MyFirebaseMessagingClient">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"></activity>
         <activity android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
             android:parentActivityName=".paquetes.Menus.MenuAukdeliver" />

@@ -53,7 +53,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     Button bottonEstado, btnError;
 
     private DatabaseReference mDatabase;
-    private LinearLayout mLinearProductos, mLinearProductos1, mLinearProductos2, mLinearProductos3;
+    private LinearLayout mLinearProductos, mLinearProductos1, mLinearProductos2,
+            mLinearProductos3 , mLinearCliente , mLinearTelefono , mLinearDireccion;
     private FirebaseAuth mAuth;
 
     @SuppressLint("SetTextI18n")
@@ -101,6 +102,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mLinearProductos1 = findViewById(R.id.idLinearProducto1);
         mLinearProductos2 = findViewById(R.id.idLinearProducto2);
         mLinearProductos3 = findViewById(R.id.idLinearProducto3);
+        mLinearCliente = findViewById(R.id.linearCliente);
+        mLinearTelefono = findViewById(R.id.linearTelefono);
+        mLinearDireccion = findViewById(R.id.linearDireccion);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
         mLinearProductos.setLayoutParams(params);
 
@@ -205,11 +209,19 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             listEstado.setTextColor(Color.parseColor("#000000"));
             bottonEstado.setVisibility(View.INVISIBLE);
             btnError.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams params4 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
+            mLinearCliente.setLayoutParams(params4);
+            mLinearTelefono.setLayoutParams(params4);
+            mLinearDireccion.setLayoutParams(params4);
         }
         if (stEstado.equals("Cancelado")) {
             listEstado.setTextColor(Color.parseColor("#E74C3C"));
             bottonEstado.setVisibility(View.INVISIBLE);
             btnError.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams params5 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
+            mLinearCliente.setLayoutParams(params5);
+            mLinearTelefono.setLayoutParams(params5);
+            mLinearDireccion.setLayoutParams(params5);
         }
         if (stEstado.equals("En espera")) {
             listEstado.setTextColor(Color.parseColor("#232C9B"));

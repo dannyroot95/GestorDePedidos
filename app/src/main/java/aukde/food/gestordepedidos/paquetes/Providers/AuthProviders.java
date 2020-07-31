@@ -24,6 +24,11 @@ public class AuthProviders {
 
     }
 
+
+    public String getId() {
+        return mAuth.getCurrentUser().getUid();
+    }
+
     public void Logout(){
         mAuth.signOut();
     }

@@ -24,10 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 public class LoginAdmin extends AppCompatActivity {
 
@@ -95,21 +97,21 @@ public class LoginAdmin extends AppCompatActivity {
                                                mAuth.signOut();
                                                startActivity(new Intent(LoginAdmin.this, Inicio.class));
                                                finish();
-                                               Toast.makeText(LoginAdmin.this, "No es un usuario permitido", Toast.LENGTH_LONG).show();
+                                               Toasty.error(LoginAdmin.this, "No es un usuario permitido", Toast.LENGTH_SHORT, true).show();
                                            }
                                        }
 
                                        @Override
                                        public void onCancelled(@NonNull DatabaseError databaseError) {
                                            mDialog.dismiss();
-                                           Toast.makeText(LoginAdmin.this, "Error de servidor", Toast.LENGTH_SHORT).show();
+                                           Toasty.error(LoginAdmin.this, "Error de servidor", Toast.LENGTH_SHORT, true).show();
                                        }
                                    });
 
                            }
                            //task
                            else {
-                               Toast.makeText(LoginAdmin.this,"El correo o la contraseña son incorrectos",Toast.LENGTH_LONG).show();
+                               Toasty.error(LoginAdmin.this, "El correo o la contraseña son incorrectos", Toast.LENGTH_SHORT, true).show();
                                mDialog.dismiss();
                            }
 
@@ -118,14 +120,14 @@ public class LoginAdmin extends AppCompatActivity {
                  }
 
               else {
-                  Toast.makeText(LoginAdmin.this,"La contraseña debe tener mas de 6 caracteres",Toast.LENGTH_LONG).show();
+                  Toasty.error(LoginAdmin.this, "La contraseña debe tener más de 6 caracteres", Toast.LENGTH_SHORT, true).show();
                   mDialog.dismiss();
               }
 
         }
 
         else {
-            Toast.makeText(LoginAdmin.this,"Complete los campos",Toast.LENGTH_LONG).show();
+            Toasty.error(LoginAdmin.this, "Complete los campos", Toast.LENGTH_SHORT, true).show();
             mDialog.dismiss();
         }
     }

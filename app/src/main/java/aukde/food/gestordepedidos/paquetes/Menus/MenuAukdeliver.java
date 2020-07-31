@@ -30,6 +30,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -38,7 +39,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private Button btnLista;
     SharedPreferences mSharedPreference;
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
+    private AuthProviders mAuth;
+    private TokenProvider mTokenProvider;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -60,7 +62,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = new AuthProviders();
+        mTokenProvider = new TokenProvider();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         btnLista.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +73,14 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             }
         });
 
+        generarToken();
         getDataUser();
 
     }
 
 
     private void getDataUser(){
-        String id = mAuth.getCurrentUser().getUid();
+        String id = mAuth.getId();
         mDatabase.child("Usuarios").child("Aukdeliver").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -144,4 +148,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 return false;
         }
     }
+
+
+    void generarToken(){
+        mTokenProvider.create(mAuth.getId());
+    }
+
 }
