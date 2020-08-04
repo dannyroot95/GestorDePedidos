@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Gestor de pedidos AukdeFood</string>
     <string name="title_activity_lista_de_pedidos">ListaDePedidos</string>
+    <string name="title_activity_mapa_cliente_por_llamada">Map</string>
 
 </resources>

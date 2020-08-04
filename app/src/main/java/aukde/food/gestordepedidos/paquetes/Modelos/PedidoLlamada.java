@@ -28,11 +28,13 @@ public class PedidoLlamada implements Serializable {
     String numPedido;
     String encargado;
     String estado;
+    String latitud;
+    String longitud;
 
     public PedidoLlamada() {
     }
 
-    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega, String fechaEntrega, String proveedores, String productos, String descripcion, String precio1, String precio2, String precio3, String delivery1, String delivery2, String delivery3, String totalPagoProducto, String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto, String direccion, String numPedido, String encargado, String estado) {
+    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega, String fechaEntrega, String proveedores, String productos, String descripcion, String precio1, String precio2, String precio3, String delivery1, String delivery2, String delivery3, String totalPagoProducto, String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto, String direccion, String numPedido, String encargado, String estado, String latitud, String longitud) {
         this.id = id;
         this.horaPedido = horaPedido;
         this.fechaPedido = fechaPedido;
@@ -57,6 +59,8 @@ public class PedidoLlamada implements Serializable {
         this.numPedido = numPedido;
         this.encargado = encargado;
         this.estado = estado;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public String getId() {
@@ -249,5 +253,21 @@ public class PedidoLlamada implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 }

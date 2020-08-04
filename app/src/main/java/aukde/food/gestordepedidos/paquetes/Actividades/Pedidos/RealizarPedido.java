@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -15,7 +16,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -47,6 +50,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
@@ -135,6 +139,8 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     TextView estado ;
     TextView txtEncargado , idAukdeliver;
     String stEncargado = "";
+    TextView latitud,logitud;
+    Button mButtonMapear;
 
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
@@ -162,6 +168,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     //----------------------------
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeDark);
@@ -199,11 +206,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         precioNetoTotal = findViewById(R.id.neto);
         edtTelefono = findViewById(R.id.telefonoCliente);
         edtDireccion = findViewById(R.id.direcionCliente);
+        edtDireccion.setEnabled(false);
         txtEncargado = findViewById(R.id.txtRepartidor);
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
         notificationProvider = new NotificationProvider();
         tokenProvider = new TokenProvider();
+
+        latitud = findViewById(R.id.txtLatitud);
+        logitud = findViewById(R.id.txtLongitud);
+        mButtonMapear = findViewById(R.id.btnMapear);
 
 
         Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().limitToLast(1);
@@ -335,20 +347,23 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+        mFloatingMap.setVisibility(View.INVISIBLE);
         mFloatingMap.setOnClickListener(new View.OnClickListener() {
             int alto1 = 0;
-            private boolean state = false;
             @Override
             public void onClick(View v) {
-                if ( state ) {
-                    state = false;
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                     mLinearMap.setLayoutParams(params);
-                } else {
-                    state = true;
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-                    mLinearMap.setLayoutParams(params);
-                }
+                    mFloatingMap.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mButtonMapear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFloatingMap.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                mLinearMap.setLayoutParams(params);
             }
         });
 
@@ -559,12 +574,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerDragListener(this);
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(7000);
-        mLocationRequest.setFastestInterval(7000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(5);
-        startLocacion();
 
         try {
 
@@ -709,6 +718,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapLongClick(final LatLng latLng) {
         Log.d(TAG, "onMapLongClick: " + latLng.toString());
+        int height = 100;
+        int width = 100;
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.punto);
+        Bitmap b = bitmapdraw.getBitmap();
+        Bitmap punto = Bitmap.createScaledBitmap(b, width, height, false);
         try {
             List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             if (addresses.size() > 0) {
@@ -718,8 +732,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                         .position(latLng)
                         .title(streetAddress)
                         .draggable(true)
+                        .icon(BitmapDescriptorFactory.fromBitmap(punto))
                 );
                 destino = new LatLng(address.getLatitude(), address.getLongitude());
+                Toasty.success(this, "Direccion Agregada!", Toast.LENGTH_SHORT).show();
+                edtDireccion.setText(streetAddress);
+                latitud.setText(""+destino.latitude);
+                logitud.setText(""+destino.longitude);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -736,16 +755,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         marker.remove();
-                        drawRoute();
+                        edtDireccion.setText("");
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        drawRoute();
                         dialog.cancel();
                     }
                 });
+
                 builder.create();
                 builder.show();
             }
@@ -771,6 +790,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
                 String streetAddress = address.getAddressLine(0);
+                destino = new LatLng(address.getLatitude(), address.getLongitude());
+                Toasty.success(this, "Direccion Actualizada!", Toast.LENGTH_SHORT).show();
+                edtDireccion.setText(streetAddress);
+                latitud.setText(""+destino.latitude);
+                logitud.setText(""+destino.longitude);
                 marker.setTitle(streetAddress);
             }
         } catch (IOException e) {
@@ -829,6 +853,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     map.put("body","Usted tiene un nuevo pedido"+"\n"+"Nombre del cliente : "
                             +edtNombreCliente.getText().toString()+"\n"+"Teléfono : "+edtTelefono.getText().toString());
                     map.put("idClient",mAuth.getUid());
+                    map.put("numPedido",numPedNotify);
+                    map.put("nombre",edtNombreCliente.getText().toString());
+                    map.put("telefono",edtTelefono.getText().toString());
+                    map.put("direccion",edtDireccion.getText().toString());
+                    map.put("hora",horaEntrega.getText().toString());
+                    map.put("fecha",fechaEntrega.getText().toString());
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -893,6 +923,8 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         final String direccion = edtDireccion.getText().toString();
         final String encargado = txtEncargado.getText().toString();
         final String estadoPedido = estado.getText().toString();
+        final String sTlatitud = latitud.getText().toString();
+        final String sTLongitud = logitud.getText().toString();
 
 
 
@@ -904,7 +936,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             //metodos
             registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
                     producto, descripción, precio1, precio2, precio3, delivery1, delivery2, delivery3,
-                    totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion,numeroPedido,encargado,estadoPedido);
+                    totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion,numeroPedido,encargado,estadoPedido,sTlatitud,sTLongitud);
 
             clickRegistroPedidoAukdeliver();
         }
@@ -927,14 +959,14 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                                  final String precio2, final String precio3, final String delivery1,
                                  final String delivery2, final String delivery3, final String totalPagoProducto,
                                  final String nombreCliente, final String telefono, final String conCuantoVaAPagar,
-                                 final String totalCobro, final String stVuelto, final String direccion,final String numPedido , final String encargado ,final String estadoPedido){
+                                 final String totalCobro, final String stVuelto, final String direccion,final String numPedido , final String encargado ,final String estadoPedido,final String latitud , final String longitud){
 
 
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         PedidoLlamada pedidoLlamada = new  PedidoLlamada(id,horaPedido,  fechaPedido, horaEntrega,  fechaEntrega,  proveedor,
             producto,  descripción,  precio1, precio2,  precio3,  delivery1, delivery2,  delivery3,
-            totalPagoProducto, nombreCliente,  telefono,  conCuantoVaAPagar, totalCobro,  stVuelto,  direccion,numPedido,encargado ,estadoPedido);
+            totalPagoProducto, nombreCliente,  telefono,  conCuantoVaAPagar, totalCobro,  stVuelto,  direccion,numPedido,encargado ,estadoPedido,latitud,longitud);
             mapear(pedidoLlamada);
 
     }
@@ -987,6 +1019,8 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 map.put("vuelto",vuelto.getText().toString());
                 map.put("direccion",edtDireccion.getText().toString());
                 map.put("estado",estado.getText().toString());
+                map.put("latitud",latitud.getText().toString());
+                map.put("longitud",logitud.getText().toString());
 
                 pedidoParaAukdeliver.child("Usuarios").child("Aukdeliver").child(StAukdeliver).child("pedidos").push().setValue(map);
     }

@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import es.dmoral.toasty.Toasty;
 
@@ -46,11 +47,12 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             listFechaRegistro, listHoraEntrega, listFechaEntrega, listTotalPagoProducto, listDireccion,
             listPagoCliente, listTotalACobrar, listVuelto, listRepartidor, listProveedores, listProducto,
             listDescripcion, listPrecio1, listPrecio2, listPrecio3, listDelivery1,
-            listDelivery2, listDelivery3, listEstado;
+            listDelivery2, listDelivery3, listEstado  ,listLatitud , listLongitud;
 
     Button mButtonShow;
     Button mButtonShow2;
     Button bottonEstado, btnError;
+    Button mMapa;
 
     private DatabaseReference mDatabase;
     private LinearLayout mLinearProductos, mLinearProductos1, mLinearProductos2,
@@ -91,11 +93,15 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listDelivery2 = findViewById(R.id.detalleDelivery2);
         listDelivery3 = findViewById(R.id.detalleDelivery3);
         listEstado = findViewById(R.id.detalleEstado);
+        listLatitud = findViewById(R.id.detalleLatitud);
+        listLongitud = findViewById(R.id.detalleLongitudd);
+
 
         mButtonShow = findViewById(R.id.showProducto);
         mButtonShow2 = findViewById(R.id.showDetalle);
         bottonEstado = findViewById(R.id.btnEstado);
         btnError = findViewById(R.id.btnReporte);
+        mMapa = findViewById(R.id.showMapa);
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
@@ -126,6 +132,17 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             }
         });
 
+        mMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetallePedidoAukdeliver.this, MapaClientePorLlamada.class);
+                intent.putExtra("latitud",listLatitud.getText().toString());
+                intent.putExtra("longitud",listLongitud.getText().toString());
+                intent.putExtra("nombre",listNombreCliente.getText().toString());
+                startActivity(intent);
+            }
+        });
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         PedidoLlamada pedidoLlamada = (PedidoLlamada) bundle.getSerializable("key");
@@ -153,6 +170,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         arrayList.add(pedidoLlamada.getDelivery2());
         arrayList.add(pedidoLlamada.getDelivery3());
         arrayList.add(pedidoLlamada.getEstado());
+        arrayList.add(pedidoLlamada.getLatitud());
+        arrayList.add(pedidoLlamada.getLongitud());
 
 
         listNumPedido.setText(arrayList.get(0));
@@ -179,6 +198,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listDelivery2.setText(arrayList.get(20));
         listDelivery3.setText(arrayList.get(21));
         listEstado.setText(arrayList.get(22));
+        listLatitud.setText(arrayList.get(23));
+        listLongitud.setText(arrayList.get(24));
 
 
         String stPrecio1 = listPrecio1.getText().toString();
@@ -213,6 +234,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             mLinearCliente.setLayoutParams(params4);
             mLinearTelefono.setLayoutParams(params4);
             mLinearDireccion.setLayoutParams(params4);
+            mMapa.setVisibility(View.INVISIBLE);
         }
         if (stEstado.equals("Cancelado")) {
             listEstado.setTextColor(Color.parseColor("#E74C3C"));
@@ -222,6 +244,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             mLinearCliente.setLayoutParams(params5);
             mLinearTelefono.setLayoutParams(params5);
             mLinearDireccion.setLayoutParams(params5);
+            mMapa.setVisibility(View.INVISIBLE);
         }
         if (stEstado.equals("En espera")) {
             listEstado.setTextColor(Color.parseColor("#232C9B"));

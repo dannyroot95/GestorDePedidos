@@ -43,6 +43,8 @@ public class PedidoProvider {
         map.put("direccion",pedidoLlamada.getDireccion());
         map.put("encargado",pedidoLlamada.getEncargado());
         map.put("estado",pedidoLlamada.getEstado());
+        map.put("latitud",pedidoLlamada.getLatitud());
+        map.put("longitud",pedidoLlamada.getLongitud());
 
         return mDatabaseReference.child("pedidos").push().setValue(map);
     }

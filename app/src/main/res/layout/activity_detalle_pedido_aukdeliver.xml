@@ -111,6 +111,7 @@
                     android:layout_width="wrap_content"
                     android:text="Reportar\nProblema"
                     android:onClick="onClickLlamada"
+                    android:textFontWeight="1"
                     android:drawableLeft="@drawable/telefonopeque"
                     android:background="@drawable/notanredondo"
                     android:textColor="#fff"
@@ -450,19 +451,55 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/detalleLatitud"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_height="0dp"/>
+
+                    <TextView
+                        android:id="@+id/detalleLongitudd"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_height="0dp"/>
+
                 </LinearLayout>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:text="Detalles del producto"
-                    android:background="@drawable/redondo"
-                    android:backgroundTint="#5bbd00"
-                    android:id="@+id/showProducto"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:textColor="#fff"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:elevation="6dp"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:layout_gravity="bottom|center"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:text="Detalles\ndel producto"
+                        android:background="@drawable/redondo"
+                        android:backgroundTint="#000"
+                        android:id="@+id/showProducto"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textColor="#fff"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:text="Mapa\ndel cliente"
+                        android:layout_weight="1"
+                        android:background="@drawable/redondo"
+                        android:backgroundTint="#000"
+                        android:id="@+id/showMapa"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#fff"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -506,15 +543,32 @@
                     android:textAlignment="center"
                     android:layout_height="wrap_content"/>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/detalleNumPedido2"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_height="wrap_content"/>
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:text="#"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/detalleNumPedido2"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -799,12 +853,13 @@
                 <!-- fin Linea de separación -->
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:text="Detalles del pedido"
                     android:background="@drawable/redondo"
                     android:backgroundTint="#5bbd00"
                     android:id="@+id/showDetalle"
                     android:textColor="#fff"
+                    android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_arrow_back"
                     android:layout_gravity="bottom|center"
                     android:elevation="6dp"

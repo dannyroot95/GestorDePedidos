@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import es.dmoral.toasty.Toasty;
 
@@ -40,10 +41,12 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     , listHoraEntrega , listFechaEntrega , listTotalPagoProducto , listDireccion , listPagoCliente
             , listTotalACobrar , listVuelto , listRepartidor , listProveedores , listProducto , listDescripcion
 
-            , listPrecio1 , listPrecio2 ,listPrecio3 , listDelivery1 , listDelivery2 , listDelivery3 , listEstado;
+            , listPrecio1 , listPrecio2 ,listPrecio3 , listDelivery1 , listDelivery2 , listDelivery3 , listEstado
+            ,listLatitud , listLongitud;
 
     Button mButtonShow ;
     Button mButtonShow2;
+    Button mMapa;
 
     private LinearLayout mLinearProductos , mLinearProductos1 , mLinearProductos2 , mLinearProductos3;
 
@@ -81,9 +84,12 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         listDelivery2 = findViewById(R.id.detalleDelivery2);
         listDelivery3 = findViewById(R.id.detalleDelivery3);
         listEstado = findViewById(R.id.detalleEstado);
+        listLatitud = findViewById(R.id.detalleLatitud);
+        listLongitud = findViewById(R.id.detalleLongitudd);
 
         mButtonShow = findViewById(R.id.showProducto);
         mButtonShow2 = findViewById(R.id.showDetalle);
+        mMapa = findViewById(R.id.showMapa);
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
@@ -107,6 +113,17 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             public void onClick(View v) {
                     CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                     mLinearProductos.setLayoutParams(params);
+            }
+        });
+
+        mMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetallePedido.this, MapaClientePorLlamada.class);
+                intent.putExtra("latitud",listLatitud.getText().toString());
+                intent.putExtra("longitud",listLongitud.getText().toString());
+                intent.putExtra("nombre",listNombreCliente.getText().toString());
+                startActivity(intent);
             }
         });
 
@@ -137,6 +154,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         arrayList.add(pedidoLlamada.getDelivery2());
         arrayList.add(pedidoLlamada.getDelivery3());
         arrayList.add(pedidoLlamada.getEstado());
+        arrayList.add(pedidoLlamada.getLatitud());
+        arrayList.add(pedidoLlamada.getLongitud());
 
         listNumPedido.setText(arrayList.get(0));
         listNumPedido2.setText(arrayList.get(0));
@@ -162,6 +181,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         listDelivery2.setText(arrayList.get(20));
         listDelivery3.setText(arrayList.get(21));
         listEstado.setText(arrayList.get(22));
+        listLatitud.setText(arrayList.get(23));
+        listLongitud.setText(arrayList.get(24));
 
         String stPrecio1 = listPrecio1.getText().toString();
         String stPrecio2 = listPrecio2.getText().toString();

@@ -68,6 +68,8 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
             holder.txtProveedor.setText(ls.getProveedores());
             holder.txtProductos.setText(ls.getProductos());
             holder.txtProductDescripcion.setText(ls.getDescripcion());
+            holder.txtLatitud.setText(ls.getLatitud());
+            holder.txtLongitud.setText(ls.getLongitud());
 
 
             if ( holder.txtListEstado.getText().toString().equals("En espera")){
@@ -107,7 +109,7 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
                 txtPos2,txtPos3,txtPos4,txtPos5,txtPos6,txtListEstado,txttelefono,txtHoraRegistro,
                txtFechaRegistro , txtTotalProducto , txtClientePaga , txtTotalACobrar , txtVuelto
                , txtRepartidor , txtProveedor , txtProductos , txtProductDescripcion , txtPrecio1
-               , txtPrecio2 , txtPrecio3 , txtDelivery1 , txtDelivery2 , txtDelivery3;
+               , txtPrecio2 , txtPrecio3 , txtDelivery1 , txtDelivery2 , txtDelivery3,txtLatitud,txtLongitud;
 
 
        LinearLayout line,LinearPedidos;
@@ -144,6 +146,9 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
             txtDelivery1 = itemView.findViewById(R.id.idDelivery1);
             txtDelivery2 = itemView.findViewById(R.id.idDelivery2);
             txtDelivery3 = itemView.findViewById(R.id.idDelivery3);
+            LinearPedidos = itemView.findViewById(R.id.linearContenedorExtra);
+            txtLatitud = itemView.findViewById(R.id.idlatitud);
+            txtLongitud = itemView.findViewById(R.id.idlongitud);
             LinearPedidos = itemView.findViewById(R.id.linearContenedorExtra);
             int alto = 0;
             int ancho = 0;

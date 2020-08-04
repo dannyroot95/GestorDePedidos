@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".paquetes.Actividades.Notificacion">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="180dp"
+            android:layout_marginTop="20dp"
+            app:lottie_imageAssetsFolder="assets"
+            app:lottie_fileName="lotieDelivery.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center"
+            android:layout_height="180dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:text="Nuevo Pedido "
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/notifyNumPedido"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="Usted acaba de recibir un nuevo\npedido"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:text="Nombre del cliente"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/notifyNombreCliente"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#CB4335"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:text="Teléfono"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/notifyTelefono"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#2E86C1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000"
+                android:text="Dirección"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/notifyDireccion"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:textColor="#9B2371"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000"
+                android:text="Hora de entrega"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/notifyHora"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="#239B56"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:text="Fecha de entrega"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/notifyFecha"
+                    android:layout_marginTop="5dp"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="#239B56"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnVerLista"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="Ver lista"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/redondo"
+                android:backgroundTint="#5bbd00"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnCerrar"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="Cerrar"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/redondo"
+                android:backgroundTint="#CB4335"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,10 +2,12 @@ package aukde.food.gestordepedidos.paquetes.Servicios;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,6 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
 import aukde.food.gestordepedidos.paquetes.Canales.NotificationHelper;
 import aukde.food.gestordepedidos.paquetes.Receptor.AcceptReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.CancelReceiver;
@@ -42,7 +45,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 if (title.contains("Nuevo pedido #")){
                     String idClient = data.get("idClient");
+                    String numPedido = data.get("numPedido");
+                    String nombre = data.get("nombre");
+                    String telefono = data.get("telefono");
+                    String direccion = data.get("direccion");
+                    String hora = data.get("hora");
+                    String fecha = data.get("fecha");
                     showNotificationApiOreoActions(title,body,idClient);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha);
                 }
                 else
                 {
@@ -52,7 +62,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
             else {
                 if (title.contains("Nuevo pedido #")){
                     String idClient = data.get("idClient");
+                    String numPedido = data.get("numPedido");
+                    String nombre = data.get("nombre");
+                    String telefono = data.get("telefono");
+                    String direccion = data.get("direccion");
+                    String hora = data.get("hora");
+                    String fecha = data.get("fecha");
                     showNotificationActions(title,body,idClient);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha);
                 }
                 else {
                     showNotification(title,body);
@@ -60,6 +77,29 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
             }
         }
 
+    }
+
+    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha) {
+
+        PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
+        boolean screenOn = pm.isScreenOn();
+        if(!screenOn){
+            PowerManager.WakeLock wakeLock = pm.newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK |
+                                PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                                PowerManager.ON_AFTER_RELEASE,"AppName:Mylock"
+            );
+            wakeLock.acquire(10000);
+        }
+        Intent intent = new Intent(getBaseContext(), Notificacion.class);
+        intent.putExtra("numPedido",numPedido);
+        intent.putExtra("nombre",nombre);
+        intent.putExtra("telefono",telefono);
+        intent.putExtra("direccion",direccion);
+        intent.putExtra("hora",hora);
+        intent.putExtra("fecha",fecha);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
