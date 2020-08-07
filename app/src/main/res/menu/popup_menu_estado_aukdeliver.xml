@@ -5,6 +5,6 @@
         android:title="Completado"/>
 
     <item android:id="@+id/item2"
-        android:title="Cancelado"/>
+        android:title="Rechazar Pedido"/>
 
 </menu>

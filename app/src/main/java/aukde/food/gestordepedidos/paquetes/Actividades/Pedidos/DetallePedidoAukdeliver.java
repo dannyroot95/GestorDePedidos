@@ -45,18 +45,20 @@ import es.dmoral.toasty.Toasty;
 public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     TextView listNumPedido, listNumPedido2, listNombreCliente, listTelefonoCliente, listHoraRegistro,
             listFechaRegistro, listHoraEntrega, listFechaEntrega, listTotalPagoProducto, listDireccion,
-            listPagoCliente, listTotalACobrar, listVuelto, listRepartidor, listProveedores, listProducto,
-            listDescripcion, listPrecio1, listPrecio2, listPrecio3, listDelivery1,
-            listDelivery2, listDelivery3, listEstado  ,listLatitud , listLongitud;
+            listPagoCliente, listTotalACobrar, listVuelto, listRepartidor, listProveedores, listProducto, listDescripcion,
+
+            listPrecioUnitario , listCantidad ,listPrecioTotalPorProducto , listComision , listTotalDelivery ,
+            listGananciaDelivery , listGananciaComision , listEstado ,listLatitud , listLongitud;
 
     Button mButtonShow;
     Button mButtonShow2;
     Button bottonEstado, btnError;
     Button mMapa;
 
+    TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal;
+
     private DatabaseReference mDatabase;
-    private LinearLayout mLinearProductos, mLinearProductos1, mLinearProductos2,
-            mLinearProductos3 , mLinearCliente , mLinearTelefono , mLinearDireccion;
+    private LinearLayout mLinearProductos, mLinearCliente , mLinearTelefono , mLinearDireccion;
     private FirebaseAuth mAuth;
 
     @SuppressLint("SetTextI18n")
@@ -83,19 +85,25 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listTotalACobrar = findViewById(R.id.detalleTotalCobro);
         listVuelto = findViewById(R.id.detalleVuelto);
         listRepartidor = findViewById(R.id.detallevRepartidor);
-        listProveedores = findViewById(R.id.detalleProveedor);
+        listProveedores = findViewById(R.id.detalleSocio);
         listProducto = findViewById(R.id.detalleProductos);
         listDescripcion = findViewById(R.id.detalleProductosDescripcion);
-        listPrecio1 = findViewById(R.id.detalleProductoprecio1);
-        listPrecio2 = findViewById(R.id.detalleProductoprecio2);
-        listPrecio3 = findViewById(R.id.detalleProductoprecio3);
-        listDelivery1 = findViewById(R.id.detalleDelivery1);
-        listDelivery2 = findViewById(R.id.detalleDelivery2);
-        listDelivery3 = findViewById(R.id.detalleDelivery3);
+        //
+        listPrecioUnitario = findViewById(R.id.detallePrecioUnitario);
+        listCantidad = findViewById(R.id.detalleCantidad);
+        listPrecioTotalPorProducto = findViewById(R.id.detallePreciosTotalesDelproducto);
+        listComision = findViewById(R.id.detalleComision);
+        listTotalDelivery = findViewById(R.id.detalleTotalProductoDelivery);
+        listGananciaDelivery = findViewById(R.id.detalleGananciaDelivery);
+        listGananciaComision = findViewById(R.id.detalleGananciaComision);
+        //
         listEstado = findViewById(R.id.detalleEstado);
         listLatitud = findViewById(R.id.detalleLatitud);
         listLongitud = findViewById(R.id.detalleLongitudd);
 
+        mGanasteComision = findViewById(R.id.txtGanaste);
+        mGanasteDelivery = findViewById(R.id.txtGanasteDelivery);
+        txtDetallePTotal = findViewById(R.id.DetallePTotal);
 
         mButtonShow = findViewById(R.id.showProducto);
         mButtonShow2 = findViewById(R.id.showDetalle);
@@ -105,9 +113,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
-        mLinearProductos1 = findViewById(R.id.idLinearProducto1);
-        mLinearProductos2 = findViewById(R.id.idLinearProducto2);
-        mLinearProductos3 = findViewById(R.id.idLinearProducto3);
         mLinearCliente = findViewById(R.id.linearCliente);
         mLinearTelefono = findViewById(R.id.linearTelefono);
         mLinearDireccion = findViewById(R.id.linearDireccion);
@@ -160,15 +165,16 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         arrayList.add(pedidoLlamada.getVuelto());
         arrayList.add(pedidoLlamada.getEncargado());
         arrayList.add(pedidoLlamada.getDireccion());
+
         arrayList.add(pedidoLlamada.getProveedores());
         arrayList.add(pedidoLlamada.getProductos());
         arrayList.add(pedidoLlamada.getDescripcion());
-        arrayList.add(pedidoLlamada.getPrecio1());
-        arrayList.add(pedidoLlamada.getPrecio2());
-        arrayList.add(pedidoLlamada.getPrecio3());
-        arrayList.add(pedidoLlamada.getDelivery1());
-        arrayList.add(pedidoLlamada.getDelivery2());
-        arrayList.add(pedidoLlamada.getDelivery3());
+
+        arrayList.add(pedidoLlamada.getPrecioUnitario());
+        arrayList.add(pedidoLlamada.getCantidad());
+        arrayList.add(pedidoLlamada.getPrecioTotalXProducto());
+        arrayList.add(pedidoLlamada.getGananciaDelivery());
+
         arrayList.add(pedidoLlamada.getEstado());
         arrayList.add(pedidoLlamada.getLatitud());
         arrayList.add(pedidoLlamada.getLongitud());
@@ -181,6 +187,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listHoraEntrega.setText(arrayList.get(3));
         listFechaEntrega.setText(arrayList.get(4));
         listTotalPagoProducto.setText(arrayList.get(5));
+        txtDetallePTotal.setText(arrayList.get(5));
         listNombreCliente.setText(arrayList.get(6));
         listTelefonoCliente.setText(arrayList.get(7));
         listPagoCliente.setText(arrayList.get(8));
@@ -191,42 +198,39 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listProveedores.setText(arrayList.get(13));
         listProducto.setText(arrayList.get(14));
         listDescripcion.setText(arrayList.get(15));
-        listPrecio1.setText(arrayList.get(16));
-        listPrecio2.setText(arrayList.get(17));
-        listPrecio3.setText(arrayList.get(18));
-        listDelivery1.setText(arrayList.get(19));
-        listDelivery2.setText(arrayList.get(20));
-        listDelivery3.setText(arrayList.get(21));
-        listEstado.setText(arrayList.get(22));
-        listLatitud.setText(arrayList.get(23));
-        listLongitud.setText(arrayList.get(24));
+        listPrecioUnitario.setText(arrayList.get(16));
+        listCantidad.setText(arrayList.get(17));
+        listPrecioTotalPorProducto.setText(arrayList.get(18));
+        listGananciaDelivery.setText(arrayList.get(19));
+        listEstado.setText(arrayList.get(20));
+        listLatitud.setText(arrayList.get(21));
+        listLongitud.setText(arrayList.get(22));
 
-
-        String stPrecio1 = listPrecio1.getText().toString();
-        String stPrecio2 = listPrecio2.getText().toString();
-        String stPrecio3 = listPrecio3.getText().toString();
-        String stDelivery1 = listDelivery1.getText().toString();
-        String stDelivery2 = listDelivery2.getText().toString();
-        String stDelivery3 = listDelivery3.getText().toString();
 
         String stEstado = listEstado.getText().toString();
 
-        if (stPrecio1.equals("0") && stDelivery1.equals("0")) {
-            LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
-            mLinearProductos1.setLayoutParams(params1);
-        }
+        String Delivery = listGananciaDelivery.getText().toString();
+        Double doubleDelivery = Double.parseDouble(Delivery);
+        Double finalGananciaDelivery ;
 
-        if (stPrecio2.equals("0") && stDelivery2.equals("0")) {
-            LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
-            mLinearProductos2.setLayoutParams(params2);
+        if(doubleDelivery < 4.00){
+           finalGananciaDelivery = doubleDelivery * 0.5;
+           String ganancia50P = String.valueOf(finalGananciaDelivery);
+           listGananciaDelivery.setText(ganancia50P);
         }
-
-        if (stPrecio3.equals("0") && stDelivery3.equals("0")) {
-            LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
-            mLinearProductos3.setLayoutParams(params3);
+        if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
+            finalGananciaDelivery = doubleDelivery * 0.4;
+            String ganancia40P = String.valueOf(finalGananciaDelivery);
+            listGananciaDelivery.setText(ganancia40P);
+        }
+        if(doubleDelivery >= 9.00){
+            finalGananciaDelivery = doubleDelivery * 0.3;
+            String ganancia30P = String.valueOf(finalGananciaDelivery);
+            listGananciaDelivery.setText(ganancia30P);
         }
 
         if (stEstado.equals("Completado")) {
+            mGanasteDelivery.setText("Por este delivery ganaste : ");
             listEstado.setTextColor(Color.parseColor("#000000"));
             bottonEstado.setVisibility(View.INVISIBLE);
             btnError.setVisibility(View.VISIBLE);
@@ -409,6 +413,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     public void onClickLlamada(View v) {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:992997223"));
+        startActivity(i);
+    }
+
+    public void onClickLlamadaCliente(View v) {
+        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+listTelefonoCliente.getText().toString()));
         startActivity(i);
     }
 

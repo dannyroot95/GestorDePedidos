@@ -237,37 +237,43 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idPrecio1"
+                    android:id="@+id/idPreciosUnitarios"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idPrecio2"
+                    android:id="@+id/idCantidad"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idPrecio3"
+                    android:id="@+id/idPrecioTotalPorProducto"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idDelivery1"
+                    android:id="@+id/idComision"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idDelivery2"
+                    android:id="@+id/idTotalDelivery"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
-                    android:id="@+id/idDelivery3"
+                    android:id="@+id/idGananciaDelivery"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    android:id="@+id/idGananciaComision"
                     android:layout_height="wrap_content"/>
 
                 <TextView

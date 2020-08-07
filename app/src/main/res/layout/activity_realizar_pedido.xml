@@ -8,6 +8,55 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#000"
+        android:gravity="left"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/lista_admin"
+            android:layout_height="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Ficha de Pedido"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="#000"
+            android:textColor="#fff"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="#"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="#000"
+            android:textColor="#fff"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/numPedido"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="233"
+            android:textColor="#fff"
+            android:inputType="number"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_margin="5dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -16,7 +65,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
         android:id="@+id/scroll">
 
@@ -33,39 +82,21 @@
 
 <LinearLayout
     android:layout_width="match_parent"
+    android:layout_gravity="center"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="Número\nde\nPedido"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:textColor="#000"
-        android:layout_marginRight="15dp"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/numPedido"
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:textColor="#000"
-        android:inputType="number"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Hora\ndel pedido"
+            android:text="Hora del pedido"
             android:textColor="#CD1300"
             android:gravity="center"
-            android:drawableRight="@drawable/arrow_forward"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
@@ -74,15 +105,15 @@
             android:layout_width="wrap_content"
             android:hint="00:00"
             android:textColor="#000"
+            android:textStyle="bold"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableRight="@drawable/arrow_forward"
             android:gravity="center"
-            android:text="Hora\nde entrega"
+            android:text="Hora de entrega"
             android:textColor="#0043C8"
             android:textSize="14sp" />
 
@@ -98,8 +129,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-
+        android:layout_width="10dp"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -110,7 +140,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Fecha\ndel pedido"
+            android:text="Fecha del pedido"
             android:gravity="center"
             android:textColor="#CD1300"
             android:textSize="14sp"
@@ -121,13 +151,14 @@
             android:layout_width="wrap_content"
             android:hint="03/07/2020"
             android:textColor="#000"
+            android:textStyle="bold"
             android:gravity="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Fecha\n de entrega"
+            android:text="Fecha de entrega"
             android:gravity="center"
             android:textColor="#0043C8"
             android:textSize="14sp"
@@ -156,342 +187,558 @@
                 android:layout_height="1dp"/>
             <!-- fin Linea de separación -->
 
-
-        <!-- Segundo segmento -->
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Descripción del pedido"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:gravity="center"
+                android:orientation="vertical"
+                android:gravity="left"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Descripción del pedido"
-                    android:textColor="#000"
-                    android:textSize="18sp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Socio : "
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:hint="Pez loco"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp"
+                        android:id="@+id/edtSocio"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Producto : "
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:hint="Ceviche clásico"
+                        android:id="@+id/edtProducto"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Nota : "
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:hint="Sin aji y con su yapa"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp"
+                        android:id="@+id/edtDescripcion"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Precio unitario : "
+                        android:textSize="14sp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="S/"
+                        android:textColor="#000"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:hint="12"
+                        android:id="@+id/edtPrecUnitario"
+                        android:textSize="14sp"
+                        android:inputType="numberDecimal"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:text="Cambiar Comisión?"
+                    android:textSize="14sp"
+                    android:id="@+id/checkboxComision"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:hint="S/1.00"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/edtNuevaComision"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Cantidad"
+                        android:textSize="14sp"                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_height="wrap_content">
+                        <Button
+                            android:layout_width="40dp"
+                            android:text="-"
+                            android:id="@+id/btnMin"
+                            android:layout_height="50dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="1"
+                            android:textSize="14sp"                              android:id="@+id/edtCant"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <Button
+                            android:layout_width="40dp"
+                            android:text="+"
+                            android:id="@+id/btnMax"
+                            android:layout_height="50dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="left"
+                    android:layout_marginLeft="40dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Precio delivery"
+                        android:textSize="14sp"                          android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:hint="5"
+                        android:id="@+id/edtPrecioDelivery"
+                        android:inputType="numberDecimal"
+                        android:textSize="14sp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="Agregar"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/add"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
+            <!-- Linea de separación -->
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_height="1dp"/>
+            <!-- fin Linea de separación -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Lista de productos"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="150dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_height="200dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Proveedor"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"/>
-
-                <EditText
-                    android:id="@+id/nombresProveedor"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:text="a.\nb.\nc.\n"
-                    android:layout_gravity="left"
-                    android:textSize="14sp"
-                    android:layout_height="match_parent"/>
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
 
-            </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Socio"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
-            <LinearLayout
-                android:layout_width="150dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_height="200dp">
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_width="60dp"
+                            android:id="@+id/lsSocio"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Producto"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/nombresProducto"
-                    android:layout_width="match_parent"
-                    android:text="a.\nb.\nc.\n"
-                    android:textSize="14sp"
-                    android:layout_gravity="left"
-                    android:layout_height="match_parent"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Producto"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
+                        <TextView
+                            android:id="@+id/lsProducto"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:textSize="12dp" />
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="150dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_height="200dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Notas"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/descripcion"
-                    android:layout_width="match_parent"
-                    android:text="a.ninguno\nb.\nc.\n"
-                    android:textSize="14sp"
-                    android:layout_gravity="left"
-                    android:layout_height="match_parent"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Nota"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
+                        <TextView
+                            android:layout_width="100dp"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/lsDescripcion"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Precio Unitario"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Precio"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:id="@+id/lsPUnitario"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
-                <EditText
-                    android:id="@+id/precioProducto1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:text="0"
-                    android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/precioProducto2"
-                    android:layout_width="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/precioProducto3"
-                    android:layout_width="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Cant."
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
-            </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/lsCant"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Delivery"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/precioDelivery1"
-                    android:layout_width="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/precioDelivery2"
-                    android:layout_width="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/precioDelivery3"
-                    android:layout_width="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
-                <Button
-                    android:id="@+id/calcularTotal"
-                    android:layout_width="wrap_content"
-                    android:text="Calcular"
-                    android:textSize="10dp"
-                    android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="P.Total"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
 
-            </LinearLayout>
-        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/lsPTotal"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Comisión"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/lsComision"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Delivery"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/lsPDelivery"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
             </HorizontalScrollView>
+
+
             <!-- Linea de separación -->
             <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:background="@android:color/darker_gray"
                 android:layout_height="1dp"/>
             <!-- fin Linea de separación -->
 
-            <!-- Tercer segmento -->
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <Button
                     android:layout_width="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginRight="10dp"
-                    android:text="Total a pagar (Producto) :"
-                    android:textColor="#000000"
+                    android:text="Limpiar\nlista"
+                    android:id="@+id/btnClean"
+                    android:textSize="12sp"
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/precioProductoTotal"
                     android:layout_width="wrap_content"
-                    android:hint="S/00.00"
+                    android:text="Total a pagar (Producto) : "
+                    android:textColor="#000"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="S/"
                     android:textColorHint="#ff0000"
                     android:textColor="#ff0000"
-                    android:gravity="center_horizontal"
-                    android:textSize="16sp"
                     android:textStyle="bold"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="0"
+                    android:id="@+id/precioProductoTotal"
+                    android:textColorHint="#ff0000"
+                    android:textColor="#ff0000"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
-            <!-- Linea de separación -->
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_height="1dp"/>
-            <!-- fin Linea de separación -->
 
-            <!-- Cuarto segmento -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Nombre del cliente :"
-                    android:textColor="#000000"
-                    android:layout_marginRight="10dp"
-                    android:layout_height="wrap_content"/>
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:hint="Aukde aukdefod"
-                    android:gravity="right"
-                    android:textSize="16sp"
-                    android:id="@+id/nombreCliente"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <!-- Linea de separación -->
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_height="1dp"/>
-            <!-- fin Linea de separación -->
-
-            <!-- Quinto segmento -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Teléfono del cliente :"
-                    android:textColor="#000000"
-                    android:layout_marginRight="10dp"
-                    android:layout_height="wrap_content"/>
-
-                <EditText
-                    android:id="@+id/telefonoCliente"
-                    android:layout_width="wrap_content"
-                    android:hint="###"
-                    android:gravity="center_horizontal"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:maxLength="9"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <!-- Linea de separación -->
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_height="1dp"/>
-            <!-- fin Linea de separación -->
-
-            <!-- Sexto segmento -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Monto a pagar (Cliente) :"
-                    android:textColor="#000000"
-                    android:layout_marginRight="10dp"
+                    android:text="Ganancia por Delivery : "
+                    android:textColor="#000"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="12sp"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="S/"
                     android:textColor="#000"
-                    android:textSize="16sp"
-                    android:background="#00ffffff"
                     android:textStyle="bold"
+                    android:textSize="12sp"
                     android:layout_height="wrap_content"/>
 
-                <EditText
-                    android:id="@+id/montoPagarcliente"
+                <TextView
+                    android:id="@+id/gananciaDelivery"
                     android:layout_width="wrap_content"
-                    android:hint="00.00"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
-            <!-- Linea de separación -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Ganancia por Comisión : "
+                    android:textColor="#000"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="S/"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="0"
+                    android:id="@+id/gananciaAdmin"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
             <View
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
@@ -548,6 +795,119 @@
                 android:layout_height="1dp"/>
             <!-- fin Linea de separación -->
 
+            <!-- Cuarto segmento -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Nombre del cliente :"
+                    android:textColor="#000000"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:hint="Edward Lizaraso"
+                    android:gravity="left"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp"
+                    android:id="@+id/nombreCliente"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Linea de separación -->
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_height="1dp"/>
+            <!-- fin Linea de separación -->
+
+            <!-- Quinto segmento -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Teléfono del cliente :"
+                    android:textColor="#000000"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/telefonoCliente"
+                    android:layout_width="wrap_content"
+                    android:hint="992997223"
+                    android:gravity="center_horizontal"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:maxLength="9"
+                    android:inputType="number"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Linea de separación -->
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_height="1dp"/>
+            <!-- fin Linea de separación -->
+
+            <!-- Sexto segmento -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Monto a pagar (Cliente) :"
+                    android:textColor="#000000"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="S/"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:background="#00ffffff"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/montoPagarcliente"
+                    android:layout_width="wrap_content"
+                    android:hint="0.00"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:inputType="numberDecimal"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+
+            <!-- Linea de separación -->
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_height="1dp"/>
+            <!-- fin Linea de separación -->
+
             <!-- Octavo segmento -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -568,7 +928,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="25dp"
                     android:background="#00ffffff"
-                    android:hint="S/00.00"
+                    android:hint="S/0.00"
                     android:textColor="#900C3F"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -613,7 +973,7 @@
 
                 <EditText
                     android:id="@+id/direcionCliente"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:hint="Presione el boton Mapear"
                     android:gravity="center"
                     android:textColor="#000"

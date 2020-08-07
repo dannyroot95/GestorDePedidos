@@ -17,7 +17,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukde
 
 public class Notificacion extends AppCompatActivity {
 
-    private TextView ntfNumPedido,ntfNombre , ntfTelefono , ntfDirecion,ntfHora,ntfFecha;
+    private TextView ntfNumPedido,ntfNombre , ntfTelefono , ntfDirecion,ntfHora,ntfFecha , ntfGanancia;
     private Button btnListaPedido , btnCerrar;
     private String mExtraNumPedido;
     private String mExtraNombre;
@@ -25,6 +25,7 @@ public class Notificacion extends AppCompatActivity {
     private String mExtraDireccion;
     private String mExtraHora;
     private String mExtraFecha;
+    private String mExtraGanancia;
     private MediaPlayer mediaPlayer;
 
     @Override
@@ -38,6 +39,7 @@ public class Notificacion extends AppCompatActivity {
         ntfDirecion = findViewById(R.id.notifyDireccion);
         ntfHora = findViewById(R.id.notifyHora);
         ntfFecha = findViewById(R.id.notifyFecha);
+        ntfGanancia = findViewById(R.id.notifyGanancia);
         btnListaPedido = findViewById(R.id.btnVerLista);
         btnCerrar = findViewById(R.id.btnCerrar);
 
@@ -47,6 +49,8 @@ public class Notificacion extends AppCompatActivity {
         mExtraDireccion = getIntent().getStringExtra("direccion");
         mExtraHora = getIntent().getStringExtra("hora");
         mExtraFecha = getIntent().getStringExtra("fecha");
+        mExtraGanancia = getIntent().getStringExtra("ganancia");
+
 
         ntfNumPedido.setText("#"+mExtraNumPedido);
         ntfNombre.setText(mExtraNombre);
@@ -54,6 +58,27 @@ public class Notificacion extends AppCompatActivity {
         ntfDirecion.setText(mExtraDireccion);
         ntfHora.setText(mExtraHora);
         ntfFecha.setText(mExtraFecha);
+        ntfGanancia.setText(mExtraGanancia);
+
+        String Delivery =  ntfGanancia.getText().toString();
+        Double doubleDelivery = Double.parseDouble(Delivery);
+        Double finalGananciaDelivery ;
+
+        if(doubleDelivery < 4.00){
+            finalGananciaDelivery = doubleDelivery * 0.5;
+            String ganancia50P = String.valueOf(finalGananciaDelivery);
+            ntfGanancia.setText(ganancia50P);
+        }
+        if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
+            finalGananciaDelivery = doubleDelivery * 0.4;
+            String ganancia40P = String.valueOf(finalGananciaDelivery);
+            ntfGanancia.setText(ganancia40P);
+        }
+        if(doubleDelivery >= 9.00){
+            finalGananciaDelivery = doubleDelivery * 0.3;
+            String ganancia30P = String.valueOf(finalGananciaDelivery);
+            ntfGanancia.setText(ganancia30P);
+        }
 
         mediaPlayer = MediaPlayer.create(this,R.raw.ringtone);
         mediaPlayer.setLooping(true);

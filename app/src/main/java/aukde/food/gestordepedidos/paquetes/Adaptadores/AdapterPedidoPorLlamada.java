@@ -66,6 +66,13 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
             holder.txtProductDescripcion.setText(ls.getDescripcion());
             holder.txtLatitud.setText(ls.getLatitud());
             holder.txtLongitud.setText(ls.getLongitud());
+            holder.txtPreciosUnitarios.setText(ls.getPrecioUnitario());
+            holder.txtCantidad.setText(ls.getCantidad());
+            holder.txtPrecioTotalXproducto.setText(ls.getPrecioTotalXProducto());
+            holder.txtComision.setText(ls.getComision());
+            holder.txtTotalDelivery.setText(ls.getTotalDelivery());
+            holder.txtGananciaDelivery.setText(ls.getGananciaDelivery());
+            holder.txtGananciaComision.setText(ls.getGananciaComision());
 
 
             if ( holder.txtListEstado.getText().toString().equals("En espera")){
@@ -104,8 +111,9 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
        TextView txtNumeroPedido,txtHoraList,txtFechaList,txtClienteList,txtDireccion,txtPos1,
                 txtPos2,txtPos3,txtPos4,txtPos5,txtPos6,txtListEstado,txttelefono,txtHoraRegistro,
                txtFechaRegistro , txtTotalProducto , txtClientePaga , txtTotalACobrar , txtVuelto
-               , txtRepartidor , txtProveedor , txtProductos , txtProductDescripcion , txtPrecio1
-               , txtPrecio2 , txtPrecio3 , txtDelivery1 , txtDelivery2 , txtDelivery3 ,txtLatitud,txtLongitud;
+               , txtRepartidor , txtProveedor , txtProductos , txtProductDescripcion , txtLatitud , txtLongitud
+               , txtPreciosUnitarios , txtCantidad , txtPrecioTotalXproducto , txtComision ,
+               txtTotalDelivery ,txtGananciaDelivery,txtGananciaComision;
 
 
        LinearLayout line,LinearPedidos;
@@ -136,12 +144,13 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
             txtProductos = itemView.findViewById(R.id.idProducto);
             txtProductDescripcion = itemView.findViewById(R.id.idProductoDescripcion);
             txtRepartidor = itemView.findViewById(R.id.idRepartidor);
-            txtPrecio1 = itemView.findViewById(R.id.idPrecio1);
-            txtPrecio2 = itemView.findViewById(R.id.idPrecio2);
-            txtPrecio3 = itemView.findViewById(R.id.idPrecio3);
-            txtDelivery1 = itemView.findViewById(R.id.idDelivery1);
-            txtDelivery2 = itemView.findViewById(R.id.idDelivery2);
-            txtDelivery3 = itemView.findViewById(R.id.idDelivery3);
+            txtPreciosUnitarios = itemView.findViewById(R.id.idPreciosUnitarios);
+            txtCantidad = itemView.findViewById(R.id.idCantidad);
+            txtPrecioTotalXproducto = itemView.findViewById(R.id.idPrecioTotalPorProducto);
+            txtComision = itemView.findViewById(R.id.idComision);
+            txtTotalDelivery = itemView.findViewById(R.id.idTotalDelivery);
+            txtGananciaDelivery = itemView.findViewById(R.id.idGananciaDelivery);
+            txtGananciaComision = itemView.findViewById(R.id.idGananciaComision);
             txtLatitud = itemView.findViewById(R.id.idlatitud);
             txtLongitud = itemView.findViewById(R.id.idlongitud);
             LinearPedidos = itemView.findViewById(R.id.linearContenedorExtra);

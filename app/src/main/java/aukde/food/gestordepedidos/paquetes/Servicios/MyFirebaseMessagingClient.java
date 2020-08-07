@@ -51,8 +51,9 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String direccion = data.get("direccion");
                     String hora = data.get("hora");
                     String fecha = data.get("fecha");
+                    String ganancia = data.get("ganancia");
                     showNotificationApiOreoActions(title,body,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia);
                 }
                 else
                 {
@@ -68,8 +69,9 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String direccion = data.get("direccion");
                     String hora = data.get("hora");
                     String fecha = data.get("fecha");
+                    String ganancia = data.get("ganancia");
                     showNotificationActions(title,body,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia);
                 }
                 else {
                     showNotification(title,body);
@@ -79,7 +81,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
     }
 
-    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha) {
+    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha, String ganancia) {
 
         PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
         boolean screenOn = pm.isScreenOn();
@@ -98,6 +100,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         intent.putExtra("direccion",direccion);
         intent.putExtra("hora",hora);
         intent.putExtra("fecha",fecha);
+        intent.putExtra("ganancia",ganancia);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

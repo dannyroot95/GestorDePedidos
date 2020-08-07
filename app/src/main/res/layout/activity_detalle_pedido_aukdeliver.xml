@@ -265,7 +265,13 @@
                         android:textColor="#000"
                         android:layout_marginRight="5dp"
                         android:layout_height="wrap_content"/>
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="S/"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/detalleTotalPago"
                         android:layout_width="wrap_content"
@@ -318,10 +324,17 @@
                         android:layout_marginRight="5dp"
                         android:layout_height="wrap_content"/>
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_llamada"
+                        android:onClick="onClickLlamadaCliente"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/detalleTelefonoCliente"
                         android:layout_width="wrap_content"
                         android:textColor="#000"
+                        android:onClick="onClickLlamadaCliente"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"/>
@@ -467,8 +480,41 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:layout_height="0dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Por este Delivery ganarás : "
+                        android:textSize="16sp"
+                        android:id="@+id/txtGanasteDelivery"
+                        android:textColor="#000"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="S/"
+                        android:textSize="16sp"
+                        android:textColor="#2d572c"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/detalleGananciaDelivery"
+                        android:layout_width="wrap_content"
+                        android:textColor="#2d572c"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -573,301 +619,246 @@
             </LinearLayout>
 
         </com.github.florent37.shapeofview.shapes.DiagonalView>
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="left"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:gravity="left"
-                android:padding="10dp"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
-
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="Proveedor"
-                    android:textSize="16sp"
+                    android:text="Lista"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     android:textColor="#000"
+                    android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content"/>
+            </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:padding="30dp"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"
-                    android:id="@+id/detalleProveedor"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"/>
 
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Productos"
-                    android:textSize="16sp"
-                    android:textColor="#000"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:padding="30dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:id="@+id/detalleProductos"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"/>
-
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Notas del pedido"
-                    android:textSize="16sp"
-                    android:textColor="#000"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:padding="30dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#000"
-                    android:textSize="14sp"
-                    android:id="@+id/detalleProductosDescripcion"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"/>
-
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Precios y delivery"
-                    android:textSize="16sp"
-                    android:textColor="#000"
-                    android:layout_height="wrap_content"/>
-
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
-
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:id="@+id/idLinearProducto1"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:text="Precio de producto 1 : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleProductoprecio1"
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_marginRight="15dp"
-                        android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text=" Proveedor "
+                            android:background="@drawable/borde"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_height="match_parent"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Delivery : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:id="@+id/detalleSocio"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:id="@+id/detalleDelivery1"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text=" Producto "
+                            android:background="@drawable/borde"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/detalleProductos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text=" Nota "
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:background="@drawable/borde"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/detalleProductosDescripcion"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text=" Precio Unitario "
+                            android:textSize="12dp"
+                            android:background="@drawable/borde"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:id="@+id/detallePrecioUnitario"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text=" Cantidad "
+                            android:textSize="12dp"
+                            android:background="@drawable/borde"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/detalleCantidad"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/borde"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text=" P.Total "
+                            android:textSize="12dp"
+                            android:background="@drawable/borde"
+                            android:textColor="#000"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="#000"
+                            android:gravity="center"
+                            android:id="@+id/detallePreciosTotalesDelproducto"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
                 </LinearLayout>
+            </HorizontalScrollView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"
-                    android:id="@+id/idLinearProducto2"
-                    android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:padding="8dp"
+                android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Precio de producto 2 : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Total(Producto) : "
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:text="S/"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/DetallePTotal"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleProductoprecio2"
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_marginRight="15dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Delivery : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:id="@+id/detalleDelivery2"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:id="@+id/idLinearProducto3"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Precio de producto 3 : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleProductoprecio3"
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_marginRight="15dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Delivery : "
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleDelivery3"
-                        android:layout_width="wrap_content"
-                        android:text="....."
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:elevation="6dp"
+                android:padding="8dp"
+                android:gravity="center"
+                android:layout_gravity="bottom|center"
+                android:layout_height="wrap_content">
 
                 <Button
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:text="Detalles del pedido"
                     android:background="@drawable/redondo"
-                    android:backgroundTint="#5bbd00"
+                    android:backgroundTint="#000"
                     android:id="@+id/showDetalle"
                     android:textColor="#fff"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
                     android:drawableLeft="@drawable/ic_arrow_back"
-                    android:layout_gravity="bottom|center"
-                    android:elevation="6dp"
-                    android:padding="8dp"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-        </ScrollView>
+
+
+        </LinearLayout>
+
+
     </LinearLayout>
     <!-- ************* SEGUNDA VISTA **************************** -->
 

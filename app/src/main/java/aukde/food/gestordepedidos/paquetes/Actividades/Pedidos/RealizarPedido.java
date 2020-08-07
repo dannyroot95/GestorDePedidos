@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -104,12 +105,25 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     int dia, mes, year, horaRel, minutoRel;
     String formatoHora = simpleDateFormatHora.format(new Date());
     String formatoFecha = simpleDateFormatFecha.format(new Date());
+
     TextView horaPedido, fechaPedido, fechaEntrega , horaEntrega
             , precioProductoTotal, precioNetoTotal, vuelto;
+
     private Button btnCalcularTotal, btnCalcularVuelto;
-    public EditText edtNumPedido ,edtProveedor , edtProductos , edtDescripcion , edtPrecioProducto1,
+
+    private Button mBtnAdd , mbtnMin , mbtnMax , mBtnClean;
+
+    private TextView edtNumPedido,textSocio,txtProducto,txtDescripcion,txtPrecioUnitario,txtDelivery , edtCantidad , txtCantidad ,
+            txtPtotal , txtNeto , txtGananciaPorDelivery , txtPrecioComisionProducto , txtNetoComision;
+
+
+    private CheckBox chComision;
+
+    public EditText  edtProveedor , edtProductos , edtDescripcion , edtPrecioProducto1,
             edtPrecioProducto2, edtPrecioProducto3, edtPrecioDelivery1, edtPrecioDelivery2,
             edtPrecioDelivery3, edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ;
+
+    private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
 
     private LinearLayout mLinearMap;
     PedidoProvider mpedidoProvider;
@@ -185,25 +199,252 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         horaPedido.setText(formatoHora);
         fechaPedido.setText(formatoFecha);
         edtNombreCliente = findViewById(R.id.nombreCliente);
-        edtProveedor = findViewById(R.id.nombresProveedor);
-
-        edtProductos = findViewById(R.id.nombresProducto);
-        edtDescripcion = findViewById(R.id.descripcion);
         edtNumPedido = findViewById(R.id.numPedido);
         edtNumPedido.setEnabled(false);
 
-        btnCalcularTotal = findViewById(R.id.calcularTotal);
+        // nuevo
+
+        mBtnAdd = findViewById(R.id.add);
+        mbtnMin = findViewById(R.id.btnMin);
+        mbtnMax = findViewById(R.id.btnMax);
+        mBtnClean = findViewById(R.id.btnClean);
+
+        mSocio = findViewById(R.id.edtSocio);
+        mProducto = findViewById(R.id.edtProducto);
+        mDescripcion = findViewById(R.id.edtDescripcion);
+        mPrecioUnitario = findViewById(R.id.edtPrecUnitario);
+        mDelivery = findViewById(R.id.edtPrecioDelivery);
+        mNuevaComision = findViewById(R.id.edtNuevaComision);
+        edtCantidad = findViewById(R.id.edtCant);
+
+        textSocio = findViewById(R.id.lsSocio);
+        txtProducto = findViewById(R.id.lsProducto);
+        txtDescripcion = findViewById(R.id.lsDescripcion);
+        txtPrecioUnitario = findViewById(R.id.lsPUnitario);
+        txtDelivery = findViewById(R.id.lsPDelivery);
+        txtCantidad = findViewById(R.id.lsCant);
+        txtPtotal = findViewById(R.id.lsPTotal);
+        txtNeto = findViewById(R.id.precioProductoTotal);
+        txtGananciaPorDelivery = findViewById(R.id.gananciaDelivery);
+        txtPrecioComisionProducto = findViewById(R.id.lsComision);
+        txtNetoComision = findViewById(R.id.gananciaAdmin);
+
+        precioNetoTotal = findViewById(R.id.neto);
+
+        mNuevaComision.setVisibility(View.INVISIBLE);
+
+        chComision = findViewById(R.id.checkboxComision);
+        chComision.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(chComision.isChecked()){
+                    mNuevaComision.setVisibility(View.VISIBLE);
+                }
+                else{
+                    mNuevaComision.setVisibility(View.INVISIBLE);
+                    mNuevaComision.setText("");
+                }
+            }
+        });
+
+        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(RealizarPedido.this).create();
+        alertDialog.setTitle("Hey!");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Deseas agregar otro producto del mismo socio?");
+        alertDialog.setIcon(R.drawable.ic_launcher_background);
+
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mProducto.setText("");
+                mDescripcion.setText("");
+                mPrecioUnitario.setText("");
+                mDelivery.setText("");
+                edtCantidad.setText("1");
+                mProducto.requestFocus();
+            }
+        });
+
+        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mSocio.setText("");
+                mProducto.setText("");
+                mDescripcion.setText("");
+                mPrecioUnitario.setText("");
+                mDelivery.setText("");
+                edtCantidad.setText("1");
+                mSocio.requestFocus();
+            }
+        });
+
+
+        mBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String S = mSocio.getText().toString();
+                String P = mProducto.getText().toString();
+                String D = mDescripcion.getText().toString();
+                String Pu = mPrecioUnitario.getText().toString();
+                String Del = mDelivery.getText().toString();
+                String Cant = edtCantidad.getText().toString();
+                String netoValor = txtNeto.getText().toString();
+                String ganancia = txtGananciaPorDelivery.getText().toString();
+                Double dNeto = Double.parseDouble(netoValor);
+
+                if (S.isEmpty() || P.isEmpty() || Pu.isEmpty() || Del.isEmpty()){
+                    Toasty.error(RealizarPedido.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    textSocio.append(S+"\n");
+                    txtProducto.append(P+"\n");
+                    txtDescripcion.append(D+"\n");
+                    txtPrecioUnitario.append(Pu+"\n");
+                    txtDelivery.append(Del+"\n");
+                    txtCantidad.append(Cant+"\n");
+                    int Cantidad = Integer.parseInt(Cant);
+                    Double Precio = Double.parseDouble(Pu);
+                    Double total = Cantidad*Precio;
+                    String sTotal = String.valueOf(total);
+                    txtPtotal.append(sTotal+"\n");
+
+                    Double finalNeto = total + dNeto;
+                    String stNeto = String.valueOf(finalNeto);
+                    txtNeto.setText(stNeto);
+                    precioProductoTotal.setText(stNeto);
+
+                    Double Gan = Double.parseDouble(ganancia);
+                    Double dDelivery = Double.parseDouble(Del);
+                    Double sumGanancia = Gan+dDelivery;
+                    String netoGanancia = String.valueOf(sumGanancia);
+                    Double totalCobro = sumGanancia+finalNeto;
+                    String netoCobro = String.valueOf(totalCobro);
+                    txtGananciaPorDelivery.setText(netoGanancia);
+                    precioNetoTotal.setText(netoCobro);
+
+                    String SComision = txtNetoComision.getText().toString();
+                    Double DComision = Double.valueOf(SComision);
+
+                    chComision = findViewById(R.id.checkboxComision);
+                    chComision.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(chComision.isChecked()){
+                                mNuevaComision.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                mNuevaComision.setVisibility(View.INVISIBLE);
+                            }
+
+                        }
+                    });
+
+
+                    if (chComision.isChecked()==false){
+                        mNuevaComision.setVisibility(View.INVISIBLE);
+                        if (Precio >= 25){
+                            Double totalMaxComision = 1.0 * Cantidad;
+                            String sTotalMaxComision = String.valueOf(totalMaxComision);
+
+                            Double comisionxProducto = DComision + totalMaxComision;
+                            String stComisionxProducto = String.valueOf(comisionxProducto);
+
+                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
+                            txtNetoComision.setText(stComisionxProducto);
+                        }
+                        if (Precio < 25) {
+                            Double totalMinComision = 0.5 * Cantidad;
+                            String sTotalMinComision = String.valueOf(totalMinComision);
+
+                            Double comisionxProductoMin = DComision + totalMinComision;
+                            String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
+
+                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
+                            txtNetoComision.setText(stComisionxProductoMin);
+                        }
+                    }
+
+                    else {
+                        mNuevaComision.setVisibility(View.VISIBLE);
+                        if (Precio >= 25){
+                            String stNuevaComision = mNuevaComision.getText().toString();
+                            Double DNuevaComision = Double.parseDouble(stNuevaComision);
+                            Double totalMaxComision = DNuevaComision * Cantidad;
+                            String sTotalMaxComision = String.valueOf(totalMaxComision);
+
+                            Double comisionxProducto = DComision + totalMaxComision;
+                            String stComisionxProducto = String.valueOf(comisionxProducto);
+
+                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
+                            txtNetoComision.setText(stComisionxProducto);
+                        }
+                        if (Precio < 25) {
+                            String stNuevaComision = mNuevaComision.getText().toString();
+                            Double DNuevaComision = Double.parseDouble(stNuevaComision);
+                            Double totalMinComision = DNuevaComision * Cantidad;
+                            String sTotalMinComision = String.valueOf(totalMinComision);
+
+                            Double comisionxProductoMin = DComision + totalMinComision;
+                            String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
+
+                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
+                            txtNetoComision.setText(stComisionxProductoMin);
+                        }
+                    }
+
+                    alertDialog.show();
+                }
+            }
+        });
+
+        mbtnMin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = edtCantidad.getText().toString();
+                if (num.equals("1")){
+                    edtCantidad.setText("1");
+                }
+                else {
+                    int Cc = Integer.parseInt(num);
+                    int res = Cc-1;
+                    String Min = String.valueOf(res);
+                    edtCantidad.setText(Min);
+                }
+
+            }
+        });
+
+        mbtnMax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = edtCantidad.getText().toString();
+                int Cc = Integer.parseInt(num);
+                int res = Cc+1;
+                String Min = String.valueOf(res);
+                edtCantidad.setText(Min);
+            }
+        });
+
+        mBtnClean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textSocio.setText(" ");
+                txtProducto.setText(" ");
+                txtDescripcion.setText(" ");
+                txtPrecioUnitario.setText(" ");
+                txtDelivery.setText(" ");
+                txtCantidad.setText(" ");
+                txtPtotal.setText(" ");
+                txtNeto.setText("0");
+                txtGananciaPorDelivery.setText("0");
+                txtPrecioComisionProducto.setText(" ");
+                txtNetoComision.setText("0");
+            }
+        });
+
+        //---------------
         btnCalcularVuelto = findViewById(R.id.calcularVuelto);
         mDialog = new ProgressDialog(this);
-        edtPrecioProducto1 = findViewById(R.id.precioProducto1);
-        edtPrecioProducto2 = findViewById(R.id.precioProducto2);
-        edtPrecioProducto3 = findViewById(R.id.precioProducto3);
-        edtPrecioDelivery1 = findViewById(R.id.precioDelivery1);
-        edtPrecioDelivery2 = findViewById(R.id.precioDelivery2);
-        edtPrecioDelivery3 = findViewById(R.id.precioDelivery3);
         edtMontoCliente = findViewById(R.id.montoPagarcliente);
         precioProductoTotal = findViewById(R.id.precioProductoTotal);
-        precioNetoTotal = findViewById(R.id.neto);
         edtTelefono = findViewById(R.id.telefonoCliente);
         edtDireccion = findViewById(R.id.direcionCliente);
         edtDireccion.setEnabled(false);
@@ -307,12 +548,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 ClickHora();
-            }
-        });
-        btnCalcularTotal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickCalcularTotal();
             }
         });
         btnCalcularVuelto.setOnClickListener(new View.OnClickListener() {
@@ -431,39 +666,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    private void ClickCalcularTotal() {
 
-        String precioP1 = edtPrecioProducto1.getText().toString();
-        String precioP2 = edtPrecioProducto2.getText().toString();
-        String precioP3 = edtPrecioProducto3.getText().toString();
-        String deliveryP1 = edtPrecioProducto1.getText().toString();
-        String deliveryP2 = edtPrecioProducto1.getText().toString();
-        String deliveryP3 = edtPrecioProducto1.getText().toString();
-
-        double PrecioProducto, PrecioDelivery, neto;
-
-        if (TextUtils.isEmpty(precioP1) || TextUtils.isEmpty(precioP2) || TextUtils.isEmpty(precioP3)
-                && TextUtils.isEmpty(deliveryP1) || TextUtils.isEmpty(deliveryP2) || TextUtils.isEmpty(deliveryP3)) {
-            Toast.makeText(this, "Complete los campos", Toast.LENGTH_SHORT).show();
-        } else {
-
-            double precio1 = Double.parseDouble(edtPrecioProducto1.getText().toString());
-            double precio2 = Double.parseDouble(edtPrecioProducto2.getText().toString());
-            double precio3 = Double.parseDouble(edtPrecioProducto3.getText().toString());
-            double delivery1 = Double.parseDouble(edtPrecioDelivery1.getText().toString());
-            double delivery2 = Double.parseDouble(edtPrecioDelivery2.getText().toString());
-            double delivery3 = Double.parseDouble(edtPrecioDelivery3.getText().toString());
-
-            PrecioProducto = precio1 + precio2 + precio3;
-            PrecioDelivery = delivery1 + delivery2 + delivery3;
-            neto = PrecioProducto + PrecioDelivery;
-
-            precioProductoTotal.setText("S/" + obtieneDosDecimales(PrecioProducto));
-            precioNetoTotal.setText(obtieneDosDecimales(neto));
-
-        }
-
-    }
 
     private String obtieneDosDecimales(double valor) {
         DecimalFormat format = new DecimalFormat();
@@ -477,9 +680,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         String netoMonto = precioNetoTotal.getText().toString();
 
         if (TextUtils.isEmpty(montoCliente)) {
-            Toast.makeText(this, "¿Con cuanto va a pagar? (Cliente)", Toast.LENGTH_SHORT).show();
+            Toasty.warning(this, "¿Con cuanto va a pagar? (Cliente)", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(netoMonto)) {
-            Toast.makeText(this, "Error : Calcule el total", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Error : Calcule el total", Toast.LENGTH_SHORT).show();
         } else {
             double vueltoNeto;
             double txtmonto = Double.parseDouble(edtMontoCliente.getText().toString());
@@ -859,6 +1062,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     map.put("direccion",edtDireccion.getText().toString());
                     map.put("hora",horaEntrega.getText().toString());
                     map.put("fecha",fechaEntrega.getText().toString());
+                    map.put("ganancia",txtGananciaPorDelivery.getText().toString());
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -904,15 +1108,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         final String stFechaPedido = fechaPedido.getText().toString();
         final String stHoraEntrega = horaEntrega.getText().toString();
         final String stFechaEntrega= fechaEntrega.getText().toString();
-        final String producto = edtProductos.getText().toString();
-        final String proveedor = edtProveedor.getText().toString();
-        final String descripción = edtDescripcion.getText().toString();
-        final String precio1 = edtPrecioProducto1.getText().toString();
-        final String precio2 = edtPrecioProducto2.getText().toString();
-        final String precio3 = edtPrecioProducto3.getText().toString();
-        final String delivery1 = edtPrecioDelivery1.getText().toString();
-        final String delivery2 = edtPrecioDelivery2.getText().toString();
-        final String delivery3 = edtPrecioDelivery3.getText().toString();
+        final String producto = txtProducto.getText().toString();
+        final String proveedor = textSocio.getText().toString();
+        final String descripción = txtDescripcion.getText().toString();
+        final String sTPrecioUnitario = txtPrecioUnitario.getText().toString();
+        final String stCantidad = txtCantidad.getText().toString();
+        final String stPrecioTotalXProducto = txtPtotal.getText().toString();
+        final String stComision = txtPrecioComisionProducto.getText().toString();
+        final String stTotalDelivery = txtDelivery.getText().toString();
+        final String stGananciaComision = txtNetoComision.getText().toString();
+        final String stGananciaDelivery = txtGananciaPorDelivery.getText().toString();
         final String totalPagoProducto = precioProductoTotal.getText().toString();
         final String telefono = edtTelefono.getText().toString();
         final String totalCobro = precioNetoTotal.getText().toString();
@@ -929,14 +1134,14 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
 
         if( !nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty()){
-            sendNotificaction();
+            //sendNotificaction();
             if(!numeroPedido.isEmpty()){
                 mDialog.show();
                 mDialog.setMessage("Registrando pedido...");
             //metodos
-            registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
-                    producto, descripción, precio1, precio2, precio3, delivery1, delivery2, delivery3,
-                    totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion,numeroPedido,encargado,estadoPedido,sTlatitud,sTLongitud);
+            registrarPedido(stHoraPedido , stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
+                    producto, descripción , sTPrecioUnitario, stCantidad , stPrecioTotalXProducto , stComision , stTotalDelivery, stGananciaDelivery, stGananciaComision ,
+                    totalPagoProducto , nombreCliente , telefono , conCuantoVaAPagar , totalCobro , stVuelto, direccion, numeroPedido , encargado , estadoPedido , sTlatitud , sTLongitud);
 
             clickRegistroPedidoAukdeliver();
         }
@@ -955,9 +1160,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     private void registrarPedido(final String horaPedido, final String fechaPedido,
                                  final String horaEntrega, final String fechaEntrega, final String proveedor,
-                                 final String producto, final String descripción, final String precio1,
-                                 final String precio2, final String precio3, final String delivery1,
-                                 final String delivery2, final String delivery3, final String totalPagoProducto,
+                                 final String producto, final String descripción, final String sTPrecioUnitario,
+                                 final String stCantidad , final String stPrecioTotalXProducto, final String stComision,
+                                 final String stTotalDelivery, final String stGananciaDelivery, final String stGananciaComision, final String totalPagoProducto,
                                  final String nombreCliente, final String telefono, final String conCuantoVaAPagar,
                                  final String totalCobro, final String stVuelto, final String direccion,final String numPedido , final String encargado ,final String estadoPedido,final String latitud , final String longitud){
 
@@ -965,7 +1170,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         PedidoLlamada pedidoLlamada = new  PedidoLlamada(id,horaPedido,  fechaPedido, horaEntrega,  fechaEntrega,  proveedor,
-            producto,  descripción,  precio1, precio2,  precio3,  delivery1, delivery2,  delivery3,
+            producto,  descripción,sTPrecioUnitario,stCantidad,stPrecioTotalXProducto,stComision,stTotalDelivery,stGananciaDelivery,stGananciaComision,
             totalPagoProducto, nombreCliente,  telefono,  conCuantoVaAPagar, totalCobro,  stVuelto,  direccion,numPedido,encargado ,estadoPedido,latitud,longitud);
             mapear(pedidoLlamada);
 
@@ -981,7 +1186,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 mDialog.dismiss();
                 startActivity(new Intent( RealizarPedido.this , MenuAdmin.class));
                 finish();
-                Toasty.success(RealizarPedido.this, "REGISTRO EXITOSO", Toast.LENGTH_LONG, true).show();
+                Toasty.success(RealizarPedido.this, "REGISTRO EXITOSO", Toast.LENGTH_SHORT, true).show();
                 }
 
               else {
@@ -1002,15 +1207,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 map.put("numPedido", edtNumPedido.getText().toString());
                 map.put("horaEntrega", horaEntrega.getText().toString());
                 map.put("fechaEntrega", fechaEntrega.getText().toString());
-                map.put("proveedores",edtProveedor .getText().toString());
-                map.put("productos",edtProductos.getText().toString());
-                map.put("descripcion", edtDescripcion.getText().toString());
-                map.put("precio1",edtPrecioProducto1.getText().toString());
-                map.put("precio2",edtPrecioProducto2.getText().toString());
-                map.put("precio3",edtPrecioProducto3.getText().toString());
-                map.put("delivery1", edtPrecioDelivery1.getText().toString());
-                map.put("delivery2", edtPrecioDelivery2.getText().toString());
-                map.put("delivery3", edtPrecioDelivery3.getText().toString());
+                map.put("proveedores",textSocio.getText().toString());
+                map.put("productos",txtProducto.getText().toString());
+                map.put("descripcion",txtDescripcion.getText().toString());
+                map.put("precioUnitario",txtPrecioUnitario.getText().toString());
+                map.put("cantidad",txtCantidad.getText().toString());
+                map.put("precioTotalXProducto",txtPtotal.getText().toString());
+                map.put("comision",txtPrecioComisionProducto.getText().toString());
+                map.put("totalDelivery",txtDelivery.getText().toString());
+                map.put("gananciaDelivery",txtGananciaPorDelivery.getText().toString());
+                map.put("gananciaComision",txtNetoComision.getText().toString());
                 map.put("totalPagoProducto",precioProductoTotal.getText().toString());
                 map.put("nombreCliente", edtNombreCliente.getText().toString());
                 map.put("telefono",edtTelefono.getText().toString());

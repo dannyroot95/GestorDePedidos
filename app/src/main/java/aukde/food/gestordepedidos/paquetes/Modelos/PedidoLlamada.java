@@ -12,12 +12,13 @@ public class PedidoLlamada implements Serializable {
     String proveedores;
     String productos;
     String descripcion;
-    String precio1;
-    String precio2;
-    String precio3;
-    String delivery1;
-    String delivery2;
-    String delivery3;
+    String precioUnitario;
+    String cantidad;
+    String precioTotalXProducto;
+    String comision;
+    String totalDelivery;
+    String gananciaDelivery;
+    String gananciaComision;
     String totalPagoProducto;
     String nombreCliente;
     String telefono;
@@ -34,7 +35,7 @@ public class PedidoLlamada implements Serializable {
     public PedidoLlamada() {
     }
 
-    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega, String fechaEntrega, String proveedores, String productos, String descripcion, String precio1, String precio2, String precio3, String delivery1, String delivery2, String delivery3, String totalPagoProducto, String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto, String direccion, String numPedido, String encargado, String estado, String latitud, String longitud) {
+    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega, String fechaEntrega, String proveedores, String productos, String descripcion, String precioUnitario, String cantidad, String precioTotalXProducto, String comision, String totalDelivery, String gananciaDelivery, String gananciaComision, String totalPagoProducto, String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto, String direccion, String numPedido, String encargado, String estado, String latitud, String longitud) {
         this.id = id;
         this.horaPedido = horaPedido;
         this.fechaPedido = fechaPedido;
@@ -43,12 +44,13 @@ public class PedidoLlamada implements Serializable {
         this.proveedores = proveedores;
         this.productos = productos;
         this.descripcion = descripcion;
-        this.precio1 = precio1;
-        this.precio2 = precio2;
-        this.precio3 = precio3;
-        this.delivery1 = delivery1;
-        this.delivery2 = delivery2;
-        this.delivery3 = delivery3;
+        this.precioUnitario = precioUnitario;
+        this.cantidad = cantidad;
+        this.precioTotalXProducto = precioTotalXProducto;
+        this.comision = comision;
+        this.totalDelivery = totalDelivery;
+        this.gananciaDelivery = gananciaDelivery;
+        this.gananciaComision = gananciaComision;
         this.totalPagoProducto = totalPagoProducto;
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
@@ -127,52 +129,60 @@ public class PedidoLlamada implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getPrecio1() {
-        return precio1;
+    public String getPrecioUnitario() {
+        return precioUnitario;
     }
 
-    public void setPrecio1(String precio1) {
-        this.precio1 = precio1;
+    public void setPrecioUnitario(String precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
 
-    public String getPrecio2() {
-        return precio2;
+    public String getCantidad() {
+        return cantidad;
     }
 
-    public void setPrecio2(String precio2) {
-        this.precio2 = precio2;
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
     }
 
-    public String getPrecio3() {
-        return precio3;
+    public String getPrecioTotalXProducto() {
+        return precioTotalXProducto;
     }
 
-    public void setPrecio3(String precio3) {
-        this.precio3 = precio3;
+    public void setPrecioTotalXProducto(String precioTotalXProducto) {
+        this.precioTotalXProducto = precioTotalXProducto;
     }
 
-    public String getDelivery1() {
-        return delivery1;
+    public String getComision() {
+        return comision;
     }
 
-    public void setDelivery1(String delivery1) {
-        this.delivery1 = delivery1;
+    public void setComision(String comision) {
+        this.comision = comision;
     }
 
-    public String getDelivery2() {
-        return delivery2;
+    public String getTotalDelivery() {
+        return totalDelivery;
     }
 
-    public void setDelivery2(String delivery2) {
-        this.delivery2 = delivery2;
+    public void setTotalDelivery(String totalDelivery) {
+        this.totalDelivery = totalDelivery;
     }
 
-    public String getDelivery3() {
-        return delivery3;
+    public String getGananciaDelivery() {
+        return gananciaDelivery;
     }
 
-    public void setDelivery3(String delivery3) {
-        this.delivery3 = delivery3;
+    public void setGananciaDelivery(String gananciaDelivery) {
+        this.gananciaDelivery = gananciaDelivery;
+    }
+
+    public String getGananciaComision() {
+        return gananciaComision;
+    }
+
+    public void setGananciaComision(String gananciaComision) {
+        this.gananciaComision = gananciaComision;
     }
 
     public String getTotalPagoProducto() {
