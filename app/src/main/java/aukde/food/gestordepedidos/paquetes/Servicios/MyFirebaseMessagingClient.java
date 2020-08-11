@@ -52,8 +52,9 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String hora = data.get("hora");
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
+                    String repartidor = data.get("repartidor");
                     showNotificationApiOreoActions(title,body,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else
                 {
@@ -70,8 +71,9 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String hora = data.get("hora");
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
+                    String repartidor = data.get("repartidor");
                     showNotificationActions(title,body,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia);
+                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else {
                     showNotification(title,body);
@@ -81,7 +83,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
     }
 
-    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha, String ganancia) {
+    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha, String ganancia, String repartidor) {
 
         PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
         boolean screenOn = pm.isScreenOn();
@@ -101,6 +103,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         intent.putExtra("hora",hora);
         intent.putExtra("fecha",fecha);
         intent.putExtra("ganancia",ganancia);
+        intent.putExtra("repartidor",repartidor);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

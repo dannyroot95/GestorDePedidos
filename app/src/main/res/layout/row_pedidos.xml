@@ -28,6 +28,8 @@
                     android:id="@+id/pos1"
                     android:layout_width="wrap_content"
                     android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000"
                     android:layout_height="wrap_content"/>
 
@@ -37,6 +39,7 @@
                     android:textSize="16sp"
                     android:textColor="#000"
                     android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:gravity="right"
                     android:layout_height="wrap_content"/>
 
@@ -52,6 +55,8 @@
                 android:layout_width="wrap_content"
                 android:textSize="16sp"
                 android:textColor="#000"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -59,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:textColor="#000"
                 android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:gravity="right"
                 android:textSize="16sp"
                 android:layout_height="wrap_content"/>
@@ -74,6 +80,8 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/pos3"
                 android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:textColor="#000"
                 android:layout_height="wrap_content"/>
 
@@ -84,6 +92,7 @@
                 android:gravity="right"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -97,6 +106,8 @@
                 android:id="@+id/pos4"
                 android:layout_width="wrap_content"
                 android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:textColor="#000"
                 android:layout_height="wrap_content"/>
 
@@ -107,6 +118,7 @@
                 android:textSize="16sp"
                 android:textColor="#000"
                 android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -119,6 +131,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/pos5"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:textColor="#000"
                 android:textSize="16sp"
                 android:layout_height="wrap_content"/>
@@ -128,7 +142,9 @@
                 android:layout_width="match_parent"
                 android:gravity="right"
                 android:maxLength="44"
+                android:padding="2dp"
                 android:textStyle="bold"
+                android:fontFamily="@font/futura"
                 android:textSize="16sp"
                 android:textColor="#000"
                 android:layout_height="wrap_content"/>
@@ -143,6 +159,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:id="@+id/pos6"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000"
                     android:textSize="16sp"
                     android:layout_height="wrap_content"/>
@@ -152,6 +170,7 @@
                     android:layout_width="match_parent"
                     android:gravity="right"
                     android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textSize="16sp"
                     android:textColor="#000"
                     android:layout_height="wrap_content"/>
@@ -306,6 +325,8 @@
                     android:layout_width="wrap_content"
                     android:text="VER DETALLES"
                     android:gravity="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#A2A2A2"
                     android:textSize="14sp"
                     android:layout_marginRight="5dp"

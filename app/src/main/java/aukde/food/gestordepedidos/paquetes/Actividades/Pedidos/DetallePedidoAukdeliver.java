@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     TextView listNumPedido, listNumPedido2, listNombreCliente, listTelefonoCliente, listHoraRegistro,
@@ -61,6 +70,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private LinearLayout mLinearProductos, mLinearCliente , mLinearTelefono , mLinearDireccion;
     private FirebaseAuth mAuth;
 
+    private TokenProvider tokenProvider;
+    private NotificationProvider notificationProvider;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +82,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        tokenProvider = new TokenProvider();
+        notificationProvider = new NotificationProvider();
 
         listHoraRegistro = findViewById(R.id.detalleHoraRegistro);
         listFechaRegistro = findViewById(R.id.detalleFechaRegistro);
@@ -207,6 +222,19 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listLongitud.setText(arrayList.get(22));
 
 
+        mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String Aukdeliver = dataSnapshot.child("nombres").getValue().toString();
+                listRepartidor.setText(Aukdeliver);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         String stEstado = listEstado.getText().toString();
 
         String Delivery = listGananciaDelivery.getText().toString();
@@ -240,16 +268,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             mLinearDireccion.setLayoutParams(params4);
             mMapa.setVisibility(View.INVISIBLE);
         }
-        if (stEstado.equals("Cancelado")) {
-            listEstado.setTextColor(Color.parseColor("#E74C3C"));
-            bottonEstado.setVisibility(View.INVISIBLE);
-            btnError.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams params5 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
-            mLinearCliente.setLayoutParams(params5);
-            mLinearTelefono.setLayoutParams(params5);
-            mLinearDireccion.setLayoutParams(params5);
-            mMapa.setVisibility(View.INVISIBLE);
-        }
         if (stEstado.equals("En espera")) {
             listEstado.setTextColor(Color.parseColor("#232C9B"));
             btnError.setVisibility(View.INVISIBLE);
@@ -277,9 +295,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 return true;
 
             case R.id.item2:
-                estadoCanceladoAdmin();
-                estadoCanceladoAukdeliver();
-                finish();
+                confirmarRechazo();
                 return true;
 
             default:
@@ -388,19 +404,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String key = childSnapshot.getKey();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("estado", "Cancelado");
-                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toasty.error(DetallePedidoAukdeliver.this, "PEDIDO CANCELADO!", Toast.LENGTH_LONG, true).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toasty.info(DetallePedidoAukdeliver.this, "Error al actualizar estado", Toast.LENGTH_LONG, true).show();
-                        }
-                    });
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).removeValue();
+                    Toasty.error(DetallePedidoAukdeliver.this, "PEDIDO RECHAZADO!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -421,6 +426,82 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         startActivity(i);
     }
 
+
+    private void confirmarRechazo(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this,R.style.ThemeOverlay);
+        builder.setTitle("Alerta!");
+        builder.setCancelable(false);
+        builder.setMessage("Esta seguro de rechazar este pedido..? ");
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                estadoCanceladoAdmin();
+                estadoCanceladoAukdeliver();
+                sendCancelNotification();
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
+    private void sendCancelNotification(){
+        final String numPedNotify = listNumPedido.getText().toString();
+        final String dataRepartidor = listRepartidor.getText().toString();
+        final String admin1 = "9sjTQMmowxWYJGTDUY98rAR2jzB3";
+        final String admin2 = "UnwAmhwRzmRLn8aozWjnYFOxYat2";
+        final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
+        tokenProvider.getToken(admin2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(DetallePedidoAukdeliver.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(DetallePedidoAukdeliver.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(DetallePedidoAukdeliver.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     @Override
     public void onBackPressed() {

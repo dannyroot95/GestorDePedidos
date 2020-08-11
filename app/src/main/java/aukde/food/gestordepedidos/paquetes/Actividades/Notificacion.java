@@ -1,5 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Actividades;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationManager;
@@ -7,17 +8,43 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedidoAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
+import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Notificacion extends AppCompatActivity {
 
-    private TextView ntfNumPedido,ntfNombre , ntfTelefono , ntfDirecion,ntfHora,ntfFecha , ntfGanancia;
+    private TextView ntfNumPedido,ntfNombre , ntfTelefono , ntfDirecion,ntfHora,ntfFecha , ntfGanancia , ntfAukdeliver;
     private Button btnListaPedido , btnCerrar;
     private String mExtraNumPedido;
     private String mExtraNombre;
@@ -26,12 +53,23 @@ public class Notificacion extends AppCompatActivity {
     private String mExtraHora;
     private String mExtraFecha;
     private String mExtraGanancia;
+    private String mExtraRepartidor;
     private MediaPlayer mediaPlayer;
+    private FirebaseAuth mAuth;
+
+    private DatabaseReference mDatabase;
+    private TokenProvider tokenProvider;
+    private NotificationProvider notificationProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacion);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        tokenProvider = new TokenProvider();
+        notificationProvider = new NotificationProvider();
 
         ntfNumPedido = findViewById(R.id.notifyNumPedido);
         ntfNombre = findViewById(R.id.notifyNombreCliente);
@@ -40,6 +78,7 @@ public class Notificacion extends AppCompatActivity {
         ntfHora = findViewById(R.id.notifyHora);
         ntfFecha = findViewById(R.id.notifyFecha);
         ntfGanancia = findViewById(R.id.notifyGanancia);
+        ntfAukdeliver = findViewById(R.id.nombreAukdeliver);
         btnListaPedido = findViewById(R.id.btnVerLista);
         btnCerrar = findViewById(R.id.btnCerrar);
 
@@ -50,15 +89,18 @@ public class Notificacion extends AppCompatActivity {
         mExtraHora = getIntent().getStringExtra("hora");
         mExtraFecha = getIntent().getStringExtra("fecha");
         mExtraGanancia = getIntent().getStringExtra("ganancia");
+        //
+        mExtraRepartidor = getIntent().getStringExtra("repartidor");
 
 
-        ntfNumPedido.setText("#"+mExtraNumPedido);
+        ntfNumPedido.setText(mExtraNumPedido);
         ntfNombre.setText(mExtraNombre);
         ntfTelefono.setText(mExtraTelefono);
         ntfDirecion.setText(mExtraDireccion);
         ntfHora.setText(mExtraHora);
         ntfFecha.setText(mExtraFecha);
         ntfGanancia.setText(mExtraGanancia);
+        ntfAukdeliver.setText(mExtraRepartidor);
 
         String Delivery =  ntfGanancia.getText().toString();
         Double doubleDelivery = Double.parseDouble(Delivery);
@@ -92,16 +134,20 @@ public class Notificacion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verLista();
+                finish();
             }
         });
 
         btnCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                estadoCanceladoAdmin();
+                eliminarPedidoAukdeliver();
+                sendCancelNotification();
                 cerrar();
+                finish();
             }
         });
-
     }
 
     private void verLista() {
@@ -109,12 +155,124 @@ public class Notificacion extends AppCompatActivity {
         intent1.setClassName(this, ListaPedidosAukdeliver.class.getName());
         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent1);
+        finish();
     }
 
     private void cerrar() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(2);
         finish();
+    }
+
+    private void estadoCanceladoAdmin() {
+        String dataNumPedido = ntfNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "Cancelado");
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void eliminarPedidoAukdeliver() {
+        String dataNumPedido = ntfNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toasty.error(Notificacion.this, "Pedido rechazado!", Toast.LENGTH_LONG, true).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toasty.info(Notificacion.this, "Error al rechazar pedido", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void sendCancelNotification(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin1 = "9sjTQMmowxWYJGTDUY98rAR2jzB3";
+        final String admin2 = "UnwAmhwRzmRLn8aozWjnYFOxYat2";
+        final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
+        tokenProvider.getToken(admin2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override

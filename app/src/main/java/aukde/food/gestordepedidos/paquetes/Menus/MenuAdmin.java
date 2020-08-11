@@ -53,7 +53,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_admin);
         mAuthProviders = new AuthProviders();
-        mDialog = new ProgressDialog(this);
+        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         btnHacerPedido = findViewById(R.id.btnHacerPedido);
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);

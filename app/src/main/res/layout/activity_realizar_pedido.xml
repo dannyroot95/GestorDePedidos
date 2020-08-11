@@ -25,6 +25,7 @@
             android:textSize="18sp"
             android:gravity="center"
             android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:background="#000"
             android:textColor="#fff"
             android:layout_marginRight="5dp"
@@ -47,6 +48,7 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:text="233"
             android:textColor="#fff"
             android:inputType="number"
@@ -97,6 +99,8 @@
             android:text="Hora del pedido"
             android:textColor="#CD1300"
             android:gravity="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
@@ -106,6 +110,7 @@
             android:hint="00:00"
             android:textColor="#000"
             android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
@@ -114,6 +119,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Hora de entrega"
+            android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:textColor="#0043C8"
             android:textSize="14sp" />
 
@@ -123,6 +130,7 @@
             android:hint="00:00"
             android:textColor="#000"
             android:textSize="14sp"
+            android:fontFamily="@font/futura"
             android:textStyle="bold"
             android:layout_height="wrap_content"/>
 
@@ -144,6 +152,8 @@
             android:gravity="center"
             android:textColor="#CD1300"
             android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -152,6 +162,7 @@
             android:hint="03/07/2020"
             android:textColor="#000"
             android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:gravity="center"
             android:textSize="14sp"
             android:layout_height="wrap_content"/>
@@ -162,6 +173,8 @@
             android:gravity="center"
             android:textColor="#0043C8"
             android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -172,6 +185,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:fontFamily="@font/futura"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
@@ -193,6 +207,7 @@
                 android:textColor="#000"
                 android:textSize="18sp"
                 android:gravity="center"
+                android:fontFamily="@font/futura"
                 android:textStyle="bold"
                 android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"/>
@@ -214,6 +229,8 @@
                         android:text="Socio : "
                         android:textSize="14sp"
                         android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_marginLeft="5dp"
                         android:layout_height="wrap_content"/>
 
@@ -222,6 +239,8 @@
                         android:hint="Pez loco"
                         android:inputType="textPersonName"
                         android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/edtSocio"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -237,6 +256,8 @@
                         android:text="Producto : "
                         android:textSize="14sp"
                         android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"/>
 
@@ -246,6 +267,8 @@
                         android:id="@+id/edtProducto"
                         android:inputType="textPersonName"
                         android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -269,6 +292,8 @@
                         android:text="Nota : "
                         android:textSize="14sp"
                         android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"/>
 
@@ -277,6 +302,8 @@
                         android:hint="Sin aji y con su yapa"
                         android:inputType="textPersonName"
                         android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/edtDescripcion"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -293,11 +320,15 @@
                         android:textSize="14sp"
                         android:layout_marginLeft="5dp"
                         android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="S/"
                         android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:textSize="14sp"
                         android:layout_height="wrap_content"/>
                     <EditText
@@ -305,6 +336,8 @@
                         android:hint="12"
                         android:id="@+id/edtPrecUnitario"
                         android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:inputType="numberDecimal"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -318,12 +351,16 @@
                     android:layout_width="wrap_content"
                     android:text="Cambiar Comisión?"
                     android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:id="@+id/checkboxComision"
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:hint="S/1.00"
                     android:gravity="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:inputType="numberDecimal"
                     android:id="@+id/edtNuevaComision"
                     android:textSize="14sp"
@@ -346,6 +383,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Cantidad"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:textSize="14sp"                        android:textColor="#000"
                         android:layout_height="wrap_content"/>
 
@@ -357,19 +396,26 @@
                         <Button
                             android:layout_width="40dp"
                             android:text="-"
+                            android:fontFamily="@font/futura"
                             android:id="@+id/btnMin"
+                            android:textStyle="bold"
                             android:layout_height="50dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="1"
-                            android:textSize="14sp"                              android:id="@+id/edtCant"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/futura"
+                            android:textStyle="bold"
+                            android:id="@+id/edtCant"
                             android:textColor="#000"
                             android:layout_height="wrap_content"/>
 
                         <Button
                             android:layout_width="40dp"
                             android:text="+"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:id="@+id/btnMax"
                             android:layout_height="50dp"/>
 
@@ -386,7 +432,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Precio delivery"
-                        android:textSize="14sp"                          android:textColor="#000"
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"/>
 
                     <EditText
@@ -395,6 +444,8 @@
                         android:id="@+id/edtPrecioDelivery"
                         android:inputType="numberDecimal"
                         android:textSize="14sp"
+                        android:fontFamily="@font/futura"
+                        android:textStyle="bold"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
@@ -404,6 +455,8 @@
                     android:layout_marginTop="18dp"
                     android:layout_marginLeft="20dp"
                     android:id="@+id/add"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"/>
 
@@ -445,6 +498,9 @@
                             android:layout_width="wrap_content"
                             android:text="Socio"
                             android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/futura"
                             android:textColor="#000"
                             android:layout_height="wrap_content"/>
 
@@ -466,6 +522,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="Producto"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:layout_height="wrap_content"/>
@@ -491,6 +549,8 @@
                             android:layout_width="wrap_content"
                             android:text="Nota"
                             android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:textColor="#000"
                             android:layout_height="wrap_content"/>
 
@@ -517,6 +577,8 @@
                             android:textSize="12dp"
                             android:gravity="center"
                             android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -539,6 +601,8 @@
                             android:text="Cant."
                             android:textSize="12dp"
                             android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -561,7 +625,9 @@
                             android:layout_width="wrap_content"
                             android:text="P.Total"
                             android:textSize="12dp"
+                            android:textStyle="bold"
                             android:textColor="#000"
+                            android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -585,6 +651,8 @@
                             android:text="Comisión"
                             android:textSize="12dp"
                             android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -608,6 +676,8 @@
                             android:text="Delivery"
                             android:textSize="12dp"
                             android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -641,13 +711,17 @@
                     android:layout_width="wrap_content"
                     android:text="Limpiar\nlista"
                     android:id="@+id/btnClean"
+                    android:fontFamily="@font/futura"
                     android:textSize="12sp"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="Total a pagar (Producto) : "
                     android:textColor="#000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_marginLeft="10dp"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"/>
@@ -658,6 +732,7 @@
                     android:textColorHint="#ff0000"
                     android:textColor="#ff0000"
                     android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"/>
 
@@ -669,6 +744,7 @@
                     android:textColor="#ff0000"
                     android:textStyle="bold"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
                     android:gravity="left"
                     android:layout_height="wrap_content"/>
 
@@ -686,6 +762,8 @@
                     android:textColor="#000"
                     android:layout_marginLeft="10dp"
                     android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -701,6 +779,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="0"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -718,12 +797,15 @@
                     android:textColor="#000"
                     android:layout_marginLeft="10dp"
                     android:textSize="12sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="S/"
                     android:textColor="#000"
+                    android:fontFamily="@font/futura"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
@@ -735,6 +817,7 @@
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:textSize="12sp"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -759,6 +842,7 @@
                     android:text="Total a cobrar (Inc. Delivery) :"
                     android:textColor="#0B760B"
                     android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
 
@@ -768,6 +852,7 @@
                     android:textColorHint="#0FA50F"
                     android:textColor="#0FA50F"
                     android:gravity="right"
+                    android:fontFamily="@font/futura"
                     android:textSize="14sp"
                     android:background="#00ffffff"
                     android:textStyle="bold"
@@ -780,6 +865,7 @@
                     android:textColor="#0FA50F"
                     android:gravity="right"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
                     android:background="#00ffffff"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
@@ -807,6 +893,8 @@
                     android:text="Nombre del cliente :"
                     android:textColor="#000000"
                     android:layout_marginRight="10dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
                 <EditText
@@ -816,6 +904,7 @@
                     android:inputType="textPersonName"
                     android:textSize="16sp"
                     android:id="@+id/nombreCliente"
+                    android:fontFamily="@font/futura"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -840,6 +929,8 @@
                     android:textSize="14sp"
                     android:text="Teléfono del cliente :"
                     android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
 
@@ -849,6 +940,7 @@
                     android:hint="992997223"
                     android:gravity="center_horizontal"
                     android:textSize="16sp"
+                    android:fontFamily="@font/futura"
                     android:textStyle="bold"
                     android:maxLength="9"
                     android:inputType="number"
@@ -875,6 +967,8 @@
                     android:textSize="14sp"
                     android:text="Monto a pagar (Cliente) :"
                     android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
 
@@ -883,6 +977,7 @@
                     android:text="S/"
                     android:textColor="#000"
                     android:textSize="16sp"
+                    android:fontFamily="@font/futura"
                     android:background="#00ffffff"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
@@ -893,6 +988,7 @@
                     android:hint="0.00"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:inputType="numberDecimal"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -918,8 +1014,10 @@
                     android:layout_width="wrap_content"
                     android:textSize="14sp"
                     android:text="Vuelto"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000000"
-                    android:layout_marginRight="25dp"
+                    android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -929,6 +1027,7 @@
                     android:layout_marginRight="25dp"
                     android:background="#00ffffff"
                     android:hint="S/0.00"
+                    android:fontFamily="@font/futura"
                     android:textColor="#900C3F"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -937,6 +1036,8 @@
                     android:id="@+id/calcularVuelto"
                     android:layout_width="match_parent"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:text="Calcular vuelto"
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
@@ -967,6 +1068,8 @@
                     android:layout_width="wrap_content"
                     android:textSize="14sp"
                     android:text="Dirección :"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000000"
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
@@ -977,6 +1080,7 @@
                     android:hint="Presione el boton Mapear"
                     android:gravity="center"
                     android:textColor="#000"
+                    android:fontFamily="@font/futura"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"/>
@@ -1018,6 +1122,7 @@
                   android:id="@+id/btnMapear"
                   android:layout_weight="3"
                   android:textColor="#FFF"
+                  android:fontFamily="@font/futura"
                   android:textStyle="bold"
                   android:background="@drawable/redondo"
                   android:backgroundTint="#000"
@@ -1070,6 +1175,8 @@
                     android:text="Repartidor :"
                     android:textColor="#000"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"/>
 
@@ -1078,6 +1185,7 @@
                     android:textSize="14sp"
                     android:id="@+id/txtRepartidor"
                     android:textColor="#5bbd00"
+                    android:fontFamily="@font/futura"
                     android:textStyle="bold"
                     android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"/>
@@ -1086,31 +1194,23 @@
                     android:layout_width="wrap_content"
                     android:text="Cambiar :"
                     android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textColor="#000"
                     android:layout_height="wrap_content"/>
 
                 <Spinner
                     android:id="@+id/spinnerAukdeliver"
+                    android:spinnerMode="dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
-            <!-- Linea de separación -->
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_height="1dp"/>
-            <!-- fin Linea de separación -->
-
-
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1152,6 +1252,8 @@
                     android:layout_marginRight="10dp"
                     android:textColor="#000"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -1159,6 +1261,7 @@
                     android:id="@+id/txtEstado"
                     android:hint="........"
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
                     android:textStyle="bold"
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"/>
@@ -1167,12 +1270,16 @@
                     android:layout_width="wrap_content"
                     android:text="Cambiar estado : "
                     android:textSize="14sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:textColor="#000"
                     android:layout_height="wrap_content"/>
 
                 <Spinner
                     android:id="@+id/spEstado"
-                    android:layout_width="match_parent"
+                    android:spinnerMode="dialog"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -1196,6 +1303,7 @@
                     android:layout_width="wrap_content"
                     android:text="Agrega el punto de ubicacion\ndel Cliente (MAPA)"
                     android:gravity="center"
+                    android:fontFamily="@font/futura"
                     android:textSize="12sp"
                     android:layout_marginBottom="10dp"
                     android:textColor="#000"

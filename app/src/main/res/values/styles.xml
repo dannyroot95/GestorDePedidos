@@ -96,4 +96,13 @@
         <item name="colorAccent">#02c7e6</item>
     </style>
 
+    <style name="ThemeOverlay" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#000</item>
+        <item name="fontFamily">@font/futura</item>
+    </style>
+
+    <style name="toastTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/futura</item>
+    </style>
+
 </resources>

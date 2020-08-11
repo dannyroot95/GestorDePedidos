@@ -5,6 +5,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,13 +52,15 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     Button mButtonShow ;
     Button mButtonShow2;
     Button mMapa;
+    Button mButtonEditar;
+    Button mAsignar;
 
     TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , detalleGanancia1 , detalleGanancia2;
 
     private LinearLayout mLinearProductos ;
 
     private DatabaseReference mDatabase ;
-
+    private ProgressDialog mDialog;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,10 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mButtonShow = findViewById(R.id.showProducto);
         mButtonShow2 = findViewById(R.id.showDetalle);
         mMapa = findViewById(R.id.showMapa);
+        mButtonEditar = findViewById(R.id.showEditarPedido);
+        mAsignar = findViewById(R.id.showAsignarRrepartidor);
+
+        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
@@ -135,6 +143,30 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        mButtonEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                Intent intent = new Intent(DetallePedido.this, EditarPedido.class);
+                intent.putExtra("numPedido",listNumPedido.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        mAsignar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                Intent intent = new Intent(DetallePedido.this, AsignarRepartidor.class);
+                intent.putExtra("numPedido",listNumPedido.getText().toString());
                 startActivity(intent);
             }
         });
@@ -212,25 +244,20 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
         if(doubleDelivery < 4.00){
             finalGananciaDeliveryAukdeliver = doubleDelivery * 0.5;
-            String ganancia50P = String.valueOf(finalGananciaDeliveryAukdeliver);
-            detalleGanancia1.setText(ganancia50P);
-            detalleGanancia2.setText(ganancia50P);
+            detalleGanancia1.setText(obtieneDosDecimales(finalGananciaDeliveryAukdeliver));
+            detalleGanancia2.setText(obtieneDosDecimales(finalGananciaDeliveryAukdeliver));
         }
         if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
             finalGananciaDeliveryAukdeliver = doubleDelivery * 0.4;
             finalGananciaDeliveryAukde = doubleDelivery * 0.6;
-            String ganancia40P = String.valueOf(finalGananciaDeliveryAukdeliver);
-            String ganancia60P = String.valueOf(finalGananciaDeliveryAukde);
-            detalleGanancia1.setText(ganancia60P);
-            detalleGanancia2.setText(ganancia40P);
+            detalleGanancia1.setText(obtieneDosDecimales(finalGananciaDeliveryAukde));
+            detalleGanancia2.setText(obtieneDosDecimales(finalGananciaDeliveryAukdeliver));
         }
         if(doubleDelivery >= 9.00){
             finalGananciaDeliveryAukdeliver = doubleDelivery * 0.3;
             finalGananciaDeliveryAukde = doubleDelivery * 0.7;
-            String ganancia30P = String.valueOf(finalGananciaDeliveryAukdeliver);
-            String ganancia70P = String.valueOf(finalGananciaDeliveryAukde);
-            detalleGanancia1.setText(ganancia70P);
-            detalleGanancia2.setText(ganancia30P);
+            detalleGanancia1.setText(obtieneDosDecimales(finalGananciaDeliveryAukde));
+            detalleGanancia2.setText(obtieneDosDecimales(finalGananciaDeliveryAukdeliver));
         }
 
         if (stEstado.equals("Completado")){
@@ -246,6 +273,13 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         }
 
 }
+
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
+    }
 
     public void showPopupEstado(View view){
 
@@ -517,7 +551,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedido.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedido.this,R.style.ThemeOverlay);
         builder.setTitle("Confirmar");
         builder.setCancelable(false);
         builder.setMessage("Deseas volver a la lista de pedidos? ");
@@ -537,4 +571,9 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         builder.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDialog.dismiss();
+    }
 }

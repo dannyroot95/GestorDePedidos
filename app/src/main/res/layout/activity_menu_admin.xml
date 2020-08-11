@@ -38,6 +38,8 @@
                         android:textSize="16sp"
                         android:id="@+id/txtNombres"
                         android:text=""
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:textColor="#fff"
                         android:layout_marginRight="5dp"
                         android:layout_height="wrap_content">
@@ -47,6 +49,8 @@
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
                         android:id="@+id/txtApellidos"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
                         android:textColor="#fff"
                         android:layout_height="wrap_content">
                     </TextView>
@@ -59,8 +63,9 @@
                 android:textSize="16sp"
                 android:id="@+id/txtEmail"
                 android:layout_marginTop="6dp"
-                android:layout_below="@id/shimmer"
                 android:textStyle="bold"
+                android:fontFamily="@font/futura"
+                android:layout_below="@id/shimmer"
                 android:text="Administrador AukdeFood"
                 android:textColor="#fff">
 
@@ -102,6 +107,8 @@
                     android:textSize="16sp"
                     android:background="@drawable/notanredondo"
                     android:layout_height="80dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:drawableLeft="@drawable/iconuser_admin"
                     android:text="Mi perfil"/>
 
@@ -110,6 +117,8 @@
                     android:layout_width="match_parent"
                     android:backgroundTint="#fff"
                     android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:padding="10sp"
                     android:drawableLeft="@drawable/order"
                     android:background="@drawable/notanredondo"
@@ -122,6 +131,8 @@
                     android:layout_width="match_parent"
                     android:backgroundTint="#fff"
                     android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:drawableLeft="@drawable/lista_admin"
                     android:background="@drawable/notanredondo"
                     android:layout_marginTop="10dp"
@@ -134,6 +145,8 @@
                     android:backgroundTint="#fff"
                     android:background="@drawable/notanredondo"
                     android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:textSize="16sp"
                     android:drawableLeft="@drawable/lista_deliver"
                     android:layout_height="80dp"
@@ -146,6 +159,8 @@
                     android:layout_marginTop="10dp"
                     android:textSize="16sp"
                     android:padding="10sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:drawableLeft="@drawable/icono_mapa"
                     android:layout_height="80dp"
                     android:text="Mapa de proveedores"/>
@@ -157,6 +172,8 @@
                     android:drawableLeft="@drawable/lista_users"
                     android:layout_marginTop="10dp"
                     android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
                     android:layout_height="80dp"
                     android:padding="10sp"
                     android:text="Lista de usuarios"/>
