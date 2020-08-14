@@ -49,7 +49,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private ProgressDialog mDialog;
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
-    private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos , btnMapaRepartidores;
+    private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos , btnMapaRepartidores , btnPerfilX;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -70,6 +70,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);
         btnMapaRepartidores = findViewById(R.id.btnMonitoreoRepartidor);
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
+        btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
 
@@ -115,6 +116,14 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, MonitoreoRepartidor.class));
+            }
+        });
+
+        btnPerfilX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuAdmin.this, PerfilAdmin.class));
             }
         });
 

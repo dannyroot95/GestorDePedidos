@@ -28,4 +28,9 @@ public class AdminProvider {
 
         return mDatabaseReference.child(administrador.getId()).setValue(map);
     }
+
+    public DatabaseReference getAdminData(String idAdmin){
+        return mDatabaseReference.child(idAdmin);
+    }
+
 }

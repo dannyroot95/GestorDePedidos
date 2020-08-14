@@ -114,6 +114,7 @@
 
                     <Button
                         android:layout_width="80dp"
+                        android:id="@+id/btnPerfil"
                         android:gravity="center"
                         android:background="@drawable/btn_user"
                         android:layout_height="80dp"/>
