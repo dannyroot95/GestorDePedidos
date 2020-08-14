@@ -8,6 +8,11 @@ public class Administrador {
     String dni;
     String telefono;
     String email;
+    String foto;
+
+    public Administrador(){
+
+    }
 
     public Administrador(String id, String nombres, String apellidos, String dni, String telefono, String email) {
 
@@ -20,6 +25,23 @@ public class Administrador {
 
     }
 
+    public Administrador(String id, String nombres, String apellidos, String dni, String telefono, String email, String foto) {
+        this.id = id;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.telefono = telefono;
+        this.email = email;
+        this.foto = foto;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 
     public String getId() {
         return id;
@@ -42,7 +64,7 @@ public class Administrador {
     }
 
     public void setApellidos(String apellidos) {
-        apellidos = apellidos;
+        this.apellidos = apellidos;
     }
 
     public String getDni() {

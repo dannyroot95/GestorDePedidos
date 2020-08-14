@@ -29,6 +29,15 @@ public class AdminProvider {
         return mDatabaseReference.child(administrador.getId()).setValue(map);
     }
 
+    public Task<Void>update(Administrador administrador) {
+
+        Map<String , Object> map = new HashMap<>();
+        map.put("nombres",administrador.getNombres());
+        map.put("apellidos",administrador.getApellidos());
+        map.put("foto",administrador.getFoto());
+        return mDatabaseReference.child(administrador.getId()).updateChildren(map);
+    }
+
     public DatabaseReference getAdminData(String idAdmin){
         return mDatabaseReference.child(idAdmin);
     }
