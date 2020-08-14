@@ -870,8 +870,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:layout_width="match_parent"
                             android:id="@+id/detalleSocio"
                             android:layout_height="wrap_content"/>
@@ -900,8 +898,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:gravity="center"
                             android:textSize="12dp" />
 
@@ -930,8 +926,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:textAlignment="center"
                             android:id="@+id/detalleProductosDescripcion"
                             android:layout_height="wrap_content"/>
@@ -959,8 +953,6 @@
                             android:layout_width="wrap_content"
                             android:textSize="12dp"
                             android:textColor="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:id="@+id/detallePrecioUnitario"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -987,8 +979,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:id="@+id/detalleCantidad"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -1015,8 +1005,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:id="@+id/detallePreciosTotalesDelproducto"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -1043,8 +1031,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:id="@+id/detalleComision"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -1071,8 +1057,6 @@
                             android:textSize="12dp"
                             android:textColor="#000"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
                             android:id="@+id/detalleTotalProductoDelivery"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -1106,8 +1090,6 @@
                     android:layout_width="wrap_content"
                     android:id="@+id/DetallePTotal"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/futura"
                     android:textColor="#000"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

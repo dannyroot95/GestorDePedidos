@@ -3,58 +3,196 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#000"
     android:layout_height="match_parent"
     tools:context=".paquetes.Actividades.Pedidos.AsignarRepartidor">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:background="#000"
-        android:gravity="left"
+        android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/lista_admin"
-            android:layout_height="25dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Editar de Pedido"
-            android:textSize="18sp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:textStyle="bold"
-            android:background="#000"
-            android:textColor="#fff"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="#"
-            android:textSize="18sp"
+            <ImageView
+                android:layout_width="45dp"
+                android:src="@drawable/lista_admin"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Pedido"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
+                android:textColor="#fff"
+                android:layout_marginRight="5dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="#"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="@font/futura"
+                android:textColor="#fff"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/numPedido"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:fontFamily="@font/futura"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:inputType="number"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:textStyle="bold"
-            android:background="#000"
-            android:textColor="#fff"
-            android:layout_height="wrap_content"/>
+            android:padding="40dp"
+            android:layout_marginTop="-15dp"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/numPedido"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:inputType="number"
-            android:layout_height="wrap_content"/>
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                app:shape_roundRect_bottomLeftRadius="10dp"
+                app:shape_roundRect_bottomRightRadius="10dp"
+                app:shape_roundRect_topLeftRadius="10dp"
+                app:shape_roundRect_topRightRadius="10dp"
 
-    </LinearLayout>
+                app:shape_roundRect_borderColor="#f6f6f6"
+                app:shape_roundRect_borderWidth="2dp"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="#fff"
+                android:layout_height="match_parent">
 
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Repartidor Actual : "
+                        android:textColor="#000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="18sp"
+                        android:id="@+id/txtRepartidorActual"
+                        android:textColor="#E74C3C"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Nuevo Repartidor : "
+                        android:textColor="#000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="18sp"
+                        android:id="@+id/txtRepartidor"
+                        android:textColor="#5bbd00"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Cambiar :"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerAukdeliver"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!-- YOUR CONTENT -->
+            </LinearLayout>
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_margin="6dp"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Asignar"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:background="@drawable/redondo"
+                android:backgroundTint="#fff"
+                android:fontFamily="@font/futura"
+                android:id="@+id/floatRegister"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+
+
+        <!-- ............... aqui inicializa.................................... -->
+
+
+
+
+
+
+        <LinearLayout
+         android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:layout_height="0dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -65,12 +203,9 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:id="@+id/scroll">
-
-            <!-- Primer segmento -->
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,236 +347,6 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:layout_marginBottom="5dp"
-                    android:layout_height="wrap_content"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="left"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Socio : "
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:layout_marginLeft="5dp"
-                            android:layout_height="wrap_content"/>
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:hint="Pez loco"
-                            android:inputType="textPersonName"
-                            android:textSize="14sp"
-                            android:id="@+id/edtSocio"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Producto : "
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"/>
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:hint="Ceviche clásico"
-                            android:id="@+id/edtProducto"
-                            android:inputType="textPersonName"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="left"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Nota : "
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"/>
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:hint="Sin aji y con su yapa"
-                            android:inputType="textPersonName"
-                            android:textSize="14sp"
-                            android:id="@+id/edtDescripcion"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:gravity="left"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Precio unitario : "
-                            android:textSize="14sp"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="#000"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="S/"
-                            android:textColor="#000"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"/>
-                        <EditText
-                            android:layout_width="wrap_content"
-                            android:hint="12"
-                            android:id="@+id/edtPrecUnitario"
-                            android:textSize="14sp"
-                            android:inputType="numberDecimal"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:text="Cambiar Comisión?"
-                        android:textSize="14sp"
-                        android:id="@+id/checkboxComision"
-                        android:layout_height="wrap_content"/>
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:hint="S/1.00"
-                        android:gravity="center"
-                        android:inputType="numberDecimal"
-                        android:id="@+id/edtNuevaComision"
-                        android:textSize="14sp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="left"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Cantidad"
-                            android:textSize="14sp"                        android:textColor="#000"
-                            android:layout_height="wrap_content"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:layout_height="wrap_content">
-                            <Button
-                                android:layout_width="40dp"
-                                android:text="-"
-                                android:id="@+id/btnMin"
-                                android:layout_height="50dp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:text="1"
-                                android:textSize="14sp"                              android:id="@+id/edtCant"
-                                android:textColor="#000"
-                                android:layout_height="wrap_content"/>
-
-                            <Button
-                                android:layout_width="40dp"
-                                android:text="+"
-                                android:id="@+id/btnMax"
-                                android:layout_height="50dp"/>
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="left"
-                        android:layout_marginLeft="40dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Precio delivery"
-                            android:textSize="14sp"                          android:textColor="#000"
-                            android:layout_height="wrap_content"/>
-
-                        <EditText
-                            android:layout_width="wrap_content"
-                            android:hint="5"
-                            android:id="@+id/edtPrecioDelivery"
-                            android:inputType="numberDecimal"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:text="Agregar"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginLeft="20dp"
-                        android:id="@+id/add"
-                        android:textSize="14sp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <!-- Linea de separación -->
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-                <!-- fin Linea de separación -->
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="Lista de productos"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
                     android:layout_height="wrap_content"/>
 
                 <HorizontalScrollView
@@ -653,13 +558,6 @@
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:text="Limpiar\nlista"
-                        android:id="@+id/btnClean"
-                        android:textSize="12sp"
-                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -950,14 +848,6 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/calcularVuelto"
-                        android:layout_width="match_parent"
-                        android:textSize="14sp"
-                        android:text="Calcular vuelto"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"/>
-
                 </LinearLayout>
 
                 <!-- Linea de separación -->
@@ -1029,17 +919,6 @@
                         android:layout_gravity="center"
                         android:layout_height="wrap_content">
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:text="Mapear"
-                            android:id="@+id/btnMapear"
-                            android:layout_weight="3"
-                            android:textColor="#FFF"
-                            android:textStyle="bold"
-                            android:background="@drawable/redondo"
-                            android:backgroundTint="#000"
-                            android:layout_height="wrap_content"/>
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -1076,42 +955,6 @@
                     android:background="@android:color/darker_gray"
                     android:layout_height="1dp"/>
                 <!-- fin Linea de separación -->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Repartidor :"
-                        android:textColor="#000"
-                        android:textSize="14sp"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textSize="14sp"
-                        android:id="@+id/txtRepartidor"
-                        android:textColor="#5bbd00"
-                        android:textStyle="bold"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Cambiar :"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <Spinner
-                        android:id="@+id/spinnerAukdeliver"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -1169,19 +1012,6 @@
                         android:textStyle="bold"
                         android:layout_marginRight="10dp"
                         android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Cambiar estado : "
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <Spinner
-                        android:id="@+id/spEstado"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
                 </LinearLayout>
 
                 <!-- Linea de separación -->
@@ -1198,35 +1028,12 @@
                     android:orientation="horizontal"
                     android:gravity="right"
                     android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Agrega el punto de ubicacion\ndel Cliente (MAPA)"
-                        android:gravity="center"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="vertical"
-            android:id="@+id/map_container">
-
-            <com.google.android.gms.maps.MapView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/map_view" />
-        </LinearLayout>
     </LinearLayout>
+</LinearLayout>
+</LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -1235,27 +1042,6 @@
         android:layout_margin="6dp"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="6dp"
-            android:src="@drawable/ic_register"
-            app:fabSize="normal"
-            app:backgroundTint="#000"
-            app:elevation="6dp"
-            android:id="@+id/floatRegister"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="6dp"
-            android:src="@drawable/ic_close"
-            app:fabSize="normal"
-            app:backgroundTint="#f00"
-            app:elevation="6dp"
-            android:id="@+id/booleanMap"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 

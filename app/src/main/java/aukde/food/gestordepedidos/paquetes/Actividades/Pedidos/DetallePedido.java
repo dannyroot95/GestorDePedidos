@@ -8,11 +8,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +35,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -61,6 +68,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
     private DatabaseReference mDatabase ;
     private ProgressDialog mDialog;
+    private TokenProvider tokenProvider;
+    private NotificationProvider notificationProvider;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,9 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_detalle_pedido);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        tokenProvider = new TokenProvider();
+        notificationProvider = new NotificationProvider();
+
         listHoraRegistro = findViewById(R.id.detalleHoraRegistro);
         listFechaRegistro = findViewById(R.id.detalleFechaRegistro);
         listHoraEntrega = findViewById(R.id.detalleHoraEntrega);
@@ -116,8 +128,11 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
+        LinearLayout mLinearAsignar = findViewById(R.id.linearBtnAsignar);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
         mLinearProductos.setLayoutParams(params);
+
+        LinearLayout.LayoutParams parametros = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
 
         mButtonShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +249,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         listLatitud.setText(arrayList.get(24));
         listLongitud.setText(arrayList.get(25));
 
-
         String stEstado = listEstado.getText().toString();
 
         String Delivery = listGananciaDelivery.getText().toString();
@@ -261,15 +275,20 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         }
 
         if (stEstado.equals("Completado")){
+
             listEstado.setTextColor(Color.parseColor("#5bbd00"));
             mGanasteComision.setText("Por este pedido ganaste   : ");
             mGanasteDelivery.setText("Por este delivery ganaste : ");
+            mLinearAsignar.setLayoutParams(parametros);
         }
+
         if (stEstado.equals("Cancelado")){
             listEstado.setTextColor(Color.parseColor("#E74C3C"));
         }
+
         if (stEstado.equals("En espera")){
             listEstado.setTextColor(Color.parseColor("#2E86C1"));
+            mLinearAsignar.setLayoutParams(parametros);
         }
 
 }
@@ -285,8 +304,19 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
         PopupMenu popupMenu = new PopupMenu(this,view);
         popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.inflate(R.menu.popup_menu_estado);
-        popupMenu.show();
+        if (listEstado.getText().toString().equals("Completado")){
+            popupMenu.inflate(R.menu.popup_menu_estado2);
+            popupMenu.show();
+        }
+        if (listEstado.getText().toString().equals("En espera")){
+            popupMenu.inflate(R.menu.popup_menu_estado);
+            popupMenu.show();
+        }
+
+        if (listEstado.getText().toString().equals("Cancelado")){
+            popupMenu.inflate(R.menu.popup_menu_estado3);
+            popupMenu.show();
+        }
 
     }
 
@@ -305,15 +335,59 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 return true;
 
             case R.id.item2:
-                estadoCanceladoRepartidor();
-                estadoCancelado();
-                finish();
+                AlertDialog.Builder builderCancel = new AlertDialog.Builder(DetallePedido.this,R.style.ThemeOverlay);
+                builderCancel.setTitle("Alerta!");
+                builderCancel.setCancelable(false);
+                builderCancel.setIcon(R.drawable.ic_error);
+                builderCancel.setMessage("Deseas cancelar este pedido..? ");
+                builderCancel.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        estadoCanceladoRepartidor();
+                        estadoCancelado();
+                        sendCancelNotificationAukdeliver();
+                        finish();
+                    }
+                });
+                builderCancel.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builderCancel.create();
+                builderCancel.show();
                 return true;
 
             case R.id.item3:
                 estadoEsperaRepartidor();
                 estadoEspera();
                 finish();
+                return true;
+
+            case R.id.item4:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedido.this,R.style.ThemeOverlay);
+                builder.setTitle("Advertencia!");
+                builder.setCancelable(false);
+                builder.setIcon(R.drawable.ic_error);
+                builder.setMessage("Deseas eliminar este pedido..? ");
+                builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eliminarPedido();
+                        estadoCanceladoRepartidor();
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.create();
+                builder.show();
                 return true;
 
             default:
@@ -443,17 +517,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot childSnapshot2: dataSnapshot.getChildren()) {
                                 String key2=childSnapshot2.getKey();
-                                Map<String , Object> map = new HashMap<>();
-                                map.put("estado","Cancelado");
-                                mDatabase.child("Usuarios").child("Aukdeliver").child(key).child("pedidos").child(key2).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                    }
-                                });
+                                mDatabase.child("Usuarios").child("Aukdeliver").child(key).child("pedidos").child(key2).removeValue();
                             }
                         }
 
@@ -548,12 +612,102 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         });
     }
 
+    private void sendCancelNotificationAukdeliver(){
+        String nombreAukdeliver =  listRepartidor.getText().toString();
+        final String numeroPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").orderByChild("nombres").equalTo(nombreAukdeliver);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    tokenProvider.getToken(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                String token = dataSnapshot.child("token").getValue().toString();
+                                Map<String,String> map = new HashMap<>();
+                                map.put("title","El pedido #"+numeroPedido);
+                                map.put("body","Ha sido CANCELADO!");
+                                FCMBody fcmBody = new FCMBody(token,"high",map);
+                                notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                                    @Override
+                                    public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                        if(response.body() !=null){
+                                            if(response.body().getSuccess() == 1){
+                                                //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                            }
+                                            else{
+                                                Toasty.error(DetallePedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        else {
+                                            Toasty.error(DetallePedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<FCMResponse> call, Throwable t) {
+                                        Log.d("Error","Error encontrado"+ t.getMessage());
+                                    }
+                                });
+                            }
+
+                            else {
+                                Toast.makeText(DetallePedido.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    //Toast.makeText(EditarPedido.this, key, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void eliminarPedido(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String key=childSnapshot.getKey();
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toasty.error(DetallePedido.this, "PEDIDO ELIMINADO!", Toast.LENGTH_LONG, true).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toasty.info(DetallePedido.this, "Error al eliminar pedido", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedido.this,R.style.ThemeOverlay);
         builder.setTitle("Confirmar");
         builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_atras);
         builder.setMessage("Deseas volver a la lista de pedidos? ");
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override

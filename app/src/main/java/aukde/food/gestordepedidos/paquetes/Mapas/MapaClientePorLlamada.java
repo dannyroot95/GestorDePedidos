@@ -2,7 +2,6 @@ package aukde.food.gestordepedidos.paquetes.Mapas;
 
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;

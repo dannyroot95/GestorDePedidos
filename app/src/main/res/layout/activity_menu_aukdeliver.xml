@@ -37,6 +37,8 @@
                         android:textSize="16sp"
                         android:id="@+id/txtNombres"
                         android:text=""
+                        android:fontFamily="@font/futura"
+                        android:textStyle="bold"
                         android:textColor="#fff"
                         android:layout_marginRight="5dp"
                         android:layout_height="wrap_content">
@@ -46,6 +48,8 @@
                         android:layout_width="wrap_content"
                         android:textSize="16sp"
                         android:id="@+id/txtApellidos"
+                        android:fontFamily="@font/futura"
+                        android:textStyle="bold"
                         android:textColor="#fff"
                         android:layout_height="wrap_content">
                     </TextView>
@@ -59,6 +63,7 @@
                 android:id="@+id/txtEmail"
                 android:layout_marginTop="6dp"
                 android:layout_below="@id/shimmer"
+                android:fontFamily="@font/futura"
                 android:textStyle="bold"
                 android:text="Usuario Aukdeliver"
                 android:textColor="#fff">
@@ -98,6 +103,8 @@
                     android:layout_width="match_parent"
                     android:backgroundTint="#fff"
                     android:textSize="16sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:background="@drawable/notanredondo"
                     android:layout_height="80dp"
                     android:drawableLeft="@drawable/iconuser_admin"
@@ -109,6 +116,8 @@
                     android:backgroundTint="#fff"
                     android:textSize="16sp"
                     android:padding="10sp"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
                     android:drawableLeft="@drawable/lista_deliver"
                     android:background="@drawable/notanredondo"
                     android:layout_marginTop="10dp"

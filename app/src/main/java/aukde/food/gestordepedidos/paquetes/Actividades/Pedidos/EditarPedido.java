@@ -439,6 +439,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditarPedido.this,R.style.ThemeOverlay);
                 builder.setTitle("Actualización de pedido");
                 builder.setCancelable(false);
+                builder.setIcon(R.drawable.ic_correcto);
                 builder.setMessage("Deseas actualizar este pedido? ");
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
@@ -450,7 +451,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Toast.makeText(EditarPedido.this, "Pedido Cancelado", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditarPedido.this, "Pedido Cancelado", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.create();
@@ -768,9 +769,10 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                 pedidosActualizadoAdmin.child(idAdminNumPedido).updateChildren(map);
                 clickActualizacionPedidoAukdeliver();
                 mDialog.dismiss();
-                finish();
+                Intent intent = new Intent(getApplicationContext(), ListaDePedidos.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 Toasty.success(EditarPedido.this, "PEDIDO ACTUALIZADO!", Toast.LENGTH_LONG, true).show();
-
             }
             else {
 

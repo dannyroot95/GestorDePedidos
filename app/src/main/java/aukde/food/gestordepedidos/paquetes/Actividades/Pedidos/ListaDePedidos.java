@@ -98,7 +98,7 @@ public class ListaDePedidos extends AppCompatActivity {
         ArrayList<PedidoLlamada> lista = new ArrayList<>();
         for(PedidoLlamada object : listPedidos){
             if (object.getNombreCliente().toLowerCase().contains(texto.toLowerCase()) || object.getNumPedido().toLowerCase().contains(texto.toLowerCase())
-            || object.getDireccion().toLowerCase().contains(texto.toLowerCase()))
+                    || object.getDireccion().toLowerCase().contains(texto.toLowerCase()))
             {
                 lista.add(object);
             }

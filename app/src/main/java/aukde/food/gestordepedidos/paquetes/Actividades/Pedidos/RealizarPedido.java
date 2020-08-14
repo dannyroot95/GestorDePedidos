@@ -161,14 +161,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     private TokenProvider tokenProvider;
     private FirebaseAuth mAuth ;
 
-
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             for (Location location : locationResult.getLocations()) {
                 origen = new LatLng(location.getLatitude(),location.getLongitude());
                 if (getApplicationContext() != null) {
-                    //Toast.makeText(RealizarPedido.this, "Tu poscicion : "+otro, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RealizarPedido.this, "Tu poscicion : "+origen, Toast.LENGTH_LONG).show();
                     //obtener locatizacion en tiempo real
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
@@ -252,7 +251,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         alertDialog.setTitle("Hey!");
         alertDialog.setCancelable(false);
         alertDialog.setMessage("Deseas agregar otro producto del mismo socio?");
-        alertDialog.setIcon(R.drawable.ic_launcher_background);
+        alertDialog.setIcon(R.drawable.ic_hey);
 
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -564,6 +563,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this,R.style.ThemeOverlay);
                 builder.setTitle("Confirmacion de pedido");
                 builder.setCancelable(false);
+                builder.setIcon(R.drawable.ic_correcto);
                 builder.setMessage("Deseas guardar este pedido? ");
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
@@ -779,7 +779,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerDragListener(this);
-
         try {
 
             List<Address> addresses = geocoder.getFromLocation(-12.5879997, -69.1930283, 1);
@@ -1238,6 +1237,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this,R.style.ThemeOverlay);
         builder.setTitle("Alerta!");
+        builder.setIcon(R.drawable.ic_atras);
         builder.setCancelable(false);
         builder.setMessage("Deseas Salir? ");
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {

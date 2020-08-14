@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedidoAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
@@ -60,12 +62,14 @@ public class Notificacion extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
+    private Vibrator vibrator;
+    long[] pattern = {400, 600, 100,300,100,150,100,75};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacion);
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         tokenProvider = new TokenProvider();
@@ -91,7 +95,6 @@ public class Notificacion extends AppCompatActivity {
         mExtraGanancia = getIntent().getStringExtra("ganancia");
         //
         mExtraRepartidor = getIntent().getStringExtra("repartidor");
-
 
         ntfNumPedido.setText(mExtraNumPedido);
         ntfNombre.setText(mExtraNombre);
@@ -134,7 +137,7 @@ public class Notificacion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verLista();
-                finish();
+                vibrator.cancel();//cancela vibración
             }
         });
 
@@ -144,24 +147,25 @@ public class Notificacion extends AppCompatActivity {
                 estadoCanceladoAdmin();
                 eliminarPedidoAukdeliver();
                 sendCancelNotification();
+                vibrator.cancel();//cancela vibración
                 cerrar();
-                finish();
+                finishAndRemoveTask();
             }
         });
+
+        vibrator.vibrate(pattern, 0);
+
     }
 
     private void verLista() {
-        Intent intent1 = new Intent();
-        intent1.setClassName(this, ListaPedidosAukdeliver.class.getName());
-        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent1);
-        finish();
+        Intent intent = new Intent(getApplicationContext(), ListaPedidosAukdeliver.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void cerrar() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(2);
-        finish();
     }
 
     private void estadoCanceladoAdmin() {

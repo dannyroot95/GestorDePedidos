@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -66,8 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMarkerDragListener {
+public class AsignarRepartidor extends AppCompatActivity{
 
     private ProgressDialog mDialog;
     SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm");
@@ -79,41 +79,24 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
     TextView horaPedido, fechaPedido, fechaEntrega , horaEntrega
             , precioProductoTotal, precioNetoTotal, vuelto;
 
-    private Button  btnCalcularVuelto;
-
-    private Button mBtnAdd , mbtnMin , mbtnMax , mBtnClean;
-
     private TextView edtNumPedido,textSocio,txtProducto,txtDescripcion,txtPrecioUnitario,txtDelivery , edtCantidad , txtCantidad ,
             txtPtotal , txtNeto , txtGananciaPorDelivery , txtPrecioComisionProducto , txtNetoComision , IDpedido;
 
 
-    private CheckBox chComision;
-
     public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ;
-
-    private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
-
-    private LinearLayout mLinearMap;
     PedidoProvider mpedidoProvider;
-
-    private MapView mapView;
-    private GoogleMap mMap;
-    private Geocoder geocoder;
-    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
-    private static final String TAG = "RealizarPedido";
-    private LatLng destino;
 
     DatabaseReference mUsuarioAukdeliver;
     private DatabaseReference pedidosActualizadoAdmin;
     private DatabaseReference mDatabase;
     private DatabaseReference pedidoParaAukdeliver;
-    Spinner mSpinner, mSpinnerEstado;
-    FloatingActionButton mFloatingButton , mFloatingMap;
+    Spinner mSpinner;
+    Button mFloatingButton;
     TextView estado ;
     TextView txtEncargado , idAukdeliver;
     String stEncargado = "";
     TextView latitud,logitud;
-    Button mButtonMapear;
+    TextView RepartidorActual;
 
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
@@ -148,19 +131,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
         edtNumPedido.setText(stExtraNumPedido);
         // nuevo
 
-        mBtnAdd = findViewById(R.id.add);
-        mbtnMin = findViewById(R.id.btnMin);
-        mbtnMax = findViewById(R.id.btnMax);
-        mBtnClean = findViewById(R.id.btnClean);
-
-        mSocio = findViewById(R.id.edtSocio);
-        mProducto = findViewById(R.id.edtProducto);
-        mDescripcion = findViewById(R.id.edtDescripcion);
-        mPrecioUnitario = findViewById(R.id.edtPrecUnitario);
-        mDelivery = findViewById(R.id.edtPrecioDelivery);
-        mNuevaComision = findViewById(R.id.edtNuevaComision);
-        edtCantidad = findViewById(R.id.edtCant);
-
         textSocio = findViewById(R.id.lsSocio);
         txtProducto = findViewById(R.id.lsProducto);
         txtDescripcion = findViewById(R.id.lsDescripcion);
@@ -172,221 +142,12 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
         txtGananciaPorDelivery = findViewById(R.id.gananciaDelivery);
         txtPrecioComisionProducto = findViewById(R.id.lsComision);
         txtNetoComision = findViewById(R.id.gananciaAdmin);
-
         precioNetoTotal = findViewById(R.id.neto);
-
-        mNuevaComision.setVisibility(View.INVISIBLE);
-
-        chComision = findViewById(R.id.checkboxComision);
-        chComision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(chComision.isChecked()){
-                    mNuevaComision.setVisibility(View.VISIBLE);
-                }
-                else{
-                    mNuevaComision.setVisibility(View.INVISIBLE);
-                    mNuevaComision.setText("");
-                }
-            }
-        });
+        RepartidorActual = findViewById(R.id.txtRepartidorActual);
 
         obtenerPedido();
-        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(AsignarRepartidor.this).create();
-        alertDialog.setTitle("Hey!");
-        alertDialog.setCancelable(false);
-        alertDialog.setMessage("Deseas agregar otro producto del mismo socio?");
-        alertDialog.setIcon(R.drawable.ic_launcher_background);
-
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Si", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mProducto.setText("");
-                mDescripcion.setText("");
-                mPrecioUnitario.setText("");
-                mDelivery.setText("");
-                edtCantidad.setText("1");
-                mProducto.requestFocus();
-            }
-        });
-
-        alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mSocio.setText("");
-                mProducto.setText("");
-                mDescripcion.setText("");
-                mPrecioUnitario.setText("");
-                mDelivery.setText("");
-                edtCantidad.setText("1");
-                mSocio.requestFocus();
-            }
-        });
-
-
-        mBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String S = mSocio.getText().toString();
-                String P = mProducto.getText().toString();
-                String D = mDescripcion.getText().toString();
-                String Pu = mPrecioUnitario.getText().toString();
-                String Del = mDelivery.getText().toString();
-                String Cant = edtCantidad.getText().toString();
-                String netoValor = txtNeto.getText().toString();
-                String ganancia = txtGananciaPorDelivery.getText().toString();
-                Double dNeto = Double.parseDouble(netoValor);
-
-                if (S.isEmpty() || P.isEmpty() || Pu.isEmpty() || Del.isEmpty()){
-                    Toasty.error(AsignarRepartidor.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    textSocio.append(S+"\n");
-                    txtProducto.append(P+"\n");
-                    txtDescripcion.append(D+"\n");
-                    txtPrecioUnitario.append(Pu+"\n");
-                    txtDelivery.append(Del+"\n");
-                    txtCantidad.append(Cant+"\n");
-                    int Cantidad = Integer.parseInt(Cant);
-                    Double Precio = Double.parseDouble(Pu);
-                    Double total = Cantidad*Precio;
-                    String sTotal = String.valueOf(total);
-                    txtPtotal.append(sTotal+"\n");
-
-                    Double finalNeto = total + dNeto;
-                    String stNeto = String.valueOf(finalNeto);
-                    txtNeto.setText(stNeto);
-                    precioProductoTotal.setText(stNeto);
-
-                    Double Gan = Double.parseDouble(ganancia);
-                    Double dDelivery = Double.parseDouble(Del);
-                    Double sumGanancia = Gan+dDelivery;
-                    String netoGanancia = String.valueOf(sumGanancia);
-                    Double totalCobro = sumGanancia+finalNeto;
-                    String netoCobro = String.valueOf(totalCobro);
-                    txtGananciaPorDelivery.setText(netoGanancia);
-                    precioNetoTotal.setText(netoCobro);
-
-                    String SComision = txtNetoComision.getText().toString();
-                    Double DComision = Double.valueOf(SComision);
-
-                    chComision = findViewById(R.id.checkboxComision);
-                    chComision.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(chComision.isChecked()){
-                                mNuevaComision.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                mNuevaComision.setVisibility(View.INVISIBLE);
-                            }
-
-                        }
-                    });
-
-
-                    if (chComision.isChecked()==false){
-                        mNuevaComision.setVisibility(View.INVISIBLE);
-                        if (Precio >= 25){
-                            Double totalMaxComision = 1.0 * Cantidad;
-                            String sTotalMaxComision = String.valueOf(totalMaxComision);
-
-                            Double comisionxProducto = DComision + totalMaxComision;
-                            String stComisionxProducto = String.valueOf(comisionxProducto);
-
-                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
-                            txtNetoComision.setText(stComisionxProducto);
-                        }
-                        if (Precio < 25) {
-                            Double totalMinComision = 0.5 * Cantidad;
-                            String sTotalMinComision = String.valueOf(totalMinComision);
-
-                            Double comisionxProductoMin = DComision + totalMinComision;
-                            String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
-
-                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
-                            txtNetoComision.setText(stComisionxProductoMin);
-                        }
-                    }
-
-                    else {
-                        mNuevaComision.setVisibility(View.VISIBLE);
-                        if (Precio >= 25){
-                            String stNuevaComision = mNuevaComision.getText().toString();
-                            Double DNuevaComision = Double.parseDouble(stNuevaComision);
-                            Double totalMaxComision = DNuevaComision * Cantidad;
-                            String sTotalMaxComision = String.valueOf(totalMaxComision);
-
-                            Double comisionxProducto = DComision + totalMaxComision;
-                            String stComisionxProducto = String.valueOf(comisionxProducto);
-
-                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
-                            txtNetoComision.setText(stComisionxProducto);
-                        }
-                        if (Precio < 25) {
-                            String stNuevaComision = mNuevaComision.getText().toString();
-                            Double DNuevaComision = Double.parseDouble(stNuevaComision);
-                            Double totalMinComision = DNuevaComision * Cantidad;
-                            String sTotalMinComision = String.valueOf(totalMinComision);
-
-                            Double comisionxProductoMin = DComision + totalMinComision;
-                            String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
-
-                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
-                            txtNetoComision.setText(stComisionxProductoMin);
-                        }
-                    }
-
-                    alertDialog.show();
-                }
-            }
-        });
-
-        mbtnMin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String num = edtCantidad.getText().toString();
-                if (num.equals("1")){
-                    edtCantidad.setText("1");
-                }
-                else {
-                    int Cc = Integer.parseInt(num);
-                    int res = Cc-1;
-                    String Min = String.valueOf(res);
-                    edtCantidad.setText(Min);
-                }
-
-            }
-        });
-
-        mbtnMax.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String num = edtCantidad.getText().toString();
-                int Cc = Integer.parseInt(num);
-                int res = Cc+1;
-                String Min = String.valueOf(res);
-                edtCantidad.setText(Min);
-            }
-        });
-
-        mBtnClean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSocio.setText(" ");
-                txtProducto.setText(" ");
-                txtDescripcion.setText(" ");
-                txtPrecioUnitario.setText(" ");
-                txtDelivery.setText(" ");
-                txtCantidad.setText(" ");
-                txtPtotal.setText(" ");
-                txtNeto.setText("0");
-                txtGananciaPorDelivery.setText("0");
-                txtPrecioComisionProducto.setText(" ");
-                txtNetoComision.setText("0");
-            }
-        });
 
         //---------------
-        btnCalcularVuelto = findViewById(R.id.calcularVuelto);
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         edtMontoCliente = findViewById(R.id.montoPagarcliente);
         precioProductoTotal = findViewById(R.id.precioProductoTotal);
@@ -401,69 +162,17 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
 
         latitud = findViewById(R.id.txtLatitud);
         logitud = findViewById(R.id.txtLongitud);
-        mButtonMapear = findViewById(R.id.btnMapear);
 
         // intentExtra numero de pedido
-
-        int alto = 0;
-        mLinearMap =findViewById(R.id.map_container);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
-        mLinearMap.setLayoutParams(params);
-
         mpedidoProvider = new PedidoProvider();
-
-
         mSpinner = findViewById(R.id.spinnerAukdeliver);
-        mSpinnerEstado = findViewById(R.id.spEstado);
-        ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this,R.
-                array.estado,android.R.layout.simple_spinner_item);
         estado = findViewById(R.id.txtEstado);
-
-
-        mSpinnerEstado.setAdapter(adapterSpinnerEstado);
-        mSpinnerEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                estado.setText(parent.getItemAtPosition(position).toString());
-                String stSpinnerEstado = estado.getText().toString();
-                if (stSpinnerEstado.equals("En espera")){
-                    estado.setTextColor(Color.parseColor("#2E86C1"));
-                }
-                if (stSpinnerEstado.equals("Completado")){
-                    estado.setTextColor(Color.parseColor("#5bbd00"));
-                }
-                if (stSpinnerEstado.equals("Cancelado")){
-                    estado.setTextColor(Color.parseColor("#E74C3C"));
-                }
-
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
 
         mUsuarioAukdeliver = FirebaseDatabase.getInstance().getReference();
         pedidosActualizadoAdmin = FirebaseDatabase.getInstance().getReference("PedidosPorLlamada").child("pedidos");
 
         obtenerUsuarioAukdeliver();
         mFloatingButton = findViewById(R.id.floatRegister);
-        mFloatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_black_100)));
-        mFloatingMap = findViewById(R.id.booleanMap);
-        mFloatingMap.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googred)));
-
-        geocoder = new Geocoder(this);
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
-        }
-
-        mapView = findViewById(R.id.map_view);
-        mapView.onCreate(mapViewBundle);
-        mapView.getMapAsync(this);
-
         fechaEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -476,20 +185,15 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
                 ClickHora();
             }
         });
-        btnCalcularVuelto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickCalcularVuelto();
-            }
-        });
 
         mFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AsignarRepartidor.this);
-                builder.setTitle("Confirmacion de pedido");
+                AlertDialog.Builder builder = new AlertDialog.Builder(AsignarRepartidor.this,R.style.ThemeOverlay);
+                builder.setTitle("Confirmar cambios!");
                 builder.setCancelable(false);
-                builder.setMessage("Deseas guardar este pedido? ");
+                builder.setIcon(R.drawable.ic_correcto);
+                builder.setMessage("Deseas asignar a este nuevo repartidor? ");
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -500,7 +204,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Toast.makeText(AsignarRepartidor.this, "Pedido Cancelado", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.create();
@@ -508,39 +211,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        mFloatingMap.setVisibility(View.INVISIBLE);
-        mFloatingMap.setOnClickListener(new View.OnClickListener() {
-            int alto1 = 0;
-            @Override
-            public void onClick(View v) {
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
-                mLinearMap.setLayoutParams(params);
-                mFloatingMap.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        mButtonMapear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFloatingMap.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-                mLinearMap.setLayoutParams(params);
-            }
-        });
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        Bundle mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle);
-        }
-
-        mapView.onSaveInstanceState(mapViewBundle);
     }
 
 
@@ -593,31 +263,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
     }
 
 
-
-    private String obtieneDosDecimales(double valor) {
-        DecimalFormat format = new DecimalFormat();
-        format.setMaximumFractionDigits(2); //Define 2 decimales.
-        return format.format(valor);
-    }
-
-    private void ClickCalcularVuelto() {
-
-        String montoCliente = edtMontoCliente.getText().toString();
-        String netoMonto = precioNetoTotal.getText().toString();
-
-        if (TextUtils.isEmpty(montoCliente)) {
-            Toasty.warning(this, "¿Con cuanto va a pagar? (Cliente)", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(netoMonto)) {
-            Toasty.error(this, "Error : Calcule el total", Toast.LENGTH_SHORT).show();
-        } else {
-            double vueltoNeto;
-            double txtmonto = Double.parseDouble(edtMontoCliente.getText().toString());
-            double txtneto = Double.parseDouble(precioNetoTotal.getText().toString());
-            vueltoNeto = txtmonto - txtneto;
-            vuelto.setText("S/" + obtieneDosDecimales(vueltoNeto));
-        }
-    }
-
     public void obtenerUsuarioAukdeliver(){
         final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> aukdelivers = new ArrayList<>();
         mUsuarioAukdeliver.child("Usuarios").child("Aukdeliver").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -657,162 +302,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
         });
     }
 
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        mapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapLongClickListener(this);
-        mMap.setOnMarkerDragListener(this);
-
-        try {
-
-            List<Address> addresses = geocoder.getFromLocation(-12.5879997, -69.1930283, 1);
-
-            if (addresses.size() > 0) {
-                Address address = addresses.get(0);
-                LatLng aukde = new LatLng(address.getLatitude(), address.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(aukde)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.aukdemarker))
-                        .title("OFICINA AUKDE");
-                mMap.addMarker(markerOptions).showInfoWindow();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(aukde, 16));
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void onMapLongClick(final LatLng latLng) {
-        Log.d(TAG, "onMapLongClick: " + latLng.toString());
-        int height = 100;
-        int width = 100;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.punto);
-        Bitmap b = bitmapdraw.getBitmap();
-        Bitmap punto = Bitmap.createScaledBitmap(b, width, height, false);
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses.size() > 0) {
-                Address address = addresses.get(0);
-                String streetAddress = address.getAddressLine(0);
-                mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(streetAddress)
-                        .draggable(true)
-                        .icon(BitmapDescriptorFactory.fromBitmap(punto))
-                );
-                destino = new LatLng(address.getLatitude(), address.getLongitude());
-                Toasty.success(this, "Direccion Agregada!", Toast.LENGTH_SHORT).show();
-                edtDireccion.setText(streetAddress);
-                latitud.setText(""+destino.latitude);
-                logitud.setText(""+destino.longitude);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
-            @Override
-            public void onInfoWindowClick(final Marker marker){
-                AlertDialog.Builder builder = new AlertDialog.Builder(AsignarRepartidor.this);
-                builder.setTitle("Alerta!");
-                builder.setCancelable(false);
-                builder.setMessage("Desea borrar esta poscición?");
-                builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        marker.remove();
-                        edtDireccion.setText("");
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.create();
-                builder.show();
-            }
-        });
-    }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-        Log.d(TAG, "onMarkerDragStart: ");
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-        Log.d(TAG, "onMarkerDrag: ");
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-        Log.d(TAG, "onMarkerDragEnd: ");
-        LatLng latLng = marker.getPosition();
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses.size() > 0) {
-                Address address = addresses.get(0);
-                String streetAddress = address.getAddressLine(0);
-                destino = new LatLng(address.getLatitude(), address.getLongitude());
-                Toasty.success(this, "Direccion Actualizada!", Toast.LENGTH_SHORT).show();
-                edtDireccion.setText(streetAddress);
-                latitud.setText(""+destino.latitude);
-                logitud.setText(""+destino.longitude);
-                marker.setTitle(streetAddress);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void clickActualizarPedido(){
 
@@ -856,8 +345,11 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
                 pedidosActualizadoAdmin.child(idAdminNumPedido).updateChildren(map);
                 clickRegistroPedidoAukdeliver();
                 mDialog.dismiss();
-                finish();
-                Toasty.success(AsignarRepartidor.this, "PEDIDO ACTUALIZADO!", Toast.LENGTH_LONG, true).show();
+                sendNotificaction();
+                Intent intent = new Intent(getApplicationContext(), ListaDePedidos.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                Toasty.success(AsignarRepartidor.this, "REPARTIDOR ASIGNADO!", Toast.LENGTH_LONG, true).show();
 
             }
             else {
@@ -872,7 +364,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
         }
 
     }
-
 
 
     private void clickRegistroPedidoAukdeliver(){
@@ -954,7 +445,6 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
                     String LongitudX = dataSnapshot.child("longitud").getValue().toString();
 
 
-
                     edtNombreCliente.setText(nombreClientex);
                     textSocio.setText(Socio);
                     txtProducto.setText(Producto);
@@ -972,7 +462,7 @@ public class AsignarRepartidor extends AppCompatActivity implements OnMapReadyCa
                     edtMontoCliente.setText(MontoPagoCliente);
                     vuelto.setText(Vuelto);
                     edtDireccion.setText(Direccion);
-                    txtEncargado.setText(Aukdeliver);
+                    RepartidorActual.setText(Aukdeliver);
                     latitud.setText(LatitudX);
                     logitud.setText(LongitudX);
                     estado.setText("En espera");
