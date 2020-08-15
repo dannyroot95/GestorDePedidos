@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,11 +52,13 @@ import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
+    private CircleImageView foto;
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos , btnMapaRepartidores , btnPerfilX;
@@ -71,6 +74,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_admin);
+        foto = findViewById(R.id.fotodefault);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mAuthProviders = new AuthProviders();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
@@ -137,6 +141,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         });
 
         generarToken();
+        getPhotoUsuario();
         getDataUser();
     }
 
@@ -147,6 +152,8 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("foto")){
                   //Obtener el url y setearlo en la imagem
+                    String setFoto = dataSnapshot.child("foto").getValue().toString();
+                    Glide.with(MenuAdmin.this).load(setFoto).into(foto);
                 }
             }
 

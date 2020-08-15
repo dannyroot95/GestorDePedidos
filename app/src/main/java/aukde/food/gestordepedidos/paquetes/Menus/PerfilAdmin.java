@@ -16,12 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,14 +45,14 @@ import id.zelory.compressor.Compressor;
 
 public class PerfilAdmin extends AppCompatActivity {
 
-    private CircleImageView photoPerfil;
+    private CircleImageView photoPerfil , CrMyPhoto;
     private Button btnUpdateX;
     private TextInputEditText txtNombres , txtApellidos;
     private AdminProvider mAdminProvider;
     private AuthProviders mAuthProviders;
     private File mImageFile;
     private ProgressDialog mDialog;
-    private String urlImage;
+    private DatabaseReference mDatabase;
     private final int GALLERY_REQUEST = 1;
     String upNombre;
     String upApellido;
@@ -64,8 +67,10 @@ public class PerfilAdmin extends AppCompatActivity {
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mAdminProvider = new AdminProvider();
         mAuthProviders = new AuthProviders();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         photoPerfil = findViewById(R.id.fotodefault);
+        CrMyPhoto = findViewById(R.id.myPhoto);
         btnUpdateX = findViewById(R.id.btnUpdate);
         txtNombres = findViewById(R.id.AdminNombres);
         txtApellidos = findViewById(R.id.AdminApellidos);
@@ -85,6 +90,7 @@ public class PerfilAdmin extends AppCompatActivity {
         });
 
         ObtenerDataUser();
+        getPhotoUsuario();
     }
 
     private void abrirGaleria() {
@@ -139,9 +145,28 @@ public class PerfilAdmin extends AppCompatActivity {
             guardarImagen();
         }
           else {
-            Toasty.error(this, "Ingresa tus nombres y sube foto", Toast.LENGTH_SHORT,true).show();
+            Toasty.info(this, "Cambia tus nombres ó sube una foto", Toast.LENGTH_SHORT,true).show();
                }
 
+    }
+
+    private void getPhotoUsuario(){
+        String id = mAuthProviders.getId();
+        mDatabase.child("Usuarios").child("Administrador").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("foto")){
+                    //Obtener el url y setearlo en la imagem
+                    String setFoto = dataSnapshot.child("foto").getValue().toString();
+                    Glide.with(PerfilAdmin.this).load(setFoto).into(CrMyPhoto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void guardarImagen(){
@@ -164,8 +189,16 @@ public class PerfilAdmin extends AppCompatActivity {
                            mAdminProvider.update(administrador).addOnSuccessListener(new OnSuccessListener<Void>() {
                                @Override
                                public void onSuccess(Void aVoid) {
+                                   Toasty.success(PerfilAdmin.this, "Datos Actualizados correctamente", Toast.LENGTH_LONG,true).show();
                                    mDialog.dismiss();
-                                   Toasty.success(PerfilAdmin.this, "Datos Actualizados correctamente", Toast.LENGTH_SHORT,true).show();
+                                   Glide.with(PerfilAdmin.this).load(R.drawable.camera).into(photoPerfil);
+                                   try {
+                                       Thread.sleep(2000);
+                                       getPhotoUsuario();
+                                   } catch (InterruptedException e) {
+                                       e.printStackTrace();
+                                   }
+
                                }
                            });
                        }

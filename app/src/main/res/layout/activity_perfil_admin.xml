@@ -15,17 +15,37 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center|bottom"
+            android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_height="200dp"
-            android:id="@+id/fotodefault"
+            android:id="@+id/myPhoto"
             android:layout_gravity="center"
-            app:civ_border_color="#EEEEEE"
+            app:civ_border_color="#E7E7E7"
             app:civ_border_width="2dp"
-            android:backgroundTint="#000"
+            android:backgroundTint="#CACACA"
             android:clickable="true"
             android:background="@drawable/ic_admin"
             android:foreground="@drawable/selecion"
             android:layout_width="200dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fotodefault"
+                android:layout_width="70dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="130dp"
+                android:layout_height="70dp"
+                android:layout_alignBottom="@id/fotodefault"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/camera"
+                android:clickable="true"
+                android:foreground="@drawable/selecion"
+                app:civ_border_color="#B4B4B4"
+                app:civ_border_width="2dp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnUpdate"
-        android:text="Actualizar Perfil"
+        android:text="Actualizar"
         android:fontFamily="@font/futura"
         android:layout_margin="20dp"
         android:backgroundTint="#000"
