@@ -209,11 +209,12 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
 
     void logout(){
-        final SharedPreferences.Editor editor = mSharedPreference.edit();
-        editor.putString("","");
-        editor.apply();
+        //final SharedPreferences.Editor editor = mSharedPreference.edit();
+        //editor.putString("","");
+        //editor.apply();
         mAuthProviders.Logout();
-        startActivity(new Intent(MenuAdmin.this, Inicio.class));
+        Intent intent = new Intent(MenuAdmin.this, LoginAdmin.class);
+        startActivity(intent);
         finish();
         mDialog.dismiss();
     }

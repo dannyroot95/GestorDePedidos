@@ -143,9 +143,7 @@ public class RegistroProveedor extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     mDialog.dismiss();
-                    startActivity(new Intent(RegistroProveedor.this, MenuAdmin.class));
-                    Toast.makeText(RegistroProveedor.this, "Registro exitoso", Toast.LENGTH_LONG).show();
-                    finish();
+                    logout();
                 }
 
                 else {
@@ -156,6 +154,14 @@ public class RegistroProveedor extends AppCompatActivity {
             }
         });
 
+    }
+
+    void logout() {
+        mAuthProviders.Logout();
+        Intent intent = new Intent(RegistroProveedor.this, LoginAdmin.class);
+        intent.putExtra("dato","valor");
+        startActivity(intent);
+        finish();
     }
 
 }

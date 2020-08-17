@@ -3,8 +3,11 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Registros;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +18,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedido;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 public class RegistroAdmin extends AppCompatActivity {
 
@@ -52,6 +65,7 @@ public class RegistroAdmin extends AppCompatActivity {
         edtPassword = (TextInputEditText) findViewById(R.id.AdminEdtPassword);
         edtRepetirPass = (TextInputEditText) findViewById(R.id.AdminRepetirContrasena);
         edtClaveAuth = (TextInputEditText) findViewById(R.id.AdminClaveAutorización);
+
 
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +117,7 @@ public class RegistroAdmin extends AppCompatActivity {
 
     }
 
+
     private void registrar(final String nombres, final String apellidos, final String dni, final String telefono, final String email, String password) {
 
       mAuthProviders.Registro(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -117,28 +132,30 @@ public class RegistroAdmin extends AppCompatActivity {
       });
     }
 
-
     void mapear(Administrador administrador){
 
         mAdminProvider.Mapear(administrador).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
                 if(task.isSuccessful()){
                     mDialog.dismiss();
-                    startActivity(new Intent(RegistroAdmin.this, MenuAdmin.class));
-                    Toast.makeText(RegistroAdmin.this, "Registro exitoso", Toast.LENGTH_LONG).show();
-                    finish();
+                    logout();
                 }
-
                 else {
                     mDialog.dismiss();
                     Toast.makeText(RegistroAdmin.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
     }
+
+    void logout() {
+        mAuthProviders.Logout();
+        Intent intent = new Intent(RegistroAdmin.this, LoginAdmin.class);
+        intent.putExtra("dato","valor");
+        startActivity(intent);
+        finish();
+    }
+
 
 }

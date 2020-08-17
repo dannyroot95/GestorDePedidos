@@ -90,8 +90,8 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         if(!screenOn){
             PowerManager.WakeLock wakeLock = pm.newWakeLock(
                     PowerManager.PARTIAL_WAKE_LOCK |
-                                PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                                PowerManager.ON_AFTER_RELEASE,"AppName:Mylock"
+                            PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                            PowerManager.ON_AFTER_RELEASE,"AppName:Mylock"
             );
             wakeLock.acquire(10000);
         }

@@ -281,8 +281,6 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
     }
 
 
-
-
     private void checkLocationPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {

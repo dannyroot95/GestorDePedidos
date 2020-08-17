@@ -3,10 +3,13 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Logins;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Actividades.Registros.RegistroAdmin;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
@@ -38,6 +42,7 @@ public class LoginAdmin extends AppCompatActivity {
   SharedPreferences mSharedPreference;
   AuthProviders authProviders;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -48,12 +53,20 @@ public class LoginAdmin extends AppCompatActivity {
 
     edtEmail = findViewById(R.id.logcorreo);
     edtPassword = findViewById(R.id.logContrasena);
-    btnlogin = (Button) findViewById(R.id.btnLogin);
+    btnlogin = findViewById(R.id.btnLogin);
     authProviders = new AuthProviders();
     mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
     mAuth = FirebaseAuth.getInstance();
     mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     mDialog = new ProgressDialog(this);
+    Bundle bundle = this.getIntent().getExtras();
+    if(bundle !=null){
+      String stData = bundle.getString("dato");
+      if (stData.equals("valor")){
+        showDialog();
+      }
+    }
+
 
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -129,6 +142,24 @@ public class LoginAdmin extends AppCompatActivity {
     }
   }
 
+
+  private void showDialog(){
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(LoginAdmin.this,R.style.ThemeOverlay);
+      builder.setTitle("Registro exitoso!");
+      builder.setCancelable(false);
+      builder.setIcon(R.drawable.ic_risa);
+      builder.setMessage("Se requiere volver a Iniciar Sesión");
+      builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          dialog.cancel();
+        }
+      });
+      builder.create();
+      builder.show();
+
+  }
 
 
 }

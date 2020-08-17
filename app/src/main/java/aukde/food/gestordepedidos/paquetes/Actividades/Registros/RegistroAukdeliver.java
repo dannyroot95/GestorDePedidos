@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
@@ -143,9 +144,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     mDialog.dismiss();
-                    startActivity(new Intent(RegistroAukdeliver.this, MenuAdmin.class));
-                    Toast.makeText(RegistroAukdeliver.this, "Registro exitoso", Toast.LENGTH_LONG).show();
-                    finish();
+                    logout();
                 }
 
                 else {
@@ -156,6 +155,14 @@ public class RegistroAukdeliver extends AppCompatActivity {
             }
         });
 
+    }
+
+    void logout() {
+        mAuthProviders.Logout();
+        Intent intent = new Intent(RegistroAukdeliver.this, LoginAdmin.class);
+        intent.putExtra("dato","valor");
+        startActivity(intent);
+        finish();
     }
 
 }

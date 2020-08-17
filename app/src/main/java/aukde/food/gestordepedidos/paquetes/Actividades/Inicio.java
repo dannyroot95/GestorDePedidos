@@ -34,7 +34,7 @@ public class Inicio extends AppCompatActivity {
         btnAukdeliverLogin = findViewById(R.id.btnAukdeliver);
         btnProveedorLogin = findViewById(R.id.btnProveedor);
         mPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
-        final SharedPreferences.Editor editor = mPreference.edit();
+
 
         btnAdminLogin.setOnClickListener(new View.OnClickListener() {
             @Override

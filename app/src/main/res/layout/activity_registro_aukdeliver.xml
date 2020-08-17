@@ -231,9 +231,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Número de licencia"
-                    android:maxLength="9"
+                    android:maxLength="15"
                     android:id="@+id/AukdeliverNumLicencia"
-                    android:inputType="number">
+                    android:inputType="text">
 
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
