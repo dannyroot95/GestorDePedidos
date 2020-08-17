@@ -1,6 +1,7 @@
 package aukde.food.gestordepedidos.paquetes.Menus;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
@@ -53,6 +54,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -68,6 +70,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private TokenProvider mTokenProvider;
     private AuthProviders mAuth;
     private Vibrator vibrator;
+    private static final int GALLERY = 1;
     long tiempo = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
     private void getPhotoUsuario(){
         String id = mAuth.getId();
-        mDatabase.child("Usuarios").child("Administrador").child(id).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("Usuarios").child("Administrador").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("foto")){
@@ -215,13 +218,14 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         mDialog.dismiss();
     }
 
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.item1:
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                //startActivityForResult(intent,GALLERY);
+                startActivityForResult(intent,GALLERY);
                 return true;
 
             case R.id.item2:
@@ -234,6 +238,42 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == GALLERY && resultCode == RESULT_OK){
+            mDialog.setMessage("Actualizando foto de perfil...");
+            mDialog.setCancelable(false);
+            mDialog.show();
+            Uri uri = data.getData();
+            final String id = mAuthProviders.getId();
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoAdmin").child(mAuthProviders.getId()+".jpg");
+
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            DatabaseReference imagestore = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").child(id);
+                            HashMap<String,Object> fotoMap = new HashMap<>();
+                            fotoMap.put("foto" , String.valueOf(uri));
+                            imagestore.updateChildren(fotoMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    getPhotoUsuario();
+                                    mDialog.dismiss();
+                                    Toasty.success(MenuAdmin.this, "Foto de perfil actualizada", Toast.LENGTH_LONG,true).show();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
 
     void generarToken(){
         mTokenProvider.create(mAuth.getId());

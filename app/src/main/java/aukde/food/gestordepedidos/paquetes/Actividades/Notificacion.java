@@ -147,6 +147,8 @@ public class Notificacion extends AppCompatActivity {
                 estadoCanceladoAdmin();
                 eliminarPedidoAukdeliver();
                 sendCancelNotification();
+                sendCancelNotification2();
+                sendCancelNotification3();
                 vibrator.cancel();//cancela vibración
                 cerrar();
                 finishAndRemoveTask();
@@ -234,6 +236,106 @@ public class Notificacion extends AppCompatActivity {
         final String admin2 = "UnwAmhwRzmRLn8aozWjnYFOxYat2";
         final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
         tokenProvider.getToken(admin2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sendCancelNotification2(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin1 = "9sjTQMmowxWYJGTDUY98rAR2jzB3";
+        tokenProvider.getToken(admin1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sendCancelNotification3(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
+        tokenProvider.getToken(admin3).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){

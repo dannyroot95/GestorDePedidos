@@ -52,7 +52,7 @@ public class ServiceMonitoreo extends Service {
             mDatabase.child("Monitoreo").child(idUser).child("l").updateChildren(map);
             keyGeofire();
             nameGeofire();
-            Toast.makeText(ServiceMonitoreo.this, "Latitud : "+stLat+" Longitud : "+stLong, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ServiceMonitoreo.this, "Latitud : "+stLat+" Longitud : "+stLong, Toast.LENGTH_SHORT).show();
         }
 
         private void keyGeofire(){
@@ -108,7 +108,7 @@ public class ServiceMonitoreo extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        return null;
+        throw new UnsupportedOperationException("No implementado");
     }
 
     @Override

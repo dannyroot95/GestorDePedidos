@@ -3,6 +3,7 @@ package aukde.food.gestordepedidos.paquetes.Menus;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
@@ -85,7 +88,10 @@ public class PerfilAdmin extends AppCompatActivity {
         photoPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirGaleria();
+               // abrirGaleria();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,GALLERY_REQUEST);
             }
         });
 
@@ -103,15 +109,37 @@ public class PerfilAdmin extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_REQUEST && resultCode==RESULT_OK){
-            try {
 
-                mImageFile = FileUtil.from(this,data.getData());
-                photoPerfil.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
 
-            }catch (Exception e){
-                Log.d("ERROR","Mensaje"+e.getMessage());
-            }
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+            mDialog.setMessage("Actualizando foto de perfil...");
+            mDialog.setCancelable(false);
+            mDialog.show();
+            Uri uri = data.getData();
+            final String id = mAuthProviders.getId();
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoAdmin").child(mAuthProviders.getId()+".jpg");
+
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            DatabaseReference imagestore = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").child(id);
+                            HashMap<String,Object> fotoMap = new HashMap<>();
+                            fotoMap.put("foto" , String.valueOf(uri));
+                            imagestore.updateChildren(fotoMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    getPhotoUsuario();
+                                    mDialog.dismiss();
+                                    Toasty.success(PerfilAdmin.this, "Foto de perfil actualizada", Toast.LENGTH_LONG,true).show();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -133,20 +161,20 @@ public class PerfilAdmin extends AppCompatActivity {
     }
 
     private void ActualzarPerfil() {
-
         upNombre = txtNombres.getText().toString();
         upApellido = txtApellidos.getText().toString();
 
-        if (!upNombre.equals("") && !upApellido.equals("") && mImageFile != null )
-        {
-            mDialog.setMessage("Espere un momento...");
-            mDialog.setCanceledOnTouchOutside(false);
-            mDialog.show();
-            guardarImagen();
-        }
+          if(!upNombre.equals("") && !upApellido.equals("")){
+              mDialog.setMessage("Actualizando...");
+              mDialog.setCanceledOnTouchOutside(false);
+              mDialog.show();
+              guardarNombres();
+          }
+
           else {
-            Toasty.info(this, "Cambia tus nombres ó sube una foto", Toast.LENGTH_SHORT,true).show();
-               }
+              mDialog.dismiss();
+              Toasty.info(this, "Verifica los campos", Toast.LENGTH_SHORT,true).show();
+          }
 
     }
 
@@ -169,46 +197,36 @@ public class PerfilAdmin extends AppCompatActivity {
         });
     }
 
-    private void guardarImagen(){
-        byte[] imageByte = CompressorBitmapImage.getImage(this,mImageFile.getPath(),500,500);
-        final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("PhotoAdmin").child(mAuthProviders.getId()+".jpg");
-        UploadTask uploadTask = storageReference.putBytes(imageByte);
-        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()){
-                   storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                       @Override
-                       public void onSuccess(Uri uri) {
-                           String image = uri.toString();
-                           Administrador administrador = new Administrador();
-                           administrador.setFoto(image);
-                           administrador.setApellidos(upApellido);
-                           administrador.setNombres(upNombre);
-                           administrador.setId(mAuthProviders.getId());
-                           mAdminProvider.update(administrador).addOnSuccessListener(new OnSuccessListener<Void>() {
-                               @Override
-                               public void onSuccess(Void aVoid) {
-                                   Toasty.success(PerfilAdmin.this, "Datos Actualizados correctamente", Toast.LENGTH_LONG,true).show();
-                                   mDialog.dismiss();
-                                   Glide.with(PerfilAdmin.this).load(R.drawable.camera).into(photoPerfil);
-                                   try {
-                                       Thread.sleep(2000);
-                                       getPhotoUsuario();
-                                   } catch (InterruptedException e) {
-                                       e.printStackTrace();
-                                   }
 
-                               }
-                           });
-                       }
-                   });
-                }
-                else {
-                    Toasty.error(PerfilAdmin.this, "Hubo un error al subir imagen", Toast.LENGTH_SHORT,true).show();
-                }
+    private void guardarNombres(){
+        final String id = mAuthProviders.getId();
+        final String nombre = txtNombres.getText().toString();
+        final String apellido = txtApellidos.getText().toString();
+        mDatabase.child("Usuarios").child("Administrador").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> datos = new HashMap<>();
+                datos.put("nombres",nombre);
+                datos.put("apellidos",apellido);
+                mDatabase.child("Usuarios").child("Administrador").child(id).updateChildren(datos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toasty.success(PerfilAdmin.this, "Nombres Actualizados", Toast.LENGTH_SHORT,true).show();
+                        ObtenerDataUser();
+                        mDialog.dismiss();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toasty.error(PerfilAdmin.this, "Hubo un error al actualizar datos", Toast.LENGTH_SHORT,true).show();
             }
         });
     }
 
+    @Override
+    public void onBackPressed(){
+        NavUtils.navigateUpFromSameTask(this);
+    }
 }

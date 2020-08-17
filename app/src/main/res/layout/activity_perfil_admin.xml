@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnUpdate"
-        android:text="Actualizar"
+        android:text="Actualizar Datos"
         android:fontFamily="@font/futura"
         android:layout_margin="20dp"
         android:backgroundTint="#000"

@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
@@ -59,17 +61,21 @@
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver" />
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
+            android:screenOrientation="portrait"/>
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+            android:parentActivityName=".paquetes.Menus.MenuAdmin"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.RealizarPedido"
             android:parentActivityName=".paquetes.Menus.MenuAdmin" />
         <activity android:name=".paquetes.Menus.MenuProveedor" />
         <activity android:name=".paquetes.Menus.MenuAukdeliver" />
-        <activity android:name=".paquetes.Menus.MenuAdmin" />
+        <activity android:name=".paquetes.Menus.MenuAdmin"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroProveedor"
             android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />

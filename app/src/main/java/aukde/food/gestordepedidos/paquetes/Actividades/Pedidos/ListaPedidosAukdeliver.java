@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -21,7 +22,9 @@ import java.util.Collections;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamadaAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
 
 public class ListaPedidosAukdeliver extends AppCompatActivity {
 
@@ -97,7 +100,7 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
                 return true;
             }
         });
-
+        startService(new Intent(this, ServiceMonitoreo.class));
     }
 
     private void buscar(String texto) {
