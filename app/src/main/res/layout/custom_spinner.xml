@@ -7,5 +7,4 @@
     android:ellipsize="marquee"
     android:fontFamily="@font/futura"
     android:textColor="#000"
-    android:background="@drawable/abc_spinner_mtrl_am_alpha"
     android:backgroundTint="@android:color/white"/>
