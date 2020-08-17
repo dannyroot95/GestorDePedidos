@@ -136,6 +136,8 @@ public class Notificacion extends AppCompatActivity {
         btnListaPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finishAndRemoveTask();
+                cerrar();
                 verLista();
                 vibrator.cancel();//cancela vibración
             }
