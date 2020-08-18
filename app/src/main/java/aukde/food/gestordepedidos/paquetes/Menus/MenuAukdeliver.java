@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,9 +18,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -53,6 +56,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Receptor.Constantes;
 import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
 import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
 
@@ -65,7 +69,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private DatabaseReference mDatabase;
     private AuthProviders mAuth;
     private TokenProvider mTokenProvider;
-    private TextView Txtnombres , Txtapellidos;
+    private TextView Txtnombres, Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
     public static final int LOCATION_REQUEST_CODE = 1;
@@ -77,7 +81,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         @Override
         public void onLocationResult(LocationResult locationResult) {
             for (Location location : locationResult.getLocations()) {
-                origen = new LatLng(location.getLatitude(),location.getLongitude());
+                origen = new LatLng(location.getLatitude(), location.getLongitude());
                 if (getApplicationContext() != null) {
                     //obtener locatizacion en tiempo real
                     Double lat = location.getLatitude();
@@ -96,7 +100,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
         mDialog = new ProgressDialog(this);
-        mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
+        mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
@@ -109,7 +113,16 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mTokenProvider = new TokenProvider();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
+        }
 
         btnLista.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,49 +139,47 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         generarToken();
         getDataUser();
         startLocacion();
-        startService(new Intent(this, ServiceMonitoreo.class));
+        startLocationService();
     }
 
-    private boolean gpsActive(){
+    private boolean gpsActive() {
         boolean isActive = false;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             isActive = true;
         }
 
         return isActive;
     }
 
-    public void checkLocationPermision(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
+    public void checkLocationPermision() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Proporciona los permisos para continuar")
                         .setMessage("Esta aplicación requiere los permisos para continuar")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(MenuAukdeliver.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(MenuAukdeliver.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                             }
                         })
                         .create()
                         .show();
-            }
-            else {
-                ActivityCompat.requestPermissions(MenuAukdeliver.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(MenuAukdeliver.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             }
         }
     }
 
-    private void getDataUser(){
+    private void getDataUser() {
         String id = mAuth.getId();
         mDatabase.child("Usuarios").child("Aukdeliver").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     String nombres = dataSnapshot.child("nombres").getValue().toString();
                     String apellidos = dataSnapshot.child("apellidos").getValue().toString();
                     LinearShimmer.setBackground(null);
@@ -178,44 +189,37 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                     Txtapellidos.setText(apellidos);
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setShimmer(null);
-                }
-                else {
-                    Toast.makeText(MenuAukdeliver.this,"Error al cargar datos",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MenuAukdeliver.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MenuAukdeliver.this,"Error de Base de datos",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuAukdeliver.this, "Error de Base de datos", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void startLocacion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                if(gpsActive())
-                {
-                    mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-                }
-                else{
+    public void startLocacion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (gpsActive()) {
+                    mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                } else {
                     showAlertDialog();
                 }
 
-            }
-
-            else {
+            } else {
                 checkLocationPermision();
             }
 
-        }
-        else {
-            if(gpsActive()){
-                mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
+        } else {
+            if (gpsActive()) {
+                mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-            }
-            else {
+            } else {
                 showAlertDialog();
             }
 
@@ -229,10 +233,12 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if(gpsActive()){
+                    if (gpsActive()) {
                         mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                        startLocationService();
+                    } else {
+                        showAlertDialog();
                     }
-                    else { showAlertDialog(); }
                 } else {
                     checkLocationPermision();
                 }
@@ -250,37 +256,34 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 return;
             }
             mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-        }
-        else {
+        } else {
             showAlertDialog();
         }
     }
 
-    private void showAlertDialog(){
+    private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicación para continuar")
                 .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
                 }).create().show();
     }
 
-    public void show_popup(View view)
-    {
+    public void show_popup(View view) {
         Context wrapper = new ContextThemeWrapper(this, R.style.popupThemeGreen);
-        PopupMenu popupMenu = new PopupMenu(wrapper,view);
+        PopupMenu popupMenu = new PopupMenu(wrapper, view);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_menu);
         popupMenu.show();
     }
 
 
-    void logout()
-    {
+    void logout() {
         final SharedPreferences.Editor editor = mSharedPreference.edit();
-        editor.putString("","");
+        editor.putString("", "");
         editor.apply();
         mAuthProviders.Logout();
         startActivity(new Intent(MenuAukdeliver.this, Inicio.class));
@@ -290,7 +293,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item1:
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
@@ -308,8 +311,41 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     }
 
 
-    void generarToken(){
+    void generarToken() {
         mTokenProvider.create(mAuth.getId());
+    }
+
+    private boolean isLocationServiceRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+                if (ServiceMonitoreo.class.getName().equals(service.service.getClassName())) {
+                    if (service.foreground) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private void startLocationService(){
+        if(!isLocationServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(),ServiceMonitoreo.class);
+            intent.setAction(Constantes.ACTION_START_LOCATION);
+            startService(intent);
+            //Toast.makeText(this, "INICIADO!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopLocationService(){
+        if(isLocationServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(),ServiceMonitoreo.class);
+            intent.setAction(Constantes.ACTION_STOP_LOCATION);
+            startService(intent);
+            //Toast.makeText(this, "DETENIDO!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
