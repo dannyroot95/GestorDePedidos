@@ -155,7 +155,8 @@ public class ServiceMonitoreo extends Service {
                 }
             }
         }
-        return super.onStartCommand(intent, flags, startId);
+     super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 }
 

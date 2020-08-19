@@ -11,6 +11,9 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +27,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,14 +54,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
-import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
-import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
-import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.Constantes;
-import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
+import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
 import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
 
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -73,6 +74,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
     public static final int LOCATION_REQUEST_CODE = 1;
+    private final static int ID_SERVICIO = 99;
     public static final int SETTINGS_REQUEST_CODE = 2;
     private FusedLocationProviderClient mFusedLocation;
     private LocationRequest mLocationRequest;
@@ -139,7 +141,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         generarToken();
         getDataUser();
         startLocacion();
-        startLocationService();
+        //startLocationService();
+        lanzarJob();
     }
 
     private boolean gpsActive() {
@@ -218,7 +221,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         } else {
             if (gpsActive()) {
                 mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-
             } else {
                 showAlertDialog();
             }
@@ -235,7 +237,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     if (gpsActive()) {
                         mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                        startLocationService();
+                       // startLocationService();
                     } else {
                         showAlertDialog();
                     }
@@ -282,6 +284,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
 
     void logout() {
+        cerrarJob();
         final SharedPreferences.Editor editor = mSharedPreference.edit();
         editor.putString("", "");
         editor.apply();
@@ -346,6 +349,37 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             startService(intent);
             //Toast.makeText(this, "DETENIDO!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void lanzarJob(){
+        ComponentName componentName = new ComponentName(getApplicationContext(), JobServiceMonitoreo.class);
+        JobInfo info;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            info = new JobInfo.Builder(ID_SERVICIO, componentName)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .setMinimumLatency(5*1000)
+                    .build();
+        }else{
+            info = new JobInfo.Builder(ID_SERVICIO, componentName)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .setPeriodic(5*1000)
+                    .build();
+        }
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultado = scheduler.schedule(info);
+        if(resultado == JobScheduler.RESULT_SUCCESS){
+            Log.d("TAG", "Job Acabado");
+        }else{
+            Log.d("TAG", "Job ha fallado");
+        }
+    }
+
+    private void cerrarJob(){
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(ID_SERVICIO);
+        Log.d("TAG", "Job Cancelado");
     }
 
 }
