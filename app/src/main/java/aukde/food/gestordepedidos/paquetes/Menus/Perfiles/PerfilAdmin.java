@@ -1,4 +1,4 @@
-package aukde.food.gestordepedidos.paquetes.Menus;
+package aukde.food.gestordepedidos.paquetes.Menus.Perfiles;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,14 +37,10 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
-import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
-import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
-import aukde.food.gestordepedidos.paquetes.Utils.FileUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
-import id.zelory.compressor.Compressor;
 
 public class PerfilAdmin extends AppCompatActivity {
 
@@ -99,12 +95,6 @@ public class PerfilAdmin extends AppCompatActivity {
         getPhotoUsuario();
     }
 
-    private void abrirGaleria() {
-
-        Intent intentGalery = new Intent(Intent.ACTION_GET_CONTENT);
-        intentGalery.setType("image/*");
-        startActivityForResult(intentGalery,GALLERY_REQUEST);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -160,6 +160,8 @@ public class RegistroAukdeliver extends AppCompatActivity {
     void logout() {
         mAuthProviders.Logout();
         Intent intent = new Intent(RegistroAukdeliver.this, LoginAdmin.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("dato","valor");
         startActivity(intent);
         finish();

@@ -18,22 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
-import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedido;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
-import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
-import es.dmoral.toasty.Toasty;
+
 
 public class RegistroAdmin extends AppCompatActivity {
 

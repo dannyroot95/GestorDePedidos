@@ -37,7 +37,6 @@ import aukde.food.gestordepedidos.paquetes.Receptor.Constantes;
 
 public class JobServiceMonitoreo extends JobService {
 
-    private boolean jobCancelled = false;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     LocationCallback locationCallback = new LocationCallback() {
@@ -51,9 +50,12 @@ public class JobServiceMonitoreo extends JobService {
                 Map<String , Object> map = new HashMap<>();
                 map.put("0",latitude);
                 map.put("1",longitude);
-                mDatabase.child("Monitoreo").child(idUser).child("l").updateChildren(map);
-                keyGeofire();
-                nameGeofire();
+
+                if(mAuth.getCurrentUser() != null) {
+                    mDatabase.child("Monitoreo").child(idUser).child("l").updateChildren(map);
+                    keyGeofire();
+                    nameGeofire();
+                }
                 //Toast.makeText(ServiceMonitoreo.this, "lat : "+lat+" lon : "+lon, Toast.LENGTH_SHORT).show();
                 Log.d("LOCATION_UPDATE",latitude+" , "+longitude);
             }
@@ -79,22 +81,22 @@ public class JobServiceMonitoreo extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        return false;
+        return true;
     }
 
-    private void startLocationService() {
+   private void startLocationService() {
         String channel_id = "location_notification_channel";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent resultIntent = new Intent();
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0
-                , resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id);
+       Intent resultIntent = new Intent();
+       PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0
+               , resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle("Notificación de Pedidos");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText("Activo!");
         builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(false);
+        builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

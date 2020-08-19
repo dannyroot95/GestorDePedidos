@@ -35,4 +35,8 @@ public class AukdeliverProvider {
 
     }
 
+    public DatabaseReference getAukdeliverData(String idAdmin){
+        return mDatabaseReference.child(idAdmin);
+    }
+
 }

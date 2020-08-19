@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
@@ -26,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -36,16 +35,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,20 +53,22 @@ import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
-import aukde.food.gestordepedidos.paquetes.Receptor.Constantes;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
-import aukde.food.gestordepedidos.paquetes.Servicios.ServiceMonitoreo;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
-    private Button btnLista;
+    private Button btnLista , btnPerfil;
     SharedPreferences mSharedPreference;
     private DatabaseReference mDatabase;
     private AuthProviders mAuth;
+    private CircleImageView foto;
     private TokenProvider mTokenProvider;
     private TextView Txtnombres, Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
@@ -76,9 +76,11 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     public static final int LOCATION_REQUEST_CODE = 1;
     private final static int ID_SERVICIO = 99;
     public static final int SETTINGS_REQUEST_CODE = 2;
+    private static final int GALLERY = 3;
     private FusedLocationProviderClient mFusedLocation;
     private LocationRequest mLocationRequest;
     private LatLng origen;
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -96,7 +98,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppThemeDark);
+        setTheme(R.style.AppTheme2);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
@@ -104,8 +106,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mDialog = new ProgressDialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
+        btnPerfil = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
+        foto = findViewById(R.id.fotodefault);
 
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
@@ -133,17 +137,26 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             }
         });
 
+        btnPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuAukdeliver.this, PerfilAukdeliver.class));
+            }
+        });
+
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+        getPhotoUsuario();
         generarToken();
         getDataUser();
         startLocacion();
-        //startLocationService();
-        lanzarJob();
+        startJobSchedule();
+
     }
+
 
     private boolean gpsActive() {
         boolean isActive = false;
@@ -232,6 +245,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -253,14 +267,36 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTINGS_REQUEST_CODE && gpsActive()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
+
+
+            if (requestCode == SETTINGS_REQUEST_CODE && gpsActive()) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+
+            } else {
+                showAlertDialog();
             }
-            mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-        } else {
-            showAlertDialog();
-        }
+    }
+
+    private void getPhotoUsuario(){
+        String id = mAuth.getId();
+        mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("foto")){
+                    //Obtener el url y setearlo en la imagem
+                    String setFoto = dataSnapshot.child("foto").getValue().toString();
+                    Glide.with(MenuAukdeliver.this).load(setFoto).into(foto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showAlertDialog() {
@@ -284,13 +320,17 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
 
     void logout() {
-        cerrarJob();
-        final SharedPreferences.Editor editor = mSharedPreference.edit();
+        /*final SharedPreferences.Editor editor = mSharedPreference.edit();
         editor.putString("", "");
-        editor.apply();
+        editor.apply();*/
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
-        startActivity(new Intent(MenuAukdeliver.this, Inicio.class));
-        finish();
+        Intent intent = new Intent(MenuAukdeliver.this,
+                Inicio.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        //finish();
         mDialog.dismiss();
     }
 
@@ -298,12 +338,11 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item1:
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                //startActivityForResult(intent,GALLERY);
+                startActivity(new Intent(MenuAukdeliver.this, PerfilAukdeliver.class));
                 return true;
 
             case R.id.item2:
+                stopJobSchedule();
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
                 logout();
@@ -318,52 +357,23 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mTokenProvider.create(mAuth.getId());
     }
 
-    private boolean isLocationServiceRunning() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        if (activityManager != null) {
-            for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
-                if (ServiceMonitoreo.class.getName().equals(service.service.getClassName())) {
-                    if (service.foreground) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        return false;
-    }
 
-    private void startLocationService(){
-        if(!isLocationServiceRunning()){
-            Intent intent = new Intent(getApplicationContext(),ServiceMonitoreo.class);
-            intent.setAction(Constantes.ACTION_START_LOCATION);
-            startService(intent);
-            //Toast.makeText(this, "INICIADO!", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    private void stopLocationService(){
-        if(isLocationServiceRunning()){
-            Intent intent = new Intent(getApplicationContext(),ServiceMonitoreo.class);
-            intent.setAction(Constantes.ACTION_STOP_LOCATION);
-            startService(intent);
-            //Toast.makeText(this, "DETENIDO!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void lanzarJob(){
+    private void startJobSchedule(){
         ComponentName componentName = new ComponentName(getApplicationContext(), JobServiceMonitoreo.class);
         JobInfo info;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             info = new JobInfo.Builder(ID_SERVICIO, componentName)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setPersisted(true)
+                    .setBackoffCriteria(1000,JobInfo.BACKOFF_POLICY_EXPONENTIAL)
                     .setMinimumLatency(5*1000)
                     .build();
         }else{
             info = new JobInfo.Builder(ID_SERVICIO, componentName)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setPersisted(true)
+                    .setBackoffCriteria(1000,JobInfo.BACKOFF_POLICY_EXPONENTIAL)
                     .setPeriodic(5*1000)
                     .build();
         }
@@ -376,10 +386,9 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         }
     }
 
-    private void cerrarJob(){
+    private void stopJobSchedule(){
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.cancel(ID_SERVICIO);
-        Log.d("TAG", "Job Cancelado");
     }
 
 }
