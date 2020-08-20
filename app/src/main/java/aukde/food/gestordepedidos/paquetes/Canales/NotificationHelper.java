@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -13,13 +15,17 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import aukde.food.gestordepedidos.R;
 
 public class NotificationHelper extends ContextWrapper {
 
     private static final String CHANNEL_ID = "aukde.food.gestordepedidos";
     private static final String CHANNEL_NAME = "Gestordepedidos";
-    private NotificationManager manager ;
+    private NotificationManager manager;
 
     public NotificationHelper(Context base) {
         super(base);
@@ -49,28 +55,46 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Notification.Builder getNotification(String title, String body, PendingIntent intent , Uri sonidoUri){
-           return new Notification.Builder(getApplicationContext(),CHANNEL_ID)
-                   .setContentTitle(title)
-                   .setContentText(body)
-                   .setAutoCancel(true)
-                   .setSound(sonidoUri)
-                   .setContentIntent(intent)
-                   .setOngoing(true)
-                   .setSmallIcon(R.drawable.ic_notificacion)
-                   .setStyle(new Notification.BigTextStyle().bigText(body).setBigContentTitle(title));
+    public Notification.Builder getNotification(String title, String body , PendingIntent intent , Uri sonidoUri , String path){
+
+        Bitmap bmp = null;
+        try {
+            InputStream in = new URL(path).openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new Notification.Builder(getApplicationContext(),CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setLargeIcon(bmp)
+                .setAutoCancel(true)
+                .setSound(sonidoUri)
+                .setContentIntent(intent)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_notificacion)
+                .setStyle(new Notification.BigTextStyle().bigText(body).setBigContentTitle(title));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Notification.Builder getNotificationActions(String title,
                                                        String body,
-                                                       Uri sonidoUri,
+                                                       Uri sonidoUri,String path,
                                                        Notification.Action acceptAction,
                                                        Notification.Action cancelAction){
+        Bitmap bmp = null;
+        try {
+            InputStream in = new URL(path).openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new Notification.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
+                .setLargeIcon(bmp)
                 .setSound(sonidoUri)
                 .setOngoing(true)
                 .addAction(acceptAction)
@@ -80,14 +104,23 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getNotificationOldApi(String title,
-                                                            String body,
+                                                            String body,String path,
                                                             PendingIntent intent ,
                                                             Uri sonidoUri){
+        Bitmap bmp = null;
+        try {
+            InputStream in =
+                    new URL(path).openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setOngoing(true)
+                .setLargeIcon(bmp)
                 .setSound(sonidoUri)
                 .setContentIntent(intent)
                 .setSmallIcon(R.drawable.ic_notificacion)
@@ -95,16 +128,24 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getNotificationOldApiActions(String title,
-                                                                   String body,
+                                                                   String body,String path,
                                                                    Uri sonidoUri,
                                                                    NotificationCompat.Action acceptAction,
                                                                    NotificationCompat.Action cancelAction){
+        Bitmap bmp = null;
+        try {
+            InputStream in = new URL(path).openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(sonidoUri)
                 .setOngoing(true)
+                .setLargeIcon(bmp)
                 .addAction(acceptAction)
                 .addAction(cancelAction)
                 .setSmallIcon(R.drawable.ic_notificacion)

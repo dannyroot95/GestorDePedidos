@@ -68,6 +68,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
 
+    private TextView photo;
+    private String defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/fotoDefault.jpg?alt=media&token=f74486bf-432e-4af6-b114-baa523e1f801";
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         bottonEstado = findViewById(R.id.btnEstado);
         btnError = findViewById(R.id.btnReporte);
         mMapa = findViewById(R.id.showMapa);
+
+        photo = findViewById(R.id.pathPhoto);
 
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
@@ -222,6 +227,13 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String Aukdeliver = dataSnapshot.child("nombres").getValue().toString();
                 listRepartidor.setText(Aukdeliver);
+                if (dataSnapshot.hasChild("foto")){
+                    String Foto = dataSnapshot.child("foto").getValue().toString();
+                    photo.setText(Foto);
+                }
+                else {
+                    photo.setText(defaultPhoto);
+                }
             }
 
             @Override
@@ -458,9 +470,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
                     map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -502,9 +516,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
                     map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -546,9 +562,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
                     map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -598,9 +616,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa COMPLETADO el Pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -642,9 +662,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa COMPLETADO el Pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -686,9 +708,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa COMPLETADO el Pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override

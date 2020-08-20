@@ -40,6 +40,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         Map<String,String> data = remoteMessage.getData();
         String title = data.get("title");
         String body = data.get("body");
+        String path = data.get("path");
 
         if (title != null){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -53,12 +54,12 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
                     String repartidor = data.get("repartidor");
-                    showNotificationApiOreoActions(title,body,idClient);
+                    showNotificationApiOreoActions(title,body,path,idClient);
                     showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else
                 {
-                    showNotificationApiOreo(title,body);
+                    showNotificationApiOreo(title,body,path);
                 }
             }
             else {
@@ -72,11 +73,11 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
                     String repartidor = data.get("repartidor");
-                    showNotificationActions(title,body,idClient);
+                    showNotificationActions(title,body,path,idClient);
                     showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else {
-                    showNotification(title,body);
+                    showNotification(title,body,path);
                 }
             }
         }
@@ -109,16 +110,16 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showNotificationApiOreo(String title , String body) {
+    private void showNotificationApiOreo(String title , String body , String path) {
         PendingIntent intent = PendingIntent.getActivity(getBaseContext(),0,new Intent(),PendingIntent .FLAG_ONE_SHOT);
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-        Notification.Builder builder = notificationHelper.getNotification(title,body,intent,sound);
+        Notification.Builder builder = notificationHelper.getNotification(title,body,intent,sound,path);
         notificationHelper.getManager().notify(1,builder.build());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showNotificationApiOreoActions(String title , String body , String idClient) {
+    private void showNotificationApiOreoActions(String title , String body ,String path ,  String idClient) {
         //ver lista
         Intent assetIntent = new Intent(this, AcceptReceiver.class);
         assetIntent.putExtra("idClient",idClient);
@@ -137,20 +138,20 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-        Notification.Builder builder = notificationHelper.getNotificationActions(title,body,sound,acceptAction,cancelAction);
+        Notification.Builder builder = notificationHelper.getNotificationActions(title,body,sound,path,acceptAction,cancelAction);
         notificationHelper.getManager().notify(2,builder.build());
     }
 
 
-    private void showNotification(String title , String body) {
+    private void showNotification(String title , String body,String path) {
         PendingIntent intent = PendingIntent.getActivity(getBaseContext(),0,new Intent(),PendingIntent .FLAG_ONE_SHOT);
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-        NotificationCompat.Builder builder = notificationHelper.getNotificationOldApi(title,body,intent,sound);
+        NotificationCompat.Builder builder = notificationHelper.getNotificationOldApi(title,body,path,intent,sound);
         notificationHelper.getManager().notify(1,builder.build());
     }
 
-    private void showNotificationActions(String title , String body,String idClient) {
+    private void showNotificationActions(String title , String body,String path ,String idClient) {
         //ver lista
         Intent assetIntent = new Intent(this, AcceptReceiver.class);
         assetIntent.putExtra("idClient",idClient);
@@ -169,7 +170,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-        NotificationCompat.Builder builder = notificationHelper.getNotificationOldApiActions(title,body,sound,acceptAction,cancelAction);
+        NotificationCompat.Builder builder = notificationHelper.getNotificationOldApiActions(title,body,path,sound,acceptAction,cancelAction);
         notificationHelper.getManager().notify(2,builder.build());
     }
 

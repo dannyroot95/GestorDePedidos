@@ -63,12 +63,15 @@ public class Notificacion extends AppCompatActivity {
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
     private Vibrator vibrator;
+    TextView photo;
+    String defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/fotoDefault.jpg?alt=media&token=f74486bf-432e-4af6-b114-baa523e1f801";
     long[] pattern = {400, 600, 100,300,100,150,100,75};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacion);
+        photo = findViewById(R.id.pathPhotoCall);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -158,6 +161,23 @@ public class Notificacion extends AppCompatActivity {
         });
 
         vibrator.vibrate(pattern, 0);
+        mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("foto")){
+                    String Foto = dataSnapshot.child("foto").getValue().toString();
+                    photo.setText(Foto);
+                }
+                else {
+                    photo.setText(defaultPhoto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -242,9 +262,11 @@ public class Notificacion extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -292,9 +314,11 @@ public class Notificacion extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
@@ -342,9 +366,11 @@ public class Notificacion extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
