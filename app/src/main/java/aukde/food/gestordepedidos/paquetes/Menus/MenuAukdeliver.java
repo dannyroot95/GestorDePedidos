@@ -325,12 +325,9 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         editor.apply();*/
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
-        Intent intent = new Intent(MenuAukdeliver.this,
-                Inicio.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(MenuAukdeliver.this, Inicio.class);
         startActivity(intent);
-        //finish();
+        finish();
         mDialog.dismiss();
     }
 
@@ -367,14 +364,14 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setPersisted(true)
                     .setBackoffCriteria(1000,JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-                    .setMinimumLatency(5*1000)
+                    //.setMinimumLatency(1000)
                     .build();
         }else{
             info = new JobInfo.Builder(ID_SERVICIO, componentName)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setPersisted(true)
                     .setBackoffCriteria(1000,JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-                    .setPeriodic(5*1000)
+                    //.setPeriodic(1000)
                     .build();
         }
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);

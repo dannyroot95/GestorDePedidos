@@ -51,11 +51,16 @@ public class JobServiceMonitoreo extends JobService {
                 map.put("0",latitude);
                 map.put("1",longitude);
 
+                // correccion de error de localizacion cuando se logea un usuario que tenga dos tipos de usuarios (Admin , Aukdeliver)
                 if(mAuth.getCurrentUser() != null) {
+                    if(!mAuth.getUid().equals("UnwAmhwRzmRLn8aozWjnYFOxYat2") && !mAuth.getUid().equals("nS8J0zEj53OcXSugQsXIdMKUi5r1")
+                    && !mAuth.getUid().equals("9sjTQMmowxWYJGTDUY98rAR2jzB3")){
                     mDatabase.child("Monitoreo").child(idUser).child("l").updateChildren(map);
                     keyGeofire();
                     nameGeofire();
+                    }
                 }
+
                 //Toast.makeText(ServiceMonitoreo.this, "lat : "+lat+" lon : "+lon, Toast.LENGTH_SHORT).show();
                 Log.d("LOCATION_UPDATE",latitude+" , "+longitude);
             }
@@ -103,7 +108,7 @@ public class JobServiceMonitoreo extends JobService {
             if (notificationManager != null && notificationManager.getNotificationChannel(channel_id) == null) {
 
                 NotificationChannel notificationChannel = new NotificationChannel(channel_id,
-                        "Location Service", NotificationManager.IMPORTANCE_HIGH);
+                        "Servicio de Notificaciones", NotificationManager.IMPORTANCE_HIGH);
 
                 notificationChannel.setDescription("Cannal de notificaciones");
                 notificationManager.createNotificationChannel(notificationChannel);
@@ -136,10 +141,12 @@ public class JobServiceMonitoreo extends JobService {
         mDatabaseX.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String nombre = dataSnapshot.child("nombres").getValue().toString();
-                Map<String , Object> map = new HashMap<>();
-                map.put("nombre",nombre);
-                mDatabase.child("Monitoreo").child(mAuth.getUid()).updateChildren(map);
+
+                    String nombre = dataSnapshot.child("nombres").getValue().toString();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nombre", nombre);
+                    mDatabase.child("Monitoreo").child(mAuth.getUid()).updateChildren(map);
+
             }
 
             @Override

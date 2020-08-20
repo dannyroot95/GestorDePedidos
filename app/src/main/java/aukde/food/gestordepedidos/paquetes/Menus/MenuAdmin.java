@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import android.app.ProgressDialog;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -98,7 +99,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mTokenProvider = new TokenProvider();
         mAuth = new AuthProviders();
-
 
 
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +216,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         //editor.apply();
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
-        Intent intent = new Intent(MenuAdmin.this, LoginAdmin.class);
+        Intent intent = new Intent(MenuAdmin.this, Inicio.class);
         startActivity(intent);
         finish();
         mDialog.dismiss();
@@ -282,6 +282,5 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     void generarToken(){
         mTokenProvider.create(mAuth.getId());
     }
-
 
 }
