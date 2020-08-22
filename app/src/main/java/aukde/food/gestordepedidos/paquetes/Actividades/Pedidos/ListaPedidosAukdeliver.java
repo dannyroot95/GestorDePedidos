@@ -23,6 +23,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamadaAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import es.dmoral.toasty.Toasty;
 
 public class ListaPedidosAukdeliver extends AppCompatActivity {
 
@@ -74,7 +75,7 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
                     mDialogActualizeData.dismiss();
                 }
                 else {
-                    Toast.makeText(ListaPedidosAukdeliver.this, "Sin Pedidos", Toast.LENGTH_SHORT).show();
+                    Toasty.info(ListaPedidosAukdeliver.this, "Sin Pedidos", Toast.LENGTH_SHORT,true).show();
                     mDialogActualizeData.dismiss();
                 }
             }

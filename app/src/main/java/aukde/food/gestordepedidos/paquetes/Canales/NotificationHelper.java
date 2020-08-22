@@ -4,11 +4,14 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 
@@ -24,7 +27,7 @@ import aukde.food.gestordepedidos.R;
 public class NotificationHelper extends ContextWrapper {
 
     private static final String CHANNEL_ID = "aukde.food.gestordepedidos";
-    private static final String CHANNEL_NAME = "Gestordepedidos";
+    private static final String CHANNEL_NAME = "Gestor de pedidos";
     private NotificationManager manager;
 
     public NotificationHelper(Context base) {
@@ -75,6 +78,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_notificacion)
                 .setStyle(new Notification.BigTextStyle().bigText(body).setBigContentTitle(title));
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -90,6 +94,7 @@ public class NotificationHelper extends ContextWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return new Notification.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -115,6 +120,8 @@ public class NotificationHelper extends ContextWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -139,6 +146,8 @@ public class NotificationHelper extends ContextWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)

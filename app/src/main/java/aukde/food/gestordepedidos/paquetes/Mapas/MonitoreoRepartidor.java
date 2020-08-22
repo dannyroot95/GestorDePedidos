@@ -236,7 +236,8 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
     private void showAlertDialogNOGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicacion para continuar")
-                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
+                .setCancelable(false)
+                .setPositiveButton("Activar tu Ubicación", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
@@ -286,6 +287,7 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Proporciona los permisos para continuar")
+                        .setCancelable(false)
                         .setMessage("Esta aplicacion requiere de los permisos de ubicacion para poder utilizarse")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override

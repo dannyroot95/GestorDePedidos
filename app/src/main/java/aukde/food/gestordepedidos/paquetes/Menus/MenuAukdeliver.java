@@ -7,18 +7,25 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,12 +63,14 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukde
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
+    NetworkReceiver networkReceiver = new NetworkReceiver();
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
     private Button btnLista , btnPerfil;
@@ -80,6 +89,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private FusedLocationProviderClient mFusedLocation;
     private LocationRequest mLocationRequest;
     private LatLng origen;
+    private LinearLayout mDisconnect;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -103,6 +113,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
+        mDisconnect = findViewById(R.id.desconectado);
         mDialog = new ProgressDialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
@@ -154,6 +165,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         getDataUser();
         startLocacion();
         startJobSchedule();
+        stateNetwork();
+
 
     }
 
@@ -175,6 +188,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Proporciona los permisos para continuar")
+                        .setCancelable(false)
                         .setMessage("Esta aplicación requiere los permisos para continuar")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -268,7 +282,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
             if (requestCode == SETTINGS_REQUEST_CODE && gpsActive()) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
@@ -302,7 +315,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicación para continuar")
-                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
+                .setCancelable(false)
+                .setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
@@ -354,7 +368,31 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mTokenProvider.create(mAuth.getId());
     }
 
+    public static boolean VerifyNetwork(Context context) {
 
+        boolean connected = false;
+
+        ConnectivityManager connec = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Recupera todas las redes (tanto móviles como wifi)
+        @SuppressLint("MissingPermission") NetworkInfo[] redes = connec.getAllNetworkInfo();
+
+        for (int i = 0; i < redes.length; i++) {
+            // Si alguna red tiene conexión, se devuelve true
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                connected = true;
+            }
+        }
+        return connected;
+    }
+
+    private void stateNetwork(){
+        if (!VerifyNetwork(this)) {
+            mDisconnect.setVisibility(View.VISIBLE);
+        }
+        else{
+            mDisconnect.setVisibility(View.GONE);
+        }
+    }
 
     private void startJobSchedule(){
         ComponentName componentName = new ComponentName(getApplicationContext(), JobServiceMonitoreo.class);
@@ -366,6 +404,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                     .setBackoffCriteria(1000,JobInfo.BACKOFF_POLICY_EXPONENTIAL)
                     //.setMinimumLatency(1000)
                     .build();
+
         }else{
             info = new JobInfo.Builder(ID_SERVICIO, componentName)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
@@ -388,4 +427,36 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         scheduler.cancel(ID_SERVICIO);
     }
 
+    public void restart(View view){
+        Intent intent = new Intent(MenuAukdeliver.this,MenuAukdeliver.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        startLocacion();
+        stateNetwork();
+        unregisterReceiver(networkReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocacion();
+        stateNetwork();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, filter);
+        super.onStart();
+    }
 }
