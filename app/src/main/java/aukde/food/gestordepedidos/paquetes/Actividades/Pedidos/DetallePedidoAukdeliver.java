@@ -496,7 +496,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -542,7 +542,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -588,7 +588,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -642,7 +642,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha COMPLETADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -688,7 +688,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha COMPLETADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -734,7 +734,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nHa Completado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha COMPLETADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {

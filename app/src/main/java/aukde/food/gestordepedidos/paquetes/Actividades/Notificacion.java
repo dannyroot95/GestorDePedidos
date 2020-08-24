@@ -142,6 +142,9 @@ public class Notificacion extends AppCompatActivity {
                 finishAndRemoveTask();
                 cerrar();
                 verLista();
+                sendAcceptNotification();
+                sendAcceptNotification2();
+                sendAcceptNotification3();
                 vibrator.cancel();//cancela vibración
             }
         });
@@ -254,9 +257,7 @@ public class Notificacion extends AppCompatActivity {
     private void sendCancelNotification(){
         final String numPedNotify = ntfNumPedido.getText().toString();
         final String dataRepartidor = ntfAukdeliver.getText().toString();
-        final String admin1 = "9sjTQMmowxWYJGTDUY98rAR2jzB3";
         final String admin2 = "UnwAmhwRzmRLn8aozWjnYFOxYat2";
-        final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
         tokenProvider.getToken(admin2).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -265,7 +266,7 @@ public class Notificacion extends AppCompatActivity {
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -317,7 +318,7 @@ public class Notificacion extends AppCompatActivity {
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
@@ -369,7 +370,163 @@ public class Notificacion extends AppCompatActivity {
                     String ruta = photo.getText().toString();
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Pedido #"+numPedNotify);
-                    map.put("body","El repartidor "+dataRepartidor+"\nha rechazado el pedido!");
+                    map.put("body","El repartidor "+dataRepartidor+"\nha RECHAZADO el pedido!");
+                    map.put("path",ruta);
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sendAcceptNotification(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin2 = "UnwAmhwRzmRLn8aozWjnYFOxYat2";
+        tokenProvider.getToken(admin2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nha ACEPTADO el pedido!");
+                    map.put("path",ruta);
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sendAcceptNotification2(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin1 = "9sjTQMmowxWYJGTDUY98rAR2jzB3";
+        tokenProvider.getToken(admin1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nha ACEPTADO el pedido!");
+                    map.put("path",ruta);
+                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if(response.body() !=null){
+                                if(response.body().getSuccess() == 1){
+                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Log.d("Error","Error encontrado"+ t.getMessage());
+                        }
+                    });
+                }
+
+                else {
+                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sendAcceptNotification3(){
+        final String numPedNotify = ntfNumPedido.getText().toString();
+        final String dataRepartidor = ntfAukdeliver.getText().toString();
+        final String admin3 = "nS8J0zEj53OcXSugQsXIdMKUi5r1";
+        tokenProvider.getToken(admin3).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = photo.getText().toString();
+                    Map<String,String> map = new HashMap<>();
+                    map.put("title","Pedido #"+numPedNotify);
+                    map.put("body","El repartidor "+dataRepartidor+"\nha ACEPTADO el pedido!");
                     map.put("path",ruta);
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
