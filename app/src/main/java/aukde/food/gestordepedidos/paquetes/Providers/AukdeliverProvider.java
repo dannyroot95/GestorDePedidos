@@ -30,6 +30,7 @@ public class AukdeliverProvider {
         map.put("categoria_licencia",aukdeliver.getCategoriaLic());
         map.put("numero licencia",aukdeliver.getNumLicencia());
         map.put("email",aukdeliver.getEmail());
+        map.put("soat",aukdeliver.getSoat());
 
         return mDatabaseReference.child(aukdeliver.getId()).setValue(map);
 

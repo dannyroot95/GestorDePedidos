@@ -159,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Marca de moto"
-                    android:maxLength="9"
+                    android:maxLength="20"
                     android:id="@+id/AukdeliverMarcaMoto"
                     android:inputType="text">
 
@@ -231,7 +231,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Número de licencia"
-                    android:maxLength="15"
+                    android:maxLength="9"
                     android:id="@+id/AukdeliverNumLicencia"
                     android:inputType="text">
 
@@ -239,6 +239,29 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_num_licencia"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="SOAT"
+                    android:maxLength="15"
+                    android:id="@+id/AukdeliverNumSoat"
+                    android:inputType="text">
+
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -31,7 +31,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
 
     private TextInputEditText edtNombres, edtApellidos,edtUsername,edtDni, edtTelefono,
             edtMarcaMoto,edtPlacaMoto,edtCategoriaLic,edtNumLicencia,edtEmail, edtPassword,
-            edtRepetirPass, edtClaveAuth;
+            edtRepetirPass, edtClaveAuth , edtSoat;
 
     private ProgressDialog mDialog;
     Button mButtonRegistro;
@@ -50,24 +50,29 @@ public class RegistroAukdeliver extends AppCompatActivity {
         mButtonRegistro = findViewById(R.id.btnRegistrarse);
         mDialog = new ProgressDialog(this);
 
-        edtNombres = (TextInputEditText) findViewById(R.id.AukdeliverNombres);
-        edtApellidos = (TextInputEditText) findViewById(R.id.AukdeliverApellidos);
-        edtUsername = (TextInputEditText) findViewById(R.id.AukdeliverUsername);
-        edtDni = (TextInputEditText) findViewById(R.id.AukdeliverDNI);
-        edtTelefono = (TextInputEditText) findViewById(R.id.AukdeliverTeléfono);
-        edtMarcaMoto = (TextInputEditText) findViewById(R.id.AukdeliverMarcaMoto);
-        edtPlacaMoto = (TextInputEditText) findViewById(R.id.AukdeliverPlaca);
-        edtCategoriaLic = (TextInputEditText) findViewById(R.id.AukdeliverCategoriaLic);
-        edtNumLicencia = (TextInputEditText) findViewById(R.id.AukdeliverNumLicencia);
-        edtEmail = (TextInputEditText) findViewById(R.id.AukdeliverEmail);
-        edtPassword = (TextInputEditText) findViewById(R.id.AukdeliverEdtPassword);
-        edtRepetirPass = (TextInputEditText) findViewById(R.id.AukdeliverRepetirContrasena);
-        edtClaveAuth = (TextInputEditText) findViewById(R.id.AukdeliverClaveAutorización);
+        edtNombres = findViewById(R.id.AukdeliverNombres);
+        edtApellidos = findViewById(R.id.AukdeliverApellidos);
+        edtUsername = findViewById(R.id.AukdeliverUsername);
+        edtDni = findViewById(R.id.AukdeliverDNI);
+        edtTelefono = findViewById(R.id.AukdeliverTeléfono);
+        edtMarcaMoto = findViewById(R.id.AukdeliverMarcaMoto);
+        edtPlacaMoto = findViewById(R.id.AukdeliverPlaca);
+        edtCategoriaLic = findViewById(R.id.AukdeliverCategoriaLic);
+        edtNumLicencia =  findViewById(R.id.AukdeliverNumLicencia);
+        edtEmail = findViewById(R.id.AukdeliverEmail);
+        edtPassword =  findViewById(R.id.AukdeliverEdtPassword);
+        edtRepetirPass = findViewById(R.id.AukdeliverRepetirContrasena);
+        edtClaveAuth = findViewById(R.id.AukdeliverClaveAutorización);
+        edtSoat = findViewById(R.id.AukdeliverNumSoat);
 
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClickRegistro();
+                Intent intent = new Intent(getApplicationContext(), LoginAdmin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("dato","valor");
+                startActivity(intent);
             }
         });
 
@@ -89,18 +94,19 @@ public class RegistroAukdeliver extends AppCompatActivity {
         final String password = edtPassword.getText().toString();
         final String repetirPass = edtRepetirPass.getText().toString();
         final String ClaveAuth = edtClaveAuth.getText().toString();
+        final String soat = edtSoat.getText().toString();
 
         if(!nombres.isEmpty() && !apellidos.isEmpty() &&!username.isEmpty() && !dni.isEmpty() && !telefono.isEmpty()
                 && !marcaMoto.isEmpty() && !placaMoto.isEmpty() && !categoriaLic.isEmpty() &&
                 !numLicencia.isEmpty() && !email.isEmpty() && !password.isEmpty()
-                && !repetirPass.isEmpty() && !ClaveAuth.isEmpty()){
+                && !repetirPass.isEmpty() && !ClaveAuth.isEmpty() && !soat.isEmpty()){
 
             mDialog.show();
             mDialog.setMessage("Registrando usuario...");
             if(password.length()>=6){
                 if(password.equals(repetirPass)){
                     if(ClaveAuth.equals("AUK2020+*") || ClaveAuth.equals("WRZ20@") || ClaveAuth.equals("GOGOOL*")){
-                        registrar(nombres,apellidos,username,dni,telefono,marcaMoto,placaMoto,categoriaLic,numLicencia,email,password);
+                        registrar(nombres,apellidos,username,dni,telefono,marcaMoto,placaMoto,categoriaLic,numLicencia,email,soat,password);
                     }
                     else {
                         mDialog.dismiss();
@@ -123,14 +129,14 @@ public class RegistroAukdeliver extends AppCompatActivity {
         }
     }
 
-    private void registrar(final String nombres, final String apellidos,final String username, final String dni, final String telefono, final String marcaMoto, final String placaMoto, final String categoriaLic, final String numLicencia, final String email, String password) {
+    private void registrar(final String nombres, final String apellidos,final String username, final String dni, final String telefono, final String marcaMoto, final String placaMoto, final String categoriaLic, final String numLicencia, final String email,final String soat, String password) {
 
         mAuthProviders.Registro(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Aukdeliver aukdeliver = new Aukdeliver(id,nombres,apellidos,username,dni,telefono,marcaMoto,placaMoto,categoriaLic,numLicencia,email);
+                Aukdeliver aukdeliver = new Aukdeliver(id,nombres,apellidos,username,dni,telefono,marcaMoto,placaMoto,categoriaLic,numLicencia,email,soat);
                 mapear(aukdeliver);
             }
         });
@@ -159,11 +165,6 @@ public class RegistroAukdeliver extends AppCompatActivity {
 
     void logout() {
         mAuthProviders.Logout();
-        Intent intent = new Intent(RegistroAukdeliver.this, LoginAdmin.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("dato","valor");
-        startActivity(intent);
         finish();
     }
 

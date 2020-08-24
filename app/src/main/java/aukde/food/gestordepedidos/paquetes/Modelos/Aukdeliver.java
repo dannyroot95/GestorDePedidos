@@ -13,10 +13,9 @@ public class Aukdeliver {
     String categoriaLic;
     String numLicencia;
     String email;
+    String soat;
 
-    public Aukdeliver(String id, String nombres, String apellidos, String nombreUsuario, String dni,
-                      String telefono, String marcaDeMoto, String placa, String categoriaLic,
-                      String numLicencia, String email) {
+    public Aukdeliver(String id, String nombres, String apellidos, String nombreUsuario, String dni, String telefono, String marcaDeMoto, String placa, String categoriaLic, String numLicencia, String email, String soat) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -28,6 +27,7 @@ public class Aukdeliver {
         this.categoriaLic = categoriaLic;
         this.numLicencia = numLicencia;
         this.email = email;
+        this.soat = soat;
     }
 
     public String getId() {
@@ -91,7 +91,7 @@ public class Aukdeliver {
     }
 
     public void setPlaca(String placa) {
-        placa = placa;
+        this.placa = placa;
     }
 
     public String getCategoriaLic() {
@@ -99,7 +99,7 @@ public class Aukdeliver {
     }
 
     public void setCategoriaLic(String categoriaLic) {
-        categoriaLic = categoriaLic;
+        this.categoriaLic = categoriaLic;
     }
 
     public String getNumLicencia() {
@@ -116,5 +116,13 @@ public class Aukdeliver {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSoat() {
+        return soat;
+    }
+
+    public void setSoat(String soat) {
+        this.soat = soat;
     }
 }
