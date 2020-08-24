@@ -2,6 +2,9 @@ package aukde.food.gestordepedidos.paquetes.Menus.Perfiles;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +37,8 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AukdeliverProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
+import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -50,7 +55,8 @@ public class PerfilAukdeliver extends AppCompatActivity {
     private final int GALLERY_REQUEST = 1;
     String upNombre;
     String upApellido;
-
+    NetworkReceiver networkReceiver = new NetworkReceiver();
+    GpsReceiver gpsReceiver = new GpsReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,8 @@ public class PerfilAukdeliver extends AppCompatActivity {
         btnUpdateX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActualzarPerfil();
+               // ActualzarPerfil();
+                Toasty.error(PerfilAukdeliver.this, "No tiene permisos para cambiar sus nombres", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -214,4 +221,20 @@ public class PerfilAukdeliver extends AppCompatActivity {
     public void onBackPressed(){
         NavUtils.navigateUpFromSameTask(this);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkReceiver);
+        unregisterReceiver(gpsReceiver);
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, filter);
+        registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+        super.onStart();
+    }
+
 }

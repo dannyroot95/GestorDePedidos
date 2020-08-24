@@ -7,25 +7,20 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +36,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,19 +44,18 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -71,6 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     NetworkReceiver networkReceiver = new NetworkReceiver();
+    GpsReceiver gpsReceiver = new GpsReceiver();
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
     private Button btnLista , btnPerfil;
@@ -319,7 +313,15 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                     public void onClick(DialogInterface dialog, int which) {
                         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
-                }).create().show();
+                })
+                .setNegativeButton("Refrescar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .create().show();
     }
 
     public void show_popup(View view) {
@@ -404,6 +406,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         super.onStop();
         startLocacion();
         unregisterReceiver(networkReceiver);
+        unregisterReceiver(gpsReceiver);
     }
 
     @Override
@@ -421,6 +424,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     protected void onStart() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkReceiver, filter);
+        registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         super.onStart();
     }
 

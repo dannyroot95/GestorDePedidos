@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +26,8 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamadaAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
+import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
+import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import es.dmoral.toasty.Toasty;
 
 public class ListaPedidosAukdeliver extends AppCompatActivity {
@@ -35,6 +40,8 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private ProgressDialog mDialogActualizeData;
     private FirebaseAuth mAuth;
+    NetworkReceiver networkReceiver = new NetworkReceiver();
+    GpsReceiver gpsReceiver = new GpsReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +128,22 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkReceiver);
+        unregisterReceiver(gpsReceiver);
+    }
+
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, filter);
+        registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+        super.onStart();
     }
 
 }

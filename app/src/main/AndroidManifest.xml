@@ -59,6 +59,12 @@
             android:enabled="true" />
 
         <receiver android:name=".paquetes.Receptor.NetworkReceiver" android:enabled="true" android:exported="true"/>
+        <receiver android:name=".paquetes.Receptor.GpsReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.location.GPS_ENABLED_CHANGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <service android:name=".paquetes.Servicios.MyFirebaseMessagingClient">
             <intent-filter>

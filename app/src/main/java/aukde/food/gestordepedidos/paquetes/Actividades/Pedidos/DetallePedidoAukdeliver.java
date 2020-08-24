@@ -55,6 +55,7 @@ import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -89,6 +90,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     public static final int SETTINGS_REQUEST_CODE = 2;
     public static final int LOCATION_REQUEST_CODE = 1;
     NetworkReceiver networkReceiver = new NetworkReceiver();
+    GpsReceiver gpsReceiver = new GpsReceiver();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -876,6 +878,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     protected void onStop() {
         super.onStop();
         startLocacion();
+        unregisterReceiver(networkReceiver);
+        unregisterReceiver(gpsReceiver);
     }
 
     @Override
@@ -888,6 +892,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     protected void onStart() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkReceiver, filter);
+        registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         super.onStart();
     }
 
