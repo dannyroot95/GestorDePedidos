@@ -14,10 +14,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,12 +50,12 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
-import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +88,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     public static final int SETTINGS_REQUEST_CODE = 2;
     public static final int LOCATION_REQUEST_CODE = 1;
+    NetworkReceiver networkReceiver = new NetworkReceiver();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -456,6 +459,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this,R.style.ThemeOverlay);
         builder.setTitle("Alerta!");
         builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_error);
         builder.setMessage("Esta seguro de rechazar este pedido..? ");
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
@@ -850,6 +854,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this);
         builder.setTitle("Confirmar");
         builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_atras);
         builder.setMessage("Deseas volver a la lista de pedidos? ");
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
@@ -873,5 +878,17 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         startLocacion();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocacion();
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, filter);
+        super.onStart();
+    }
 
 }

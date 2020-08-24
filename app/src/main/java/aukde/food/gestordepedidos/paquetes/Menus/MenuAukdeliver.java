@@ -91,6 +91,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private LatLng origen;
     private LinearLayout mDisconnect;
 
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -113,7 +114,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
-        mDisconnect = findViewById(R.id.desconectado);
         mDialog = new ProgressDialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
@@ -165,8 +165,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         getDataUser();
         startLocacion();
         startJobSchedule();
-        stateNetwork();
-
 
     }
 
@@ -368,32 +366,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mTokenProvider.create(mAuth.getId());
     }
 
-    public static boolean VerifyNetwork(Context context) {
-
-        boolean connected = false;
-
-        ConnectivityManager connec = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Recupera todas las redes (tanto móviles como wifi)
-        @SuppressLint("MissingPermission") NetworkInfo[] redes = connec.getAllNetworkInfo();
-
-        for (int i = 0; i < redes.length; i++) {
-            // Si alguna red tiene conexión, se devuelve true
-            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
-                connected = true;
-            }
-        }
-        return connected;
-    }
-
-    private void stateNetwork(){
-        if (!VerifyNetwork(this)) {
-            mDisconnect.setVisibility(View.VISIBLE);
-        }
-        else{
-            mDisconnect.setVisibility(View.GONE);
-        }
-    }
-
     private void startJobSchedule(){
         ComponentName componentName = new ComponentName(getApplicationContext(), JobServiceMonitoreo.class);
         JobInfo info;
@@ -427,17 +399,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         scheduler.cancel(ID_SERVICIO);
     }
 
-    public void restart(View view){
-        Intent intent = new Intent(MenuAukdeliver.this,MenuAukdeliver.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
         startLocacion();
-        stateNetwork();
         unregisterReceiver(networkReceiver);
     }
 
@@ -445,7 +410,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     protected void onResume() {
         super.onResume();
         startLocacion();
-        stateNetwork();
     }
 
     @Override
@@ -459,4 +423,5 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         registerReceiver(networkReceiver, filter);
         super.onStart();
     }
+
 }

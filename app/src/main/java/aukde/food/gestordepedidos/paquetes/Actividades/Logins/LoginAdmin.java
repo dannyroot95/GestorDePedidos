@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +42,7 @@ public class LoginAdmin extends AppCompatActivity {
   DatabaseReference mDatabaseReference;
   SharedPreferences mSharedPreference;
   AuthProviders authProviders;
+  TextView recuperarClave;
 
 
   @Override
@@ -50,8 +52,8 @@ public class LoginAdmin extends AppCompatActivity {
     setTheme(R.style.AppThemeDark);
     setContentView(R.layout.activity_login_admin);
     MiToolbar.Mostrar(this,"Login Admin",true);
-
     edtEmail = findViewById(R.id.logcorreo);
+    recuperarClave = findViewById(R.id.txtOlvidar);
     edtPassword = findViewById(R.id.logContrasena);
     btnlogin = findViewById(R.id.btnLogin);
     authProviders = new AuthProviders();
@@ -59,6 +61,7 @@ public class LoginAdmin extends AppCompatActivity {
     mAuth = FirebaseAuth.getInstance();
     mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     mDialog = new ProgressDialog(this);
+
     Bundle bundle = this.getIntent().getExtras();
     if(bundle !=null){
       String stData = bundle.getString("dato");
@@ -67,11 +70,19 @@ public class LoginAdmin extends AppCompatActivity {
       }
     }
 
-
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         login();
+      }
+    });
+
+    recuperarClave.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        startActivity(new Intent(LoginAdmin.this,RecuperarAdmin.class));
+
       }
     });
 

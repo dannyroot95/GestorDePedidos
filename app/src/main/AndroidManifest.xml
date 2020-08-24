@@ -80,7 +80,7 @@
             android:name=".paquetes.Actividades.Pedidos.RealizarPedido"
             android:parentActivityName=".paquetes.Menus.MenuAdmin" />
         <activity android:name=".paquetes.Menus.MenuProveedor" />
-        <activity android:name=".paquetes.Menus.MenuAukdeliver" />
+        <activity android:name=".paquetes.Menus.MenuAukdeliver"/>
         <activity android:name=".paquetes.Menus.MenuAdmin"
             android:screenOrientation="portrait"
             />
@@ -105,6 +105,15 @@
         <activity
             android:name=".paquetes.Actividades.Logins.LoginAdmin"
             android:parentActivityName=".paquetes.Actividades.Inicio" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.RecuperarAdmin"
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.RecuperarAukdelivery"
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.RecuperarProveedor"
+            android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor" />
         <activity
             android:name=".paquetes.Actividades.Inicio"
             android:theme="@style/splashScreenTheme">

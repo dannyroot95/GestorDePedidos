@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +39,7 @@ public class LoginProveedor extends AppCompatActivity {
     DatabaseReference mDatabaseReference;
     SharedPreferences mSharedPreference;
     AuthProviders authProviders;
+    TextView recuperarClave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,8 @@ public class LoginProveedor extends AppCompatActivity {
         MiToolbar.Mostrar(this,"Login Proveedor",true);
         edtEmail = findViewById(R.id.logcorreo);
         edtPassword = findViewById(R.id.logContrasena);
-        btnlogin = (Button) findViewById(R.id.btnLogin);
+        recuperarClave = findViewById(R.id.txtOlvidar);
+        btnlogin = findViewById(R.id.btnLogin);
         authProviders = new AuthProviders();
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
@@ -58,6 +61,15 @@ public class LoginProveedor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
+            }
+        });
+
+        recuperarClave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(LoginProveedor.this,RecuperarProveedor.class));
+
             }
         });
 

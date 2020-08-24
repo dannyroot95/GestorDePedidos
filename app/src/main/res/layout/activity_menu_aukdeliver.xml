@@ -11,39 +11,6 @@
     tools:context=".paquetes.Menus.MenuAukdeliver">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/desconectado"
-        android:visibility="visible"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/nowifi"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:padding="20dp"
-            android:textStyle="bold"
-            android:textSize="26dp"
-            android:textColor="#000"
-            android:fontFamily="@font/futura"
-            android:textAlignment="center"
-            android:text="Sin Conexión a Internet"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:id="@+id/restart"
-            android:textColor="#000"
-            android:onClick="restart"
-            android:text="Reintentar"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_marginTop="6dp"
