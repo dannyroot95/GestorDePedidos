@@ -45,7 +45,7 @@ public class NotificationHelper extends ContextWrapper {
         );
         notificationChannel.enableLights(true);
         notificationChannel.enableVibration(true);
-        notificationChannel.setLightColor(Color.GRAY);
+        notificationChannel.setLightColor(Color.GREEN);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getManager().createNotificationChannel(notificationChannel);
     }

@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +40,7 @@ public class RegistroProveedor extends AppCompatActivity {
     Button mButtonRegistro;
     AuthProviders mAuthProviders;
     ProveedorProvider mProveedorProvider;
+    Spinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +54,37 @@ public class RegistroProveedor extends AppCompatActivity {
         mButtonRegistro = findViewById(R.id.btnRegistrarse);
         mDialog = new ProgressDialog(this);
 
-        edtNombres = (TextInputEditText) findViewById(R.id.ProveedorNombres);
-        edtApellidos = (TextInputEditText) findViewById(R.id.ProveedorApellidos);
-        edtUsername = (TextInputEditText) findViewById(R.id.ProveedorUsername);
-        edtDni = (TextInputEditText) findViewById(R.id.ProveedorDNI);
-        edtTelefono = (TextInputEditText) findViewById(R.id.ProveedorTeléfono);
-        edtDireccion = (TextInputEditText) findViewById(R.id.ProveedorDireccion);
-        edtCategoria = (TextInputEditText) findViewById(R.id.ProveedorCategoria);
-        edtNombreEmpresa = (TextInputEditText) findViewById(R.id.ProveedorNombreEmpre);
-        edtRUC= (TextInputEditText) findViewById(R.id.ProveedorRUC);
-        edtEmail = (TextInputEditText) findViewById(R.id.ProveedorEmail);
-        edtPassword = (TextInputEditText) findViewById(R.id.ProveedorEdtPassword);
-        edtRepetirPass = (TextInputEditText) findViewById(R.id.ProveedorRepetirContrasena);
-        edtClaveAuth = (TextInputEditText) findViewById(R.id.ProveedorClaveAutorización);
+        edtNombres = findViewById(R.id.ProveedorNombres);
+        edtApellidos = findViewById(R.id.ProveedorApellidos);
+        edtUsername = findViewById(R.id.ProveedorUsername);
+        edtDni = findViewById(R.id.ProveedorDNI);
+        edtTelefono = findViewById(R.id.ProveedorTeléfono);
+        edtDireccion = findViewById(R.id.ProveedorDireccion);
+        edtCategoria = findViewById(R.id.ProveedorCategoria);
+        edtCategoria.setEnabled(false);
+        edtNombreEmpresa = findViewById(R.id.ProveedorNombreEmpre);
+        edtRUC= findViewById(R.id.ProveedorRUC);
+        edtEmail = findViewById(R.id.ProveedorEmail);
+        edtPassword = findViewById(R.id.ProveedorEdtPassword);
+        edtRepetirPass = findViewById(R.id.ProveedorRepetirContrasena);
+        edtClaveAuth = findViewById(R.id.ProveedorClaveAutorización);
+
+        mSpinner = findViewById(R.id.spinnerFood);
+        ArrayAdapter<CharSequence> adapterSpinnerFood = ArrayAdapter.createFromResource(this,R.
+                array.categoriaFood,R.layout.custom_spinner);
+        adapterSpinnerFood.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        mSpinner.setAdapter(adapterSpinnerFood);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtCategoria.setText(parent.getItemAtPosition(position).toString());
+                //String stSpinnerEstado = edtCategoriaLic.getText().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +175,6 @@ public class RegistroProveedor extends AppCompatActivity {
 
             }
         });
-
     }
 
     void logout() {

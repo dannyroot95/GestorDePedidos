@@ -102,7 +102,7 @@ public class JobServiceMonitoreo extends JobService {
         builder.setContentText("Activo!");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
-        builder.setPriority(NotificationCompat.PRIORITY_LOW);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null && notificationManager.getNotificationChannel(channel_id) == null) {
