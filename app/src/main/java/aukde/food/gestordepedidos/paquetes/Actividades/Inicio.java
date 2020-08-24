@@ -2,6 +2,8 @@ package aukde.food.gestordepedidos.paquetes.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,7 +36,6 @@ public class Inicio extends AppCompatActivity {
         btnAukdeliverLogin = findViewById(R.id.btnAukdeliver);
         btnProveedorLogin = findViewById(R.id.btnProveedor);
         mPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
-
 
         btnAdminLogin.setOnClickListener(new View.OnClickListener() {
             @Override

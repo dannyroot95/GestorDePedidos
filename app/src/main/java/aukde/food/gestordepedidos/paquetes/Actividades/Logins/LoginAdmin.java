@@ -62,14 +62,6 @@ public class LoginAdmin extends AppCompatActivity {
     mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     mDialog = new ProgressDialog(this);
 
-    Bundle bundle = this.getIntent().getExtras();
-    if(bundle !=null){
-      String stData = bundle.getString("dato");
-      if (stData.equals("valor")){
-        showDialog();
-      }
-    }
-
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -85,6 +77,14 @@ public class LoginAdmin extends AppCompatActivity {
 
       }
     });
+
+    Bundle bundle = this.getIntent().getExtras();
+    if(bundle !=null){
+      String stData = bundle.getString("dato");
+      if (stData.equals("valor")){
+        showDialog();
+      }
+    }
 
   }
 
@@ -153,24 +153,22 @@ public class LoginAdmin extends AppCompatActivity {
     }
   }
 
-
   private void showDialog(){
 
     AlertDialog.Builder builder = new AlertDialog.Builder(LoginAdmin.this,R.style.ThemeOverlay);
-      builder.setTitle("Registro exitoso!");
-      builder.setCancelable(false);
-      builder.setIcon(R.drawable.ic_risa);
-      builder.setMessage("Se requiere volver a Iniciar Sesión");
-      builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-          dialog.cancel();
-        }
-      });
-      builder.create();
-      builder.show();
+    builder.setTitle("Registro exitoso!");
+    builder.setCancelable(false);
+    builder.setIcon(R.drawable.ic_risa);
+    builder.setMessage("Se requiere volver a Iniciar Sesión");
+    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.cancel();
+      }
+    });
+    builder.create();
+    builder.show();
 
   }
-
 
 }

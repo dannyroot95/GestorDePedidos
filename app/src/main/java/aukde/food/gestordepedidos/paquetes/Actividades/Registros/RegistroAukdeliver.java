@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +41,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
     Button mButtonRegistro;
     AuthProviders mAuthProviders;
     AukdeliverProvider mAukdeliverProvider;
+    Spinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
         edtMarcaMoto = findViewById(R.id.AukdeliverMarcaMoto);
         edtPlacaMoto = findViewById(R.id.AukdeliverPlaca);
         edtCategoriaLic = findViewById(R.id.AukdeliverCategoriaLic);
+        edtCategoriaLic.setEnabled(false);
         edtNumLicencia =  findViewById(R.id.AukdeliverNumLicencia);
         edtEmail = findViewById(R.id.AukdeliverEmail);
         edtPassword =  findViewById(R.id.AukdeliverEdtPassword);
@@ -65,14 +71,27 @@ public class RegistroAukdeliver extends AppCompatActivity {
         edtClaveAuth = findViewById(R.id.AukdeliverClaveAutorización);
         edtSoat = findViewById(R.id.AukdeliverNumSoat);
 
+        mSpinner = findViewById(R.id.spinnerCat);
+        ArrayAdapter<CharSequence> adapterSpinnerCat = ArrayAdapter.createFromResource(this,R.
+                array.categoriaLic,R.layout.custom_spinner);
+        adapterSpinnerCat.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        mSpinner.setAdapter(adapterSpinnerCat);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtCategoriaLic.setText(parent.getItemAtPosition(position).toString());
+                //String stSpinnerEstado = edtCategoriaLic.getText().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClickRegistro();
-                Intent intent = new Intent(getApplicationContext(), LoginAdmin.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("dato","valor");
-                startActivity(intent);
             }
         });
 
@@ -164,8 +183,12 @@ public class RegistroAukdeliver extends AppCompatActivity {
     }
 
     void logout() {
-        mAuthProviders.Logout();
+        Intent intent = new Intent(getApplicationContext(), LoginAdmin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("dato","valor");
+        startActivity(intent);
         finish();
+        mAuthProviders.Logout();
     }
 
 }

@@ -48,14 +48,14 @@ public class RegistroAdmin extends AppCompatActivity {
         mDialog = new ProgressDialog(this);
         mButtonRegistro = findViewById(R.id.btnRegistrarse);
 
-        edtNombres = (TextInputEditText) findViewById(R.id.AdminNombres);
-        edtApellidos = (TextInputEditText) findViewById(R.id.AdminApellidos);
-        edtDni = (TextInputEditText) findViewById(R.id.AdminDNI);
-        edtTelefono = (TextInputEditText) findViewById(R.id.AdminTeléfono);
-        edtEmail = (TextInputEditText) findViewById(R.id.AdminEmail);
-        edtPassword = (TextInputEditText) findViewById(R.id.AdminEdtPassword);
-        edtRepetirPass = (TextInputEditText) findViewById(R.id.AdminRepetirContrasena);
-        edtClaveAuth = (TextInputEditText) findViewById(R.id.AdminClaveAutorización);
+        edtNombres = findViewById(R.id.AdminNombres);
+        edtApellidos = findViewById(R.id.AdminApellidos);
+        edtDni = findViewById(R.id.AdminDNI);
+        edtTelefono = findViewById(R.id.AdminTeléfono);
+        edtEmail = findViewById(R.id.AdminEmail);
+        edtPassword = findViewById(R.id.AdminEdtPassword);
+        edtRepetirPass = findViewById(R.id.AdminRepetirContrasena);
+        edtClaveAuth = findViewById(R.id.AdminClaveAutorización);
 
 
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
@@ -141,11 +141,12 @@ public class RegistroAdmin extends AppCompatActivity {
     }
 
     void logout() {
-        mAuthProviders.Logout();
-        Intent intent = new Intent(RegistroAdmin.this, LoginAdmin.class);
+        Intent intent = new Intent(getApplicationContext(), LoginAdmin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("dato","valor");
         startActivity(intent);
         finish();
+        mAuthProviders.Logout();
     }
 
 

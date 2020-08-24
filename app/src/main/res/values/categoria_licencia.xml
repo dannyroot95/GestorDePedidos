@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categoriaLic">
+        <item>A-I</item>
+        <item>A-IIa</item>
+        <item>A-IIb</item>
+        <item>B-I</item>
+        <item>B-IIa</item>
+        <item>B-IIa</item>
+        <item>B-IIc</item>
+    </string-array>
+</resources>

@@ -182,7 +182,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Placa"
+                    android:hint="Placa de vehículo"
                     android:maxLength="9"
                         android:id="@+id/AukdeliverPlaca"
                     android:inputType="text">
@@ -192,27 +192,42 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_categoria"/>
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:hint="Categoría de licencia"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Categoría de licencia"
                     android:maxLength="9"
+                    android:textColor="#000"
+                    android:textColorHint="#000"
+                    android:hint="Categoría de licencia"
                     android:id="@+id/AukdeliverCategoriaLic"
                     android:inputType="text">
 
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:id="@+id/spinnerCat"
+                android:gravity="bottom"
+                android:spinnerMode="dialog"
+                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -254,8 +269,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="SOAT"
-                    android:maxLength="15"
+                    android:hint="SOAT ó N° de serie"
+                    android:maxLength="18"
                     android:id="@+id/AukdeliverNumSoat"
                     android:inputType="text">
 
@@ -299,6 +314,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
+                app:passwordToggleEnabled = "true"
+                app:passwordToggleDrawable="@drawable/pass"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -323,6 +340,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
+                app:passwordToggleEnabled = "true"
+                app:passwordToggleDrawable="@drawable/pass"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -347,6 +366,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
+                app:passwordToggleEnabled = "true"
+                app:passwordToggleDrawable="@drawable/pass"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -353,9 +353,9 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 return true;
 
             case R.id.item2:
-                stopJobSchedule();
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
+                stopJobSchedule();
                 logout();
                 return true;
             default:

@@ -157,11 +157,12 @@ public class RegistroProveedor extends AppCompatActivity {
     }
 
     void logout() {
-        mAuthProviders.Logout();
-        Intent intent = new Intent(RegistroProveedor.this, LoginAdmin.class);
+        Intent intent = new Intent(getApplicationContext(), LoginAdmin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("dato","valor");
         startActivity(intent);
         finish();
+        mAuthProviders.Logout();
     }
 
 }
