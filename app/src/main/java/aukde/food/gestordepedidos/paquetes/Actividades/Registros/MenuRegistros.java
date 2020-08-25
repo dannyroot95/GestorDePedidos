@@ -2,6 +2,7 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Registros;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 
 public class MenuRegistros extends AppCompatActivity {
 
+    private ProgressDialog mDialog;
     private Button btnRegistroAdmin,btnRegistroAukdeliver,btnRegistroProveedor;
 
     @Override
@@ -24,6 +26,7 @@ public class MenuRegistros extends AppCompatActivity {
         btnRegistroAdmin = findViewById(R.id.btnRegistroAdmin);
         btnRegistroAukdeliver = findViewById(R.id.btnRegistroAukdeliver);
         btnRegistroProveedor = findViewById(R.id.btnRegistroProveedor);
+        mDialog = new ProgressDialog(this);
 
         btnRegistroAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +45,20 @@ public class MenuRegistros extends AppCompatActivity {
         btnRegistroProveedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuRegistros.this,RegistroProveedor.class));
             }
         });
 
     }
+
+// actualizar activity
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
 }
