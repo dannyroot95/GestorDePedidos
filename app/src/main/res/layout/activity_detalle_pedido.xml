@@ -144,7 +144,6 @@
                     android:columnCount="1"
                     android:columnOrderPreserved="false"
                     android:rowCount="2"
-                    android:padding="5dp"
                     android:alignmentMode="alignMargins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -162,13 +161,12 @@
                         android:layout_height="wrap_content"
                         app:cardElevation="6dp"
                         android:backgroundTint="#F4F4F4"
-                        app:cardCornerRadius="32dp"
-                        android:layout_margin="12dp">
+                        app:cardCornerRadius="32dp">
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="13dp">
+                            android:padding="8dp">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="horizontal"
@@ -242,7 +240,7 @@
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:src="@drawable/hora2"
-                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginLeft="17dp"
                                     android:layout_height="50dp"/>
 
                             </LinearLayout>
@@ -313,7 +311,7 @@
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:src="@drawable/hora1"
-                                    android:layout_marginLeft="23dp"
+                                    android:layout_marginLeft="20dp"
                                     android:layout_height="50dp"/>
                             </LinearLayout>
 
@@ -330,6 +328,7 @@
                         android:textStyle="bold"
                         android:layout_marginLeft="20dp"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_height="wrap_content"/>
 
                     <androidx.cardview.widget.CardView
@@ -338,14 +337,14 @@
                         app:cardElevation="6dp"
                         android:backgroundTint="#FFF"
                         app:cardCornerRadius="32dp"
-                        android:layout_margin="12dp"
+                        android:layout_margin="8dp"
                         >
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="10dp">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="horizontal"
@@ -358,30 +357,27 @@
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Total a pagar (Producto) :"
+                                    android:text="Total a pagar :\n   (Producto)"
                                     android:textSize="16sp"
                                     android:textColor="#000"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"
                                     android:layout_marginLeft="15dp"
-                                    android:layout_marginTop="15dp"
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="S/"
-                                    android:layout_marginTop="15dp"
                                     android:textStyle="bold"
                                     android:layout_marginLeft="5dp"
                                     android:fontFamily="@font/futura"
-                                    android:textSize="16sp"
+                                    android:textSize="20sp"
                                     android:textColor="#2d572c"
                                     android:layout_height="wrap_content"/>
                                 <TextView
                                     android:id="@+id/detalleTotalPago"
                                     android:layout_width="wrap_content"
                                     android:textColor="#2d572c"
-                                    android:layout_marginTop="15dp"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"
@@ -400,7 +396,7 @@
                                     android:layout_height="40dp"/>
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Nombre del cliente :"
+                                    android:text="Cliente :"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"
@@ -435,8 +431,8 @@
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Teléfono del cliente :"
-                                    android:layout_marginTop="15dp"
+                                    android:text="Teléfono\ndel cliente :"
+                                    android:layout_marginTop="5dp"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
                                     android:layout_marginLeft="15dp"
@@ -522,7 +518,7 @@
                                     android:textColor="#2d572c"
                                     android:layout_marginTop="15dp"
                                     android:layout_marginLeft="5dp"
-                                    android:textSize="16sp"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"
                                     android:layout_height="wrap_content"/>
@@ -662,7 +658,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="Delivery : "
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="5dp"
                                     android:layout_marginLeft="15dp"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
@@ -673,7 +669,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="S/"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="5dp"
                                     android:textSize="20sp"
                                     android:layout_marginLeft="5dp"
                                     android:textColor="#2d572c"
@@ -684,7 +680,7 @@
                                     android:id="@+id/detalleGananciaDelivery"
                                     android:layout_width="wrap_content"
                                     android:textColor="#2d572c"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="5dp"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"
@@ -779,7 +775,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="8dp"
                                 android:layout_height="wrap_content">
                                 <ImageView
                                     android:layout_width="40dp"
@@ -788,10 +784,9 @@
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Ganancia por la Comisión : "
+                                    android:text="Ganancia por la\n     Comisión : "
                                     android:textSize="16sp"
                                     android:id="@+id/txtGanaste"
-                                    android:layout_marginTop="5dp"
                                     android:textColor="#000"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/futura"

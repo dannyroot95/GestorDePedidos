@@ -147,9 +147,10 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     public static final int SETTINGS_REQUEST_CODE = 2;
     private FusedLocationProviderClient mFusedLocation;
     DatabaseReference mUsuarioAukdeliver;
+    DatabaseReference mUsuarioProveedor;
     DatabaseReference pedidos;
     private DatabaseReference pedidoParaAukdeliver;
-    Spinner mSpinner, mSpinnerEstado;
+    Spinner mSpinner, mSpinnerEstado ,mSpinnerProveedor;
     FloatingActionButton mFloatingButton , mFloatingMap;
     TextView estado ;
     TextView txtEncargado , idAukdeliver;
@@ -486,6 +487,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         mSpinner = findViewById(R.id.spinnerAukdeliver);
         mSpinnerEstado = findViewById(R.id.spEstado);
+        mSpinnerProveedor = findViewById(R.id.spinnerProveedor);
         ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this,R.
                 array.estado,R.layout.custom_spinner);
         estado = findViewById(R.id.txtEstado);
@@ -517,10 +519,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
 
         mUsuarioAukdeliver = FirebaseDatabase.getInstance().getReference();
+        mUsuarioProveedor = FirebaseDatabase.getInstance().getReference();
         pedidos = FirebaseDatabase.getInstance().getReference("PedidosPorLlamada").child("pedidos");
 
         obtenerUsuarioAukdeliver();
-
+        obtenerProveedor();
         mFloatingButton = findViewById(R.id.floatRegister);
         mFloatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
         mFloatingMap = findViewById(R.id.booleanMap);
@@ -732,6 +735,54 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             }
         });
     }
+
+    public void obtenerProveedor(){
+        final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> proveedor = new ArrayList<>();
+        mUsuarioProveedor.child("Usuarios").child("Proveedor").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds : dataSnapshot.getChildren() ){
+                        String id = ds.getKey();
+                        String nombres = ds.child("nombre empresa").getValue().toString();
+                        proveedor.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id,nombres));
+                    }
+
+                    final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
+                            = new ArrayAdapter<>(RealizarPedido.this , R.layout.custom_spinner,proveedor);
+                    mSpinnerProveedor.setAdapter(arrayAdapter);
+                    arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+                    mSpinnerProveedor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(parent.getItemAtPosition(position).toString().equals("-")){
+                                mSocio.setText("");
+                            }
+                            else{
+                                String stProveedor = parent.getItemAtPosition(position).toString();
+                                mSocio.setText(stProveedor);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
     @Override
     protected void onResume() {

@@ -615,6 +615,7 @@
         android:id="@+id/linearProductos"
         android:orientation="vertical"
         android:background="#fff"
+        android:visibility="invisible"
         android:layout_height="match_parent">
 
         <com.github.florent37.shapeofview.shapes.DiagonalView

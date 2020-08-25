@@ -277,8 +277,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         if (stEstado.equals("Completado")){
 
             listEstado.setTextColor(Color.parseColor("#5bbd00"));
-            mGanasteComision.setText("Por este pedido ganaste   : ");
-            mGanasteDelivery.setText("Por este delivery ganaste : ");
+            //mGanasteComision.setText("Por este pedido\n   ganaste   : ");
+            //mGanasteDelivery.setText("Por este delivery\n   ganaste : ");
             mLinearAsignar.setLayoutParams(parametros);
         }
 
