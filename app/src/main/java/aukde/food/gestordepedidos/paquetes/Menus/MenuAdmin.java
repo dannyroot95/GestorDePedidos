@@ -38,10 +38,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import aukde.food.gestordepedidos.R;
@@ -55,6 +57,7 @@ import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Servicios.MyFirebaseMessagingClient;
 import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
@@ -235,6 +238,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             case R.id.item2:
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
+                deleteTokenFCM();
                 logout();
                 return true;
             default:
@@ -281,6 +285,10 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
     void generarToken(){
         mTokenProvider.create(mAuth.getId());
+    }
+
+    private void deleteTokenFCM(){
+       mDatabase.child("Tokens").child(mAuth.getId()).removeValue();
     }
 
 }

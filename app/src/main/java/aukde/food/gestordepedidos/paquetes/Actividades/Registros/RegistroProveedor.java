@@ -3,14 +3,19 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Registros;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,10 +42,12 @@ public class RegistroProveedor extends AppCompatActivity {
             edtRepetirPass, edtClaveAuth;
 
     private ProgressDialog mDialog;
-    Button mButtonRegistro;
+    Button mButtonRegistro,btnMap;
     AuthProviders mAuthProviders;
     ProveedorProvider mProveedorProvider;
     Spinner mSpinner;
+
+    private EditText edtLongitud , edtLatitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class RegistroProveedor extends AppCompatActivity {
         edtDni = findViewById(R.id.ProveedorDNI);
         edtTelefono = findViewById(R.id.ProveedorTeléfono);
         edtDireccion = findViewById(R.id.ProveedorDireccion);
+        edtDireccion.setEnabled(false);
         edtCategoria = findViewById(R.id.ProveedorCategoria);
         edtCategoria.setEnabled(false);
         edtNombreEmpresa = findViewById(R.id.ProveedorNombreEmpre);
@@ -68,6 +76,26 @@ public class RegistroProveedor extends AppCompatActivity {
         edtPassword = findViewById(R.id.ProveedorEdtPassword);
         edtRepetirPass = findViewById(R.id.ProveedorRepetirContrasena);
         edtClaveAuth = findViewById(R.id.ProveedorClaveAutorización);
+        edtLongitud = findViewById(R.id.lon);
+        edtLongitud.setEnabled(false);
+        edtLatitud = findViewById(R.id.lat);
+        edtLatitud.setEnabled(false);
+        btnMap = findViewById(R.id.btnMapear);
+
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edtDireccion.setEnabled(true);
+                edtDireccion.setTextColor(Color.BLACK);
+            }
+        });
+
+        edtDireccion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                edtDireccion.setTextColor(Color.RED);
+            }
+        });
 
         mSpinner = findViewById(R.id.spinnerFood);
         ArrayAdapter<CharSequence> adapterSpinnerFood = ArrayAdapter.createFromResource(this,R.
@@ -110,18 +138,20 @@ public class RegistroProveedor extends AppCompatActivity {
         final String password = edtPassword.getText().toString();
         final String repetirPass = edtRepetirPass.getText().toString();
         final String ClaveAuth = edtClaveAuth.getText().toString();
+        final String latitud = edtLatitud.getText().toString();
+        final String longitud = edtLongitud.getText().toString();
 
         if(!nombres.isEmpty() && !apellidos.isEmpty() &&!username.isEmpty() && !dni.isEmpty() && !telefono.isEmpty()
                 && !direccion.isEmpty() && !categoria.isEmpty() && !nombre_empresa.isEmpty() &&
                 !ruc.isEmpty() && !email.isEmpty() && !password.isEmpty()
-                && !repetirPass.isEmpty() && !ClaveAuth.isEmpty()){
+                && !repetirPass.isEmpty() && !ClaveAuth.isEmpty() && !latitud.isEmpty() && !longitud.isEmpty()){
 
             mDialog.show();
             mDialog.setMessage("Registrando usuario...");
             if(password.length()>=6){
                 if(password.equals(repetirPass)){
                     if(ClaveAuth.equals("AUK2020+*") || ClaveAuth.equals("WRZ20@") || ClaveAuth.equals("GOGOOL*")){
-                        registrar(nombres,apellidos,username,dni,telefono,direccion,categoria,nombre_empresa,ruc,email,password);
+                        registrar(nombres,apellidos,username,dni,telefono,direccion,categoria,nombre_empresa,ruc,email,latitud,longitud,password);
                     }
                     else {
                         mDialog.dismiss();
@@ -145,14 +175,14 @@ public class RegistroProveedor extends AppCompatActivity {
 
     }
 
-    private void registrar(final String nombres, final String apellidos,final String username,final String dni,final String telefono,final String direccion,final String categoria,final String nombre_empresa,final String ruc,final String email, String password) {
+    private void registrar(final String nombres, final String apellidos,final String username,final String dni,final String telefono,final String direccion,final String categoria,final String nombre_empresa,final String ruc,final String email,final String latitud,final String longitud, String password) {
 
         mAuthProviders.Registro(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Proveedor proveedor = new Proveedor(id,nombres,apellidos,username,dni,telefono,direccion,categoria,nombre_empresa,ruc,email);
+                Proveedor proveedor = new Proveedor(id,nombres,apellidos,username,dni,telefono,direccion,categoria,nombre_empresa,ruc,email,latitud,longitud);
                 mapear(proveedor);
             }
         });

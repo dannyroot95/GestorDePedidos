@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
@@ -49,8 +48,9 @@ import retrofit2.Response;
 
 public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
+    String ruta = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/delete.png?alt=media&token=8eb49918-1713-4e1e-aaf8-38573da32206";
     TextView listNumPedido,listNumPedido2,listNombreCliente , listTelefonoCliente ,listHoraRegistro , listFechaRegistro
-    , listHoraEntrega , listFechaEntrega , listTotalPagoProducto , listDireccion , listPagoCliente
+            , listHoraEntrega , listFechaEntrega , listTotalPagoProducto , listDireccion , listPagoCliente
             , listTotalACobrar , listVuelto , listRepartidor , listProveedores , listProducto , listDescripcion
 
             , listPrecioUnitario , listCantidad ,listPrecioTotalPorProducto , listComision , listTotalDelivery ,
@@ -146,8 +146,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             int alto1 = 0;
             @Override
             public void onClick(View v) {
-                    CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
-                    mLinearProductos.setLayoutParams(params);
+                CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
+                mLinearProductos.setLayoutParams(params);
             }
         });
 
@@ -291,7 +291,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             mLinearAsignar.setLayoutParams(parametros);
         }
 
-}
+    }
 
 
     private String obtieneDosDecimales(double valor) {
@@ -403,7 +403,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                     String key=childSnapshot.getKey();
-                   // Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
                     Map<String , Object> map = new HashMap<>();
                     map.put("estado","Completado");
                     mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -434,7 +434,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                   final String key=childSnapshot.getKey();
+                    final String key=childSnapshot.getKey();
                     Query reference2= FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(key).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
                     reference2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -628,7 +628,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                                 String token = dataSnapshot.child("token").getValue().toString();
                                 Map<String,String> map = new HashMap<>();
                                 map.put("title","El pedido #"+numeroPedido);
-                                map.put("body","Ha sido CANCELADO!");
+                                map.put("body","ha sido CANCELADO!");
+                                map.put("path",ruta);
                                 FCMBody fcmBody = new FCMBody(token,"high",map);
                                 notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                                     @Override
@@ -638,12 +639,10 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                                                 //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
                                             }
                                             else{
-                                                Toasty.error(DetallePedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                            }
+                                                Toasty.error(DetallePedido.this, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();                                            }
                                         }
                                         else {
-                                            Toasty.error(DetallePedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                        }
+                                            Toasty.error(DetallePedido.this, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();                                        }
                                     }
 
                                     @Override
@@ -654,7 +653,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                             }
 
                             else {
-                                Toast.makeText(DetallePedido.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                                Toasty.error(DetallePedido.this, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
                             }
 
                         }

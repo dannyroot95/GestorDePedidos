@@ -4,20 +4,15 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -45,7 +40,7 @@ public class NotificationHelper extends ContextWrapper {
         );
         notificationChannel.enableLights(true);
         notificationChannel.enableVibration(true);
-        notificationChannel.setLightColor(Color.GREEN);
+        notificationChannel.setLightColor(Color.BLUE);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getManager().createNotificationChannel(notificationChannel);
     }
@@ -79,6 +74,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentIntent(intent)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_notificacion)
+                .setColor(getResources().getColor(R.color.colorAccent))
                 .setStyle(new Notification.BigTextStyle().bigText(body).setBigContentTitle(title));
 
     }
@@ -109,6 +105,7 @@ public class NotificationHelper extends ContextWrapper {
                 .addAction(acceptAction)
                 .addAction(cancelAction)
                 .setSmallIcon(R.drawable.ic_notificacion)
+                .setColor(getResources().getColor(R.color.colorAccent))
                 .setStyle(new Notification.BigTextStyle().bigText(body).setBigContentTitle(title));
     }
 
@@ -136,6 +133,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setSound(sonidoUri)
                 .setContentIntent(intent)
                 .setSmallIcon(R.drawable.ic_notificacion)
+                .setColor(getResources().getColor(R.color.colorAccent))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body).setBigContentTitle(title));
     }
 
@@ -164,6 +162,7 @@ public class NotificationHelper extends ContextWrapper {
                 .addAction(acceptAction)
                 .addAction(cancelAction)
                 .setSmallIcon(R.drawable.ic_notificacion)
+                .setColor(getResources().getColor(R.color.colorAccent))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body).setBigContentTitle(title));
     }
 

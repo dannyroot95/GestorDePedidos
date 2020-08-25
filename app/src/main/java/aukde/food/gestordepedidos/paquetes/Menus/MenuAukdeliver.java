@@ -49,6 +49,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.IOException;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
@@ -58,6 +62,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
+import aukde.food.gestordepedidos.paquetes.Servicios.MyFirebaseMessagingClient;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -356,6 +361,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
                 stopJobSchedule();
+                deleteTokenFCM();
                 logout();
                 return true;
             default:
@@ -366,6 +372,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
     void generarToken() {
         mTokenProvider.create(mAuth.getId());
+    }
+
+    private void deleteTokenFCM(){
+        mDatabase.child("Tokens").child(mAuth.getId()).removeValue();
     }
 
     private void startJobSchedule(){

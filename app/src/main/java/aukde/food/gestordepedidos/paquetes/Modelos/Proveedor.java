@@ -13,10 +13,10 @@ public class Proveedor {
     String nombreEmpresa;
     String ruc;
     String email;
+    String latitud;
+    String longitud;
 
-    public Proveedor(String id, String nombres, String apellidos, String nombreUsuario, String dni,
-                     String telefono, String direccion, String categoria, String nombreEmpresa,
-                     String ruc, String email) {
+    public Proveedor(String id, String nombres, String apellidos, String nombreUsuario, String dni, String telefono, String direccion, String categoria, String nombreEmpresa, String ruc, String email, String latitud, String longitud) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -28,6 +28,8 @@ public class Proveedor {
         this.nombreEmpresa = nombreEmpresa;
         this.ruc = ruc;
         this.email = email;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public String getId() {
@@ -116,5 +118,21 @@ public class Proveedor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 }
