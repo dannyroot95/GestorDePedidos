@@ -127,623 +127,786 @@
                 android:layout_height="match_parent"/>
         </com.github.florent37.shapeofview.shapes.CircleView>
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_height="match_parent">
 
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:padding="3dp"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/scroll">
+                <GridLayout
+                    android:columnCount="1"
+                    android:columnOrderPreserved="false"
+                    android:rowCount="2"
+                    android:padding="5dp"
+                    android:alignmentMode="alignMargins"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="20dp"
                     android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_marginRight="8dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Hora de registro"
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:id="@+id/detalleHoraRegistro"
-                            android:layout_width="wrap_content"
-                            android:textColor="#CB4335"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:layout_marginRight="5dp"
-                            android:layout_height="wrap_content"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Fecha de registro"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:textColor="#000"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:id="@+id/detalleFechaRegistro"
-                            android:layout_width="wrap_content"
-                            android:textColor="#CB4335"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Hora de entrega"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
+                        android:text="Fecha y hora"
+                        android:textSize="18sp"
                         android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleHoraEntrega"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2E86C1"
-                        android:textSize="16sp"
+                        android:layout_marginLeft="20dp"
                         android:textStyle="bold"
                         android:fontFamily="@font/futura"
                         android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Fecha de entrega"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleFechaEntrega"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2E86C1"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Total a pagar (Producto) :"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleTotalPago"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Nombre del cliente :"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleNombreCliente"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Teléfono del cliente :"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/ic_llamada"
-                        android:onClick="onClickLlamada"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleTelefonoCliente"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:onClick="onClickLlamada"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Cliente paga :"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detallePagoCliente"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Total a cobrar :"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleTotalCobro"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Vuelto :"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleVuelto"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Repartidor asignado :"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detallevRepartidor"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Dirección :"
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleDireccionCliente"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        android:padding="7dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/detalleLatitud"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:layout_height="0dp"/>
-
-                    <TextView
-                        android:id="@+id/detalleLongitudd"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:layout_height="0dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="6dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Delivery : "
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:id="@+id/txtGanasteDelivery"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="16sp"
-                        android:textColor="#2d572c"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleGananciaDelivery"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2d572c"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="6dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Delivery Aukde : "
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="16sp"
-                        android:textColor="#2d572c"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleGananciaDeliveryAukde"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2d572c"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="6dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="D. Aukdeliver : "
-                        android:textSize="16sp"
-                        android:textColor="#000"
-                        android:layout_marginRight="5dp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="16sp"
-                        android:textColor="#2d572c"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleGananciaDeliveryAukdeliver"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2d572c"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Ganancia por la Comisión : "
-                        android:textSize="16sp"
-                        android:id="@+id/txtGanaste"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="S/"
-                        android:textSize="16sp"
-                        android:textColor="#2d572c"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/detalleGananciaComision"
-                        android:layout_width="wrap_content"
-                        android:textColor="#2d572c"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:elevation="6dp"
-                    android:padding="8dp"
-                    android:gravity="center"
-                    android:layout_gravity="bottom|center"
-                    android:layout_height="wrap_content">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:text="Detalles\ndel producto"
-                        android:background="@drawable/redondo"
-                        android:backgroundTint="#000"
-                        android:id="@+id/showProducto"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:textColor="#fff"
-                        android:layout_height="wrap_content"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:text="Mapa\ndel cliente"
-                        android:layout_weight="1"
-                        android:background="@drawable/redondo"
-                        android:backgroundTint="#000"
-                        android:id="@+id/showMapa"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/futura"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="#fff"
-                        android:layout_height="wrap_content"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/linearBtnEditar"
-                        android:layout_height="wrap_content">
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:text="Editar\npedido"
-                            android:layout_weight="1"
-                            android:background="@drawable/redondo"
-                            android:backgroundTint="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:id="@+id/showEditarPedido"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="#fff"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:id="@+id/linearBtnAsignar"
-                    android:layout_height="wrap_content">
-                    <Button
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:text="Asignar nuevo Repartidor"
-                        android:layout_weight="1"
-                        android:background="@drawable/redondo"
-                        android:backgroundTint="#000"
-                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#F4F4F4"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="12dp">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="13dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:background="@drawable/notanredondo"
+                                android:layout_marginTop="20dp"
+                                android:backgroundTint="#fff"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:padding="8dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:text="Hora de registro:"
+                                            android:textColor="#CD1300"
+                                            android:gravity="center"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:textSize="14sp"
+                                            android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                            android:id="@+id/detalleHoraRegistro"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="#000"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:layout_marginLeft="25dp"
+                                            android:layout_height="wrap_content"/>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:text="Fecha de registro:"
+                                            android:gravity="center"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:textColor="#CD1300"
+                                            android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                            android:id="@+id/detalleFechaRegistro"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="#000"
+                                            android:layout_marginLeft="25dp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:gravity="center"
+                                            android:textSize="14sp"
+                                            android:layout_height="wrap_content"/>
+
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/hora2"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_height="50dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/notanredondo"
+                                android:backgroundTint="#fff"
+                                android:layout_height="wrap_content">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:padding="8dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:text="Hora de entrega"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:textColor="#000"
+                                            android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                            android:id="@+id/detalleHoraEntrega"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="#2E86C1"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:layout_marginLeft="25dp"
+                                            android:layout_height="wrap_content"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:text="Fecha de entrega"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:textColor="#000"
+                                            android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                            android:id="@+id/detalleFechaEntrega"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="#2E86C1"
+                                            android:layout_marginLeft="25dp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="@font/futura"
+                                            android:textSize="14sp"
+                                            android:layout_height="wrap_content"/>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/hora1"
+                                    android:layout_marginLeft="23dp"
+                                    android:layout_height="50dp"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Descripción del pedido"
+                        android:textColor="#000"
+                        android:textSize="18sp"
                         android:fontFamily="@font/futura"
-                        android:id="@+id/showAsignarRrepartidor"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_height="wrap_content"/>
-                </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#F4F4F4"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="12dp"
+                        >
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="16dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/precio"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Total a pagar (Producto) :"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="S/"
+                                    android:layout_marginTop="15dp"
+                                    android:textStyle="bold"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="16sp"
+                                    android:textColor="#2d572c"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleTotalPago"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/orden"
+                                    android:layout_height="40dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Nombre del cliente :"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:textColor="#000"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleNombreCliente"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:textSize="16sp"
+                                    android:layout_marginTop="15dp"
+                                    android:textStyle="bold"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/llamada"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Teléfono del cliente :"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginLeft="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textColor="#000"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleTelefonoCliente"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:layout_marginTop="15dp"
+                                    android:onClick="onClickLlamada"
+                                    android:layout_marginLeft="5dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/comision"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Cliente paga :"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detallePagoCliente"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:textSize="16sp"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/dinerototall"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Total a cobrar :"
+                                    android:textSize="16sp"
+                                    android:layout_marginTop="15dp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleTotalCobro"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/vuelto"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Vuelto :"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_marginTop="15dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleVuelto"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/repartidor"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Repartidor asignado :"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textColor="#000"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detallevRepartidor"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="15dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/direccionclientepedidos"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Dirección :"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleDireccionCliente"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:textSize="16sp"
+                                    android:padding="7dp"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleLatitud"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:layout_height="0dp"/>
+
+                                <TextView
+                                    android:id="@+id/detalleLongitudd"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:layout_height="0dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="6dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/iconogananciatotal"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Delivery : "
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:id="@+id/txtGanasteDelivery"
+                                    android:textColor="#000"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="S/"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="5dp"
+                                    android:textColor="#2d572c"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleGananciaDelivery"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="6dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/iconodeliverys"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Delivery Aukde : "
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="S/"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="15dp"
+                                    android:textColor="#2d572c"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleGananciaDeliveryAukde"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="6dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/iconodinerodelivery"
+                                    android:layout_height="40dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="D. Aukdeliver : "
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="S/"
+                                    android:textSize="16sp"
+                                    android:textColor="#2d572c"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleGananciaDeliveryAukdeliver"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:layout_marginTop="15dp"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/dineroobtenido"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Ganancia por la Comisión : "
+                                    android:textSize="16sp"
+                                    android:id="@+id/txtGanaste"
+                                    android:layout_marginTop="5dp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="S/"
+                                    android:textSize="16sp"
+                                    android:textColor="#2d572c"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/detalleGananciaComision"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#2d572c"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:elevation="6dp"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                android:layout_gravity="bottom|center"
+                                android:layout_height="wrap_content">
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:text="Detalles\ndel producto"
+                                    android:background="@drawable/redondo"
+                                    android:backgroundTint="#000"
+                                    android:id="@+id/showProducto"
+                                    android:gravity="center"
+                                    android:layout_weight="1"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:textColor="#fff"
+                                    android:layout_height="wrap_content"/>
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:text="Mapa\ndel cliente"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/redondo"
+                                    android:backgroundTint="#000"
+                                    android:id="@+id/showMapa"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_marginLeft="5dp"
+                                    android:textColor="#fff"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:id="@+id/linearBtnEditar"
+                                    android:layout_height="wrap_content">
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:text="Editar\npedido"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/redondo"
+                                        android:backgroundTint="#000"
+                                        android:textStyle="bold"
+                                        android:fontFamily="@font/futura"
+                                        android:id="@+id/showEditarPedido"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="#fff"
+                                        android:layout_height="wrap_content"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:id="@+id/linearBtnAsignar"
+                                android:layout_height="wrap_content">
+                                <Button
+                                    android:layout_width="match_parent"
+                                    android:text="Asignar nuevo Repartidor"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/redondo"
+                                    android:backgroundTint="#000"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:id="@+id/showAsignarRrepartidor"
+                                    android:layout_marginLeft="5dp"
+                                    android:textColor="#fff"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </GridLayout>
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- ************* SEGUNDA VISTA **************************** -->
 
     <LinearLayout
@@ -751,6 +914,7 @@
         android:id="@+id/linearProductos"
         android:orientation="vertical"
         android:background="#fff"
+        android:visibility="invisible"
         android:layout_height="match_parent">
 
         <com.github.florent37.shapeofview.shapes.DiagonalView
