@@ -82,7 +82,7 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
                     mMarker = mMap.addMarker(new MarkerOptions().position(
                             new LatLng(location.getLatitude(), location.getLongitude())
                             )
-                                    .title("Tú")
+                                    .title("Tú Poscición")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.head))
                     );
                     mMarker.showInfoWindow();
@@ -90,7 +90,7 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
                                     .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                                    .zoom(15f)
+                                    .zoom(14f)
                                     .build()
                     ));
 
