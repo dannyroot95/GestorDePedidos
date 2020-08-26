@@ -373,6 +373,7 @@
                     <Button
                         android:layout_width="80dp"
                         android:gravity="center"
+                        android:id="@+id/btnMapaProveedor"
                         android:background="@drawable/btn_mapa"
                         android:layout_height="80dp"/>
 

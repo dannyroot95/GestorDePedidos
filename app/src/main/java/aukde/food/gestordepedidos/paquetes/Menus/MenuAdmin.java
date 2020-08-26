@@ -52,6 +52,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaProveedores;
 import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
@@ -69,7 +70,8 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private CircleImageView foto;
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
-    private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos , btnMapaRepartidores , btnPerfilX;
+    private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
+            , btnMapaRepartidores , btnPerfilX , btnMapProveedor;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -91,6 +93,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnHacerPedido = findViewById(R.id.btnHacerPedido);
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);
         btnMapaRepartidores = findViewById(R.id.btnMonitoreoRepartidor);
+        btnMapProveedor = findViewById(R.id.btnMapaProveedor);
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
@@ -137,6 +140,14 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, MonitoreoRepartidor.class));
+            }
+        });
+
+        btnMapProveedor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuAdmin.this, MapaProveedores.class));
             }
         });
 

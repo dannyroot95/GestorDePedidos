@@ -49,6 +49,7 @@
             android:name=".paquetes.Mapas.MapaClientePorLlamada"
             android:label="@string/title_activity_mapa_cliente_por_llamada" />
         <activity android:name=".paquetes.Mapas.MonitoreoRepartidor" />
+        <activity android:name=".paquetes.Mapas.MapaProveedores" />
         <activity android:name=".paquetes.Actividades.Notificacion" />
 
         <receiver
