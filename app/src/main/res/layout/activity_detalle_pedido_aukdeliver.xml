@@ -776,6 +776,7 @@
         android:layout_width="match_parent"
         android:id="@+id/linearProductos"
         android:orientation="vertical"
+        android:visibility="invisible"
         android:background="#fff"
         android:layout_height="match_parent">
 
