@@ -91,11 +91,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild("MapaProveedor")){
 
-                }
-                else
-                {
                     mDatabase.child("Usuarios").child("Proveedor").child(mAuthProviders.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -122,7 +118,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
 
                         }
                     });
-                }
+
             }
 
             @Override
