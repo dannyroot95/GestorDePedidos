@@ -853,7 +853,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this,R.style.ThemeOverlay);
         builder.setTitle("Confirmar");
         builder.setCancelable(false);
         builder.setIcon(R.drawable.ic_atras);

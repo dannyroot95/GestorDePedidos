@@ -165,7 +165,7 @@
                     android:columnCount="1"
                     android:columnOrderPreserved="false"
                     android:rowCount="2"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:alignmentMode="alignMargins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -182,14 +182,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="6dp"
+                        android:layout_margin="8dp"
                         android:backgroundTint="#F4F4F4"
-                        app:cardCornerRadius="32dp"
-                        >
-                        <LinearLayout
+                        app:cardCornerRadius="32dp">
+
+                          <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="8dp">
+                            android:padding="10dp">
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:orientation="horizontal"
@@ -264,10 +265,9 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="8dp"
                                 android:background="@drawable/notanredondo"
-                                android:backgroundTint="#fff"
                                 android:layout_height="wrap_content">
+
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:padding="8dp"
@@ -281,7 +281,7 @@
                                         android:layout_height="wrap_content">
                                         <TextView
                                             android:layout_width="wrap_content"
-                                            android:text="Hora de entrega"
+                                            android:text="Hora de entrega : "
                                             android:textSize="14sp"
                                             android:fontFamily="@font/futura"
                                             android:textStyle="bold"
@@ -292,7 +292,7 @@
                                             android:id="@+id/detalleHoraEntrega"
                                             android:layout_width="wrap_content"
                                             android:textColor="#2E86C1"
-                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginLeft="10dp"
                                             android:textSize="14sp"
                                             android:fontFamily="@font/futura"
                                             android:textStyle="bold"
@@ -305,7 +305,7 @@
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="wrap_content"
-                                            android:text="Fecha de entrega"
+                                            android:text="Fecha de entrega :"
                                             android:textSize="14sp"
                                             android:fontFamily="@font/futura"
                                             android:textStyle="bold"
@@ -316,7 +316,7 @@
                                             android:id="@+id/detalleFechaEntrega"
                                             android:layout_width="wrap_content"
                                             android:textColor="#2E86C1"
-                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginLeft="10dp"
                                             android:fontFamily="@font/futura"
                                             android:textStyle="bold"
                                             android:textSize="14sp"
@@ -328,7 +328,7 @@
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:src="@drawable/hora1"
-                                    android:layout_marginLeft="23dp"
+                                    android:layout_marginLeft="8dp"
                                     android:layout_height="50dp"/>
 
 
@@ -354,7 +354,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="6dp"
-                        android:backgroundTint="#FFF"
                         app:cardCornerRadius="32dp"
                         android:layout_margin="8dp"
                         >
@@ -376,8 +375,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_marginLeft="15dp"
-                                    android:text="Total a pagar (Producto) :"
-                                    android:layout_marginTop="12dp"
+                                    android:text="Total a pagar\n  (Producto) :"
+                                    android:layout_marginTop="3dp"
                                     android:textSize="16sp"
                                     android:textColor="#000"
                                     android:fontFamily="@font/futura"
@@ -387,7 +386,7 @@
                                     android:layout_width="wrap_content"
                                     android:text="S/"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="8dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:textSize="20sp"
@@ -397,7 +396,7 @@
                                     android:id="@+id/detalleTotalPago"
                                     android:layout_width="wrap_content"
                                     android:textColor="#2d572c"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="8dp"
                                     android:textSize="20sp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
@@ -417,7 +416,7 @@
                                     android:layout_height="40dp"/>
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Nombre del cliente :"
+                                    android:text="Cliente :"
                                     android:textSize="16sp"
                                     android:layout_marginTop="15dp"
                                     android:textColor="#000"
@@ -452,10 +451,10 @@
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Teléfono del cliente :"
+                                    android:text="Teléfono del\ncliente :"
                                     android:textSize="16sp"
                                     android:textColor="#000"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="3dp"
                                     android:layout_marginLeft="15dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
@@ -465,7 +464,7 @@
                                 <TextView
                                     android:id="@+id/detalleTelefonoCliente"
                                     android:layout_width="wrap_content"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="5dp"
                                     android:textColor="#FF0000"
                                     android:layout_marginLeft="5dp"
                                     android:onClick="onClickLlamadaCliente"
@@ -491,7 +490,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="Cliente paga :"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:textSize="16sp"
                                     android:layout_marginLeft="15dp"
                                     android:textColor="#000"
@@ -504,7 +503,7 @@
                                     android:id="@+id/detallePagoCliente"
                                     android:layout_width="wrap_content"
                                     android:textColor="#2d572c"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginLeft="5dp"
                                     android:textSize="20sp"
                                     android:fontFamily="@font/futura"
@@ -529,7 +528,7 @@
                                     android:text="Total a cobrar :"
                                     android:textSize="16sp"
                                     android:layout_marginLeft="15dp"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:textColor="#000"
@@ -542,7 +541,7 @@
                                     android:textColor="#2d572c"
                                     android:textSize="20sp"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:layout_height="wrap_content"/>
@@ -562,7 +561,7 @@
                                     android:layout_width="wrap_content"
                                     android:text="Vuelto :"
                                     android:textSize="16sp"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginLeft="15dp"
                                     android:textColor="#000"
                                     android:fontFamily="@font/futura"
@@ -574,7 +573,7 @@
                                     android:id="@+id/detalleVuelto"
                                     android:layout_width="wrap_content"
                                     android:textColor="#2d572c"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginLeft="5dp"
                                     android:textSize="20sp"
                                     android:fontFamily="@font/futura"
@@ -587,8 +586,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="15dp"
-                                android:layout_height="wrap_content">
+                                android:layout_marginTop="0dp"
+                                android:layout_height="0dp">
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:src="@drawable/repartidor"
@@ -600,6 +599,7 @@
                                     android:layout_marginTop="15dp"
                                     android:layout_marginLeft="15dp"
                                     android:textSize="16sp"
+                                    android:fontFamily="@font/futura"
                                     android:textColor="#000"
                                     android:layout_height="wrap_content"/>
 
@@ -621,7 +621,7 @@
                                 android:id="@+id/linearDireccion"
                                 android:fontFamily="@font/futura"
                                 android:textStyle="bold"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_height="wrap_content">
                                 <ImageView
                                     android:layout_width="40dp"
@@ -632,7 +632,8 @@
                                     android:layout_width="wrap_content"
                                     android:text="Dirección :"
                                     android:textSize="16sp"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="10dp"
+                                    android:fontFamily="@font/futura"
                                     android:layout_marginLeft="15dp"
                                     android:textColor="#000"
                                     android:layout_height="wrap_content"/>
@@ -643,7 +644,7 @@
                                     android:textColor="#000"
                                     android:padding="7dp"
                                     android:gravity="center"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="10dp"
                                     android:textSize="16sp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
@@ -680,12 +681,12 @@
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:text="Por este Delivery ganarás : "
+                                    android:text="Ganancia delivery : "
                                     android:textSize="16sp"
                                     android:id="@+id/txtGanasteDelivery"
                                     android:textColor="#000"
                                     android:layout_marginLeft="15dp"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="8dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:layout_marginRight="5dp"
