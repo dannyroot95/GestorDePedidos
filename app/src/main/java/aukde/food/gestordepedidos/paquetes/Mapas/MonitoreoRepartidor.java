@@ -50,7 +50,6 @@ import aukde.food.gestordepedidos.paquetes.Providers.GeofireProvider;
 public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private SupportMapFragment mMapFragment;
-    private AuthProviders mAuthProvider;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocation;
@@ -107,10 +106,8 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoreo_repartidor);
-        mAuthProvider = new AuthProviders();
         mGeofireProvider = new GeofireProvider();
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
     }
@@ -277,10 +274,7 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
                 showAlertDialogNOGPS();
             }
         }
-
-
     }
-
 
     private void checkLocationPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -303,6 +297,5 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
             }
         }
     }
-
 }
 

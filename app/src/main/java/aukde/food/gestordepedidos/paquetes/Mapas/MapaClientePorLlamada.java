@@ -23,6 +23,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -38,12 +39,14 @@ import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 import aukde.food.gestordepedidos.R;
@@ -62,7 +65,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private LatLng origen;
     private LatLng destino;
     private Marker mMarker;
-    private LatLng mCurrentLatLng;
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocation;
     private final static int LOCATION_REQUEST_CODE = 1;
@@ -80,8 +82,51 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                         mMarker.remove();
                     }
 
-                    mCurrentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    origen = new LatLng(location.getLatitude(), location.getLongitude());
+                    Double latitud ;
+                    Double longitud;
+                    String stlatitud = poscicion.getString("latitud");
+                    String stlongitud = poscicion.getString("longitud");
+                    if (stlatitud.isEmpty() && stlongitud.isEmpty())
+                    {
+                        //finish();
+                    }
+                    else{
+                        latitud = Double.parseDouble(stlatitud);
+                        longitud = Double.parseDouble(stlongitud);
+                        destino = new LatLng(latitud,longitud);
+                        mGoogleapiProvider.getDirections(origen, destino).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
 
+                                try{
+
+                                    JSONObject jsonObject = new JSONObject(response.body());
+                                    JSONArray jsonArray = jsonObject.getJSONArray("routes");
+                                    JSONObject route = jsonArray.getJSONObject(0);
+                                    JSONObject polylines = route.getJSONObject("overview_polyline");
+                                    String points = polylines.getString("points");
+
+                                    mPolylineList = DecodePoints.decodePoly(points);
+                                    mPolylineOptions = new PolylineOptions();
+                                    mPolylineOptions.color(Color.DKGRAY);
+                                    mPolylineOptions.width(15f);
+                                    mPolylineOptions.startCap(new SquareCap());
+                                    mPolylineOptions.jointType(JointType.ROUND);
+                                    mPolylineOptions.addAll(mPolylineList);
+                                    mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
+
+                                }catch (Exception e){
+                                    Log.d("Error","Error encontrado"+ e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                            }
+
+                        });
+                    }
                     mMarker = mMap.addMarker(new MarkerOptions().position(
                             new LatLng(location.getLatitude(), location.getLongitude())
                             )
@@ -110,6 +155,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
 
         poscicion = getIntent().getExtras();
@@ -125,11 +171,11 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
         mLocationRequest = new LocationRequest();
-        //mLocationRequest.setInterval(7000);
-        //mLocationRequest.setFastestInterval(7000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        //mLocationRequest.setSmallestDisplacement(5);
+
+
         startLocacion();
 
         Double latitud = -12.0;
@@ -137,11 +183,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         String stlatitud = poscicion.getString("latitud");
         String stlongitud = poscicion.getString("longitud");
         String stNombreC = poscicion.getString("nombre");
-        int height = 100;
-        int width = 100;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.usuario);
-        Bitmap b = bitmapdraw.getBitmap();
-        Bitmap usuario = Bitmap.createScaledBitmap(b, width, height, false);
         if (stlatitud.isEmpty() && stlongitud.isEmpty()){
             Toasty.error(this,"Error",Toasty.LENGTH_SHORT).show();
             finish();
@@ -154,10 +195,12 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         LatLng point = new LatLng(latitud, longitud);
         mMap.addMarker(new MarkerOptions()
                 .position(point)
-                .icon(BitmapDescriptorFactory.fromBitmap(usuario))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
                 .title(stNombreC)).showInfoWindow();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,  String[] permissions, @NonNull int[] grantResults) {
@@ -277,42 +320,5 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         }
     }
     //----------
-
-    public void drawRoute(){
-
-        Toast.makeText(this, "Tu poscicion : "+origen, Toast.LENGTH_LONG).show();
-
-        mGoogleapiProvider.getDirections(origen , destino).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                try{
-
-                    JSONObject jsonObject = new JSONObject(response.body());
-                    JSONArray jsonArray = jsonObject.getJSONArray("routes");
-                    JSONObject route = jsonArray.getJSONObject(0);
-                    JSONObject polylines = route.getJSONObject("overview_polyline");
-                    String points = polylines.getString("points");
-
-                    mPolylineList = DecodePoints.decodePoly(points);
-                    mPolylineOptions = new PolylineOptions();
-                    mPolylineOptions.color(Color.DKGRAY);
-                    mPolylineOptions.width(13f);
-                    mPolylineOptions.startCap(new SquareCap());
-                    mPolylineOptions.jointType(JointType.ROUND);
-                    mPolylineOptions.addAll(mPolylineList);
-                    mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
-
-                }catch (Exception e){
-                    Log.d("Error","Error encontrado"+ e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-            }
-
-        });
-    }
 
 }
