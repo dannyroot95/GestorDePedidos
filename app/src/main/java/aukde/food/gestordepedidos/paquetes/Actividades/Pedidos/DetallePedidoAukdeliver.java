@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
@@ -91,6 +92,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     public static final int LOCATION_REQUEST_CODE = 1;
     NetworkReceiver networkReceiver = new NetworkReceiver();
     GpsReceiver gpsReceiver = new GpsReceiver();
+    private Vibrator vibrator;
+    long tiempo = 200;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -99,7 +102,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_pedido_aukdeliver);
         startLocacion();
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -159,6 +162,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mButtonShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearProductos.setLayoutParams(params);
             }
@@ -169,6 +173,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto1);
                 mLinearProductos.setLayoutParams(params);
             }
@@ -177,11 +182,13 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 Intent intent = new Intent(DetallePedidoAukdeliver.this, MapaClientePorLlamada.class);
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
                 intent.putExtra("telefono",listTelefonoCliente.getText().toString());
+                intent.putExtra("proveedores",listProveedores.getText().toString());
                 startActivity(intent);
             }
         });

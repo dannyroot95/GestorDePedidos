@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -84,7 +85,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private LocationRequest mLocationRequest;
     private LatLng origen;
     private LinearLayout mDisconnect;
-
+    private Vibrator vibrator;
+    long tiempo = 200;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -109,6 +111,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
         mDialog = new ProgressDialog(this);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
         btnPerfil = findViewById(R.id.btnPerfil);
@@ -138,6 +141,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         btnLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAukdeliver.this, ListaPedidosAukdeliver.class));
             }
         });
@@ -145,6 +149,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAukdeliver.this, PerfilAukdeliver.class));
             }
         });

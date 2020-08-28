@@ -6,11 +6,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,13 +72,15 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private ProgressDialog mDialog;
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
+    private Vibrator vibrator;
+    long tiempo = 200;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_pedido);
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
@@ -137,6 +141,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mButtonShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearProductos.setLayoutParams(params);
             }
@@ -146,6 +151,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             int alto1 = 0;
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                 mLinearProductos.setLayoutParams(params);
             }
@@ -154,11 +160,13 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 Intent intent = new Intent(DetallePedido.this, MapaClientePorLlamada.class);
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
                 intent.putExtra("telefono",listTelefonoCliente.getText().toString());
+                intent.putExtra("proveedores",listProveedores.getText().toString());
                 startActivity(intent);
             }
         });
@@ -166,6 +174,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mButtonEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mDialog.show();
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
@@ -178,6 +187,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mAsignar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mDialog.show();
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");

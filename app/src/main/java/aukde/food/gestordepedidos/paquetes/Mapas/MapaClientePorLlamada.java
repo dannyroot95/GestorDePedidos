@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,10 +21,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -43,6 +44,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,6 +57,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Providers.GoogleApiProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DecodePoints;
@@ -71,9 +79,11 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private GoogleApiProvider mGoogleapiProvider;
     private List<LatLng> mPolylineList;
     private PolylineOptions mPolylineOptions;
-    private TextView nombres , distancia , tiempo;
+    private TextView nombres, distancia, tiempo;
     private FloatingActionButton mFloat;
     private ProgressDialog mDialog;
+    private DatabaseReference mDatabase;
+
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -89,19 +99,17 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                     origen = new LatLng(location.getLatitude(), location.getLongitude());
                     String stlatitud = poscicion.getString("latitud");
                     String stlongitud = poscicion.getString("longitud");
-                    if (stlatitud.isEmpty() && stlongitud.isEmpty())
-                    {
+                    if (stlatitud.isEmpty() && stlongitud.isEmpty()) {
                         //finish();
-                    }
-                    else{
+                    } else {
                         Double latitud = Double.parseDouble(stlatitud);
                         Double longitud = Double.parseDouble(stlongitud);
-                        LatLng destino = new LatLng(latitud,longitud);
+                        LatLng destino = new LatLng(latitud, longitud);
                         mGoogleapiProvider.getDirections(origen, destino).enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
 
-                                try{
+                                try {
 
                                     JSONObject jsonObject = new JSONObject(response.body());
                                     JSONArray jsonArray = jsonObject.getJSONArray("routes");
@@ -111,7 +119,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
                                     mPolylineList = DecodePoints.decodePoly(points);
                                     mPolylineOptions = new PolylineOptions();
-                                    mPolylineOptions.color(Color.DKGRAY);
+                                    mPolylineOptions.color(Color.BLUE);
                                     mPolylineOptions.width(15f);
                                     mPolylineOptions.startCap(new SquareCap());
                                     mPolylineOptions.jointType(JointType.ROUND);
@@ -126,37 +134,32 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                                     String stDuracion = Jduracion.getString("value");
 
                                     int Dtiempo = Integer.parseInt(stDuracion);
-                                    int intTiempo = (Dtiempo/60)-1;
+                                    int intTiempo = (Dtiempo / 60) - 1;
 
                                     Double DtDistancia = Double.parseDouble(stDistancia);
-                                    Double intDistancia = (DtDistancia/1000);
+                                    Double intDistancia = (DtDistancia / 1000);
                                     BigDecimal bd = new BigDecimal(intDistancia);
                                     bd = bd.setScale(1, RoundingMode.HALF_UP);
                                     String km = String.valueOf(bd);
                                     String time = String.valueOf(intTiempo);
 
-                                    if(intTiempo <= 0){
-                                        tiempo.setText("1"+" min");
+                                    if (intTiempo <= 0) {
+                                        tiempo.setText("1" + " min");
+                                        mDialog.dismiss();
+                                    } else {
+                                        tiempo.setText(time + " min");
                                         mDialog.dismiss();
                                     }
-                                    else
-                                        {
-                                            tiempo.setText(time+" min");
-                                            mDialog.dismiss();
-                                        }
-                                    if(intDistancia<1.0){
-                                        distancia.setText(stDistancia+" m");
+                                    if (intDistancia < 1.0) {
+                                        distancia.setText(stDistancia + " m");
                                         mDialog.dismiss();
-                                    }
-                                    else {
-                                        distancia.setText(km+" Km");
+                                    } else {
+                                        distancia.setText(km + " Km");
                                         mDialog.dismiss();
                                     }
 
-
-
-                                }catch (Exception e){
-                                    Log.d("Error","Error encontrado"+ e.getMessage());
+                                } catch (Exception e) {
+                                    Log.d("Error", "Error encontrado" + e.getMessage());
                                 }
                             }
 
@@ -196,18 +199,20 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
+        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
 
         nombres = findViewById(R.id.textViewName);
         distancia = findViewById(R.id.textViewDistancia);
         tiempo = findViewById(R.id.textViewTiempo);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         mFloat = findViewById(R.id.floatingLlamada);
         mFloat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
 
         poscicion = getIntent().getExtras();
-        if (poscicion.isEmpty()){
-            Toasty.error(this,"Error",Toasty.LENGTH_SHORT).show();
+        if (poscicion.isEmpty()) {
+            Toasty.error(this, "Error", Toasty.LENGTH_SHORT).show();
             finish();
         }
 
@@ -217,6 +222,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                 onClickLlamadaCliente();
             }
         });
+        obtenerProveedores();
 
     }
 
@@ -239,35 +245,35 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
         nombres.setText(stNombreC.toUpperCase());
 
-        if (stlatitud.isEmpty() && stlongitud.isEmpty()){
-            Toasty.error(this,"Error",Toasty.LENGTH_SHORT).show();
+        if (stlatitud.isEmpty() && stlongitud.isEmpty()) {
+            Toasty.error(this, "Error", Toasty.LENGTH_SHORT).show();
             finish();
-        }
-        else{
+        } else {
             Double latitud = Double.parseDouble(stlatitud);
             Double longitud = Double.parseDouble(stlongitud);
 
             LatLng point = new LatLng(latitud, longitud);
             mMap.addMarker(new MarkerOptions()
-                .position(point)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
-                .title(stNombreC)).showInfoWindow();
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
+                    .position(point)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                    .title(stNombreC)).showInfoWindow();
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
         }
 
     }
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if(gpsActive()){
+                    if (gpsActive()) {
                         mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                    } else {
+                        showAlertDialog();
                     }
-                    else { showAlertDialog(); }
                 } else {
                     checkLocationPermision();
                 }
@@ -288,27 +294,26 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                 return;
             }
             mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-        }
-        else {
+        } else {
             showAlertDialog();
         }
     }
 
-    private void showAlertDialog(){
+    private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicación para continuar")
                 .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
                 }).create().show();
     }
 
-    private boolean gpsActive(){
+    private boolean gpsActive() {
         boolean isActive = false;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             isActive = true;
         }
 
@@ -318,31 +323,25 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     //-----------
     //verificar version de android
 
-    public void startLocacion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                if(gpsActive())
-                {
-                    mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-                }
-                else{
+    public void startLocacion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (gpsActive()) {
+                    mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                } else {
                     showAlertDialog();
                 }
 
-            }
-
-            else {
+            } else {
                 checkLocationPermision();
             }
 
-        }
-        else {
-            if(gpsActive()){
-                mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
+        } else {
+            if (gpsActive()) {
+                mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                 mMap.setMyLocationEnabled(true);
 
-            }
-            else {
+            } else {
                 showAlertDialog();
             }
 
@@ -351,28 +350,149 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
     //------------------------------
 
-    public void checkLocationPermision(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
+    public void checkLocationPermision() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Proporciona los permisos para continuar")
                         .setMessage("Esta aplicación requiere los permisos para continuar")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(MapaClientePorLlamada.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(MapaClientePorLlamada.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                             }
                         })
                         .create()
                         .show();
-            }
-            else {
-                ActivityCompat.requestPermissions(MapaClientePorLlamada.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(MapaClientePorLlamada.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             }
         }
     }
+
+    private void obtenerProveedores() {
+        String stProveedor = poscicion.getString("proveedores");
+        String [] descomponer = stProveedor.split("\n");
+        for (final String c : descomponer) {
+
+            Query reference = FirebaseDatabase.getInstance().getReference()
+                    .child("MapaProveedor").orderByChild("nombre").equalTo(c);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        Double lat = (Double) childSnapshot.child("l").child("0").getValue();
+                        Double lon = (Double) childSnapshot.child("l").child("1").getValue();
+                        String stlatitud = poscicion.getString("latitud");
+                        String stlongitud = poscicion.getString("longitud");
+                        final LatLng prov = new LatLng(lat, lon);
+                        if (stlatitud.isEmpty() && stlongitud.isEmpty()) {
+                            //finish();
+                        } else {
+                            Double latitud = Double.parseDouble(stlatitud);
+                            Double longitud = Double.parseDouble(stlongitud);
+                            LatLng destino = new LatLng(latitud, longitud);
+                            mGoogleapiProvider.getDirections(prov, destino).enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+
+                                    try {
+
+                                        JSONObject jsonObject = new JSONObject(response.body());
+                                        JSONArray jsonArray = jsonObject.getJSONArray("routes");
+                                        JSONObject route = jsonArray.getJSONObject(0);
+                                        JSONObject polylines = route.getJSONObject("overview_polyline");
+                                        String points = polylines.getString("points");
+
+                                        mPolylineList = DecodePoints.decodePoly(points);
+                                        mPolylineOptions = new PolylineOptions();
+                                        mPolylineOptions.color(Color.BLACK);
+                                        mPolylineOptions.width(15f);
+                                        mPolylineOptions.startCap(new SquareCap());
+                                        mPolylineOptions.jointType(JointType.ROUND);
+                                        mPolylineOptions.addAll(mPolylineList);
+                                        mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
+
+                                        JSONArray legs = route.getJSONArray("legs");
+                                        JSONObject leg = legs.getJSONObject(0);
+                                        JSONObject Jdistancia = leg.getJSONObject("distance");
+                                        JSONObject Jduracion = leg.getJSONObject("duration");
+                                        String stDistancia = Jdistancia.getString("value");
+                                        String stDuracion = Jduracion.getString("value");
+                                        int newDuracdion = Integer.parseInt(stDuracion);
+
+
+                                    } catch (Exception e) {
+                                        Log.d("Error", "Error encontrado" + e.getMessage());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                }
+
+                            });
+
+                        }
+
+                        mMap.addMarker(new MarkerOptions().position(prov).title(c).icon(BitmapDescriptorFactory.fromResource(R.drawable.local)));
+                        LocationCallback mLocationCallback2 = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(LocationResult locationResult) {
+                                for (Location location : locationResult.getLocations()) {
+                                    origen = new LatLng(location.getLatitude(), location.getLongitude());
+                                    mGoogleapiProvider.getDirections(origen, prov).enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response) {
+
+                                            try {
+
+                                                JSONObject jsonObject = new JSONObject(response.body());
+                                                JSONArray jsonArray = jsonObject.getJSONArray("routes");
+                                                JSONObject route = jsonArray.getJSONObject(0);
+                                                JSONObject polylines = route.getJSONObject("overview_polyline");
+                                                String points = polylines.getString("points");
+
+                                                mPolylineList = DecodePoints.decodePoly(points);
+                                                mPolylineOptions = new PolylineOptions();
+                                                mPolylineOptions.color(Color.RED);
+                                                mPolylineOptions.width(15f);
+                                                mPolylineOptions.startCap(new SquareCap());
+                                                mPolylineOptions.jointType(JointType.ROUND);
+                                                mPolylineOptions.addAll(mPolylineList);
+                                                mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
+
+                                            } catch (Exception e) {
+                                                Log.d("Error", "Error encontrado" + e.getMessage());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+                                        }
+
+                                    });
+                                }
+                            }
+                        };
+                        if (ActivityCompat.checkSelfPermission(MapaClientePorLlamada.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapaClientePorLlamada.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            return;
+                        }
+                        mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback2, Looper.myLooper());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toasty.info(MapaClientePorLlamada.this, "Proveedor no registrado", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     //----------
 
     private void onClickLlamadaCliente() {
@@ -380,5 +500,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+stTelefono));
         startActivity(i);
     }
+
 
 }
