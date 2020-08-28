@@ -73,12 +73,14 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver" />
+        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
             android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
             android:screenOrientation="portrait"/>
-        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido" />
+        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"
             android:parentActivityName=".paquetes.Menus.MenuAdmin"

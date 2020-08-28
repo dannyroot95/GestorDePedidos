@@ -158,6 +158,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
+                intent.putExtra("telefono",listTelefonoCliente.getText().toString());
                 startActivity(intent);
             }
         });
@@ -320,7 +321,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
     }
 
-    public void onClickLlamada(View v) {
+    public void onClickLlamadaCliente(View v) {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+listTelefonoCliente.getText().toString()));
         startActivity(i);
     }

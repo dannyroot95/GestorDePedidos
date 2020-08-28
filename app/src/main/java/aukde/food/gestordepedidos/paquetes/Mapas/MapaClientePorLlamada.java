@@ -5,25 +5,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
-import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -39,18 +40,17 @@ import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.nio.DoubleBuffer;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
-
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Providers.GeofireProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.GoogleApiProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DecodePoints;
 import es.dmoral.toasty.Toasty;
@@ -63,7 +63,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private GoogleMap mMap;
     Bundle poscicion;
     private LatLng origen;
-    private LatLng destino;
     private Marker mMarker;
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocation;
@@ -72,19 +71,22 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private GoogleApiProvider mGoogleapiProvider;
     private List<LatLng> mPolylineList;
     private PolylineOptions mPolylineOptions;
+    private TextView nombres , distancia , tiempo;
+    private FloatingActionButton mFloat;
+    private ProgressDialog mDialog;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
+            mDialog.show();
+            mDialog.setCancelable(false);
+            mDialog.setMessage("Cargando mapa...");
             for (Location location : locationResult.getLocations()) {
                 if (getApplicationContext() != null) {
                     if (mMarker != null) {
                         mMarker.remove();
                     }
-
                     origen = new LatLng(location.getLatitude(), location.getLongitude());
-                    Double latitud ;
-                    Double longitud;
                     String stlatitud = poscicion.getString("latitud");
                     String stlongitud = poscicion.getString("longitud");
                     if (stlatitud.isEmpty() && stlongitud.isEmpty())
@@ -92,9 +94,9 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                         //finish();
                     }
                     else{
-                        latitud = Double.parseDouble(stlatitud);
-                        longitud = Double.parseDouble(stlongitud);
-                        destino = new LatLng(latitud,longitud);
+                        Double latitud = Double.parseDouble(stlatitud);
+                        Double longitud = Double.parseDouble(stlongitud);
+                        LatLng destino = new LatLng(latitud,longitud);
                         mGoogleapiProvider.getDirections(origen, destino).enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
@@ -115,6 +117,43 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                                     mPolylineOptions.jointType(JointType.ROUND);
                                     mPolylineOptions.addAll(mPolylineList);
                                     mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
+
+                                    JSONArray legs = route.getJSONArray("legs");
+                                    JSONObject leg = legs.getJSONObject(0);
+                                    JSONObject Jdistancia = leg.getJSONObject("distance");
+                                    JSONObject Jduracion = leg.getJSONObject("duration");
+                                    String stDistancia = Jdistancia.getString("value");
+                                    String stDuracion = Jduracion.getString("value");
+
+                                    int Dtiempo = Integer.parseInt(stDuracion);
+                                    int intTiempo = (Dtiempo/60)-1;
+
+                                    Double DtDistancia = Double.parseDouble(stDistancia);
+                                    Double intDistancia = (DtDistancia/1000);
+                                    BigDecimal bd = new BigDecimal(intDistancia);
+                                    bd = bd.setScale(1, RoundingMode.HALF_UP);
+                                    String km = String.valueOf(bd);
+                                    String time = String.valueOf(intTiempo);
+
+                                    if(intTiempo <= 0){
+                                        tiempo.setText("1"+" min");
+                                        mDialog.dismiss();
+                                    }
+                                    else
+                                        {
+                                            tiempo.setText(time+" min");
+                                            mDialog.dismiss();
+                                        }
+                                    if(intDistancia<1.0){
+                                        distancia.setText(stDistancia+" m");
+                                        mDialog.dismiss();
+                                    }
+                                    else {
+                                        distancia.setText(km+" Km");
+                                        mDialog.dismiss();
+                                    }
+
+
 
                                 }catch (Exception e){
                                     Log.d("Error","Error encontrado"+ e.getMessage());
@@ -157,12 +196,27 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
+        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
+
+        nombres = findViewById(R.id.textViewName);
+        distancia = findViewById(R.id.textViewDistancia);
+        tiempo = findViewById(R.id.textViewTiempo);
+
+        mFloat = findViewById(R.id.floatingLlamada);
+        mFloat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
 
         poscicion = getIntent().getExtras();
         if (poscicion.isEmpty()){
             Toasty.error(this,"Error",Toasty.LENGTH_SHORT).show();
             finish();
         }
+
+        mFloat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickLlamadaCliente();
+            }
+        });
 
     }
 
@@ -178,28 +232,30 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
         startLocacion();
 
-        Double latitud = -12.0;
-        Double longitud = -69.0;
+
         String stlatitud = poscicion.getString("latitud");
         String stlongitud = poscicion.getString("longitud");
         String stNombreC = poscicion.getString("nombre");
+
+        nombres.setText(stNombreC.toUpperCase());
+
         if (stlatitud.isEmpty() && stlongitud.isEmpty()){
             Toasty.error(this,"Error",Toasty.LENGTH_SHORT).show();
             finish();
         }
         else{
-            latitud = Double.parseDouble(stlatitud);
-            longitud = Double.parseDouble(stlongitud);
-        }
+            Double latitud = Double.parseDouble(stlatitud);
+            Double longitud = Double.parseDouble(stlongitud);
 
-        LatLng point = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions()
+            LatLng point = new LatLng(latitud, longitud);
+            mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
                 .title(stNombreC)).showInfoWindow();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
-    }
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
+        }
 
+    }
 
 
     @Override
@@ -210,7 +266,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     if(gpsActive()){
                         mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                        mMap.setMyLocationEnabled(true);
                     }
                     else { showAlertDialog(); }
                 } else {
@@ -269,7 +324,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                 if(gpsActive())
                 {
                     mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-                    mMap.setMyLocationEnabled(true);
                 }
                 else{
                     showAlertDialog();
@@ -320,5 +374,11 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         }
     }
     //----------
+
+    private void onClickLlamadaCliente() {
+        String stTelefono = poscicion.getString("telefono");
+        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+stTelefono));
+        startActivity(i);
+    }
 
 }

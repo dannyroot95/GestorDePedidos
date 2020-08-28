@@ -181,6 +181,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
+                intent.putExtra("telefono",listTelefonoCliente.getText().toString());
                 startActivity(intent);
             }
         });

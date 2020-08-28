@@ -1,9 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".paquetes.Mapas.MapaClientePorLlamada" />
+    android:fitsSystemWindows="true"
+    tools:context=".paquetes.Mapas.MapaClientePorLlamada">
+
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+      android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:fontFamily="@font/futura"
+          android:text="Nombre del cliente : "
+          android:layout_marginLeft="11dp"
+          android:textSize="14sp"
+          android:textStyle="bold"/>
+
+      <TextView
+          android:id="@+id/textViewName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text=""
+          android:textColor="#000"
+          android:textStyle="bold"
+          android:fontFamily="@font/futura"
+          android:inputType="textCapSentences"
+          android:layout_weight="1"
+          android:layout_gravity="center"
+          android:textSize="14sp"/>
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:layout_width="wrap_content"
+          android:id="@+id/floatingLlamada"
+          android:src="@drawable/ic_vector_call"
+          android:layout_marginRight="10dp"
+          android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="18dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Tiempo de llegada : "
+          android:fontFamily="@font/futura"
+          android:textSize="14sp"
+          android:textStyle="bold"/>
+
+      <TextView
+          android:id="@+id/textViewTiempo"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:fontFamily="@font/futura"
+          android:layout_weight="1"
+          android:textColor="#000"
+          android:textSize="14sp"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Distancia : "
+          android:fontFamily="@font/futura"
+          android:textSize="14sp"
+          android:textStyle="bold"/>
+
+      <TextView
+          android:id="@+id/textViewDistancia"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:fontFamily="@font/futura"
+          android:textColor="#000"
+          android:textSize="14sp"/>
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
