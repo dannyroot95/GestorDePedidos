@@ -5,14 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import android.app.ProgressDialog;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +31,7 @@ import java.util.Map;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 
 public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -32,18 +39,37 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private ProgressDialog mDialog;
     SharedPreferences mSharedPreference;
     private DatabaseReference mDatabase;
-
+    private TokenProvider mTokenProvider;
+    private AuthProviders mAuth;
+    private LinearLayout LinearShimmer;
+    private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private final static int ID_SERVICIO = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        stopJobSchedule();
         setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_proveedor);
         mAuthProviders = new AuthProviders();
+        mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mTokenProvider = new TokenProvider();
+
+        Txtnombres = findViewById(R.id.txtNombres);
+        Txtapellidos = findViewById(R.id.txtApellidos);
+        TxtNombreEmpresa = findViewById(R.id.txtEmpresa);
+
+        LinearShimmer = findViewById(R.id.linearShimmer);
+        shimmerFrameLayout = findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmer();
+
         Mapping();
+        generarToken();
+        getDataUser();
     }
 
 
@@ -58,12 +84,14 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     }
 
 
-    void logout(){
-        final SharedPreferences.Editor editor = mSharedPreference.edit();
-        editor.putString("","");
-        editor.apply();
+    void logout() {
+        /*final SharedPreferences.Editor editor = mSharedPreference.edit();
+        editor.putString("", "");
+        editor.apply();*/
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
-        startActivity(new Intent(MenuProveedor.this, Inicio.class));
+        Intent intent = new Intent(MenuProveedor.this, Inicio.class);
+        startActivity(intent);
         finish();
         mDialog.dismiss();
     }
@@ -80,6 +108,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             case R.id.item2:
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
+                deleteTokenFCM();
                 logout();
                 return true;
             default:
@@ -126,6 +155,49 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
 
             }
         });
+    }
+
+    private void getDataUser() {
+        String id = mAuth.getId();
+        mDatabase.child("Usuarios").child("Proveedor").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String nombres = dataSnapshot.child("nombres").getValue().toString();
+                    String apellidos = dataSnapshot.child("apellidos").getValue().toString();
+                    String nombreEmpresa = dataSnapshot.child("nombre empresa").getValue().toString();
+                    LinearShimmer.setBackground(null);
+                    Txtnombres.setBackground(null);
+                    Txtnombres.setText(nombres);
+                    Txtapellidos.setBackground(null);
+                    Txtapellidos.setText(apellidos);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setShimmer(null);
+                    TxtNombreEmpresa.setText(nombreEmpresa);
+                } else {
+                    Toast.makeText(MenuProveedor.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MenuProveedor.this, "Error de Base de datos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void generarToken() {
+        mTokenProvider.create(mAuth.getId());
+    }
+
+    private void deleteTokenFCM(){
+        mDatabase.child("Tokens").child(mAuth.getId()).removeValue();
+    }
+
+    private void stopJobSchedule(){
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(ID_SERVICIO);
     }
 
 }

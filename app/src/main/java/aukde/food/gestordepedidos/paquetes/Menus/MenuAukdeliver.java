@@ -344,6 +344,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         editor.apply();*/
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
+        //eliminar si sigue causando errores
         Intent intent = new Intent(MenuAukdeliver.this, Inicio.class);
         startActivity(intent);
         finish();
@@ -438,4 +439,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         super.onStart();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
