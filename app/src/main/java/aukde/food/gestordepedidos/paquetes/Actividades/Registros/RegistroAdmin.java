@@ -26,6 +26,7 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 
 public class RegistroAdmin extends AppCompatActivity {
@@ -95,22 +96,22 @@ public class RegistroAdmin extends AppCompatActivity {
                     }
                     else {
                         mDialog.dismiss();
-                        Toast.makeText(RegistroAdmin.this,"Clave de autorización inválida",Toast.LENGTH_LONG).show();
+                        Toasty.error(RegistroAdmin.this, "Clave de autorización inválida", Toast.LENGTH_LONG,true).show();
                     }
                 }
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroAdmin.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
+                    Toasty.warning(RegistroAdmin.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG,true).show();
                 }
             }
             else {
                 mDialog.dismiss();
-                Toast.makeText(RegistroAdmin.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG).show();
+                Toasty.info(RegistroAdmin.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG,true).show();
             }
         }
 
         else {
-            Toast.makeText(RegistroAdmin.this,"Complete los todos campos",Toast.LENGTH_LONG).show();
+            Toasty.info(RegistroAdmin.this,"Complete los todos campos",Toast.LENGTH_LONG,true).show();
         }
 
     }
@@ -141,7 +142,7 @@ public class RegistroAdmin extends AppCompatActivity {
                 }
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroAdmin.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT).show();
+                    Toasty.error(RegistroAdmin.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT,true).show();
                 }
             }
         });

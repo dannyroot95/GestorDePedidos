@@ -228,22 +228,22 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
                     }
                     else {
                         mDialog.dismiss();
-                        Toast.makeText(RegistroProveedor.this,"Clave de autorización inválida",Toast.LENGTH_LONG).show();
+                        Toasty.error(RegistroProveedor.this, "Clave de autorización inválida", Toast.LENGTH_LONG,true).show();
                     }
                 }
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroProveedor.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
+                    Toasty.warning(RegistroProveedor.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG,true).show();
                 }
             }
             else {
                 mDialog.dismiss();
-                Toast.makeText(RegistroProveedor.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG).show();
+                Toasty.info(RegistroProveedor.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG,true).show();
             }
         }
 
         else {
-            Toast.makeText(RegistroProveedor.this,"Complete los todos campos",Toast.LENGTH_LONG).show();
+            Toasty.info(RegistroProveedor.this,"Complete los todos campos",Toast.LENGTH_LONG,true).show();
         }
 
     }
@@ -273,7 +273,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
 
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroProveedor.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT).show();
+                    Toasty.error(RegistroProveedor.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT,true).show();
                 }
 
             }

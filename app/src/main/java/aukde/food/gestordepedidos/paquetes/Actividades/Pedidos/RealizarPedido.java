@@ -1119,10 +1119,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String token = dataSnapshot.child("token").getValue().toString();
+                    String ruta = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/pedido.jpg?alt=media&token=efae43e4-8f6a-4e45-8773-ff9fad1a3533";
                     Map<String,String> map = new HashMap<>();
                     map.put("title","Nuevo pedido #"+numPedNotify);
                     map.put("body","Usted tiene un nuevo pedido"+"\n"+"Nombre del cliente : "
                             +edtNombreCliente.getText().toString()+"\n"+"Teléfono : "+edtTelefono.getText().toString());
+                    map.put("path",ruta);
                     map.put("idClient",mAuth.getUid());
                     map.put("numPedido",numPedNotify);
                     map.put("nombre",edtNombreCliente.getText().toString());
@@ -1132,6 +1134,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     map.put("fecha",fechaEntrega.getText().toString());
                     map.put("ganancia",txtGananciaPorDelivery.getText().toString());
                     map.put("repartidor",txtEncargado.getText().toString());
+
                     FCMBody fcmBody = new FCMBody(token,"high",map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override

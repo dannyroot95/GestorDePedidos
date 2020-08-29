@@ -284,6 +284,7 @@ public class AsignarRepartidor extends AppCompatActivity{
                     final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
                             = new ArrayAdapter<>(AsignarRepartidor.this , R.layout.custom_spinner,aukdelivers);
                     mSpinner.setAdapter(arrayAdapter);
+                    arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                     mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

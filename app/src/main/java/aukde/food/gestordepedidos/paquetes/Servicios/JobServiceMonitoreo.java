@@ -10,6 +10,7 @@ import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
@@ -112,6 +113,7 @@ public class JobServiceMonitoreo extends JobService {
 
                 notificationChannel.setDescription("Cannal de notificaciones");
                 notificationManager.createNotificationChannel(notificationChannel);
+                notificationChannel.setLightColor(Color.GREEN);
             }
         }
 

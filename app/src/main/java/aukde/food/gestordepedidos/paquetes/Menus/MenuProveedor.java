@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -45,6 +46,8 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa;
     private ShimmerFrameLayout shimmerFrameLayout;
     private final static int ID_SERVICIO = 99;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         mAuthProviders = new AuthProviders();
         mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mTokenProvider = new TokenProvider();
@@ -70,6 +74,9 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         Mapping();
         generarToken();
         getDataUser();
+
+
+
     }
 
 

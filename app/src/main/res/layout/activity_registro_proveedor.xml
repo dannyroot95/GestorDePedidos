@@ -158,8 +158,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Dir"
-                        android:hint="Dirección (Presione el boton Mapear)"
+                        android:text="Dirección"
+                        android:hint="(Presione el boton Mapear)"
                         android:id="@+id/ProveedorDireccion"
                         android:inputType="text">
 
@@ -218,6 +218,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:text="Mapear"
+                    android:textColor="#fff"
                     android:id="@+id/btnMapear"
                     android:padding="10dp"
                     android:background="@drawable/redondo"

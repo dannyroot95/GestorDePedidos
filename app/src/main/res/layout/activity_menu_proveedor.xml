@@ -160,10 +160,10 @@
                         android:layout_height="80dp">
 
                         <Button
-                            android:layout_width="80dp"
+                            android:layout_width="50dp"
                             android:gravity="center"
                             android:id="@+id/btnListaPedidosAukdeliver"
-                            android:background="@drawable/miproducto"
+                            android:background="@drawable/btn_productos"
                             android:layout_height="80dp"/>
 
                     </RelativeLayout>
@@ -201,15 +201,15 @@
                     android:padding="16dp">
 
                     <RelativeLayout
-                        android:layout_width="80dp"
+                        android:layout_width="95dp"
                         android:gravity="center"
                         android:layout_height="80dp">
 
                         <Button
-                            android:layout_width="80dp"
+                            android:layout_width="150dp"
                             android:gravity="center"
                             android:id="@+id/btnAgregarProducto"
-                            android:background="@drawable/btn_lista_pedidos"
+                            android:background="@drawable/btn_agregar_producto"
                             android:layout_height="80dp"/>
 
                     </RelativeLayout>
@@ -256,7 +256,7 @@
                             android:layout_width="80dp"
                             android:gravity="center"
                             android:id="@+id/btnSolicitarDelivery"
-                            android:background="@drawable/btn_lista_pedidos"
+                            android:background="@drawable/btn_monitoreo"
                             android:layout_height="80dp"/>
 
                     </RelativeLayout>

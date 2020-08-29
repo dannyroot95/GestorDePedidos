@@ -173,7 +173,7 @@
           android:textColor="#000"
           android:textSize="18sp"
           android:background="@drawable/redondo"
-          android:backgroundTint="#fff"
+          android:backgroundTint="@drawable/btn_background_blanco"
           android:fontFamily="@font/futura"
           android:id="@+id/floatRegister"
           android:layout_height="wrap_content"/>
