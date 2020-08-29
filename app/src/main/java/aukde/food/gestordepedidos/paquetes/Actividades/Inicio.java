@@ -3,10 +3,12 @@ package aukde.food.gestordepedidos.paquetes.Actividades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,6 +27,8 @@ public class Inicio extends AppCompatActivity {
 
     private Button btnAdminLogin,btnAukdeliverLogin,btnProveedorLogin;
     SharedPreferences mPreference;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +39,13 @@ public class Inicio extends AppCompatActivity {
         btnAdminLogin = findViewById(R.id.btnAdmin);
         btnAukdeliverLogin = findViewById(R.id.btnAukdeliver);
         btnProveedorLogin = findViewById(R.id.btnProveedor);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
 
         btnAdminLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginAdmin.class));
             }
         });
@@ -47,12 +53,14 @@ public class Inicio extends AppCompatActivity {
         btnAukdeliverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginAukdeliver.class));
             }
         });
         btnProveedorLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginProveedor.class));
             }
         });

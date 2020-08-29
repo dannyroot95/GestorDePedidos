@@ -29,6 +29,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -162,6 +163,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     private TokenProvider tokenProvider;
     private FirebaseAuth mAuth ;
 
+    private Vibrator vibrator;
+    long tiempo = 100;
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -204,6 +208,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         edtNumPedido.setEnabled(false);
 
         // nuevo
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         mBtnAdd = findViewById(R.id.add);
         mbtnMin = findViewById(R.id.btnMin);
@@ -256,6 +261,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                vibrator.vibrate(tiempo);
                 mProducto.setText("");
                 mDescripcion.setText("");
                 mPrecioUnitario.setText("");
@@ -267,6 +273,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                vibrator.vibrate(tiempo);
                 mSocio.setText("");
                 mProducto.setText("");
                 mDescripcion.setText("");
@@ -281,6 +288,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String S = mSocio.getText().toString();
                 String P = mProducto.getText().toString();
                 String D = mDescripcion.getText().toString();
@@ -427,6 +435,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mBtnClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 textSocio.setText(" ");
                 txtProducto.setText(" ");
                 txtDescripcion.setText(" ");
@@ -544,18 +553,21 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         fechaEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickFecha();
             }
         });
         horaEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickHora();
             }
         });
         btnCalcularVuelto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickCalcularVuelto();
             }
         });
@@ -563,6 +575,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this,R.style.ThemeOverlay);
                 builder.setTitle("Confirmacion de pedido");
                 builder.setCancelable(false);
@@ -591,6 +604,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             int alto1 = 0;
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                 mLinearMap.setLayoutParams(params);
                 mFloatingMap.setVisibility(View.INVISIBLE);
@@ -600,6 +614,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mButtonMapear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mFloatingMap.setVisibility(View.VISIBLE);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearMap.setLayoutParams(params);

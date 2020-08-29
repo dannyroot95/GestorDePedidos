@@ -591,12 +591,17 @@
                         </LinearLayout>
 
                         <Button
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:text="Agregar Producto"
                             android:id="@+id/add"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight="5"
+                            android:background="@drawable/redondo"
+                            android:backgroundTint="@drawable/btn_background_negro"
                             android:fontFamily="@font/futura"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="#fff"
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
@@ -842,7 +847,10 @@
                             android:id="@+id/btnClean"
                             android:fontFamily="@font/futura"
                             android:textSize="12sp"
+                            android:background="@drawable/redondo"
                             android:textStyle="bold"
+                            android:textColor="#fff"
+                            android:backgroundTint="@drawable/btn_background_negro"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -1220,7 +1228,10 @@
                                 android:textSize="14sp"
                                 android:fontFamily="@font/futura"
                                 android:textStyle="bold"
+                                android:background="@drawable/redondo"
                                 android:text="Calcular vuelto"
+                                android:textColor="#fff"
+                                android:backgroundTint="@drawable/btn_background_negro"
                                 android:gravity="center"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -1303,7 +1314,7 @@
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:background="@drawable/redondo"
-                                    android:backgroundTint="#000"
+                                    android:backgroundTint="@drawable/btn_background_negro"
                                     android:layout_height="wrap_content"/>
 
                             </LinearLayout>

@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,8 @@ public class LoginAdmin extends AppCompatActivity {
   SharedPreferences mSharedPreference;
   AuthProviders authProviders;
   TextView recuperarClave;
+  private Vibrator vibrator;
+  long tiempo = 200;
 
 
   @Override
@@ -56,6 +60,7 @@ public class LoginAdmin extends AppCompatActivity {
     recuperarClave = findViewById(R.id.txtOlvidar);
     edtPassword = findViewById(R.id.logContrasena);
     btnlogin = findViewById(R.id.btnLogin);
+    vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     authProviders = new AuthProviders();
     mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
     mAuth = FirebaseAuth.getInstance();
@@ -65,6 +70,7 @@ public class LoginAdmin extends AppCompatActivity {
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        vibrator.vibrate(tiempo);
         login();
       }
     });
@@ -72,7 +78,7 @@ public class LoginAdmin extends AppCompatActivity {
     recuperarClave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
+        vibrator.vibrate(tiempo);
         startActivity(new Intent(LoginAdmin.this,RecuperarAdmin.class));
 
       }

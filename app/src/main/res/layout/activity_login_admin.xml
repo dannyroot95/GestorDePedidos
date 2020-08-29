@@ -90,7 +90,7 @@
                 android:textColor="#ffffff"
                 android:background="@drawable/redondo"
                 android:id="@+id/btnLogin"
-                android:backgroundTint="#000000"/>
+                android:backgroundTint="@drawable/btn_background_negro"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

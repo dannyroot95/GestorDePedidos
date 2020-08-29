@@ -53,7 +53,7 @@
                 android:id="@+id/btnAukdeliver"
                 android:background="@drawable/redondo"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#5bbd00"
+                android:backgroundTint="@drawable/btn_background_verde"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/futura"
                 android:textStyle="bold"
@@ -71,7 +71,7 @@
                 android:textColor="#ffffff"
                 android:fontFamily="@font/futura"
                 android:textStyle="bold"
-                android:backgroundTint="#5bbd00"
+                android:backgroundTint="@drawable/btn_background_verde"
                 android:text="Proveedor"/>
 
             <Button
@@ -80,7 +80,7 @@
                 android:id="@+id/btnAdmin"
                 android:background="@drawable/redondo"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#5bbd00"
+                android:backgroundTint="@drawable/btn_background_verde"
                 android:layout_marginLeft="5dp"
                 android:textColor="#ffffff"
                 android:fontFamily="@font/futura"

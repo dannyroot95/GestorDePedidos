@@ -312,7 +312,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     }
 
     public void showPopupEstado(View view){
-
+        vibrator.vibrate(tiempo);
         PopupMenu popupMenu = new PopupMenu(this,view);
         popupMenu.setOnMenuItemClickListener(this);
         if (listEstado.getText().toString().equals("Completado")){
@@ -386,6 +386,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         eliminarPedido();
                         estadoCanceladoRepartidor();
                         finish();
@@ -394,6 +395,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         dialog.cancel();
                     }
                 });

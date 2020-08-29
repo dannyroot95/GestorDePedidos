@@ -170,7 +170,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
         mButtonShow2.setOnClickListener(new View.OnClickListener() {
             int alto1 = 0;
-
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
@@ -314,7 +313,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     }
 
     public void showPopupEstado(View view) {
-
+        vibrator.vibrate(tiempo);
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_menu_estado_aukdeliver);

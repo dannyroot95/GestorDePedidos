@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".paquetes.Actividades.Logins.LoginProveedor">
 
     <include layout="@layout/toolbar3"/>
@@ -59,6 +60,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
+                app:passwordToggleEnabled = "true"
+                app:passwordToggleDrawable="@drawable/pass"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -87,7 +90,7 @@
                 android:textColor="#ffffff"
                 android:background="@drawable/redondo"
                 android:id="@+id/btnLogin"
-                android:backgroundTint="#EC407A"/>
+                android:backgroundTint="@drawable/btn_background_rosa"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:text="Olvidé mi contraseña?"

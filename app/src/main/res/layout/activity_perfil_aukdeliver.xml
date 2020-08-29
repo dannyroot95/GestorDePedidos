@@ -107,7 +107,7 @@
         android:text="Actualizar Datos"
         android:fontFamily="@font/futura"
         android:layout_margin="20dp"
-        android:backgroundTint="#5bbd00"
+        android:backgroundTint="@drawable/btn_background_verde"
         android:background="@drawable/redondo"
         android:textColor="#fff"
         android:layout_gravity="bottom"

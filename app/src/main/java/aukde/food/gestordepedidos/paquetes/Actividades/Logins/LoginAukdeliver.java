@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ public class LoginAukdeliver extends AppCompatActivity {
   SharedPreferences mSharedPreference;
   AuthProviders authProviders;
   TextView recuperarClave;
+  private Vibrator vibrator;
+  long tiempo = 200;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class LoginAukdeliver extends AppCompatActivity {
     edtPassword = findViewById(R.id.logContrasena);
     btnlogin =  findViewById(R.id.btnLogin);
     recuperarClave = findViewById(R.id.txtOlvidar);
+    vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     authProviders = new AuthProviders();
     mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
     mAuth = FirebaseAuth.getInstance();
@@ -58,6 +63,7 @@ public class LoginAukdeliver extends AppCompatActivity {
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        vibrator.vibrate(tiempo);
         login();
       }
     });
@@ -65,6 +71,7 @@ public class LoginAukdeliver extends AppCompatActivity {
     recuperarClave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        vibrator.vibrate(tiempo);
         startActivity(new Intent(LoginAukdeliver.this,RecuperarAukdelivery.class));
       }
     });
