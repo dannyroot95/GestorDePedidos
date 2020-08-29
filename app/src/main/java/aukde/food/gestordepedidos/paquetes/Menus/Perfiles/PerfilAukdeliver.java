@@ -1,12 +1,14 @@
 package aukde.food.gestordepedidos.paquetes.Menus.Perfiles;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -57,6 +59,8 @@ public class PerfilAukdeliver extends AppCompatActivity {
     String upApellido;
     NetworkReceiver networkReceiver = new NetworkReceiver();
     GpsReceiver gpsReceiver = new GpsReceiver();
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
         mAukdeliverProvider = new AukdeliverProvider();
         mAuthProviders = new AuthProviders();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         photoPerfil = findViewById(R.id.fotodefault);
         CrMyPhoto = findViewById(R.id.myPhoto);
         btnUpdateX = findViewById(R.id.btnUpdate);
@@ -79,6 +83,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // ActualzarPerfil();
+                vibrator.vibrate(tiempo);
                 Toasty.error(PerfilAukdeliver.this, "No tiene permisos para cambiar sus nombres", Toast.LENGTH_LONG).show();
             }
         });
@@ -87,6 +92,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // abrirGaleria();
+                vibrator.vibrate(tiempo);
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent,GALLERY_REQUEST);

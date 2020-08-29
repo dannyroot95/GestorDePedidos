@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileUtils;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,9 +57,12 @@ public class PerfilAdmin extends AppCompatActivity {
     private final int GALLERY_REQUEST = 1;
     String upNombre;
     String upApellido;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
 
-    @Override
+
+  @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
@@ -67,7 +72,7 @@ public class PerfilAdmin extends AppCompatActivity {
         mAdminProvider = new AdminProvider();
         mAuthProviders = new AuthProviders();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         photoPerfil = findViewById(R.id.fotodefault);
         CrMyPhoto = findViewById(R.id.myPhoto);
         btnUpdateX = findViewById(R.id.btnUpdate);
@@ -77,6 +82,7 @@ public class PerfilAdmin extends AppCompatActivity {
         btnUpdateX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ActualzarPerfil();
             }
         });
@@ -85,6 +91,7 @@ public class PerfilAdmin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // abrirGaleria();
+                vibrator.vibrate(tiempo);
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent,GALLERY_REQUEST);

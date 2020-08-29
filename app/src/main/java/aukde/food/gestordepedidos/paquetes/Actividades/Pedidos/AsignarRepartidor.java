@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -16,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -103,6 +105,8 @@ public class AsignarRepartidor extends AppCompatActivity{
     private FirebaseAuth mAuth ;
 
     Bundle numeroPedido;
+    private Vibrator vibrator;
+    long tiempo = 100;
     //----------------------------
 
     @SuppressLint("RestrictedApi")
@@ -119,6 +123,7 @@ public class AsignarRepartidor extends AppCompatActivity{
         fechaEntrega = findViewById(R.id.fechaEntrega);
         horaEntrega.setText(formatoHora);
         fechaEntrega.setText(formatoFecha);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vuelto = findViewById(R.id.vuelto);
         horaPedido.setText(formatoHora);
         fechaPedido.setText(formatoFecha);
@@ -189,6 +194,7 @@ public class AsignarRepartidor extends AppCompatActivity{
         mFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AlertDialog.Builder builder = new AlertDialog.Builder(AsignarRepartidor.this,R.style.ThemeOverlay);
                 builder.setTitle("Confirmar cambios!");
                 builder.setCancelable(false);
@@ -276,7 +282,7 @@ public class AsignarRepartidor extends AppCompatActivity{
                     }
 
                     final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
-                            = new ArrayAdapter<>(AsignarRepartidor.this , android.R.layout.simple_dropdown_item_1line,aukdelivers);
+                            = new ArrayAdapter<>(AsignarRepartidor.this , R.layout.custom_spinner,aukdelivers);
                     mSpinner.setAdapter(arrayAdapter);
                     mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override

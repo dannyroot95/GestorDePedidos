@@ -1,8 +1,10 @@
 package aukde.food.gestordepedidos.paquetes.Adaptadores;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,7 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
     public void onBindViewHolder(@NonNull final viewHolderPedidos holder, final int position) {
 
             final PedidoLlamada ls = pedidoLlamadaList.get(position);
+
             holder.txtPos1.setText("Número de pedido : ");
             holder.txtPos2.setText("Entregar Pedido a las : ");
             holder.txtPos3.setText("Fecha de entrega : ");
@@ -90,6 +93,10 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final Vibrator vibrator;
+                    final long tiempo = 100;
+                    vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(tiempo);
                     Intent intent = new Intent(v.getContext(),DetallePedido.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("key",ls);
@@ -108,6 +115,7 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
     }
 
     public class viewHolderPedidos extends RecyclerView.ViewHolder {
+
        TextView txtNumeroPedido,txtHoraList,txtFechaList,txtClienteList,txtDireccion,txtPos1,
                 txtPos2,txtPos3,txtPos4,txtPos5,txtPos6,txtListEstado,txttelefono,txtHoraRegistro,
                txtFechaRegistro , txtTotalProducto , txtClientePaga , txtTotalACobrar , txtVuelto
@@ -116,7 +124,7 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
                txtTotalDelivery ,txtGananciaDelivery,txtGananciaComision;
 
 
-       LinearLayout line,LinearPedidos;
+        LinearLayout line,LinearPedidos;
 
         public viewHolderPedidos(@NonNull final View itemView) {
             super(itemView);
@@ -158,6 +166,7 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
             int ancho = 0;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ancho,alto);
             LinearPedidos.setLayoutParams(params);
+
 
         }
     }

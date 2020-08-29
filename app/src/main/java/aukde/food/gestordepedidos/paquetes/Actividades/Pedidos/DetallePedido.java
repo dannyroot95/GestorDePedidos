@@ -73,7 +73,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
     private Vibrator vibrator;
-    long tiempo = 200;
+    long tiempo = 100;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

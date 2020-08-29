@@ -4,19 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedidoAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 
@@ -94,6 +91,10 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Vibrator vibrator;
+                final long tiempo = 100;
+                vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(tiempo);
                 Intent intent = new Intent(v.getContext(), DetallePedidoAukdeliver.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("key",ls);

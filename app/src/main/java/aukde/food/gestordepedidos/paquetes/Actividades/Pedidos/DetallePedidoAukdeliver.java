@@ -93,7 +93,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     NetworkReceiver networkReceiver = new NetworkReceiver();
     GpsReceiver gpsReceiver = new GpsReceiver();
     private Vibrator vibrator;
-    long tiempo = 200;
+    long tiempo = 100;
 
     @SuppressLint("SetTextI18n")
     @Override

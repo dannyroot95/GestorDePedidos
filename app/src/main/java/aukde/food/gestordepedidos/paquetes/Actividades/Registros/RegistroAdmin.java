@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,6 +37,8 @@ public class RegistroAdmin extends AppCompatActivity {
     Button mButtonRegistro;
     AuthProviders mAuthProviders;
     AdminProvider mAdminProvider;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class RegistroAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_admin);
         MiToolbar.Mostrar(this,"Registro Administrador",true);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         mAuthProviders = new AuthProviders();
         mAdminProvider = new AdminProvider();
@@ -61,6 +67,7 @@ public class RegistroAdmin extends AppCompatActivity {
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickRegistro();
             }
         });

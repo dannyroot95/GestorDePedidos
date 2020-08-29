@@ -79,7 +79,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private AuthProviders mAuth;
     private Vibrator vibrator;
     private static final int GALLERY = 1;
-    long tiempo = 200;
+    long tiempo = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeDark);

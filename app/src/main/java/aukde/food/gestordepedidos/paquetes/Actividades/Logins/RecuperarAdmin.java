@@ -2,7 +2,10 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Logins;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +24,8 @@ public class RecuperarAdmin extends AppCompatActivity {
     EditText Correoelectronico;
     private ProgressBar progressBarr;
     private FirebaseAuth auth;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
 
     @Override
@@ -32,11 +37,13 @@ public class RecuperarAdmin extends AppCompatActivity {
         btnRecuperar=findViewById(R.id.btnRecuperar);
         Correoelectronico=findViewById(R.id.correoelectronico);
         progressBarr=findViewById(R.id.progressBar);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         auth=FirebaseAuth.getInstance();
 
         btnRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 RecuperarContraseña();
             }
         });

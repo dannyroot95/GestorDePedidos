@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +44,8 @@ public class RegistroAukdeliver extends AppCompatActivity {
     AuthProviders mAuthProviders;
     AukdeliverProvider mAukdeliverProvider;
     Spinner mSpinner;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class RegistroAukdeliver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_aukdeliver);
         MiToolbar.Mostrar(this,"Registro Aukdeliver",true);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         mAuthProviders = new AuthProviders();
         mAukdeliverProvider = new AukdeliverProvider();
@@ -91,6 +97,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickRegistro();
             }
         });

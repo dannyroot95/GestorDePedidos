@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +39,8 @@ public class RecuperarProveedor extends AppCompatActivity {
     EditText CorreoelectronicoProveedor;
     private ProgressBar progressBarr;
     private FirebaseAuth auth;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class RecuperarProveedor extends AppCompatActivity {
         setContentView(R.layout.activity_recuperar_contrasena_proveedor);
         MiToolbar.Mostrar(this,"Recuperar Contraseña",true);
         btnRecuperarproveedor=findViewById(R.id.btnRecuperarProveedor);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         CorreoelectronicoProveedor=findViewById(R.id.RecuperarProveedor);
         progressBarr=findViewById(R.id.progressBar);
         auth=FirebaseAuth.getInstance();
@@ -52,6 +57,7 @@ public class RecuperarProveedor extends AppCompatActivity {
         btnRecuperarproveedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 RecuperarContraseñaProveedor();
             }
         });

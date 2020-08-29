@@ -396,7 +396,7 @@
                 android:textColor="#ffffff"
                 android:background="@drawable/redondo"
                 android:id="@+id/btnRegistrarse"
-                android:backgroundTint="#000000"/>
+                android:backgroundTint="@drawable/btn_background_negro"/>
 
         </LinearLayout>
     </LinearLayout>

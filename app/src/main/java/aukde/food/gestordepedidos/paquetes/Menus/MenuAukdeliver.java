@@ -86,7 +86,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private LatLng origen;
     private LinearLayout mDisconnect;
     private Vibrator vibrator;
-    long tiempo = 200;
+    long tiempo = 100;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override

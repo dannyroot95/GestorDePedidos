@@ -584,14 +584,15 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         clickRegistroPedido();
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         dialog.cancel();
-                        Toast.makeText(RealizarPedido.this, "Pedido Cancelado", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.create();

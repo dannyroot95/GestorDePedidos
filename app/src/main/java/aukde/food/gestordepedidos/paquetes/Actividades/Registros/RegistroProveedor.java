@@ -7,6 +7,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +52,7 @@ import java.util.List;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
@@ -80,6 +83,8 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
     private LinearLayout mLinearMap;
     private EditText edtLongitud , edtLatitud;
     private LatLng destino;
+    private Vibrator vibrator;
+    long tiempo = 100;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -93,7 +98,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         mProveedorProvider = new ProveedorProvider();
         mButtonRegistro = findViewById(R.id.btnRegistrarse);
         mDialog = new ProgressDialog(this);
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         edtNombres = findViewById(R.id.ProveedorNombres);
         edtApellidos = findViewById(R.id.ProveedorApellidos);
         edtUsername = findViewById(R.id.ProveedorUsername);
@@ -137,6 +142,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mFloatingMap.setVisibility(View.VISIBLE);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearMap.setLayoutParams(params);
@@ -149,6 +155,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                 mLinearMap.setLayoutParams(params);
                 mFloatingMap.setVisibility(View.INVISIBLE);
@@ -182,6 +189,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         mButtonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickRegistro();
             }
         });
@@ -438,4 +446,26 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         mapView.onLowMemory();
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroProveedor.this,R.style.ThemeOverlay);
+        builder.setTitle("Confirmar");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_atras);
+        builder.setMessage("Deseas volver a la lista de pedidos? ");
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
 }

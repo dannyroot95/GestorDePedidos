@@ -41,7 +41,7 @@ public class LoginAukdeliver extends AppCompatActivity {
   AuthProviders authProviders;
   TextView recuperarClave;
   private Vibrator vibrator;
-  long tiempo = 200;
+  long tiempo = 100;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
