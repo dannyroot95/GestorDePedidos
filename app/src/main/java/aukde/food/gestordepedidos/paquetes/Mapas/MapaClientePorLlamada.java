@@ -251,16 +251,18 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         } else {
             Double latitud = Double.parseDouble(stlatitud);
             Double longitud = Double.parseDouble(stlongitud);
-
+            String ref = poscicion.getString("referencia");
             LatLng point = new LatLng(latitud, longitud);
             mMap.addMarker(new MarkerOptions()
                     .position(point)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                    .snippet("Referencia : "+ref)
                     .title(stNombreC)).showInfoWindow();
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
         }
 
     }
+
 
 
     @Override

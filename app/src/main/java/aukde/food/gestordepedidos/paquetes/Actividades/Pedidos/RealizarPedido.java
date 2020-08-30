@@ -123,7 +123,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     private CheckBox chComision;
 
-    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ;
+    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ,edtReferencia;
 
     private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
 
@@ -458,6 +458,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         edtTelefono = findViewById(R.id.telefonoCliente);
         edtDireccion = findViewById(R.id.direcionCliente);
         edtDireccion.setEnabled(false);
+        edtReferencia = findViewById(R.id.referenciaCliente);
         txtEncargado = findViewById(R.id.txtRepartidor);
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
@@ -490,10 +491,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mLinearMap =findViewById(R.id.map_container);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
         mLinearMap.setLayoutParams(params);
-
         mpedidoProvider = new PedidoProvider();
-
-
         mSpinner = findViewById(R.id.spinnerAukdeliver);
         mSpinnerEstado = findViewById(R.id.spEstado);
         mSpinnerProveedor = findViewById(R.id.spinnerProveedor);
@@ -907,9 +905,10 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     private void showAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicación para continuar")
-                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
                     }
                 }).create().show();
@@ -921,45 +920,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             isActive = true;
         }
-
         return isActive;
     }
 
     //-----------
     //verificar version de android
-
-    public void startLocacion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                if(gpsActive())
-                {
-                    mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-                    mMap.setMyLocationEnabled(true);
-                }
-                else{
-                    showAlertDialog();
-                }
-
-            }
-
-            else {
-                checkLocationPermision();
-            }
-
-        }
-        else {
-            if(gpsActive()){
-                mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-                mMap.setMyLocationEnabled(true);
-
-            }
-            else {
-                showAlertDialog();
-            }
-
-        }
-    }
-
     //------------------------------
 
     public void checkLocationPermision(){
@@ -1073,45 +1038,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void drawRoute(){
-
-        Toast.makeText(this, "Tu poscicion : "+origen, Toast.LENGTH_LONG).show();
-
-        mGoogleapiProvider.getDirections(origen , destino).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                try{
-
-                    JSONObject jsonObject = new JSONObject(response.body());
-                    JSONArray jsonArray = jsonObject.getJSONArray("routes");
-                    JSONObject route = jsonArray.getJSONObject(0);
-                    JSONObject polylines = route.getJSONObject("overview_polyline");
-                    String points = polylines.getString("points");
-
-                    mPolylineList = DecodePoints.decodePoly(points);
-                    mPolylineOptions = new PolylineOptions();
-                    mPolylineOptions.color(Color.DKGRAY);
-                    mPolylineOptions.width(13f);
-                    mPolylineOptions.startCap(new SquareCap());
-                    mPolylineOptions.jointType(JointType.ROUND);
-                    mPolylineOptions.addAll(mPolylineList);
-                    mMap.addPolyline(mPolylineOptions).setPoints(mPolylineList);
-                    JSONArray legs = route.getJSONArray("legs");
-                    JSONObject leg = legs.getJSONObject(0);
-
-                }catch (Exception e){
-                    Log.d("Error","Error encontrado"+ e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-            }
-
-        });
-    }
-
     private void sendNotificaction(){
         final String numPedNotify = edtNumPedido.getText().toString();
         tokenProvider.getToken(idAukdeliver.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1198,12 +1124,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         final String telefonoCliente = edtTelefono.getText().toString();
         final String conCuantoVaAPagar = edtMontoCliente.getText().toString();
         final String direccion = edtDireccion.getText().toString();
+        final String referencia = edtReferencia.getText().toString();
         final String encargado = txtEncargado.getText().toString();
         final String estadoPedido = estado.getText().toString();
         final String sTlatitud = latitud.getText().toString();
         final String sTLongitud = logitud.getText().toString();
 
-        if( !nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty()){
+        if( !nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty() && !referencia.isEmpty()){
             sendNotificaction();
             if(!numeroPedido.isEmpty()){
                 mDialog.show();
@@ -1211,7 +1138,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 //metodos
                 registrarPedido(stHoraPedido , stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
                         producto, descripción , sTPrecioUnitario, stCantidad , stPrecioTotalXProducto , stComision , stTotalDelivery, stGananciaDelivery, stGananciaComision ,
-                        totalPagoProducto , nombreCliente , telefono , conCuantoVaAPagar , totalCobro , stVuelto, direccion, numeroPedido , encargado , estadoPedido , sTlatitud , sTLongitud);
+                        totalPagoProducto , nombreCliente , telefono , conCuantoVaAPagar , totalCobro , stVuelto, direccion, numeroPedido , encargado , estadoPedido , sTlatitud , sTLongitud,referencia);
 
                 clickRegistroPedidoAukdeliver();
             }
@@ -1234,14 +1161,14 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                                  final String stCantidad , final String stPrecioTotalXProducto, final String stComision,
                                  final String stTotalDelivery, final String stGananciaDelivery, final String stGananciaComision, final String totalPagoProducto,
                                  final String nombreCliente, final String telefono, final String conCuantoVaAPagar,
-                                 final String totalCobro, final String stVuelto, final String direccion,final String numPedido , final String encargado ,final String estadoPedido,final String latitud , final String longitud){
+                                 final String totalCobro, final String stVuelto, final String direccion ,final String numPedido , final String encargado ,final String estadoPedido,final String latitud , final String longitud ,final String referencia){
 
 
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         PedidoLlamada pedidoLlamada = new  PedidoLlamada(id,horaPedido,  fechaPedido, horaEntrega,  fechaEntrega,  proveedor,
                 producto,  descripción,sTPrecioUnitario,stCantidad,stPrecioTotalXProducto,stComision,stTotalDelivery,stGananciaDelivery,stGananciaComision,
-                totalPagoProducto, nombreCliente,  telefono,  conCuantoVaAPagar, totalCobro,  stVuelto,  direccion,numPedido,encargado ,estadoPedido,latitud,longitud);
+                totalPagoProducto, nombreCliente,  telefono,  conCuantoVaAPagar, totalCobro,  stVuelto,  direccion,numPedido,encargado ,estadoPedido,latitud,longitud,referencia);
         mapear(pedidoLlamada);
     }
 
@@ -1296,6 +1223,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         map.put("estado",estado.getText().toString());
         map.put("latitud",latitud.getText().toString());
         map.put("longitud",logitud.getText().toString());
+        map.put("referencia",edtReferencia.getText().toString());
 
         pedidoParaAukdeliver.child("Usuarios").child("Aukdeliver").child(StAukdeliver).child("pedidos").push().setValue(map);
     }

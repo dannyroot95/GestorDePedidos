@@ -77,7 +77,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
 
     private CheckBox chComision;
 
-    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ;
+    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion , edtReferencia ;
 
     private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
 
@@ -379,6 +379,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         edtTelefono = findViewById(R.id.telefonoCliente);
         edtDireccion = findViewById(R.id.direcionCliente);
         edtDireccion.setEnabled(false);
+        edtReferencia = findViewById(R.id.referenciaCliente);
         txtEncargado = findViewById(R.id.txtRepartidor);
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
@@ -765,7 +766,12 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                 map.put("estado",estado.getText().toString());
                 map.put("latitud",latitud.getText().toString());
                 map.put("longitud",logitud.getText().toString());
-
+                if (edtReferencia.getText().toString().equals("")){
+                    //nada
+                }
+                else {
+                    map.put("referencia",edtReferencia.getText().toString());
+                }
                 pedidosActualizadoAdmin.child(idAdminNumPedido).updateChildren(map);
                 clickActualizacionPedidoAukdeliver();
                 mDialog.dismiss();
@@ -826,10 +832,16 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                                 map.put("estado",estado.getText().toString());
                                 map.put("latitud",latitud.getText().toString());
                                 map.put("longitud",logitud.getText().toString());
-
+                                if (edtReferencia.getText().toString().equals(""))
+                                {
+                                //nada
+                                }
+                                else {
+                                map.put("referencia",edtReferencia.getText().toString());
+                                     }
                                 pedidoParaAukdeliver.child("Usuarios").child("Aukdeliver").child(StAukdeliver).child("pedidos").child(keyPedido).updateChildren(map);
 
-                        }
+                                    }
                         else {
                             //Toast.makeText(EditarPedido.this, "No existe este pedido", Toast.LENGTH_SHORT).show();
                         }
@@ -968,6 +980,14 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                     logitud.setText(LongitudX);
                     estado.setText(Estado);
 
+                    if (dataSnapshot.hasChild("referencia"))
+                    {
+                        String Referencia = dataSnapshot.child("referencia").getValue().toString();
+                        edtReferencia.setText(Referencia);
+                    }
+                    else{
+                        //nada
+                    }
 
                     obtenerIDAukdeliver();
 

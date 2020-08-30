@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +65,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     Button mButtonEditar;
     Button mAsignar;
 
-    TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , detalleGanancia1 , detalleGanancia2;
+    TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , detalleGanancia1 , detalleGanancia2 , txtDetalleReferencia;
 
     private LinearLayout mLinearProductos ;
 
@@ -74,6 +75,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private NotificationProvider notificationProvider;
     private Vibrator vibrator;
     long tiempo = 100;
+    private FirebaseAuth mAuth;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_detalle_pedido);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
 
@@ -130,6 +134,8 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
 
+        txtDetalleReferencia = findViewById(R.id.detalleReferencia);
+
         int alto = 0;
         mLinearProductos = findViewById(R.id.linearProductos);
         LinearLayout mLinearAsignar = findViewById(R.id.linearBtnAsignar);
@@ -167,6 +173,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
                 intent.putExtra("telefono",listTelefonoCliente.getText().toString());
                 intent.putExtra("proveedores",listProveedores.getText().toString());
+                intent.putExtra("referencia",txtDetalleReferencia.getText().toString());
                 startActivity(intent);
             }
         });
@@ -259,6 +266,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         listEstado.setText(arrayList.get(23));
         listLatitud.setText(arrayList.get(24));
         listLongitud.setText(arrayList.get(25));
+        checkReference();
 
         String stEstado = listEstado.getText().toString();
 
@@ -735,6 +743,41 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         });
         builder.create();
         builder.show();
+    }
+
+    private void checkReference(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference= FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String key=childSnapshot.getKey();
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild("referencia")){
+                                String referencia = dataSnapshot.child("referencia").getValue().toString();
+                                txtDetalleReferencia.setText(referencia);
+                            }
+                            else{
+                                txtDetalleReferencia.setText("Ninguna");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
