@@ -1,5 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Adaptadores;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -91,6 +92,11 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProgressDialog mDialog;
+                mDialog = new ProgressDialog(v.getContext(),R.style.ThemeOverlay);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 final Vibrator vibrator;
                 final long tiempo = 100;
                 vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);

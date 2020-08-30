@@ -3,6 +3,7 @@ package aukde.food.gestordepedidos.paquetes.Actividades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginProveedor;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
@@ -28,6 +30,7 @@ public class Inicio extends AppCompatActivity {
     private Button btnAdminLogin,btnAukdeliverLogin,btnProveedorLogin;
     SharedPreferences mPreference;
     private Vibrator vibrator;
+    private ProgressDialog mDialog;
     long tiempo = 100;
 
     @Override
@@ -38,6 +41,7 @@ public class Inicio extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnAdminLogin = findViewById(R.id.btnAdmin);
         btnAukdeliverLogin = findViewById(R.id.btnAukdeliver);
+        mDialog = new ProgressDialog(Inicio.this,R.style.ThemeOverlay);
         btnProveedorLogin = findViewById(R.id.btnProveedor);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
@@ -45,6 +49,9 @@ public class Inicio extends AppCompatActivity {
         btnAdminLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginAdmin.class));
             }
@@ -53,6 +60,9 @@ public class Inicio extends AppCompatActivity {
         btnAukdeliverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginAukdeliver.class));
             }
@@ -60,6 +70,9 @@ public class Inicio extends AppCompatActivity {
         btnProveedorLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(Inicio.this, LoginProveedor.class));
             }
@@ -110,5 +123,9 @@ public class Inicio extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDialog.dismiss();
+    }
 }

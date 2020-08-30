@@ -329,8 +329,8 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Pez loco"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/futura"
                                 android:id="@+id/edtSocio"
@@ -385,8 +385,8 @@
                                 android:layout_width="match_parent"
                                 android:hint="Ceviche clásico"
                                 android:id="@+id/edtProducto"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/futura"
                                 android:layout_height="wrap_content"/>
@@ -415,9 +415,9 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Sin aji y con su yapa"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
+                                android:inputType="textCapSentences"
                                 android:fontFamily="@font/futura"
                                 android:id="@+id/edtDescripcion"
                                 android:layout_height="wrap_content"/>
@@ -1105,8 +1105,8 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Edward Lizaraso"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:layout_marginLeft="5dp"
                                 android:id="@+id/nombreCliente"
                                 android:fontFamily="@font/futura"
@@ -1370,6 +1370,7 @@
                                 android:layout_width="match_parent"
                                 android:hint="Al costado de aukde"
                                 android:textColor="#000"
+                                android:inputType="textCapSentences"
                                 android:gravity="left"
                                 android:fontFamily="@font/futura"
                                 android:textSize="14sp"

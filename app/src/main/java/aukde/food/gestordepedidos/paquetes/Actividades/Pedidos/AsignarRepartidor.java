@@ -530,9 +530,7 @@ public class AsignarRepartidor extends AppCompatActivity{
                 }
 
                 else {
-                    Toast.makeText(AsignarRepartidor.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
-                }
-
+                    Toasty.error(AsignarRepartidor.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                }
             }
 
             @Override

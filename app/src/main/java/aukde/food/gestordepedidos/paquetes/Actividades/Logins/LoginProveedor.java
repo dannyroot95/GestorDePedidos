@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
@@ -61,7 +62,7 @@ public class LoginProveedor extends AppCompatActivity {
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mDialog = new ProgressDialog(this);
+        mDialog = new ProgressDialog(LoginProveedor.this,R.style.ThemeOverlay);
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,9 @@ public class LoginProveedor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.setCancelable(false);
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(LoginProveedor.this,RecuperarProveedor.class));
 
             }
@@ -147,4 +151,11 @@ public class LoginProveedor extends AppCompatActivity {
             mDialog.dismiss();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDialog.dismiss();
+    }
+
 }

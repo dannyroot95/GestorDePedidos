@@ -280,7 +280,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 mPrecioUnitario.setText("");
                 mDelivery.setText("");
                 edtCantidad.setText("1");
-                mSocio.requestFocus();
+                edtNombreCliente.requestFocus();
             }
         });
 
@@ -1070,12 +1070,10 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                                     //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
                                 }
                                 else{
-                                    Toast.makeText(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                }
+                                    Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                                }
                             }
                             else {
-                                Toast.makeText(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                            }
+                                Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                            }
                         }
 
                         @Override
@@ -1086,7 +1084,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 }
 
                 else {
-                    Toast.makeText(RealizarPedido.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                    Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();
                 }
 
             }

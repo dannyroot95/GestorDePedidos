@@ -14,11 +14,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -29,10 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Receptor.Constantes;
 
@@ -102,9 +98,7 @@ public class JobServiceMonitoreo extends JobService {
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText("Activo!");
         builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
-        builder.setOngoing(false);
-        builder.setAutoCancel(true);
+        builder.setColor(Color.GREEN);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

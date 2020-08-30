@@ -6,7 +6,6 @@ import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -17,11 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
-import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 
 public class ListaDePedidos extends AppCompatActivity {
@@ -34,6 +31,7 @@ public class ListaDePedidos extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private ProgressDialog mDialogActualizeData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeDark);
@@ -45,7 +43,6 @@ public class ListaDePedidos extends AppCompatActivity {
         mDialogActualizeData.show();
         mDialogActualizeData.setContentView(R.layout.dialog_data);
         mDialogActualizeData.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
         //String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos");
         recyclerViewPedidos = findViewById(R.id.recyclerPedidos);
@@ -124,5 +121,10 @@ public class ListaDePedidos extends AppCompatActivity {
         NavUtils.navigateUpFromSameTask(this);/*
         startActivity(new Intent(ListaDePedidos.this, MenuAdmin.class));
         finish(); */
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

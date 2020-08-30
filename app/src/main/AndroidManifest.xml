@@ -106,25 +106,25 @@
             android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
         <activity
             android:name=".paquetes.Actividades.Logins.LoginProveedor"
-            android:parentActivityName=".paquetes.Actividades.Inicio"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio"  android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Logins.LoginAukdeliver"
-            android:parentActivityName=".paquetes.Actividades.Inicio"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio"  android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Logins.LoginAdmin"
-            android:parentActivityName=".paquetes.Actividades.Inicio"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio" android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarAdmin"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"  android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarAukdelivery"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver"  android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarProveedor"
-            android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor" android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Inicio"
-            android:theme="@style/splashScreenTheme" >
+            android:theme="@style/splashScreenTheme"  android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

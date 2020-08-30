@@ -80,15 +80,13 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private PolylineOptions mPolylineOptions;
     private TextView nombres, distancia, tiempo;
     private FloatingActionButton mFloat;
-    private ProgressDialog mDialog;
+    ProgressDialog mDialog;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
-            mDialog.show();
-            mDialog.setCancelable(false);
-            mDialog.setMessage("Cargando mapa...");
+
+
             for (Location location : locationResult.getLocations()) {
                 if (getApplicationContext() != null) {
                     if (mMarker != null) {
@@ -143,17 +141,13 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
                                     if (intTiempo <= 0) {
                                         tiempo.setText("1" + " min");
-                                        mDialog.dismiss();
                                     } else {
                                         tiempo.setText(time + " min");
-                                        mDialog.dismiss();
                                     }
                                     if (intDistancia < 1.0) {
                                         distancia.setText(stDistancia + " m");
-                                        mDialog.dismiss();
                                     } else {
                                         distancia.setText(km + " Km");
-                                        mDialog.dismiss();
                                     }
 
                                 } catch (Exception e) {
@@ -173,7 +167,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                                     .title("Tú Poscición")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.head))
                     );
-                    mMarker.showInfoWindow();
+
                     // OBTENER LA LOCALIZACION DEL USUARIO EN TIEMPO REAL
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
@@ -194,6 +188,12 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_mapa_cliente_por_llamada);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
+
+        mDialog.show();
+        mDialog.setCancelable(false);
+        mDialog.setMessage("Cargando mapa...");
+
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
@@ -256,7 +256,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                     .title(stNombreC)).showInfoWindow();
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
         }
-
+       mDialog.dismiss();
     }
 
 
