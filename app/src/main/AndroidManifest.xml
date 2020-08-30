@@ -30,16 +30,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin" android:launchMode = "singleInstance"></activity>
+            android:parentActivityName=".paquetes.Menus.MenuAdmin"></activity>
 
         <activity android:name=".paquetes.Menus.Perfiles.PerfilAukdeliver"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver" android:launchMode = "singleInstance"></activity>
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"></activity>
 
         <service
             android:name=".paquetes.Servicios.JobServiceMonitoreo" android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".paquetes.Actividades.Pedidos.AsignarRepartidor" android:launchMode = "singleInstance" />
-        <activity android:name=".paquetes.Actividades.Pedidos.EditarPedido" android:launchMode = "singleInstance" />
+        <activity android:name=".paquetes.Actividades.Pedidos.AsignarRepartidor"/>
+        <activity android:name=".paquetes.Actividades.Pedidos.EditarPedido"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -47,10 +47,10 @@
 
         <activity
             android:name=".paquetes.Mapas.MapaClientePorLlamada"
-            android:label="@string/title_activity_mapa_cliente_por_llamada" android:launchMode = "singleInstance" />
-        <activity android:name=".paquetes.Mapas.MonitoreoRepartidor" android:launchMode = "singleInstance" />
-        <activity android:name=".paquetes.Mapas.MapaProveedores" android:launchMode = "singleInstance" />
-        <activity android:name=".paquetes.Actividades.Notificacion" android:launchMode = "singleInstance" />
+            android:label="@string/title_activity_mapa_cliente_por_llamada" />
+        <activity android:name=".paquetes.Mapas.MonitoreoRepartidor" />
+        <activity android:name=".paquetes.Mapas.MapaProveedores"/>
+        <activity android:name=".paquetes.Actividades.Notificacion"/>
 
         <receiver
             android:name=".paquetes.Receptor.AcceptReceiver"
@@ -74,36 +74,36 @@
         </service>
 
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
-            android:screenOrientation="portrait" android:launchMode = "singleInstance"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
             android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
-            android:screenOrientation="portrait" android:launchMode = "singleInstance"/>
+            android:screenOrientation="portrait"/>
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido"
-            android:screenOrientation="portrait" android:launchMode = "singleInstance"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"
             android:parentActivityName=".paquetes.Menus.MenuAdmin"
-            android:screenOrientation="portrait" android:launchMode = "singleInstance"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.RealizarPedido"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin" android:launchMode = "singleInstance"/>
-        <activity android:name=".paquetes.Menus.MenuProveedor"/>
-        <activity android:name=".paquetes.Menus.MenuAukdeliver"/>
+            android:parentActivityName=".paquetes.Menus.MenuAdmin"/>
+        <activity android:name=".paquetes.Menus.MenuProveedor" android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Menus.MenuAukdeliver" android:screenOrientation="portrait"/>
         <activity android:name=".paquetes.Menus.MenuAdmin"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroProveedor"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" android:launchMode = "singleInstance"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroAukdeliver"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" android:launchMode = "singleInstance"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
         <activity
             android:name=".paquetes.Actividades.Registros.MenuRegistros"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin" android:launchMode = "singleInstance"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"/>
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroAdmin"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" android:launchMode = "singleInstance"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
         <activity
             android:name=".paquetes.Actividades.Logins.LoginProveedor"
             android:parentActivityName=".paquetes.Actividades.Inicio"/>

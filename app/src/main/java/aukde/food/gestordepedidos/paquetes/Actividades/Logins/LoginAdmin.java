@@ -101,6 +101,7 @@ public class LoginAdmin extends AppCompatActivity {
 
     if (!correo.isEmpty() && !pass.isEmpty()){
       mDialog.show();
+      mDialog.setCancelable(false);
       mDialog.setMessage("Iniciando sesión...");
       if (pass.length()>=6)
       {

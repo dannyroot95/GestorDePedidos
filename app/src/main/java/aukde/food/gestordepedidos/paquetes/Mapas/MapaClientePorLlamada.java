@@ -46,7 +46,6 @@ import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -82,12 +81,11 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private TextView nombres, distancia, tiempo;
     private FloatingActionButton mFloat;
     private ProgressDialog mDialog;
-    private DatabaseReference mDatabase;
-
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
+            mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
             mDialog.show();
             mDialog.setCancelable(false);
             mDialog.setMessage("Cargando mapa...");
@@ -199,13 +197,11 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
+
 
         nombres = findViewById(R.id.textViewName);
         distancia = findViewById(R.id.textViewDistancia);
         tiempo = findViewById(R.id.textViewTiempo);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mFloat = findViewById(R.id.floatingLlamada);
         mFloat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));

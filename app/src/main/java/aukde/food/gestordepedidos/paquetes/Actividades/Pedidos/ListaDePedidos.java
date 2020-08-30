@@ -2,9 +2,11 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Pedidos;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import java.util.Collections;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 
 public class ListaDePedidos extends AppCompatActivity {
@@ -116,4 +119,10 @@ public class ListaDePedidos extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);/*
+        startActivity(new Intent(ListaDePedidos.this, MenuAdmin.class));
+        finish(); */
+    }
 }

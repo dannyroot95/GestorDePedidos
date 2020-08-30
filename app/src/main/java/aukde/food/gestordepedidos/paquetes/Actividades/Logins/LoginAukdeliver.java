@@ -85,6 +85,7 @@ public class LoginAukdeliver extends AppCompatActivity {
 
     if (!correo.isEmpty() && !pass.isEmpty()){
       mDialog.show();
+      mDialog.setCancelable(false);
       mDialog.setMessage("Iniciando sesión...");
       if (pass.length()>=6)
       {

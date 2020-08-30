@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -95,6 +96,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private Vibrator vibrator;
     long tiempo = 100;
 
+    private ProgressDialog mDialog;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +108,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-
+        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
 
@@ -184,6 +187,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 Intent intent = new Intent(DetallePedidoAukdeliver.this, MapaClientePorLlamada.class);
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
@@ -933,6 +939,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     @Override
     protected void onResume() {
         super.onResume();
+        mDialog.dismiss();
         startLocacion();
     }
 

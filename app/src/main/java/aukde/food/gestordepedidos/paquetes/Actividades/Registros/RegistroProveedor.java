@@ -451,8 +451,8 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         AlertDialog.Builder builder = new AlertDialog.Builder(RegistroProveedor.this,R.style.ThemeOverlay);
         builder.setTitle("Confirmar");
         builder.setCancelable(false);
-        builder.setIcon(R.drawable.ic_atras);
-        builder.setMessage("Deseas volver a la lista de pedidos? ");
+        builder.setIcon(R.drawable.ic_error);
+        builder.setMessage("Descartar cambios? ");
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -31,6 +31,7 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 public class LoginProveedor extends AppCompatActivity {
 
@@ -88,6 +89,7 @@ public class LoginProveedor extends AppCompatActivity {
 
         if (!correo.isEmpty() && !pass.isEmpty()){
             mDialog.show();
+            mDialog.setCancelable(false);
             mDialog.setMessage("Iniciando sesión...");
             if (pass.length()>=6)
             {
@@ -111,21 +113,21 @@ public class LoginProveedor extends AppCompatActivity {
                                         mAuth.signOut();
                                         startActivity(new Intent(LoginProveedor.this, Inicio.class));
                                         finish();
-                                        Toast.makeText(LoginProveedor.this, "No es un usuario permitido", Toast.LENGTH_LONG).show();
+                                        Toasty.error(LoginProveedor.this, "No es un usuario permitido", Toast.LENGTH_LONG,true).show();
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
                                     mDialog.dismiss();
-                                    Toast.makeText(LoginProveedor.this, "Error de servidor", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(LoginProveedor.this, "Error de servidor", Toast.LENGTH_SHORT,true).show();
                                 }
                             });
 
                         }
                         //task
                         else {
-                            Toast.makeText(LoginProveedor.this,"El correo o la contraseña son incorrectos",Toast.LENGTH_LONG).show();
+                            Toasty.error(LoginProveedor.this,"El correo o la contraseña son incorrectos",Toast.LENGTH_LONG,true).show();
                             mDialog.dismiss();
                         }
 
@@ -134,14 +136,14 @@ public class LoginProveedor extends AppCompatActivity {
             }
 
             else {
-                Toast.makeText(LoginProveedor.this,"La contraseña debe tener mas de 6 caracteres",Toast.LENGTH_LONG).show();
+                Toasty.info(LoginProveedor.this,"La contraseña debe tener mas de 6 caracteres",Toast.LENGTH_LONG,true).show();
                 mDialog.dismiss();
             }
 
         }
 
         else {
-            Toast.makeText(LoginProveedor.this,"Complete los campos",Toast.LENGTH_LONG).show();
+            Toasty.info(LoginProveedor.this,"Complete los campos",Toast.LENGTH_LONG,true).show();
             mDialog.dismiss();
         }
     }

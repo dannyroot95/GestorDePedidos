@@ -75,7 +75,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private NotificationProvider notificationProvider;
     private Vibrator vibrator;
     long tiempo = 100;
-    private FirebaseAuth mAuth;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -85,7 +84,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_detalle_pedido);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
 
@@ -167,6 +165,9 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 Intent intent = new Intent(DetallePedido.this, MapaClientePorLlamada.class);
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
