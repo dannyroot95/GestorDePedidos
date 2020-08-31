@@ -8,16 +8,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import java.util.Map;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
 import aukde.food.gestordepedidos.paquetes.Canales.NotificationHelper;
@@ -54,7 +50,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
                     String repartidor = data.get("repartidor");
-                    showNotificationApiOreoActions(title,body,path,idClient);
+                    //showNotificationApiOreoActions(title,body,path,idClient);
                     showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else
@@ -73,7 +69,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                     String fecha = data.get("fecha");
                     String ganancia = data.get("ganancia");
                     String repartidor = data.get("repartidor");
-                    showNotificationActions(title,body,path,idClient);
+                    //showNotificationActions(title,body,path,idClient);
                     showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
                 }
                 else {

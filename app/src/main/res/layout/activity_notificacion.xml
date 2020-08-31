@@ -20,7 +20,7 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="180dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:lottie_imageAssetsFolder="assets"
             app:lottie_fileName="lotieDelivery.json"
             app:lottie_loop="true"
@@ -31,7 +31,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_margin="5dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_height="match_parent">
 
@@ -39,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
+
                 <GridLayout
                     android:columnCount="1"
                     android:columnOrderPreserved="false"
@@ -47,15 +47,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="6dp"
-                        android:backgroundTint="#FFF"
-                        app:cardCornerRadius="32dp"
-                        android:layout_margin="8dp"
-
-                        >
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:gravity="center"
@@ -85,18 +76,6 @@
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
 
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="6dp"
-                        android:backgroundTint="#FFF"
-                        app:cardCornerRadius="32dp"
-                        android:layout_margin="8dp"
-
-                        >
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:gravity="center"
@@ -104,7 +83,7 @@
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textColor="#000"
                                 android:layout_marginTop="3dp"
                                 android:textAlignment="center"
@@ -115,23 +94,18 @@
 
                         </LinearLayout>
 
-
-                    </androidx.cardview.widget.CardView>
-
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="6dp"
                         android:backgroundTint="#FFF"
                         app:cardCornerRadius="32dp"
-                        android:layout_margin="9dp"
-
-                        >
-
+                        android:layout_margin="9dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal"
                             android:layout_height="wrap_content">
                             <ImageView
@@ -151,7 +125,7 @@
                                 android:layout_height="wrap_content"/>
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="20sp"
                                 android:textColor="#1B6B60"
                                 android:textStyle="bold"
                                 android:text="S/"
@@ -159,7 +133,7 @@
                                 android:layout_height="wrap_content"/>
                             <TextView
                                 android:id="@+id/notifyGanancia"
-                                android:textSize="18sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:textColor="#1B6B60"
                                 android:layout_width="wrap_content"
@@ -208,7 +182,9 @@
                                     android:id="@+id/notifyNombreCliente"
                                     android:layout_marginTop="5dp"
                                     android:textSize="14sp"
+                                    android:layout_gravity="center"
                                     android:textStyle="bold"
+                                    android:gravity="center"
                                     android:textColor="#CB4335"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
@@ -218,6 +194,7 @@
                                 android:layout_width="wrap_content"
                                 android:orientation="vertical"
                                 android:layout_gravity="center"
+                                android:gravity="center"
                                 android:layout_height="wrap_content">
 
                                 <ImageView
@@ -230,6 +207,7 @@
                                     android:textSize="14sp"
                                     android:textColor="#000"
                                     android:textStyle="bold"
+                                    android:layout_gravity="center"
                                     android:text="Teléfono"
                                     android:gravity="center"
                                     android:layout_height="wrap_content"/>
@@ -238,6 +216,7 @@
                                     android:layout_marginTop="5dp"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
+                                    android:layout_gravity="center"
                                     android:textColor="#2E86C1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
