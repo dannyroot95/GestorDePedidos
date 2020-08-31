@@ -260,7 +260,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

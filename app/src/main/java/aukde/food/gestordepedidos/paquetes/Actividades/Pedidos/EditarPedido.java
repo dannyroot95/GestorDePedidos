@@ -7,19 +7,23 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.widget.Spinner;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -46,12 +50,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.PedidoProvider;
 import es.dmoral.toasty.Toasty;
 
@@ -69,18 +75,15 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
 
     private Button  btnCalcularVuelto;
 
+    private Spinner mSpinnerProveedor;
+
     private Button mBtnAdd , mbtnMin , mbtnMax , mBtnClean;
 
     private TextView edtNumPedido,textSocio,txtProducto,txtDescripcion,txtPrecioUnitario,txtDelivery , edtCantidad , txtCantidad ,
             txtPtotal , txtNeto , txtGananciaPorDelivery , txtPrecioComisionProducto , txtNetoComision , IDpedido;
-
-
     private CheckBox chComision;
-
     public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion , edtReferencia ;
-
     private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
-
     private LinearLayout mLinearMap;
     PedidoProvider mpedidoProvider;
 
@@ -95,6 +98,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
     private DatabaseReference pedidosActualizadoAdmin;
     private DatabaseReference mDatabase;
     private DatabaseReference pedidoParaAukdeliver;
+    DatabaseReference mUsuarioProveedor;
     FloatingActionButton mFloatingButton , mFloatingMap;
     TextView estado ;
     TextView txtEncargado , idAukdeliver;
@@ -105,6 +109,8 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
 
 
     Bundle numeroPedido;
+    private Vibrator vibrator;
+    long tiempo = 100;
     //----------------------------
 
     @SuppressLint("RestrictedApi")
@@ -114,6 +120,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_pedido);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mSpinnerProveedor = findViewById(R.id.spinnerProveedor);
         horaPedido = findViewById(R.id.horaPedido);
         fechaPedido = findViewById(R.id.fechaPedido);
         horaEntrega = findViewById(R.id.horaEntrega);
@@ -132,7 +139,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         String stExtraNumPedido = numeroPedido.getString("numPedido");
         edtNumPedido.setText(stExtraNumPedido);
         // nuevo
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mBtnAdd = findViewById(R.id.add);
         mbtnMin = findViewById(R.id.btnMin);
         mbtnMax = findViewById(R.id.btnMax);
@@ -157,11 +164,9 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         txtGananciaPorDelivery = findViewById(R.id.gananciaDelivery);
         txtPrecioComisionProducto = findViewById(R.id.lsComision);
         txtNetoComision = findViewById(R.id.gananciaAdmin);
-
         precioNetoTotal = findViewById(R.id.neto);
-
         mNuevaComision.setVisibility(View.INVISIBLE);
-
+        mUsuarioProveedor = FirebaseDatabase.getInstance().getReference();
         chComision = findViewById(R.id.checkboxComision);
         chComision.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +187,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         alertDialog.setTitle("Hey!");
         alertDialog.setCancelable(false);
         alertDialog.setMessage("Deseas agregar otro producto del mismo socio?");
-        alertDialog.setIcon(R.drawable.ic_launcher_background);
+        alertDialog.setIcon(R.drawable.ic_hey);
 
         alertDialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE, "Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -203,7 +208,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                 mPrecioUnitario.setText("");
                 mDelivery.setText("");
                 edtCantidad.setText("1");
-                mSocio.requestFocus();
+                edtNombreCliente.requestFocus();
             }
         });
 
@@ -211,6 +216,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String S = mSocio.getText().toString();
                 String P = mProducto.getText().toString();
                 String D = mDescripcion.getText().toString();
@@ -357,16 +363,17 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         mBtnClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textSocio.setText(" ");
-                txtProducto.setText(" ");
-                txtDescripcion.setText(" ");
-                txtPrecioUnitario.setText(" ");
-                txtDelivery.setText(" ");
-                txtCantidad.setText(" ");
-                txtPtotal.setText(" ");
+                vibrator.vibrate(tiempo);
+                textSocio.setText("");
+                txtProducto.setText("");
+                txtDescripcion.setText("");
+                txtPrecioUnitario.setText("");
+                txtDelivery.setText("");
+                txtCantidad.setText("");
+                txtPtotal.setText("");
                 txtNeto.setText("0");
                 txtGananciaPorDelivery.setText("0");
-                txtPrecioComisionProducto.setText(" ");
+                txtPrecioComisionProducto.setText("");
                 txtNetoComision.setText("0");
             }
         });
@@ -430,6 +437,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         btnCalcularVuelto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 ClickCalcularVuelto();
             }
         });
@@ -437,6 +445,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         mFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditarPedido.this,R.style.ThemeOverlay);
                 builder.setTitle("Actualización de pedido");
                 builder.setCancelable(false);
@@ -445,12 +454,14 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         clickActualizarPedido();
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        vibrator.vibrate(tiempo);
                         dialog.cancel();
                         //Toast.makeText(EditarPedido.this, "Pedido Cancelado", Toast.LENGTH_SHORT).show();
                     }
@@ -465,6 +476,7 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
             int alto1 = 0;
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
                 mLinearMap.setLayoutParams(params);
                 mFloatingMap.setVisibility(View.INVISIBLE);
@@ -474,13 +486,13 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         mButtonMapear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mFloatingMap.setVisibility(View.VISIBLE);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearMap.setLayoutParams(params);
             }
         });
-
-
+        obtenerProveedor();
     }
 
     @Override
@@ -1001,9 +1013,72 @@ public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
+    private void obtenerProveedor(){
+        final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> proveedor = new ArrayList<>();
+        mUsuarioProveedor.child("Usuarios").child("Proveedor").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds : dataSnapshot.getChildren() ){
+                        String id = ds.getKey();
+                        String nombres = ds.child("nombre empresa").getValue().toString();
+                        proveedor.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id,nombres));
+                    }
+
+                    final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
+                            = new ArrayAdapter<>(EditarPedido.this , R.layout.custom_spinner,proveedor);
+                    mSpinnerProveedor.setAdapter(arrayAdapter);
+                    arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+                    mSpinnerProveedor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(parent.getItemAtPosition(position).toString().equals("-")){
+                                mSocio.setText("");
+                            }
+                            else{
+                                String stProveedor = parent.getItemAtPosition(position).toString();
+                                mSocio.setText(stProveedor);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditarPedido.this,R.style.ThemeOverlay);
+        builder.setTitle("Alerta!");
+        builder.setIcon(R.drawable.ic_atras);
+        builder.setCancelable(false);
+        builder.setMessage("Descartar cambios? ");
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
     }
 }

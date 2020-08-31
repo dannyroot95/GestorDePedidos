@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,13 +18,11 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -55,15 +51,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -74,8 +66,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -90,11 +80,9 @@ import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
 import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
-import aukde.food.gestordepedidos.paquetes.Providers.GoogleApiProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.PedidoProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
-import aukde.food.gestordepedidos.paquetes.Utils.DecodePoints;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,9 +123,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     private Geocoder geocoder;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final String TAG = "RealizarPedido";
-    private GoogleApiProvider mGoogleapiProvider;
-    private List<LatLng> mPolylineList;
-    private PolylineOptions mPolylineOptions;
 
     private LatLng origen;
     private LatLng destino;
@@ -436,16 +421,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                textSocio.setText(" ");
-                txtProducto.setText(" ");
-                txtDescripcion.setText(" ");
-                txtPrecioUnitario.setText(" ");
-                txtDelivery.setText(" ");
-                txtCantidad.setText(" ");
-                txtPtotal.setText(" ");
+                textSocio.setText("");
+                txtProducto.setText("");
+                txtDescripcion.setText("");
+                txtPrecioUnitario.setText("");
+                txtDelivery.setText("");
+                txtCantidad.setText("");
+                txtPtotal.setText("");
                 txtNeto.setText("0");
                 txtGananciaPorDelivery.setText("0");
-                txtPrecioComisionProducto.setText(" ");
+                txtPrecioComisionProducto.setText("");
                 txtNetoComision.setText("0");
             }
         });
@@ -538,7 +523,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         geocoder = new Geocoder(this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-        mGoogleapiProvider = new GoogleApiProvider(RealizarPedido.this);
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
@@ -750,7 +734,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    public void obtenerProveedor(){
+    private void obtenerProveedor(){
         final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> proveedor = new ArrayList<>();
         mUsuarioProveedor.child("Usuarios").child("Proveedor").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
