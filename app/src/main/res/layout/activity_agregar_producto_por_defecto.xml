@@ -4,13 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context=".paquetes.Productos.AgregarProductoPorDefecto">
-=======
-    tools:context=".AgregarProductoPorDefecto">
->>>>>>> github/master
 
-    <include layout="@layout/toolbar2"/>
+    <include layout="@layout/toolbar3"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,13 +21,10 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:orientation="vertical">
             <LinearLayout
-<<<<<<< HEAD
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-=======
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
->>>>>>> github/master
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -164,6 +157,7 @@
                     android:layout_width="30dp"
                     android:layout_marginTop="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginLeft="-15dp"
                     android:layout_alignBottom="@id/fotodefault"
                     android:layout_marginBottom="0dp"
                     android:background="@drawable/camera"
@@ -294,13 +288,18 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-
-
+            <Button
+                android:layout_width="match_parent"
+                android:text="Agregar producto"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:background="@drawable/redondo"
+                android:backgroundTint="@drawable/btn_background_rosa"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
+
     </ScrollView>
 
-
-
-
+    
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

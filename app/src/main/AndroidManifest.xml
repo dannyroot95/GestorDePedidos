@@ -73,6 +73,12 @@
             </intent-filter>
         </service>
 
+
+
+        <activity
+            android:name=".paquetes.Productos.AgregarProductoPorDefecto"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"  android:screenOrientation="portrait"/>
+
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
             android:screenOrientation="portrait"/>
         <activity
