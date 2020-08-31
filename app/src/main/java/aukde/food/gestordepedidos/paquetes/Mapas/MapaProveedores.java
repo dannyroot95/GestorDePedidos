@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
 import com.firebase.geofire.GeoLocation;
@@ -44,6 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.GeofireProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.GeofireProviderProveedor;
@@ -51,7 +54,6 @@ import aukde.food.gestordepedidos.paquetes.Providers.GeofireProviderProveedor;
 public class MapaProveedores extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private SupportMapFragment mMapFragment;
-    private AuthProviders mAuthProvider;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocation;
@@ -108,10 +110,8 @@ public class MapaProveedores extends AppCompatActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa_proveedores);
-        mAuthProvider = new AuthProviders();
         mGeofireProviderProveedor = new GeofireProviderProveedor();
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
     }
@@ -305,4 +305,9 @@ public class MapaProveedores extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MapaProveedores.this, MenuAdmin.class));
+        finish();
+    }
 }

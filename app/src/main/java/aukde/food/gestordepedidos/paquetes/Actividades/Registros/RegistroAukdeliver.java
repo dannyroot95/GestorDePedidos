@@ -32,6 +32,7 @@ import aukde.food.gestordepedidos.paquetes.Modelos.Aukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AukdeliverProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import es.dmoral.toasty.Toasty;
 
 public class RegistroAukdeliver extends AppCompatActivity {
 
@@ -136,22 +137,22 @@ public class RegistroAukdeliver extends AppCompatActivity {
                     }
                     else {
                         mDialog.dismiss();
-                        Toast.makeText(RegistroAukdeliver.this,"Clave de autorización inválida",Toast.LENGTH_LONG).show();
+                        Toasty.error(RegistroAukdeliver.this, "Clave de autorización inválida", Toast.LENGTH_LONG,true).show();
                     }
                 }
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroAukdeliver.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
+                    Toasty.warning(RegistroAukdeliver.this,"Las contraseñas no coinciden",Toast.LENGTH_LONG,true).show();
                 }
             }
             else {
                 mDialog.dismiss();
-                Toast.makeText(RegistroAukdeliver.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG).show();
+                Toasty.info(RegistroAukdeliver.this,"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_LONG,true).show();
             }
         }
 
         else {
-            Toast.makeText(RegistroAukdeliver.this,"Complete los todos campos",Toast.LENGTH_LONG).show();
+            Toasty.info(RegistroAukdeliver.this,"Complete los todos campos",Toast.LENGTH_LONG,true).show();
         }
     }
 
@@ -181,7 +182,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
 
                 else {
                     mDialog.dismiss();
-                    Toast.makeText(RegistroAukdeliver.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT).show();
+                    Toasty.error(RegistroAukdeliver.this, "No se pudo crear un nuevo usuario", Toast.LENGTH_SHORT,true).show();
                 }
 
             }

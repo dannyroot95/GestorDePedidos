@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import es.dmoral.toasty.Toasty;
@@ -58,7 +59,7 @@ public class LoginAukdeliver extends AppCompatActivity {
     mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
     mAuth = FirebaseAuth.getInstance();
     mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-    mDialog = new ProgressDialog(this);
+    mDialog = new ProgressDialog(LoginAukdeliver.this,R.style.ThemeOverlay);
 
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -72,6 +73,9 @@ public class LoginAukdeliver extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         vibrator.vibrate(tiempo);
+        mDialog.setCancelable(false);
+        mDialog.show();
+        mDialog.setMessage("Cargando...");
         startActivity(new Intent(LoginAukdeliver.this,RecuperarAukdelivery.class));
       }
     });
@@ -85,6 +89,7 @@ public class LoginAukdeliver extends AppCompatActivity {
 
     if (!correo.isEmpty() && !pass.isEmpty()){
       mDialog.show();
+      mDialog.setCancelable(false);
       mDialog.setMessage("Iniciando sesión...");
       if (pass.length()>=6)
       {
@@ -142,4 +147,11 @@ public class LoginAukdeliver extends AppCompatActivity {
       mDialog.dismiss();
     }
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    mDialog.dismiss();
+  }
+
 }

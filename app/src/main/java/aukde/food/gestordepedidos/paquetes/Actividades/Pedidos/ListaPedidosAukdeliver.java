@@ -3,6 +3,7 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Pedidos;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
@@ -144,6 +145,11 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
         registerReceiver(networkReceiver, filter);
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         super.onStart();
+    }
+
+    @Override
+    public void onBackPressed(){
+        NavUtils.navigateUpFromSameTask(this);
     }
 
 }

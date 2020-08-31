@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryEventListener;
@@ -42,6 +43,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.GeofireProvider;
 
@@ -296,6 +299,12 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
                 ActivityCompat.requestPermissions(MonitoreoRepartidor.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MonitoreoRepartidor.this, MenuAdmin.class));
+        finish();
     }
 }
 

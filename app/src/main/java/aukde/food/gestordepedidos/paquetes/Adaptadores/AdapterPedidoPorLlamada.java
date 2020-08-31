@@ -1,5 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Adaptadores;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetallePedido;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 
 public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoPorLlamada.viewHolderPedidos> {
@@ -93,6 +95,11 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ProgressDialog mDialog;
+                    mDialog = new ProgressDialog(v.getContext(),R.style.ThemeOverlay);
+                    mDialog.show();
+                    mDialog.setCancelable(false);
+                    mDialog.setMessage("Cargando...");
                     final Vibrator vibrator;
                     final long tiempo = 100;
                     vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);

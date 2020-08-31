@@ -1,6 +1,7 @@
 package aukde.food.gestordepedidos.paquetes.Actividades.Registros;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 
 public class MenuRegistros extends AppCompatActivity {
 
@@ -25,7 +28,7 @@ public class MenuRegistros extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_menu_registros);
-        MiToolbar.Mostrar(this,"Registro de usuarios",true);
+        MiToolbar.Mostrar(this,"Registro de usuarios",false);
 
         btnRegistroAdmin = findViewById(R.id.btnRegistroAdmin);
         btnRegistroAukdeliver = findViewById(R.id.btnRegistroAukdeliver);
@@ -37,6 +40,8 @@ public class MenuRegistros extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuRegistros.this,RegistroAdmin.class));
             }
         });
@@ -45,6 +50,8 @@ public class MenuRegistros extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuRegistros.this,RegistroAukdeliver.class));
             }
         });
@@ -69,4 +76,9 @@ public class MenuRegistros extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MenuRegistros.this, MenuAdmin.class));
+        finish();
+    }
 }

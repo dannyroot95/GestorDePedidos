@@ -53,6 +53,7 @@ import com.google.firebase.database.ValueEventListener;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
@@ -110,7 +111,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
-        mDialog = new ProgressDialog(this);
+        mDialog = new ProgressDialog(MenuAukdeliver.this,R.style.ThemeOverlay);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
         btnLista = findViewById(R.id.btnListaPedidosAukdeliver);
@@ -142,6 +143,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAukdeliver.this, ListaPedidosAukdeliver.class));
             }
         });
@@ -150,6 +153,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAukdeliver.this, PerfilAukdeliver.class));
             }
         });
@@ -316,6 +321,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 .setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mDialog.show();
+                        mDialog.setMessage("Accediendo...");
                         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
                 })
@@ -423,6 +430,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onResume() {
         super.onResume();
+        mDialog.dismiss();
         startLocacion();
     }
 
@@ -443,4 +451,5 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

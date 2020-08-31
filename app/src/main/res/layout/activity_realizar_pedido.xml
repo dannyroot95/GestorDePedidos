@@ -329,8 +329,8 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Pez loco"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/futura"
                                 android:id="@+id/edtSocio"
@@ -385,8 +385,8 @@
                                 android:layout_width="match_parent"
                                 android:hint="Ceviche clásico"
                                 android:id="@+id/edtProducto"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/futura"
                                 android:layout_height="wrap_content"/>
@@ -415,9 +415,9 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Sin aji y con su yapa"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
+                                android:inputType="textCapSentences"
                                 android:fontFamily="@font/futura"
                                 android:id="@+id/edtDescripcion"
                                 android:layout_height="wrap_content"/>
@@ -1105,8 +1105,8 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:hint="Edward Lizaraso"
-                                android:inputType="textPersonName"
                                 android:textSize="14sp"
+                                android:inputType="textCapSentences"
                                 android:layout_marginLeft="5dp"
                                 android:id="@+id/nombreCliente"
                                 android:fontFamily="@font/futura"
@@ -1341,6 +1341,41 @@
                                     android:layout_marginRight="10dp"
                                     android:layout_height="wrap_content"/>
                             </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:src="@drawable/referencia"
+                                android:layout_height="40dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:text="Referencia :"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/futura"
+                                android:textColor="#000000"
+                                android:layout_marginLeft="5dp"
+                                android:layout_height="wrap_content"/>
+
+                            <EditText
+                                android:id="@+id/referenciaCliente"
+                                android:layout_width="match_parent"
+                                android:hint="Al costado de aukde"
+                                android:textColor="#000"
+                                android:inputType="textCapSentences"
+                                android:gravity="left"
+                                android:fontFamily="@font/futura"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

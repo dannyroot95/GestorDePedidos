@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -76,10 +77,10 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     Button bottonEstado, btnError;
     Button mMapa;
 
-    TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal;
+    TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , txtDetalleReferencia;
 
     private DatabaseReference mDatabase;
-    private LinearLayout mLinearProductos, mLinearCliente , mLinearTelefono , mLinearDireccion;
+    private LinearLayout mLinearProductos, mLinearCliente , mLinearTelefono , mLinearDireccion , mLinearReferencia;
     private FirebaseAuth mAuth;
 
     private TokenProvider tokenProvider;
@@ -95,6 +96,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private Vibrator vibrator;
     long tiempo = 100;
 
+    private ProgressDialog mDialog;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +108,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-
+        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
 
@@ -156,6 +159,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mLinearCliente = findViewById(R.id.linearCliente);
         mLinearTelefono = findViewById(R.id.linearTelefono);
         mLinearDireccion = findViewById(R.id.linearDireccion);
+        mLinearDireccion = findViewById(R.id.linearReferencia);
+        txtDetalleReferencia = findViewById(R.id.detalleReferencia);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
         mLinearProductos.setLayoutParams(params);
 
@@ -182,12 +187,16 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 Intent intent = new Intent(DetallePedidoAukdeliver.this, MapaClientePorLlamada.class);
                 intent.putExtra("latitud",listLatitud.getText().toString());
                 intent.putExtra("longitud",listLongitud.getText().toString());
                 intent.putExtra("nombre",listNombreCliente.getText().toString());
                 intent.putExtra("telefono",listTelefonoCliente.getText().toString());
                 intent.putExtra("proveedores",listProveedores.getText().toString());
+                intent.putExtra("referencia",txtDetalleReferencia.getText().toString());
                 startActivity(intent);
             }
         });
@@ -249,6 +258,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listEstado.setText(arrayList.get(20));
         listLatitud.setText(arrayList.get(21));
         listLongitud.setText(arrayList.get(22));
+        checkReference();
 
 
         mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -302,6 +312,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             mLinearCliente.setLayoutParams(params4);
             mLinearTelefono.setLayoutParams(params4);
             mLinearDireccion.setLayoutParams(params4);
+            mLinearReferencia.setLayoutParams(params4);
             mMapa.setVisibility(View.INVISIBLE);
         }
         if (stEstado.equals("En espera")) {
@@ -858,6 +869,42 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 }).create().show();
     }
 
+    private void checkReference(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String key=childSnapshot.getKey();
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild("referencia")){
+                                String referencia = dataSnapshot.child("referencia").getValue().toString();
+                                txtDetalleReferencia.setText(referencia);
+                            }
+                            else{
+                                txtDetalleReferencia.setText("Ninguna");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DetallePedidoAukdeliver.this,R.style.ThemeOverlay);
@@ -892,6 +939,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     @Override
     protected void onResume() {
         super.onResume();
+        mDialog.dismiss();
         startLocacion();
     }
 

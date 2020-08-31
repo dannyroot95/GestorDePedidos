@@ -31,6 +31,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.RegistroAdmin;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import es.dmoral.toasty.Toasty;
@@ -65,7 +66,7 @@ public class LoginAdmin extends AppCompatActivity {
     mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
     mAuth = FirebaseAuth.getInstance();
     mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-    mDialog = new ProgressDialog(this);
+    mDialog = new ProgressDialog(LoginAdmin.this,R.style.ThemeOverlay);
 
     btnlogin.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -79,6 +80,9 @@ public class LoginAdmin extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         vibrator.vibrate(tiempo);
+        mDialog.setCancelable(false);
+        mDialog.show();
+        mDialog.setMessage("Cargando...");
         startActivity(new Intent(LoginAdmin.this,RecuperarAdmin.class));
 
       }
@@ -101,6 +105,7 @@ public class LoginAdmin extends AppCompatActivity {
 
     if (!correo.isEmpty() && !pass.isEmpty()){
       mDialog.show();
+      mDialog.setCancelable(false);
       mDialog.setMessage("Iniciando sesión...");
       if (pass.length()>=6)
       {
@@ -177,4 +182,9 @@ public class LoginAdmin extends AppCompatActivity {
 
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    mDialog.dismiss();
+  }
 }

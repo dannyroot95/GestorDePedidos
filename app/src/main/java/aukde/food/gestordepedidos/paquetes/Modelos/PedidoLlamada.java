@@ -31,11 +31,19 @@ public class PedidoLlamada implements Serializable {
     String estado;
     String latitud;
     String longitud;
+    String referencia;
 
     public PedidoLlamada() {
     }
 
-    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega, String fechaEntrega, String proveedores, String productos, String descripcion, String precioUnitario, String cantidad, String precioTotalXProducto, String comision, String totalDelivery, String gananciaDelivery, String gananciaComision, String totalPagoProducto, String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto, String direccion, String numPedido, String encargado, String estado, String latitud, String longitud) {
+    public PedidoLlamada(String id, String horaPedido, String fechaPedido, String horaEntrega,
+                         String fechaEntrega, String proveedores, String productos, String descripcion,
+                         String precioUnitario, String cantidad, String precioTotalXProducto, String comision,
+                         String totalDelivery, String gananciaDelivery, String gananciaComision, String totalPagoProducto,
+                         String nombreCliente, String telefono, String conCuantoVaAPagar, String totalCobro, String vuelto,
+                         String direccion, String numPedido, String encargado, String estado, String latitud, String longitud,
+                         String referencia) {
+
         this.id = id;
         this.horaPedido = horaPedido;
         this.fechaPedido = fechaPedido;
@@ -63,6 +71,7 @@ public class PedidoLlamada implements Serializable {
         this.estado = estado;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.referencia = referencia;
     }
 
     public String getId() {
@@ -279,5 +288,13 @@ public class PedidoLlamada implements Serializable {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 }

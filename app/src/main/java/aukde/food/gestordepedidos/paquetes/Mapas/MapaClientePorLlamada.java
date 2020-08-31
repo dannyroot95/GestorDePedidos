@@ -46,7 +46,6 @@ import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -81,16 +80,17 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
     private PolylineOptions mPolylineOptions;
     private TextView nombres, distancia, tiempo;
     private FloatingActionButton mFloat;
-    private ProgressDialog mDialog;
-    private DatabaseReference mDatabase;
-
+    ProgressDialog mDialog;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
+
+            mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
             mDialog.show();
             mDialog.setCancelable(false);
             mDialog.setMessage("Cargando mapa...");
+
             for (Location location : locationResult.getLocations()) {
                 if (getApplicationContext() != null) {
                     if (mMarker != null) {
@@ -175,7 +175,7 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                                     .title("Tú Poscición")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.head))
                     );
-                    mMarker.showInfoWindow();
+
                     // OBTENER LA LOCALIZACION DEL USUARIO EN TIEMPO REAL
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
@@ -196,16 +196,15 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_mapa_cliente_por_llamada);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
-        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
+
 
         nombres = findViewById(R.id.textViewName);
         distancia = findViewById(R.id.textViewDistancia);
         tiempo = findViewById(R.id.textViewTiempo);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mFloat = findViewById(R.id.floatingLlamada);
         mFloat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
@@ -251,15 +250,15 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         } else {
             Double latitud = Double.parseDouble(stlatitud);
             Double longitud = Double.parseDouble(stlongitud);
-
+            String ref = poscicion.getString("referencia");
             LatLng point = new LatLng(latitud, longitud);
             mMap.addMarker(new MarkerOptions()
                     .position(point)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                    .snippet("Referencia : "+ref)
                     .title(stNombreC)).showInfoWindow();
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
         }
-
     }
 
 

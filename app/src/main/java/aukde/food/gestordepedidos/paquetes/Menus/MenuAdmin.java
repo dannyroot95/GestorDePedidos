@@ -115,7 +115,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, RealizarPedido.class));
-                finish();
             }
         });
 
@@ -123,6 +122,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, MenuRegistros.class));
             }
         });
@@ -131,6 +133,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, ListaDePedidos.class));
             }
         });
@@ -139,7 +144,11 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, MonitoreoRepartidor.class));
+                finish();
             }
         });
 
@@ -147,7 +156,11 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, MapaProveedores.class));
+                finish();
             }
         });
 
@@ -155,6 +168,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, PerfilAdmin.class));
             }
         });
@@ -301,5 +317,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private void deleteTokenFCM(){
        mDatabase.child("Tokens").child(mAuth.getId()).removeValue();
     }
+
 
 }

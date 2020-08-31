@@ -10,38 +10,19 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,8 +30,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,7 +64,7 @@ public class AsignarRepartidor extends AppCompatActivity{
             txtPtotal , txtNeto , txtGananciaPorDelivery , txtPrecioComisionProducto , txtNetoComision , IDpedido;
 
 
-    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ;
+    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion  , edtReferencia;
     PedidoProvider mpedidoProvider;
 
     DatabaseReference mUsuarioAukdeliver;
@@ -159,6 +138,7 @@ public class AsignarRepartidor extends AppCompatActivity{
         edtTelefono = findViewById(R.id.telefonoCliente);
         edtDireccion = findViewById(R.id.direcionCliente);
         edtDireccion.setEnabled(false);
+        edtReferencia = findViewById(R.id.referenciaCliente);
         txtEncargado = findViewById(R.id.txtRepartidor);
         idAukdeliver = findViewById(R.id.txtIdAukdeliver);
         pedidoParaAukdeliver = FirebaseDatabase.getInstance().getReference();
@@ -284,6 +264,7 @@ public class AsignarRepartidor extends AppCompatActivity{
                     final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
                             = new ArrayAdapter<>(AsignarRepartidor.this , R.layout.custom_spinner,aukdelivers);
                     mSpinner.setAdapter(arrayAdapter);
+                    arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                     mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -348,6 +329,12 @@ public class AsignarRepartidor extends AppCompatActivity{
                 map.put("estado",estado.getText().toString());
                 map.put("latitud",latitud.getText().toString());
                 map.put("longitud",logitud.getText().toString());
+                if (edtReferencia.getText().toString().equals("")){
+                    //nada
+                }
+                else {
+                    map.put("referencia",edtReferencia.getText().toString());
+                }
                 pedidosActualizadoAdmin.child(idAdminNumPedido).updateChildren(map);
                 clickRegistroPedidoAukdeliver();
                 mDialog.dismiss();
@@ -400,6 +387,13 @@ public class AsignarRepartidor extends AppCompatActivity{
         map.put("latitud",latitud.getText().toString());
         map.put("longitud",logitud.getText().toString());
 
+        if (edtReferencia.getText().toString().equals("")){
+            //nada
+        }
+        else {
+            map.put("referencia",edtReferencia.getText().toString());
+        }
+
         pedidoParaAukdeliver.child("Usuarios").child("Aukdeliver").child(StAukdeliver).child("pedidos").push().setValue(map);
     }
 
@@ -450,7 +444,6 @@ public class AsignarRepartidor extends AppCompatActivity{
                     String LatitudX = dataSnapshot.child("latitud").getValue().toString();
                     String LongitudX = dataSnapshot.child("longitud").getValue().toString();
 
-
                     edtNombreCliente.setText(nombreClientex);
                     textSocio.setText(Socio);
                     txtProducto.setText(Producto);
@@ -472,6 +465,15 @@ public class AsignarRepartidor extends AppCompatActivity{
                     latitud.setText(LatitudX);
                     logitud.setText(LongitudX);
                     estado.setText("En espera");
+
+                    if (dataSnapshot.hasChild("referencia"))
+                    {
+                        String Referencia = dataSnapshot.child("referencia").getValue().toString();
+                        edtReferencia.setText(Referencia);
+                    }
+                    else{
+                        //nada
+                    }
 
                 }
             }
@@ -528,9 +530,7 @@ public class AsignarRepartidor extends AppCompatActivity{
                 }
 
                 else {
-                    Toast.makeText(AsignarRepartidor.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
-                }
-
+                    Toasty.error(AsignarRepartidor.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                }
             }
 
             @Override
