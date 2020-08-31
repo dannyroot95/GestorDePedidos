@@ -86,6 +86,10 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         @Override
         public void onLocationResult(LocationResult locationResult) {
 
+            mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
+            mDialog.show();
+            mDialog.setCancelable(false);
+            mDialog.setMessage("Cargando mapa...");
 
             for (Location location : locationResult.getLocations()) {
                 if (getApplicationContext() != null) {
@@ -141,13 +145,17 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
 
                                     if (intTiempo <= 0) {
                                         tiempo.setText("1" + " min");
+                                        mDialog.dismiss();
                                     } else {
                                         tiempo.setText(time + " min");
+                                        mDialog.dismiss();
                                     }
                                     if (intDistancia < 1.0) {
                                         distancia.setText(stDistancia + " m");
+                                        mDialog.dismiss();
                                     } else {
                                         distancia.setText(km + " Km");
+                                        mDialog.dismiss();
                                     }
 
                                 } catch (Exception e) {
@@ -188,11 +196,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_mapa_cliente_por_llamada);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mDialog = new ProgressDialog(MapaClientePorLlamada.this,R.style.ThemeOverlay);
-
-        mDialog.show();
-        mDialog.setCancelable(false);
-        mDialog.setMessage("Cargando mapa...");
 
         mapFragment.getMapAsync(this);
         mGoogleapiProvider = new GoogleApiProvider(MapaClientePorLlamada.this);
@@ -256,7 +259,6 @@ public class MapaClientePorLlamada extends FragmentActivity implements OnMapRead
                     .title(stNombreC)).showInfoWindow();
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15f));
         }
-       mDialog.dismiss();
     }
 
 
