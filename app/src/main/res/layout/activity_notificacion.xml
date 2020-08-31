@@ -39,229 +39,341 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
-
-                <LinearLayout
+                <GridLayout
+                    android:columnCount="1"
+                    android:columnOrderPreserved="false"
+                    android:rowCount="2"
+                    android:alignmentMode="alignMargins"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:text="Nuevo Pedido "
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:text="#"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/notifyNumPedido"
-                            android:layout_width="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="#000"
+                                android:textStyle="bold"
+                                android:text="Nuevo Pedido "
+                                android:gravity="center"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="#000"
+                                android:textStyle="bold"
+                                android:text="#"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/notifyNumPedido"
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="#000"
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
 
-                    <TextView
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:layout_marginTop="10dp"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:text="Usted acaba de recibir un nuevo\npedido"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp"
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:text="Por este pedido ganarás : "
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="18sp"
-                            android:textColor="#1B6B60"
-                            android:textStyle="bold"
-                            android:text="S/"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/notifyGanancia"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="#1B6B60"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:textSize="14sp"
+                                android:textColor="#000"
+                                android:layout_marginTop="3dp"
+                                android:textAlignment="center"
+                                android:textStyle="bold"
+                                android:text="Usted acaba de recibir un nuevo\npedido"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content"/>
 
-                    <LinearLayout
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="9dp"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:text="Nombre del cliente"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/notifyNombreCliente"
-                            android:layout_marginTop="5dp"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="#CB4335"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:text="Teléfono"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/notifyTelefono"
-                            android:layout_marginTop="5dp"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="#2E86C1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="#000"
-                            android:text="Dirección"
-                            android:textStyle="bold"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/notifyDireccion"
-                            android:layout_marginTop="5dp"
-                            android:textSize="14sp"
-                            android:textAlignment="center"
-                            android:textColor="#9B2371"
-                            android:textStyle="bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
+                        >
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginRight="15dp"
-                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
                             android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:src="@drawable/gananciapedido"
+                                android:layout_gravity="center"
+                                android:layout_height="30dp"/>
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:textSize="14sp"
                                 android:textColor="#000"
-                                android:text="Hora de entrega"
+                                android:layout_marginLeft="10dp"
+                                android:textStyle="bold"
+                                android:text="Por este pedido ganarás : "
+                                android:gravity="center"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="18sp"
+                                android:textColor="#1B6B60"
+                                android:textStyle="bold"
+                                android:text="S/"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/notifyGanancia"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#1B6B60"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginRight="15dp"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content"
+                                >
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:src="@drawable/nombrecliente"
+                                    android:layout_gravity="center"
+                                    android:layout_height="30dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:text="Nombre del cliente"
+                                    android:gravity="center"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/notifyNombreCliente"
+                                    android:layout_marginTop="5dp"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#CB4335"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:src="@drawable/telcliente"
+                                    android:layout_gravity="center"
+                                    android:layout_height="30dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:text="Teléfono"
+                                    android:gravity="center"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/notifyTelefono"
+                                    android:layout_marginTop="5dp"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#2E86C1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:src="@drawable/direccionn"
+                                android:layout_gravity="center"
+                                android:layout_height="30dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="#000"
+                                android:text="Dirección"
                                 android:textStyle="bold"
                                 android:gravity="center"
                                 android:layout_height="wrap_content"/>
                             <TextView
-                                android:id="@+id/notifyHora"
+                                android:id="@+id/notifyDireccion"
                                 android:layout_marginTop="5dp"
-                                android:textSize="14sp"
-                                android:layout_gravity="center"
-                                android:textStyle="bold"
-                                android:textColor="#239B56"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_gravity="center"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:layout_width="wrap_content"
                                 android:textSize="14sp"
                                 android:textAlignment="center"
-                                android:textColor="#000"
+                                android:textColor="#9B2371"
                                 android:textStyle="bold"
-                                android:text="Fecha de entrega"
-                                android:layout_gravity="center"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:id="@+id/notifyFecha"
-                                android:layout_marginTop="5dp"
-                                android:textSize="14sp"
-                                android:layout_gravity="center"
-                                android:textStyle="bold"
-                                android:textColor="#239B56"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
+
                         </LinearLayout>
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/pathPhotoCall"
-                        android:layout_height="0dp"/>
-                </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#FFF"
+                        android:layout_marginTop="0dp"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginRight="15dp"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:src="@drawable/hora1"
+                                    android:layout_gravity="center"
+                                    android:layout_height="25dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textColor="#000"
+                                    android:text="Hora de entrega"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/notifyHora"
+                                    android:layout_marginTop="5dp"
+                                    android:textSize="14sp"
+                                    android:layout_gravity="center"
+                                    android:textStyle="bold"
+                                    android:textColor="#239B56"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:src="@drawable/hora2"
+                                    android:layout_gravity="center"
+                                    android:layout_height="25dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textAlignment="center"
+                                    android:textColor="#000"
+                                    android:textStyle="bold"
+                                    android:text="Fecha de entrega"
+                                    android:layout_gravity="center"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/notifyFecha"
+                                    android:layout_marginTop="5dp"
+                                    android:textSize="14sp"
+                                    android:layout_gravity="center"
+                                    android:textStyle="bold"
+                                    android:textColor="#239B56"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/pathPhotoCall"
+                            android:layout_height="0dp"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                </GridLayout>
 
             </ScrollView>
             <LinearLayout
