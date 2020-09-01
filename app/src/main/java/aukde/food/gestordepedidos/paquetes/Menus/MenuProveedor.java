@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Productos.AgregarProductoPorDefecto;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 
@@ -48,6 +50,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private final static int ID_SERVICIO = 99;
     private Vibrator vibrator;
     long tiempo = 100;
+    private Button addProducto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,9 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         mAuthProviders = new AuthProviders();
         mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
+
+        addProducto = findViewById(R.id.btnAgregarProducto);
+
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -70,6 +76,15 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
+
+        addProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuProveedor.this, AgregarProductoPorDefecto.class));
+
+            }
+        });
 
         Mapping();
         generarToken();

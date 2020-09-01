@@ -115,6 +115,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, RealizarPedido.class));
+                finish();
             }
         });
 
@@ -318,5 +319,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
        mDatabase.child("Tokens").child(mAuth.getId()).removeValue();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDialog.dismiss();
+    }
 }
