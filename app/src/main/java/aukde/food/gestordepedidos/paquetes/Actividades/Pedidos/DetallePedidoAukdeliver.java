@@ -159,7 +159,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mLinearCliente = findViewById(R.id.linearCliente);
         mLinearTelefono = findViewById(R.id.linearTelefono);
         mLinearDireccion = findViewById(R.id.linearDireccion);
-        mLinearDireccion = findViewById(R.id.linearReferencia);
+        mLinearReferencia = findViewById(R.id.linearReferencia);
         txtDetalleReferencia = findViewById(R.id.detalleReferencia);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
         mLinearProductos.setLayoutParams(params);
