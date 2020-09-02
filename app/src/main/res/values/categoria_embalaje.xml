@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categoriaEmbalaje">
+        <item>Taper de polietileno</item>
+        <item>Taper biodegradable</item>
+        <item>Bolsa de plástico</item>
+        <item>Bolsa de papel</item>
+    </string-array>
+</resources>

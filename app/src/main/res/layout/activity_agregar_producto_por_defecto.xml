@@ -12,12 +12,11 @@
         android:layout_width="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:padding="20dp"
             android:orientation="vertical">
             <LinearLayout
 
@@ -122,16 +121,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 >
 
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="150dp"
                     android:text="Subir Foto"
-                    android:layout_marginTop="20dp"
-                    android:textSize="20sp"
-                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/redondo"
+                    android:backgroundTint="@drawable/btn_background_rosa"
+                    android:textColor="#fff"
                     android:textStyle="bold"
                     android:fontFamily="@font/futura"
                     android:layout_marginLeft="10dp"
@@ -141,7 +142,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_height="60dp"
                     android:id="@+id/myPhoto"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom"
                     app:civ_border_color="#E7E7E7"
                     app:civ_border_width="2dp"
                     android:layout_marginLeft="10dp"
@@ -149,21 +150,7 @@
                     android:clickable="true"
                     android:background="@drawable/ic_admin"
                     android:foreground="@drawable/selecion"
-                    android:layout_width="70dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fotodefault"
-                    android:layout_width="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="-15dp"
-                    android:layout_alignBottom="@id/fotodefault"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/camera"
-                    android:clickable="true"
-                    android:foreground="@drawable/selecion"
-                    app:civ_border_color="#B4B4B4"
-                    app:civ_border_width="2dp" />
+                    android:layout_width="60dp" />
 
 
             </LinearLayout>
@@ -171,12 +158,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                >
+                android:layout_marginTop="10dp">
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/tarifas"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_marginLeft="6dp"
@@ -250,51 +238,48 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/embalaje"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:textColorHint="#000"
-                    android:textColor="#000"
-                    android:hint="Embalaje"
-                    android:layout_height="wrap_content">
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLength="9"
-                        android:textColor="#000"
+                        android:layout_height="match_parent"
+                        android:hint="Embalaje"
                         android:textColorHint="#000"
-                        android:hint="Categoría de licencia"
-                        android:id="@+id/Embalaje"
+                        android:id="@+id/embalaje"
                         android:inputType="text">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
-                    android:layout_width="wrap_content"
                     android:id="@+id/spinnerEmbalaje"
-                    android:gravity="bottom"
                     android:spinnerMode="dialog"
-                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
+
             <Button
                 android:layout_width="match_parent"
                 android:text="Agregar producto"
-                android:padding="10dp"
                 android:textColor="#fff"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/redondo"
                 android:backgroundTint="@drawable/btn_background_rosa"
                 android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
     </ScrollView>
