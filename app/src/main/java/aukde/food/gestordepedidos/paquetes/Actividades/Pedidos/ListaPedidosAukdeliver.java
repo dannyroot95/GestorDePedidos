@@ -7,7 +7,6 @@ import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.LocationManager;
@@ -22,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamadaAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
@@ -90,7 +88,7 @@ public class ListaPedidosAukdeliver extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(ListaPedidosAukdeliver.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
+                Toasty.error(ListaPedidosAukdeliver.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
             }
         });
 

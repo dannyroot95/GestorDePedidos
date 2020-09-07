@@ -129,6 +129,7 @@ public class RegistroAukdeliver extends AppCompatActivity {
                 && !repetirPass.isEmpty() && !ClaveAuth.isEmpty() && !soat.isEmpty()){
 
             mDialog.show();
+            mDialog.setCancelable(false);
             mDialog.setMessage("Registrando usuario...");
             if(password.length()>=6){
                 if(password.equals(repetirPass)){

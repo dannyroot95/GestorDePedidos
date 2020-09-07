@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -47,7 +48,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.GeofireProvider;
-
+import es.dmoral.toasty.Toasty;
 
 
 public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReadyCallback {
@@ -144,7 +145,8 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        finish();
+                        Toasty.error(MonitoreoRepartidor.this, "Error del servidor", Toast.LENGTH_SHORT,true).show();
                     }
                 });
 
@@ -182,7 +184,8 @@ public class MonitoreoRepartidor extends AppCompatActivity implements OnMapReady
 
             @Override
             public void onGeoQueryError(DatabaseError error) {
-
+                finish();
+                Toasty.error(MonitoreoRepartidor.this, "Error del servidor", Toast.LENGTH_SHORT,true).show();
             }
         });
     }

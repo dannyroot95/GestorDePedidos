@@ -76,7 +76,11 @@
 
 
         <activity
-            android:name=".paquetes.Productos.AgregarProductoPorDefecto"
+            android:name=".paquetes.Productos.Default.AgregarProductoPorDefecto"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"  android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".paquetes.Productos.Default.ListaProductosDefault"
             android:parentActivityName=".paquetes.Menus.MenuAukdeliver"  android:screenOrientation="portrait"/>
 
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"

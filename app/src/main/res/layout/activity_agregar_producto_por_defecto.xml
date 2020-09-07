@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Nombre del Producto"
                         android:id="@+id/NombreProducto"
-                        android:inputType="text">
+                        android:inputType="textCapSentences">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -61,7 +61,7 @@
                         android:layout_height="90dp"
                         android:hint="Descripcion del Producto"
                         android:id="@+id/DescripcionProducto"
-                        android:inputType="text">
+                        android:inputType="textCapSentences">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +85,7 @@
                         android:layout_height="90dp"
                         android:hint="Contenido del Producto"
                         android:id="@+id/ContenidoProducto"
-                        android:inputType="text">
+                        android:inputType="textCapSentences">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -118,42 +118,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                >
-
-
-                <Button
-                    android:layout_width="150dp"
-                    android:text="Subir Foto"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/redondo"
-                    android:backgroundTint="@drawable/btn_background_rosa"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/futura"
-                    android:layout_marginLeft="10dp"
-                    android:layout_height="wrap_content"/>
-
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_height="60dp"
-                    android:id="@+id/myPhoto"
-                    android:layout_gravity="bottom"
-                    app:civ_border_color="#E7E7E7"
-                    app:civ_border_width="2dp"
-                    android:layout_marginLeft="10dp"
-                    android:backgroundTint="#CACACA"
-                    android:clickable="true"
-                    android:background="@drawable/ic_admin"
-                    android:foreground="@drawable/selecion"
-                    android:layout_width="60dp" />
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,7 +140,7 @@
                         android:hint="Tarifa Confidencial"
                         android:id="@+id/TarifaConfidencial"
                         android:maxLength="8"
-                        android:inputType="number">
+                        android:inputType="numberDecimal">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -204,7 +168,7 @@
                         android:hint="Tarifa Publicada"
                         android:maxLength="9"
                         android:id="@+id/TarifaPublicada"
-                        android:inputType="number">
+                        android:inputType="numberDecimal">
 
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -229,6 +193,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Codigo INEA"
+                        android:text="AUK00X"
                         android:id="@+id/CodigoInea"
                         android:inputType="text">
 
@@ -240,6 +205,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:layout_marginTop="7dp"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
@@ -271,10 +237,62 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="150dp"
+                        android:text="Subir Foto"
+                        android:textSize="16sp"
+                        android:layout_weight="1"
+                        android:id="@+id/btnAbrirGaleria"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/redondo"
+                        android:backgroundTint="@drawable/btn_background_rosa"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/futura"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content"/>
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_height="100dp"
+                        android:id="@+id/imgProducto"
+                        android:layout_gravity="bottom"
+                        app:civ_border_color="#E7E7E7"
+                        app:civ_border_width="2dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:backgroundTint="#CACACA"
+                        android:clickable="true"
+                        android:background="@drawable/ic_admin"
+                        android:foreground="@drawable/selecion"
+                        android:layout_width="100dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/pathUrlPhoto"
+                    android:visibility="invisible"
+                    android:layout_height="0dp"/>
+
+            </LinearLayout>
+
             <Button
                 android:layout_width="match_parent"
                 android:text="Agregar producto"
                 android:textColor="#fff"
+                android:id="@+id/btnRegistroProductoDefault"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/redondo"
                 android:backgroundTint="@drawable/btn_background_rosa"

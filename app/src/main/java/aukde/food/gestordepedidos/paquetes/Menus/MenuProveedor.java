@@ -32,7 +32,8 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
-import aukde.food.gestordepedidos.paquetes.Productos.AgregarProductoPorDefecto;
+import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
+import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 
@@ -50,7 +51,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private final static int ID_SERVICIO = 99;
     private Vibrator vibrator;
     long tiempo = 100;
-    private Button addProducto;
+    private Button addProducto , listProducto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         mDialog = new ProgressDialog(this);
 
         addProducto = findViewById(R.id.btnAgregarProducto);
+        listProducto = findViewById(R.id.btnListaProductos);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
@@ -83,6 +85,14 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuProveedor.this, AgregarProductoPorDefecto.class));
 
+            }
+        });
+
+        listProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuProveedor.this, ListaProductosDefault.class));
             }
         });
 
