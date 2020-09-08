@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".paquetes.Productos.AgregarProductoPorDefecto">
+    tools:context=".paquetes.Productos.Default.AgregarProductoPorDefecto">
 
     <include layout="@layout/toolbar3"/>
 
