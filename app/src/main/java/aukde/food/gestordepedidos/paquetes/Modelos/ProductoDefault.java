@@ -1,6 +1,8 @@
 package aukde.food.gestordepedidos.paquetes.Modelos;
 
-public class ProductoDefault {
+import java.io.Serializable;
+
+public class ProductoDefault implements Serializable {
 
     String nombreProducto;
     String descripcionProducto;

@@ -14,7 +14,7 @@
 
         <com.github.florent37.shapeofview.shapes.ArcView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="120dp"
             android:elevation="4dp"
             app:shape_arc_cropDirection="outside"
             app:shape_arc_height="20dp"
@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:text="Detalle de Producto"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="#fff"
                     android:fontFamily="@font/futura"
                     android:textStyle="bold"
@@ -65,9 +65,10 @@
             android:layout_marginTop="-50dp"
             app:shape_circle_borderWidth="3dp"
             android:layout_height="100dp">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:background="#fff"
+                android:id="@+id/photoDetalleProductoDefault"
                 android:src="@drawable/lista_proveedor"
                 android:layout_height="match_parent"/>
         </com.github.florent37.shapeofview.shapes.CircleView>
@@ -101,7 +102,6 @@
                         android:textStyle="bold"
                         android:layout_marginLeft="20dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginTop="10dp"
                         android:layout_height="wrap_content"/>
 
                     <androidx.cardview.widget.CardView
@@ -129,7 +129,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_marginLeft="15dp"
-                                    android:text="Nombre del producto : "
+                                    android:text="Producto : "
                                     android:layout_gravity="center"
                                     android:textSize="16sp"
                                     android:textColor="#000"
@@ -138,10 +138,10 @@
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
-                                    android:id="@+id/detalleNombreProducto"
+                                    android:id="@+id/detalleNombreProductoDefault"
                                     android:layout_width="wrap_content"
-                                    android:textColor="#2d572c"
-                                    android:textSize="20sp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
@@ -159,6 +159,7 @@
                                     android:layout_width="40dp"
                                     android:src="@drawable/stockproduc"
                                     android:layout_height="40dp"/>
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="Stock :"
@@ -170,16 +171,45 @@
                                     android:layout_marginLeft="15dp"
                                     android:layout_height="wrap_content"/>
 
+                                <Button
+                                    android:layout_width="40dp"
+                                    android:text="-"
+                                    android:fontFamily="@font/futura"
+                                    android:id="@+id/btnMinDefault"
+                                    android:textStyle="bold"
+                                    android:layout_height="50dp"/>
+
                                 <TextView
-                                    android:id="@+id/detalleStock"
+                                    android:id="@+id/detalleStockDefault"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center"
-                                    android:textColor="#000"
-                                    android:layout_marginLeft="5dp"
                                     android:textSize="16sp"
+                                    android:textColor="#000"
+
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:layout_height="wrap_content"/>
+
+                                <Button
+                                    android:layout_width="40dp"
+                                    android:text="+"
+                                    android:fontFamily="@font/futura"
+                                    android:id="@+id/btnMaxDefault"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_height="50dp"/>
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Actualizar Stock"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center"
+                                    android:textSize="12sp"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/redondo"
+                                    android:id="@+id/btnActualizarStockDefault"
+                                    android:backgroundTint="@drawable/btn_background_rosa"/>
 
                             </LinearLayout>
 
@@ -208,14 +238,14 @@
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
-                                    android:id="@+id/detalleTelefonoCliente"
+                                    android:id="@+id/detalleDefaultDescripcion"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center"
-                                    android:textColor="#FF0000"
                                     android:layout_marginLeft="5dp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
                                     android:layout_height="wrap_content"/>
 
 
@@ -235,22 +265,22 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:text="Contenido : "
-                                    android:layout_marginTop="8dp"
                                     android:textSize="16sp"
                                     android:layout_marginLeft="15dp"
                                     android:textColor="#000"
+                                    android:layout_gravity="center"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:layout_marginRight="5dp"
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
-                                    android:id="@+id/detalleContenido"
+                                    android:id="@+id/detalleContenidoDefault"
                                     android:layout_width="wrap_content"
-                                    android:textColor="#2d572c"
-                                    android:layout_marginTop="8dp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_gravity="center"
                                     android:layout_marginLeft="5dp"
-                                    android:textSize="20sp"
                                     android:fontFamily="@font/futura"
                                     android:textStyle="bold"
                                     android:layout_height="wrap_content"/>
@@ -281,10 +311,10 @@
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
-                                    android:id="@+id/detalleTotalCobro"
+                                    android:id="@+id/detalleEmbalajeDefault"
                                     android:layout_width="wrap_content"
-                                    android:textColor="#2d572c"
-                                    android:textSize="20sp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
                                     android:layout_marginLeft="5dp"
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/futura"
@@ -315,95 +345,25 @@
                                     android:layout_height="wrap_content"/>
 
                                 <TextView
-                                    android:id="@+id/detalleVuelto"
+                                    android:id="@+id/detalleCodigoDefault"
                                     android:layout_width="wrap_content"
-                                    android:textColor="#2d572c"
                                     android:layout_gravity="center"
                                     android:layout_marginLeft="5dp"
-                                    android:textSize="20sp"
-                                    android:fontFamily="@font/futura"
-                                    android:textStyle="bold"
-                                    android:layout_height="wrap_content"/>
-
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="0dp"
-                                android:layout_height="0dp">
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:src="@drawable/repartidor"
-                                    android:layout_height="40dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:text="Repartidor asignado :"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_marginLeft="15dp"
                                     android:textSize="16sp"
+                                    android:textColor="#000"
                                     android:fontFamily="@font/futura"
-                                    android:textColor="#000"
-                                    android:layout_height="wrap_content"/>
-
-                                <TextView
-                                    android:id="@+id/detallevRepartidor"
-                                    android:layout_width="wrap_content"
-                                    android:textColor="#000"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="15dp"
-                                    android:textSize="16sp"
                                     android:textStyle="bold"
                                     android:layout_height="wrap_content"/>
 
                             </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:id="@+id/pathPhoto"
-                                android:visibility="invisible"
-                                android:layout_height="0dp"
-                                />
-
-                            <LinearLayout
-                                android:orientation="horizontal"
+                            <Button
                                 android:layout_width="match_parent"
-                                android:elevation="6dp"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                android:layout_marginTop="15dp"
-                                android:layout_gravity="bottom|center"
-                                android:layout_height="wrap_content">
-
-                                <Button
-                                    android:layout_width="wrap_content"
-                                    android:text="Editar Producto"
-                                    android:background="@drawable/redondo"
-                                    android:backgroundTint="@drawable/btn_background_verde"
-                                    android:id="@+id/showProducto"
-                                    android:gravity="center"
-                                    android:fontFamily="@font/futura"
-                                    android:textStyle="bold"
-                                    android:layout_weight="1"
-                                    android:textColor="#fff"
-                                    android:layout_height="wrap_content"/>
-
-                                <Button
-                                    android:layout_width="wrap_content"
-                                    android:text="Otro"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/redondo"
-                                    android:backgroundTint="@drawable/btn_background_verde"
-                                    android:id="@+id/showMapa"
-                                    android:fontFamily="@font/futura"
-                                    android:textStyle="bold"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="#fff"
-                                    android:layout_height="wrap_content"/>
-                            </LinearLayout>
-
+                                android:layout_height="wrap_content"
+                                android:text="Editar Producto"
+                                android:textColor="#ffffff"
+                                android:background="@drawable/redondo"
+                                android:id="@+id/btnEditarProductoDefault"
+                                android:backgroundTint="@drawable/btn_background_rosa"/>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>

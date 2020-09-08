@@ -80,7 +80,7 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
         edtDescripcionProducto = findViewById(R.id.DescripcionProducto);
         edtContenido = findViewById(R.id.ContenidoProducto);
         edtCodigoINEA = findViewById(R.id.CodigoInea);
-        edtCodigoINEA.setEnabled(false);
+        //edtCodigoINEA.setEnabled(false);
         edtStock = findViewById(R.id.Stock);
         edtTarifaConfidencial = findViewById(R.id.TarifaConfidencial);
         edtTarifaPublicada = findViewById(R.id.TarifaPublicada);

@@ -25,6 +25,8 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
 
     List<PedidoLlamada> pedidoLlamadaList;
     Context c;
+    private final int limit = 30;
+
 
     public AdapterPedidoPorLlamada(List<PedidoLlamada> pedidoLlamadaList) {
         this.pedidoLlamadaList = pedidoLlamadaList;
@@ -118,7 +120,9 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
 
     @Override
     public int getItemCount() {
-        return pedidoLlamadaList.size();
+       //Limitar el numero de pedidos en la lista de pedidos
+        // mostrar todos los pedidos ->  return pedidoLlamadaList.size();
+        return Math.min(pedidoLlamadaList.size(), limit);
     }
 
     public class viewHolderPedidos extends RecyclerView.ViewHolder {

@@ -77,11 +77,15 @@
 
         <activity
             android:name=".paquetes.Productos.Default.AgregarProductoPorDefecto"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
 
         <activity
             android:name=".paquetes.Productos.Default.ListaProductosDefault"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".paquetes.Productos.Default.DetalleProductoDefault"
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
 
         <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
             android:screenOrientation="portrait"/>

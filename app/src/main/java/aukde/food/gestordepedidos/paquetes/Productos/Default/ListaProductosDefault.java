@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -114,6 +115,25 @@ public class ListaProductosDefault extends AppCompatActivity {
         }
         AdapterProductoDefault adapter = new AdapterProductoDefault(lista);
         recyclerViewProducto.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);/*
+        startActivity(new Intent(ListaDePedidos.this, MenuAdmin.class));
+        finish(); */
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
 }

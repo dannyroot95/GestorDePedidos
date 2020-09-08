@@ -21,7 +21,7 @@
 
             <ImageView
                 android:layout_width="50dp"
-                android:src="@drawable/ic_storeblack"
+                android:src="@drawable/loaderrosa"
                 android:id="@+id/imgProducto"
                 android:layout_gravity="center"
                 android:layout_height="80dp"/>
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
                     android:textSize="16sp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="15dp"
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:fontFamily="@font/futura"
@@ -81,7 +81,7 @@
                     android:id="@+id/listStock"
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="15dp"
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:fontFamily="@font/futura"
@@ -110,7 +110,7 @@
                     android:id="@+id/listCodigoINEA"
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="15dp"
                     android:textColor="#000"
                     android:gravity="right"
                     android:textSize="16sp"

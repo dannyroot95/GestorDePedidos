@@ -205,7 +205,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
@@ -215,13 +215,15 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:textColorHint="#000"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="6dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="Embalaje"
+                        android:layout_gravity="center"
                         android:textColorHint="#000"
                         android:id="@+id/embalaje"
                         android:inputType="text">
@@ -232,6 +234,7 @@
                 <Spinner
                     android:id="@+id/spinnerEmbalaje"
                     android:spinnerMode="dialog"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
