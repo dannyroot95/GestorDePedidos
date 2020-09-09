@@ -1,6 +1,7 @@
 package aukde.food.gestordepedidos.paquetes.Menus;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
@@ -9,6 +10,7 @@ import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -20,12 +22,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +43,8 @@ import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorD
 import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -50,7 +59,9 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private ShimmerFrameLayout shimmerFrameLayout;
     private final static int ID_SERVICIO = 99;
     private Vibrator vibrator;
+    private static final int GALLERY = 1;
     long tiempo = 100;
+    private CircleImageView foto;
     private Button addProducto , listProducto;
 
     @Override
@@ -62,7 +73,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         mAuthProviders = new AuthProviders();
         mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
-
+        foto = findViewById(R.id.fotodefault);
         addProducto = findViewById(R.id.btnAgregarProducto);
         listProducto = findViewById(R.id.btnListaProductos);
 
@@ -99,8 +110,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         Mapping();
         generarToken();
         getDataUser();
-
-
+        getPhotoUsuario();
 
     }
 
@@ -134,7 +144,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             case R.id.item1:
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                //startActivityForResult(intent,GALLERY);
+                startActivityForResult(intent,GALLERY);
                 return true;
 
             case R.id.item2:
@@ -146,6 +156,62 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             default:
                 return false;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == GALLERY && resultCode == RESULT_OK){
+            mDialog.setMessage("Actualizando foto de perfil...");
+            mDialog.setCancelable(false);
+            mDialog.show();
+            Uri uri = data.getData();
+            final String id = mAuthProviders.getId();
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoProveedor").child(mAuthProviders.getId()+".jpg");
+
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            DatabaseReference imagestore = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").child(id);
+                            HashMap<String,Object> fotoMap = new HashMap<>();
+                            fotoMap.put("foto" , String.valueOf(uri));
+                            imagestore.updateChildren(fotoMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    getPhotoUsuario();
+                                    mDialog.dismiss();
+                                    Toasty.success(MenuProveedor.this, "Foto de perfil actualizada!", Toast.LENGTH_LONG,true).show();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void getPhotoUsuario(){
+        String id = mAuth.getId();
+        mDatabase.child("Usuarios").child("Proveedor").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("foto")){
+                    //Obtener el url y setearlo en la imagem
+                    String setFoto = dataSnapshot.child("foto").getValue().toString();
+                    Glide.with(MenuProveedor.this).load(setFoto).into(foto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void Mapping(){
