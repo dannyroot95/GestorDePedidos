@@ -54,12 +54,10 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaProveedores;
 import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
+import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.Cronometro;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
-import aukde.food.gestordepedidos.paquetes.Modelos.Administrador;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
-import aukde.food.gestordepedidos.paquetes.Servicios.MyFirebaseMessagingClient;
-import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -71,7 +69,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
-            , btnMapaRepartidores , btnPerfilX , btnMapProveedor;
+            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnPrueba;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -94,6 +92,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);
         btnMapaRepartidores = findViewById(R.id.btnMonitoreoRepartidor);
         btnMapProveedor = findViewById(R.id.btnMapaProveedor);
+        btnPrueba = findViewById(R.id.btnListaDeUsuarios);
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
@@ -173,6 +172,17 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, PerfilAdmin.class));
+            }
+        });
+
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                startActivity(new Intent(MenuAdmin.this, Cronometro.class));
             }
         });
 

@@ -12,12 +12,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -307,7 +309,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             mLinearAsignar.setLayoutParams(parametros);
         }
 
-    }
+}
 
 
     private String obtieneDosDecimales(double valor) {

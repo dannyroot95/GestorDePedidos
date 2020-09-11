@@ -412,6 +412,7 @@
                     <Button
                         android:layout_width="80dp"
                         android:gravity="center"
+                        android:id="@+id/btnListaDeUsuarios"
                         android:background="@drawable/btn_lista_usuarios"
                         android:layout_height="80dp"/>
 
