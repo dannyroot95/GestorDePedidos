@@ -6,40 +6,45 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-   <!-- <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> -->
-
-
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin"></activity>
-
-        <activity android:name=".paquetes.Menus.Perfiles.PerfilAukdeliver"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"></activity>
+        <activity android:name=".ServicioCronometro"></activity>
+        <activity
+            android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
+            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+        <activity
+            android:name=".paquetes.Menus.Perfiles.PerfilAukdeliver"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver" />
 
         <service
-            android:name=".paquetes.Servicios.JobServiceMonitoreo" android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:name=".paquetes.Servicios.JobServiceMonitoreo"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".paquetes.Actividades.Pedidos.AsignarRepartidor"/>
-        <activity android:name=".paquetes.Actividades.Pedidos.EditarPedido"/>
+        <service
+            android:name=".ImplServicioCronometro"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".paquetes.Actividades.Pedidos.AsignarRepartidor" />
+        <activity android:name=".paquetes.Actividades.Pedidos.EditarPedido" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -49,8 +54,8 @@
             android:name=".paquetes.Mapas.MapaClientePorLlamada"
             android:label="@string/title_activity_mapa_cliente_por_llamada" />
         <activity android:name=".paquetes.Mapas.MonitoreoRepartidor" />
-        <activity android:name=".paquetes.Mapas.MapaProveedores"/>
-        <activity android:name=".paquetes.Actividades.Notificacion"/>
+        <activity android:name=".paquetes.Mapas.MapaProveedores" />
+        <activity android:name=".paquetes.Actividades.Notificacion" />
 
         <receiver
             android:name=".paquetes.Receptor.AcceptReceiver"
@@ -58,11 +63,17 @@
         <receiver
             android:name=".paquetes.Receptor.CancelReceiver"
             android:enabled="true" />
-
-        <receiver android:name=".paquetes.Receptor.NetworkReceiver" android:enabled="true" android:exported="true"/>
-        <receiver android:name=".paquetes.Receptor.GpsReceiver" android:enabled="true" android:exported="true">
+        <receiver
+            android:name=".paquetes.Receptor.NetworkReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".paquetes.Receptor.GpsReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.location.GPS_ENABLED_CHANGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -75,72 +86,82 @@
 
         <activity
             android:name=".paquetes.Productos.Default.AgregarProductoPorDefecto"
-            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
-
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Productos.Default.ListaProductosDefault"
-            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
-
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Productos.Default.DetalleProductoDefault"
-            android:parentActivityName=".paquetes.Menus.MenuProveedor"  android:screenOrientation="portrait"/>
-
-        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
             android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".paquetes.Menus.Perfiles.Cronometro"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedido"
-            android:screenOrientation="portrait"/>
+            android:name=".paquetes.Actividades.Pedidos.DetallePedido"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaDePedidos"
             android:parentActivityName=".paquetes.Menus.MenuAdmin"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Pedidos.RealizarPedido"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin"/>
-        <activity android:name=".paquetes.Menus.MenuProveedor" android:screenOrientation="portrait"/>
-        <activity android:name=".paquetes.Menus.MenuAukdeliver" android:screenOrientation="portrait"/>
-        <activity android:name=".paquetes.Menus.MenuAdmin"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+        <activity
+            android:name=".paquetes.Menus.MenuProveedor"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Menus.MenuAukdeliver"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Menus.MenuAdmin"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroProveedor"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroAukdeliver"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
         <activity
             android:name=".paquetes.Actividades.Registros.MenuRegistros"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin" />
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroAdmin"
-            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros"/>
+            android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />
         <activity
             android:name=".paquetes.Actividades.Logins.LoginProveedor"
-            android:parentActivityName=".paquetes.Actividades.Inicio"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Logins.LoginAukdeliver"
-            android:parentActivityName=".paquetes.Actividades.Inicio"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Logins.LoginAdmin"
-            android:parentActivityName=".paquetes.Actividades.Inicio" android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Inicio"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarAdmin"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAdmin"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarAukdelivery"
-            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver"  android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Logins.RecuperarProveedor"
-            android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor" android:screenOrientation="portrait"/>
+            android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Inicio"
-            android:theme="@style/splashScreenTheme"  android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -148,12 +169,12 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notificacion"/>
-
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent"/>
-
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notificacion" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

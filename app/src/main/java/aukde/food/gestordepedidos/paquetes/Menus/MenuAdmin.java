@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.ServicioCronometro;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
@@ -182,7 +183,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.show();
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
-                startActivity(new Intent(MenuAdmin.this, Cronometro.class));
+                startActivity(new Intent(MenuAdmin.this, ServicioCronometro.class));
             }
         });
 
