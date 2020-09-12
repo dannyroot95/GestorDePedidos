@@ -68,14 +68,12 @@ public class Notificacion extends AppCompatActivity {
     String defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/fotoDefault.jpg?alt=media&token=f74486bf-432e-4af6-b114-baa523e1f801";
     long[] pattern = {400, 600, 100,300,100,150,100,75};
     private TextView textoCronometro;
-    Button btn ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacion);
         photo = findViewById(R.id.pathPhotoCall);
-        btn = findViewById(R.id.btnCro);
         textoCronometro = findViewById(R.id.cronometro);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -154,13 +152,6 @@ public class Notificacion extends AppCompatActivity {
                 sendAcceptNotification2();
                 sendAcceptNotification3();
                 vibrator.cancel();//cancela vibración
-            }
-        });
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 

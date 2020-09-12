@@ -392,17 +392,7 @@
                     android:background="@drawable/redondo"
                     android:backgroundTint="#CB4335"
                     android:layout_height="wrap_content"/>
-                <Button
-                    android:id="@+id/btnCro"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Cro"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/redondo"
-                    android:backgroundTint="#CB4335"
-                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
         </LinearLayout>
 

@@ -98,22 +98,21 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     String formatoHora = simpleDateFormatHora.format(new Date());
     String formatoFecha = simpleDateFormatFecha.format(new Date());
 
-    TextView horaPedido, fechaPedido, fechaEntrega , horaEntrega
-            , precioProductoTotal, precioNetoTotal, vuelto;
+    TextView horaPedido, fechaPedido, fechaEntrega, horaEntrega, precioProductoTotal, precioNetoTotal, vuelto;
 
-    private Button  btnCalcularVuelto;
+    private Button btnCalcularVuelto;
 
-    private Button mBtnAdd , mbtnMin , mbtnMax , mBtnClean;
+    private Button mBtnAdd, mbtnMin, mbtnMax, mBtnClean;
 
-    private TextView edtNumPedido,textSocio,txtProducto,txtDescripcion,txtPrecioUnitario,txtDelivery , edtCantidad , txtCantidad ,
-            txtPtotal , txtNeto , txtGananciaPorDelivery , txtPrecioComisionProducto , txtNetoComision;
+    private TextView edtNumPedido, textSocio, txtProducto, txtDescripcion, txtPrecioUnitario, txtDelivery, edtCantidad, txtCantidad,
+            txtPtotal, txtNeto, txtGananciaPorDelivery, txtPrecioComisionProducto, txtNetoComision;
 
 
     private CheckBox chComision;
 
-    public EditText  edtMontoCliente , edtNombreCliente, edtTelefono , edtDireccion ,edtReferencia;
+    public EditText edtMontoCliente, edtNombreCliente, edtTelefono, edtDireccion, edtReferencia;
 
-    private EditText mSocio , mProducto , mDescripcion , mPrecioUnitario , mDelivery ,mNuevaComision  ;
+    private EditText mSocio, mProducto, mDescripcion, mPrecioUnitario, mDelivery, mNuevaComision;
 
     private LinearLayout mLinearMap;
     PedidoProvider mpedidoProvider;
@@ -136,17 +135,17 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     DatabaseReference mUsuarioProveedor;
     DatabaseReference pedidos;
     private DatabaseReference pedidoParaAukdeliver;
-    Spinner mSpinner, mSpinnerEstado ,mSpinnerProveedor;
-    FloatingActionButton mFloatingButton , mFloatingMap;
-    TextView estado ;
-    TextView txtEncargado , idAukdeliver;
+    Spinner mSpinner, mSpinnerEstado, mSpinnerProveedor;
+    FloatingActionButton mFloatingButton, mFloatingMap;
+    TextView estado;
+    TextView txtEncargado, idAukdeliver;
     String stEncargado = "";
-    TextView latitud,logitud;
+    TextView latitud, logitud;
     Button mButtonMapear;
 
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
-    private FirebaseAuth mAuth ;
+    private FirebaseAuth mAuth;
 
     private Vibrator vibrator;
     long tiempo = 100;
@@ -155,9 +154,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         @Override
         public void onLocationResult(LocationResult locationResult) {
             for (Location location : locationResult.getLocations()) {
-                origen = new LatLng(location.getLatitude(),location.getLongitude());
+                origen = new LatLng(location.getLatitude(), location.getLongitude());
                 if (getApplicationContext() != null) {
-                    Toast.makeText(RealizarPedido.this, "Tu poscicion : "+origen, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RealizarPedido.this, "Tu poscicion : " + origen, Toast.LENGTH_LONG).show();
                     //obtener locatizacion en tiempo real
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
@@ -228,17 +227,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         chComision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(chComision.isChecked()){
+                if (chComision.isChecked()) {
                     mNuevaComision.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     mNuevaComision.setVisibility(View.INVISIBLE);
                     mNuevaComision.setText("");
                 }
             }
         });
 
-        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(RealizarPedido.this,R.style.ThemeOverlay).create();
+        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(RealizarPedido.this, R.style.ThemeOverlay).create();
         alertDialog.setTitle("Hey!");
         alertDialog.setCancelable(false);
         alertDialog.setMessage("Deseas agregar otro producto del mismo socio?");
@@ -284,21 +282,20 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 String ganancia = txtGananciaPorDelivery.getText().toString();
                 Double dNeto = Double.parseDouble(netoValor);
 
-                if (S.isEmpty() || P.isEmpty() || Pu.isEmpty() || Del.isEmpty()){
+                if (S.isEmpty() || P.isEmpty() || Pu.isEmpty() || Del.isEmpty()) {
                     Toasty.error(RealizarPedido.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    textSocio.append(S+"\n");
-                    txtProducto.append(P+"\n");
-                    txtDescripcion.append(D+"\n");
-                    txtPrecioUnitario.append(Pu+"\n");
-                    txtDelivery.append(Del+"\n");
-                    txtCantidad.append(Cant+"\n");
+                } else {
+                    textSocio.append(S + "\n");
+                    txtProducto.append(P + "\n");
+                    txtDescripcion.append(D + "\n");
+                    txtPrecioUnitario.append(Pu + "\n");
+                    txtDelivery.append(Del + "\n");
+                    txtCantidad.append(Cant + "\n");
                     int Cantidad = Integer.parseInt(Cant);
                     Double Precio = Double.parseDouble(Pu);
-                    Double total = Cantidad*Precio;
+                    Double total = Cantidad * Precio;
                     String sTotal = String.valueOf(total);
-                    txtPtotal.append(sTotal+"\n");
+                    txtPtotal.append(sTotal + "\n");
 
                     Double finalNeto = total + dNeto;
                     String stNeto = String.valueOf(finalNeto);
@@ -307,9 +304,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
                     Double Gan = Double.parseDouble(ganancia);
                     Double dDelivery = Double.parseDouble(Del);
-                    Double sumGanancia = Gan+dDelivery;
+                    Double sumGanancia = Gan + dDelivery;
                     String netoGanancia = String.valueOf(sumGanancia);
-                    Double totalCobro = sumGanancia+finalNeto;
+                    Double totalCobro = sumGanancia + finalNeto;
                     String netoCobro = String.valueOf(totalCobro);
                     txtGananciaPorDelivery.setText(netoGanancia);
                     precioNetoTotal.setText(netoCobro);
@@ -321,10 +318,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     chComision.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(chComision.isChecked()){
+                            if (chComision.isChecked()) {
                                 mNuevaComision.setVisibility(View.VISIBLE);
-                            }
-                            else {
+                            } else {
                                 mNuevaComision.setVisibility(View.INVISIBLE);
                             }
 
@@ -332,16 +328,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     });
 
 
-                    if (chComision.isChecked()==false){
+                    if (chComision.isChecked() == false) {
                         mNuevaComision.setVisibility(View.INVISIBLE);
-                        if (Precio >= 25){
+                        if (Precio >= 25) {
                             Double totalMaxComision = 1.0 * Cantidad;
                             String sTotalMaxComision = String.valueOf(totalMaxComision);
 
                             Double comisionxProducto = DComision + totalMaxComision;
                             String stComisionxProducto = String.valueOf(comisionxProducto);
 
-                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
+                            txtPrecioComisionProducto.append(sTotalMaxComision + "\n");
                             txtNetoComision.setText(stComisionxProducto);
                         }
                         if (Precio < 25) {
@@ -351,14 +347,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                             Double comisionxProductoMin = DComision + totalMinComision;
                             String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
 
-                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
+                            txtPrecioComisionProducto.append(sTotalMinComision + "\n");
                             txtNetoComision.setText(stComisionxProductoMin);
                         }
-                    }
-
-                    else {
+                    } else {
                         mNuevaComision.setVisibility(View.VISIBLE);
-                        if (Precio >= 25){
+                        if (Precio >= 25) {
                             String stNuevaComision = mNuevaComision.getText().toString();
                             Double DNuevaComision = Double.parseDouble(stNuevaComision);
                             Double totalMaxComision = DNuevaComision * Cantidad;
@@ -367,7 +361,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                             Double comisionxProducto = DComision + totalMaxComision;
                             String stComisionxProducto = String.valueOf(comisionxProducto);
 
-                            txtPrecioComisionProducto.append(sTotalMaxComision+"\n");
+                            txtPrecioComisionProducto.append(sTotalMaxComision + "\n");
                             txtNetoComision.setText(stComisionxProducto);
                         }
                         if (Precio < 25) {
@@ -379,7 +373,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                             Double comisionxProductoMin = DComision + totalMinComision;
                             String stComisionxProductoMin = String.valueOf(comisionxProductoMin);
 
-                            txtPrecioComisionProducto.append(sTotalMinComision+"\n");
+                            txtPrecioComisionProducto.append(sTotalMinComision + "\n");
                             txtNetoComision.setText(stComisionxProductoMin);
                         }
                     }
@@ -393,12 +387,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 String num = edtCantidad.getText().toString();
-                if (num.equals("1")){
+                if (num.equals("1")) {
                     edtCantidad.setText("1");
-                }
-                else {
+                } else {
                     int Cc = Integer.parseInt(num);
-                    int res = Cc-1;
+                    int res = Cc - 1;
                     String Min = String.valueOf(res);
                     edtCantidad.setText(Min);
                 }
@@ -411,7 +404,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 String num = edtCantidad.getText().toString();
                 int Cc = Integer.parseInt(num);
-                int res = Cc+1;
+                int res = Cc + 1;
                 String Min = String.valueOf(res);
                 edtCantidad.setText(Min);
             }
@@ -437,7 +430,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         //---------------
         btnCalcularVuelto = findViewById(R.id.calcularVuelto);
-        mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
+        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
         edtMontoCliente = findViewById(R.id.montoPagarcliente);
         precioProductoTotal = findViewById(R.id.precioProductoTotal);
         edtTelefono = findViewById(R.id.telefonoCliente);
@@ -459,7 +452,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         ultimoDato.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String num = childSnapshot.child("numPedido").getValue().toString();
                     int numToString = Integer.parseInt(num);
                     int newNumPedido = numToString + 1;
@@ -467,21 +460,22 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     edtNumPedido.setText(stNewNumPedido);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
         int alto = 0;
-        mLinearMap =findViewById(R.id.map_container);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
+        mLinearMap = findViewById(R.id.map_container);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto);
         mLinearMap.setLayoutParams(params);
         mpedidoProvider = new PedidoProvider();
         mSpinner = findViewById(R.id.spinnerAukdeliver);
         mSpinnerEstado = findViewById(R.id.spEstado);
         mSpinnerProveedor = findViewById(R.id.spinnerProveedor);
-        ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this,R.
-                array.estado,R.layout.custom_spinner);
+        ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this, R.
+                array.estado, R.layout.custom_spinner);
         estado = findViewById(R.id.txtEstado);
 
         adapterSpinnerEstado.setDropDownViewResource(R.layout.custom_spinner_dropdown);
@@ -491,18 +485,19 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 estado.setText(parent.getItemAtPosition(position).toString());
                 String stSpinnerEstado = estado.getText().toString();
-                if (stSpinnerEstado.equals("En espera")){
+                if (stSpinnerEstado.equals("En espera")) {
                     estado.setTextColor(Color.parseColor("#2E86C1"));
                 }
-                if (stSpinnerEstado.equals("Completado")){
+                if (stSpinnerEstado.equals("Completado")) {
                     estado.setTextColor(Color.parseColor("#5bbd00"));
                 }
-                if (stSpinnerEstado.equals("Cancelado")){
+                if (stSpinnerEstado.equals("Cancelado")) {
                     estado.setTextColor(Color.parseColor("#E74C3C"));
                 }
 
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -558,7 +553,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this,R.style.ThemeOverlay);
+                AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this, R.style.ThemeOverlay);
                 builder.setTitle("Confirmacion de pedido");
                 builder.setCancelable(false);
                 builder.setIcon(R.drawable.ic_correcto);
@@ -585,10 +580,11 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         mFloatingMap.setVisibility(View.INVISIBLE);
         mFloatingMap.setOnClickListener(new View.OnClickListener() {
             int alto1 = 0;
+
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto1);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, alto1);
                 mLinearMap.setLayoutParams(params);
                 mFloatingMap.setVisibility(View.INVISIBLE);
             }
@@ -599,7 +595,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
                 mFloatingMap.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mLinearMap.setLayoutParams(params);
             }
         });
@@ -669,7 +665,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-
     private String obtieneDosDecimales(double valor) {
         DecimalFormat format = new DecimalFormat();
         format.setMaximumFractionDigits(2); //Define 2 decimales.
@@ -694,20 +689,20 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void obtenerUsuarioAukdeliver(){
+    public void obtenerUsuarioAukdeliver() {
         final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> aukdelivers = new ArrayList<>();
         mUsuarioAukdeliver.child("Usuarios").child("Aukdeliver").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot ds : dataSnapshot.getChildren() ){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String id = ds.getKey();
                         String nombres = ds.child("nombres").getValue().toString();
-                        aukdelivers.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id,nombres));
+                        aukdelivers.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id, nombres));
                     }
 
                     final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
-                            = new ArrayAdapter<>(RealizarPedido.this , R.layout.custom_spinner,aukdelivers);
+                            = new ArrayAdapter<>(RealizarPedido.this, R.layout.custom_spinner, aukdelivers);
                     mSpinner.setAdapter(arrayAdapter);
                     arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                     mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -717,6 +712,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                             String idx = aukdelivers.get(position).getId();
                             txtEncargado.setText(stEncargado);
                             idAukdeliver.setText(idx);
+
                         }
 
                         @Override
@@ -734,29 +730,28 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    private void obtenerProveedor(){
+    private void obtenerProveedor() {
         final List<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> proveedor = new ArrayList<>();
         mUsuarioProveedor.child("Usuarios").child("Proveedor").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot ds : dataSnapshot.getChildren() ){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String id = ds.getKey();
                         String nombres = ds.child("nombre empresa").getValue().toString();
-                        proveedor.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id,nombres));
+                        proveedor.add(new aukde.food.gestordepedidos.paquetes.Modelos.Spinner(id, nombres));
                     }
 
                     final ArrayAdapter<aukde.food.gestordepedidos.paquetes.Modelos.Spinner> arrayAdapter
-                            = new ArrayAdapter<>(RealizarPedido.this , R.layout.custom_spinner,proveedor);
+                            = new ArrayAdapter<>(RealizarPedido.this, R.layout.custom_spinner, proveedor);
                     mSpinnerProveedor.setAdapter(arrayAdapter);
                     arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                     mSpinnerProveedor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if(parent.getItemAtPosition(position).toString().equals("-")){
+                            if (parent.getItemAtPosition(position).toString().equals("-")) {
                                 mSocio.setText("");
-                            }
-                            else{
+                            } else {
                                 String stProveedor = parent.getItemAtPosition(position).toString();
                                 mSocio.setText(stProveedor);
                             }
@@ -779,7 +774,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             }
         });
     }
-
 
 
     @Override
@@ -855,11 +849,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if(gpsActive()){
+                    if (gpsActive()) {
                         mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                         mMap.setMyLocationEnabled(true);
+                    } else {
+                        showAlertDialog();
                     }
-                    else { showAlertDialog(); }
                 } else {
                     checkLocationPermision();
                 }
@@ -880,28 +875,27 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 return;
             }
             mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-        }
-        else {
+        } else {
             showAlertDialog();
         }
     }
 
-    private void showAlertDialog(){
+    private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Por favor activa tu ubicación para continuar")
                 .setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         vibrator.vibrate(tiempo);
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
                 }).create().show();
     }
 
-    private boolean gpsActive(){
+    private boolean gpsActive() {
         boolean isActive = false;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             isActive = true;
         }
         return isActive;
@@ -911,25 +905,24 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     //verificar version de android
     //------------------------------
 
-    public void checkLocationPermision(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            mFusedLocation.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
+    public void checkLocationPermision() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mFusedLocation.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Proporciona los permisos para continuar")
                         .setMessage("Esta aplicación requiere los permisos para continuar")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(RealizarPedido.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(RealizarPedido.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                             }
                         })
                         .create()
                         .show();
-            }
-            else {
-                ActivityCompat.requestPermissions(RealizarPedido.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(RealizarPedido.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             }
         }
     }
@@ -940,7 +933,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         Log.d(TAG, "onMapLongClick: " + latLng.toString());
         int height = 100;
         int width = 100;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.punto);
+        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.punto);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap punto = Bitmap.createScaledBitmap(b, width, height, false);
         try {
@@ -957,16 +950,16 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 destino = new LatLng(address.getLatitude(), address.getLongitude());
                 Toasty.success(this, "Direccion Agregada!", Toast.LENGTH_SHORT).show();
                 edtDireccion.setText(streetAddress);
-                latitud.setText(""+destino.latitude);
-                logitud.setText(""+destino.longitude);
+                latitud.setText("" + destino.latitude);
+                logitud.setText("" + destino.longitude);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public void onInfoWindowClick(final Marker marker){
+            public void onInfoWindowClick(final Marker marker) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(RealizarPedido.this);
                 builder.setTitle("Alerta!");
                 builder.setCancelable(false);
@@ -1013,8 +1006,8 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                 destino = new LatLng(address.getLatitude(), address.getLongitude());
                 Toasty.success(this, "Direccion Actualizada!", Toast.LENGTH_SHORT).show();
                 edtDireccion.setText(streetAddress);
-                latitud.setText(""+destino.latitude);
-                logitud.setText(""+destino.longitude);
+                latitud.setText("" + destino.latitude);
+                logitud.setText("" + destino.longitude);
                 marker.setTitle(streetAddress);
             }
         } catch (IOException e) {
@@ -1022,52 +1015,50 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void sendNotificaction(){
+    private void sendNotificaction() {
         final String numPedNotify = edtNumPedido.getText().toString();
         tokenProvider.getToken(idAukdeliver.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     String token = dataSnapshot.child("token").getValue().toString();
                     String ruta = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/pedido.jpg?alt=media&token=efae43e4-8f6a-4e45-8773-ff9fad1a3533";
-                    Map<String,String> map = new HashMap<>();
-                    map.put("title","Nuevo pedido #"+numPedNotify);
-                    map.put("body","Usted tiene un nuevo pedido"+"\n"+"Nombre del cliente : "
-                            +edtNombreCliente.getText().toString()+"\n"+"Teléfono : "+edtTelefono.getText().toString());
-                    map.put("path",ruta);
-                    map.put("idClient",mAuth.getUid());
-                    map.put("numPedido",numPedNotify);
-                    map.put("nombre",edtNombreCliente.getText().toString());
-                    map.put("telefono",edtTelefono.getText().toString());
-                    map.put("direccion",edtDireccion.getText().toString());
-                    map.put("hora",horaEntrega.getText().toString());
-                    map.put("fecha",fechaEntrega.getText().toString());
-                    map.put("ganancia",txtGananciaPorDelivery.getText().toString());
-                    map.put("repartidor",txtEncargado.getText().toString());
+                    Map<String, String> map = new HashMap<>();
+                    map.put("title", "Nuevo pedido #" + numPedNotify);
+                    map.put("body", "Usted tiene un nuevo pedido" + "\n" + "Nombre del cliente : "
+                            + edtNombreCliente.getText().toString() + "\n" + "Teléfono : " + edtTelefono.getText().toString());
+                    map.put("path", ruta);
+                    map.put("idClient", mAuth.getUid());
+                    map.put("numPedido", numPedNotify);
+                    map.put("nombre", edtNombreCliente.getText().toString());
+                    map.put("telefono", edtTelefono.getText().toString());
+                    map.put("direccion", edtDireccion.getText().toString());
+                    map.put("hora", horaEntrega.getText().toString());
+                    map.put("fecha", fechaEntrega.getText().toString());
+                    map.put("ganancia", txtGananciaPorDelivery.getText().toString());
+                    map.put("repartidor", txtEncargado.getText().toString());
 
-                    FCMBody fcmBody = new FCMBody(token,"high",map);
+                    FCMBody fcmBody = new FCMBody(token, "high", map);
                     notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
                         @Override
                         public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                            if(response.body() !=null){
-                                if(response.body().getSuccess() == 1){
+                            if (response.body() != null) {
+                                if (response.body().getSuccess() == 1) {
                                     //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();
                                 }
-                                else{
-                                    Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                                }
+                            } else {
+                                Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();
                             }
-                            else {
-                                Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();                            }
                         }
 
                         @Override
                         public void onFailure(Call<FCMResponse> call, Throwable t) {
-                            Log.d("Error","Error encontrado"+ t.getMessage());
+                            Log.d("Error", "Error encontrado" + t.getMessage());
                         }
                     });
-                }
-
-                else {
+                } else {
                     Toasty.error(RealizarPedido.this, "No se envió la notificación", Toast.LENGTH_LONG).show();
                 }
 
@@ -1081,13 +1072,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    private void clickRegistroPedido(){
+    private void clickRegistroPedido() {
 
         final String numeroPedido = edtNumPedido.getText().toString();
         final String stHoraPedido = horaPedido.getText().toString();
         final String stFechaPedido = fechaPedido.getText().toString();
         final String stHoraEntrega = horaEntrega.getText().toString();
-        final String stFechaEntrega= fechaEntrega.getText().toString();
+        final String stFechaEntrega = fechaEntrega.getText().toString();
         final String producto = txtProducto.getText().toString();
         final String proveedor = textSocio.getText().toString();
         final String descripción = txtDescripcion.getText().toString();
@@ -1112,28 +1103,49 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         final String sTlatitud = latitud.getText().toString();
         final String sTLongitud = logitud.getText().toString();
 
-        if( !nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty() && !referencia.isEmpty()){
-            sendNotificaction();
-            if(!numeroPedido.isEmpty()){
-                mDialog.show();
-                mDialog.setMessage("Registrando pedido...");
-                //metodos
-                registrarPedido(stHoraPedido , stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
-                        producto, descripción , sTPrecioUnitario, stCantidad , stPrecioTotalXProducto , stComision , stTotalDelivery, stGananciaDelivery, stGananciaComision ,
-                        totalPagoProducto , nombreCliente , telefono , conCuantoVaAPagar , totalCobro , stVuelto, direccion, numeroPedido , encargado , estadoPedido , sTlatitud , sTLongitud,referencia);
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(idAukdeliver.getText().toString()).child("pedidos").orderByChild("estado");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                    String estado = childSnapshot.child("estado").getValue().toString();
+                    if (estado.equals("Completado")){
+                        if (!nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty() && !referencia.isEmpty()) {
+                            sendNotificaction();
+                            if (!numeroPedido.isEmpty()) {
+                                mDialog.show();
+                                mDialog.setMessage("Registrando pedido...");
+                                //metodos
+                                registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
+                                        producto, descripción, sTPrecioUnitario, stCantidad, stPrecioTotalXProducto, stComision, stTotalDelivery, stGananciaDelivery, stGananciaComision,
+                                        totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion, numeroPedido, encargado, estadoPedido, sTlatitud, sTLongitud, referencia);
 
-                clickRegistroPedidoAukdeliver();
+                                clickRegistroPedidoAukdeliver();
+                            } else {
+
+                                Toasty.warning(RealizarPedido.this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_LONG, true).show();
+                            }
+                        } else {
+                            mDialog.dismiss();
+                            Toasty.warning(RealizarPedido.this, "Verifique que los campos no estén vacios", Toast.LENGTH_LONG, true).show();
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(RealizarPedido.this, "Repartidor Ocupado", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
-            else {
 
-                Toasty.warning(RealizarPedido.this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_LONG, true).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
-        }
+        });
 
-        else {
-            mDialog.dismiss();
-            Toasty.warning(RealizarPedido.this, "Verifique que los campos no estén vacios", Toast.LENGTH_LONG, true).show();
-        }
+
+
 
     }
 

@@ -951,19 +951,11 @@
                                     android:textColor="#fff"
                                     android:layout_height="wrap_content"/>
                             </LinearLayout>
-
                         </LinearLayout>
-
                     </androidx.cardview.widget.CardView>
-
                 </GridLayout>
-
-
             </ScrollView>
-
         </LinearLayout>
-
-
     </LinearLayout>
     <!-- ************* SEGUNDA VISTA **************************** -->
 
@@ -972,7 +964,6 @@
         android:id="@+id/linearProductos"
         android:orientation="vertical"
         android:background="#fff"
-        android:visibility="invisible"
         android:layout_height="match_parent">
 
         <com.github.florent37.shapeofview.shapes.DiagonalView

@@ -15,6 +15,7 @@ import java.util.TimerTask;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Notificacion;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
 
 public class ForegroundServiceCronometro extends Service {
 
@@ -46,14 +47,14 @@ public class ForegroundServiceCronometro extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         iniciarCronometro();
         String input = intent.getStringExtra("inputExtra");
-        Intent notificationIntent= new Intent(this, Notificacion.class);
-        PendingIntent pendingIntent= PendingIntent.getActivity(this,0,notificationIntent,0);
         Notification notification= new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setContentTitle("Tiempo de entrega")
+                .setContentTitle("Pedido en proceso")
                 .setContentText("El pedido se está procesando")
                 .setUsesChronometer(true)
                 .setSmallIcon(R.drawable.ic_notificacion)
-                .setContentIntent(pendingIntent)
+                .setColor(getResources().getColor(R.color.errorColor))
+                .setOngoing(true)
+                .setAutoCancel(false)
                 .build();
         startForeground(1,notification);
         //return START_NOT_STICKY;

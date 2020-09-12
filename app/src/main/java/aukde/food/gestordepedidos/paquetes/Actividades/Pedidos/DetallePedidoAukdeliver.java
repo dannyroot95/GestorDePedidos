@@ -305,7 +305,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         }
 
         if (stEstado.equals("Completado")) {
-            mGanasteDelivery.setText("Por este delivery ganaste : ");
+            mGanasteDelivery.setText("Ganancia delívery : ");
             listEstado.setTextColor(Color.parseColor("#000000"));
             bottonEstado.setVisibility(View.INVISIBLE);
             btnError.setVisibility(View.VISIBLE);
@@ -347,6 +347,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 return true;
 
             case R.id.item2:
+                detenerCronometro();
                 confirmarRechazo();
                 return true;
 
@@ -998,6 +999,10 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     }
 
+    private void detenerCronometro(){
+        Intent service = new Intent(this, ForegroundServiceCronometro.class);
+        stopService(service);
+    }
 
     @Override
     public void onBackPressed() {
