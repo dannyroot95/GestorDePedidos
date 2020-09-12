@@ -73,6 +73,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private NotificationProvider notificationProvider;
     private Vibrator vibrator;
     long tiempo = 100;
+    TextView txtTiempo;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -84,7 +85,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mDatabase = FirebaseDatabase.getInstance().getReference();
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
-
+        txtTiempo = findViewById(R.id.detalleTiempo);
         listHoraRegistro = findViewById(R.id.detalleHoraRegistro);
         listFechaRegistro = findViewById(R.id.detalleFechaRegistro);
         listHoraEntrega = findViewById(R.id.detalleHoraEntrega);
@@ -759,8 +760,13 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
                                 String referencia = dataSnapshot.child("referencia").getValue().toString();
                                 txtDetalleReferencia.setText(referencia);
                             }
+                            if (dataSnapshot.hasChild("tiempo")){
+                                String time = dataSnapshot.child("tiempo").getValue().toString();
+                                txtTiempo.setText(time);
+                            }
                             else{
                                 txtDetalleReferencia.setText("Ninguna");
+                                txtTiempo.setText("No disponible!");
                             }
                         }
 

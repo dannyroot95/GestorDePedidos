@@ -96,7 +96,6 @@ public class MapaProveedores extends AppCompatActivity implements OnMapReadyCall
                                     .zoom(14f)
                                     .build()
                     ));
-
                     if (mIsFirstTime) {
                         mIsFirstTime = false;
                         getActiveProveedores();
@@ -278,8 +277,6 @@ public class MapaProveedores extends AppCompatActivity implements OnMapReadyCall
                 showAlertDialogNOGPS();
             }
         }
-
-
     }
 
 

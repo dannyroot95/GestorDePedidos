@@ -4,13 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
-
 import android.app.ProgressDialog;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -22,34 +19,20 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.IOException;
 import java.util.HashMap;
-
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.ServicioCronometro;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
-import aukde.food.gestordepedidos.paquetes.Actividades.Logins.LoginAdmin;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
@@ -70,12 +53,13 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
-            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnPrueba;
+            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnPrueba , btnFinanza;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
     private TokenProvider mTokenProvider;
     private AuthProviders mAuth;
+    Cronometro cronometro;
     private Vibrator vibrator;
     private static final int GALLERY = 1;
     long tiempo = 100;
@@ -87,6 +71,8 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         foto = findViewById(R.id.fotodefault);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mAuthProviders = new AuthProviders();
+        cronometro = new Cronometro();
+        btnFinanza = findViewById(R.id.btnFinanzas);
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         btnHacerPedido = findViewById(R.id.btnHacerPedido);
@@ -179,11 +165,17 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(tiempo);
+                /*vibrator.vibrate(tiempo);
                 mDialog.show();
                 mDialog.setCancelable(false);
-                mDialog.setMessage("Cargando...");
-                startActivity(new Intent(MenuAdmin.this, ServicioCronometro.class));
+                mDialog.setMessage("Cargando...");*/
+            }
+        });
+
+        btnFinanza.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Cronometro.getInstance().pauseTimer();
             }
         });
 

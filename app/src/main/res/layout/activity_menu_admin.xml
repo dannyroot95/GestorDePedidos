@@ -337,7 +337,7 @@
                         android:id="@+id/btnFinanzas"
                         android:gravity="center"
                         android:background="@drawable/btn_finanzas"
-                        android:layout_height="80dp"/>
+                        android:layout_height="80dp" />
 
                     <TextView
                         android:layout_width="wrap_content"

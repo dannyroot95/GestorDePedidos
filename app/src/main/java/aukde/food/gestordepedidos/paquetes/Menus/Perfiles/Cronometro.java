@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,11 +30,15 @@ public class Cronometro extends AppCompatActivity {
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
+    private static Cronometro instance;
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private long mTimeLeftInMillis;
-    private long mEndTime;
+    FirebaseAuth mAuth;
     DatabaseReference mDatabase;
+    private long mEndTime;
+    int repeatCounter=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +46,7 @@ public class Cronometro extends AppCompatActivity {
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStartPause = findViewById(R.id.button_start_pause);
         mButtonReset = findViewById(R.id.button_reset);
+        mAuth =FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,15 +65,17 @@ public class Cronometro extends AppCompatActivity {
             }
         });
     }
+
     private void startTimer() {
+
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-
+                mTimeLeftInMillis = ((repeatCounter*60)*1000-millisUntilFinished);
                 updateCountDownText();
             }
+
             @Override
             public void onFinish() {
                 mTimerRunning = false;
@@ -76,16 +85,24 @@ public class Cronometro extends AppCompatActivity {
         mTimerRunning = true;
         updateButtons();
     }
-    private void pauseTimer() {
+
+    public static Cronometro getInstance(){
+        return instance;
+    }
+
+    public void pauseTimer() {
         mCountDownTimer.cancel();
         mTimerRunning = false;
         updateButtons();
     }
+
     private void resetTimer() {
-        mTimeLeftInMillis = START_TIME_IN_MILLIS;
+
+        mTimeLeftInMillis = ((repeatCounter*60)*1000);
         updateCountDownText();
         updateButtons();
     }
+
     private void updateCountDownText() {
         int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
@@ -95,8 +112,8 @@ public class Cronometro extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String,Object> map = new HashMap<>();
-                map.put("tiempo",timeLeftFormatted);
-                mDatabase.child("Tiempo").setValue(map);
+                map.put("cronometro",timeLeftFormatted);
+                mDatabase.child("Tiempo").child(mAuth.getUid()).setValue(map);
             }
 
             @Override
@@ -104,8 +121,8 @@ public class Cronometro extends AppCompatActivity {
 
             }
         });
-
     }
+
     private void updateButtons() {
         if (mTimerRunning) {
             mButtonReset.setVisibility(View.INVISIBLE);
@@ -124,6 +141,7 @@ public class Cronometro extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -137,6 +155,7 @@ public class Cronometro extends AppCompatActivity {
             mCountDownTimer.cancel();
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();

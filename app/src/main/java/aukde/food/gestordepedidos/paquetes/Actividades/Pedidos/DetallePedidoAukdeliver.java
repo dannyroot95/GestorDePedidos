@@ -59,6 +59,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
+import aukde.food.gestordepedidos.paquetes.Servicios.ForegroundServiceCronometro;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -320,7 +321,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             btnError.setVisibility(View.INVISIBLE);
         }
 
-
     }
 
     public void showPopupEstado(View view) {
@@ -336,8 +336,12 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item1:
+                Intent service = new Intent(this, ForegroundServiceCronometro.class);
+                stopService(service);
                 estadoCompletadoAdmin();
                 estadoCompletadoAukdeliver();
+                tiempoDeEntrega();
+                tiempoDeEntregaAdmin();
                 sendCompletedNotification();
                 finish();
                 return true;
@@ -462,6 +466,96 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
             }
         });
+    }
+
+    private void tiempoDeEntrega(){
+
+        mDatabase.child("Tiempo").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String time = dataSnapshot.child("tiempo").getValue().toString();
+                String dataNumPedido = listNumPedido.getText().toString();
+                Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            String key = childSnapshot.getKey();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("tiempo", time);
+                            mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toasty.info(DetallePedidoAukdeliver.this, "Error al actualizar tiempo de entrega", Toast.LENGTH_LONG, true).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void tiempoDeEntregaAdmin(){
+
+        mDatabase.child("Tiempo").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String time = dataSnapshot.child("tiempo").getValue().toString();
+                String dataNumPedido = listNumPedido.getText().toString();
+                Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            String key = childSnapshot.getKey();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("tiempo", time);
+                            mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toasty.info(DetallePedidoAukdeliver.this, "Error al actualizar tiempo de entrega", Toast.LENGTH_LONG, true).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     public void onClickLlamada(View v) {
