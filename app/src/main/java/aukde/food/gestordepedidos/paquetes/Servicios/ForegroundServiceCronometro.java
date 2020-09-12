@@ -51,6 +51,7 @@ public class ForegroundServiceCronometro extends Service {
         Notification notification= new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setContentTitle("Tiempo de entrega")
                 .setContentText("El pedido se está procesando")
+                .setUsesChronometer(true)
                 .setSmallIcon(R.drawable.ic_notificacion)
                 .setContentIntent(pendingIntent)
                 .build();
