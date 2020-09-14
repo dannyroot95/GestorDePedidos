@@ -7,18 +7,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
-    android:background="@drawable/colorverdergradient"
+    android:background="#fff"
     tools:context=".paquetes.Menus.MenuAukdeliver">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_marginTop="6dp"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/aukdeliverback"
+            android:layout_height="100dp">
         <RelativeLayout
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -88,6 +93,9 @@
 
 
         </RelativeLayout>
+        </LinearLayout>
+
+        <!-- aqui va un ScrollView  -->
 
         <GridLayout
             android:columnCount="2"
@@ -113,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:background="#F9F9F9"
+                    android:background="#E4FFEF"
                     android:padding="16dp">
 
                     <Button
@@ -180,11 +188,22 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
         </GridLayout>
-
-
-
+        <TextView
+            android:layout_width="match_parent"
+            android:fontFamily="@font/futura"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:text="Cronometro de entrega de pedidos"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="00:00:00"
+            android:textAlignment="center"
+            android:textSize="70dp"
+            android:id="@+id/realTimeCronometro"
+            android:layout_height="wrap_content"/>
         </LinearLayout>
 
 </LinearLayout>

@@ -50,6 +50,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
@@ -88,6 +92,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private LinearLayout mDisconnect;
     private Vibrator vibrator;
     long tiempo = 100;
+    TextView txtCronometro;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -123,6 +128,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
+
+        txtCronometro = findViewById(R.id.realTimeCronometro);
 
         mAuth = new AuthProviders();
         mTokenProvider = new TokenProvider();
@@ -169,6 +176,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         getDataUser();
         startLocacion();
         startJobSchedule();
+        showCronometro();
 
     }
 
@@ -418,6 +426,26 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.cancel(ID_SERVICIO);
     }
+
+
+    private void showCronometro(){
+        mDatabase.child("Tiempo").child(mAuth.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String time = dataSnapshot.child("tiempo").getValue().toString();
+                    txtCronometro.setText(time);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
     @Override
     protected void onStop() {

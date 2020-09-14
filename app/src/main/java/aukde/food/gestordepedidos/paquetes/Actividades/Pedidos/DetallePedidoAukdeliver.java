@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -262,7 +263,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listLongitud.setText(arrayList.get(22));
         checkReference();
 
-
         mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -341,8 +341,12 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item1:
-                Intent service = new Intent(this, ForegroundServiceCronometro.class);
-                stopService(service);
+                mDialog.show();
+                mDialog.getWindow().setBackgroundDrawableResource(android.R.color.holo_green_dark);
+                mDialog.setCancelable(false);
+                mDialog.setMessage(Html.fromHtml("<font color='#FFFFFF'>Completando pedido...</font>"));
+                detenerCronometro();
+                resetearTiempo();
                 estadoCompletadoAdmin();
                 estadoCompletadoAukdeliver();
                 tiempoDeEntrega();
@@ -353,6 +357,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
             case R.id.item2:
                 confirmarRechazo();
+                resetearTiempo();
                 return true;
 
             default:
@@ -1007,6 +1012,26 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private void detenerCronometro(){
         Intent service = new Intent(this, ForegroundServiceCronometro.class);
         stopService(service);
+    }
+
+    private void resetearTiempo()
+    {
+        mDatabase.child("Tiempo").child(mAuth.getUid()).child("tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Map<String , Object> map = new HashMap<>();
+                    map.put("tiempo","00:00:00");
+                    mDatabase.child("Tiempo").child(mAuth.getUid()).updateChildren(map);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override

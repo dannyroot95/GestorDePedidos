@@ -336,7 +336,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             popupMenu.show();
         }
 
-        if (listEstado.getText().toString().equals("Cancelado")){
+        if (listEstado.getText().toString().equals("Cancelado") || listEstado.getText().toString().equals("Rechazado")){
             popupMenu.inflate(R.menu.popup_menu_estado3);
             popupMenu.show();
         }
