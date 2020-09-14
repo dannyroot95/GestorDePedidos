@@ -328,7 +328,7 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="Tiempo transcurrido : "
+                            android:text="Tiempo de entrega : "
                             android:textColor="#000"
                             android:textSize="14sp"
                             android:fontFamily="@font/futura"

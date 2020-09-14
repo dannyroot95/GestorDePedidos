@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -19,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -73,11 +77,16 @@ public class AsignarRepartidor extends AppCompatActivity{
     private DatabaseReference pedidoParaAukdeliver;
     Spinner mSpinner;
     Button mFloatingButton;
+
     TextView estado ;
     TextView txtEncargado , idAukdeliver;
     String stEncargado = "";
     TextView latitud,logitud;
     TextView RepartidorActual;
+
+    private Dialog aukdeliverOcupado;
+    private Button cerrarPopup;
+    private ImageView cerrarImg;
 
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
@@ -108,6 +117,8 @@ public class AsignarRepartidor extends AppCompatActivity{
         fechaPedido.setText(formatoFecha);
         edtNombreCliente = findViewById(R.id.nombreCliente);
         edtNumPedido = findViewById(R.id.numPedido);
+
+        aukdeliverOcupado = new Dialog(this);
 
         IDpedido = findViewById(R.id.idEditPedido);
         numeroPedido  = getIntent().getExtras();
@@ -291,6 +302,51 @@ public class AsignarRepartidor extends AppCompatActivity{
 
 
     private void clickActualizarPedido(){
+
+        mUsuarioAukdeliver.child("Usuarios").child("Aukdeliver")
+                .child(idAukdeliver.getText().toString()).child("pedidos")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(idAukdeliver.getText().toString()).child("pedidos").orderByChild("estado").limitToLast(1);
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                        String estado = childSnapshot.child("estado").getValue().toString();
+                                        if (estado.equals("Completado")){
+                                            procesoRegistro();
+                                            break;
+                                        }
+                                        else {
+                                             showEstadoOcupado();
+                                             break;
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                        else {
+                            procesoRegistro();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+    private void procesoRegistro(){
 
         final String numeroPedido = edtNumPedido.getText().toString();
         final String nombreCliente = edtNombreCliente.getText().toString();
@@ -539,6 +595,29 @@ public class AsignarRepartidor extends AppCompatActivity{
             }
         });
 
+    }
+
+    private void showEstadoOcupado(){
+        aukdeliverOcupado.setContentView(R.layout.dialog_ocupado);
+        cerrarImg = (ImageView) aukdeliverOcupado.findViewById(R.id.closeDialog);
+        cerrarPopup = (Button) aukdeliverOcupado.findViewById(R.id.btnCerrarDialog);
+
+        cerrarImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aukdeliverOcupado.dismiss();
+            }
+        });
+
+        cerrarPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aukdeliverOcupado.dismiss();
+            }
+        });
+
+        aukdeliverOcupado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aukdeliverOcupado.show();
     }
 
     @Override

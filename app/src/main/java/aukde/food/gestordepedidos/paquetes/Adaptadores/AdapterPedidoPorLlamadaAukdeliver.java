@@ -22,7 +22,7 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
 
     List<PedidoLlamada> pedidoLlamadaList;
     Context c;
-    private final int limit = 5;
+    private final int limit = 20;
 
     public AdapterPedidoPorLlamadaAukdeliver(List<PedidoLlamada> pedidoLlamadaList) {
         this.pedidoLlamadaList = pedidoLlamadaList;

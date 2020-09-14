@@ -9,6 +9,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -37,6 +39,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -92,6 +95,9 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         GoogleMap.OnMarkerDragListener {
 
     private ProgressDialog mDialog;
+    private Dialog aukdeliverOcupado;
+    private Button cerrarPopup;
+    private ImageView cerrarImg;
     SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm");
     SimpleDateFormat simpleDateFormatFecha = new SimpleDateFormat("dd/MM/yyy");
     int dia, mes, year, horaRel, minutoRel;
@@ -193,6 +199,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
         // nuevo
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        aukdeliverOcupado = new Dialog(this);
 
         mBtnAdd = findViewById(R.id.add);
         mbtnMin = findViewById(R.id.btnMin);
@@ -1074,6 +1081,53 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     private void clickRegistroPedido() {
 
+        mUsuarioAukdeliver.child("Usuarios").child("Aukdeliver")
+                .child(idAukdeliver.getText().toString()).child("pedidos")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(idAukdeliver.getText().toString()).child("pedidos").orderByChild("estado").limitToLast(1);
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                String estado = childSnapshot.child("estado").getValue().toString();
+                                if (estado.equals("Completado")){
+                                    procesoRegistro();
+                                    break;
+                                }
+                                else {
+                                    showEstadoOcupado();
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else {
+                    procesoRegistro();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+    private void procesoRegistro(){
+
         final String numeroPedido = edtNumPedido.getText().toString();
         final String stHoraPedido = horaPedido.getText().toString();
         final String stFechaPedido = fechaPedido.getText().toString();
@@ -1103,51 +1157,28 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         final String sTlatitud = latitud.getText().toString();
         final String sTLongitud = logitud.getText().toString();
 
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(idAukdeliver.getText().toString()).child("pedidos").orderByChild("estado");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    String estado = childSnapshot.child("estado").getValue().toString();
-                    if (estado.equals("Completado")){
-                        if (!nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty() && !referencia.isEmpty()) {
-                            sendNotificaction();
-                            if (!numeroPedido.isEmpty()) {
-                                mDialog.show();
-                                mDialog.setMessage("Registrando pedido...");
-                                //metodos
-                                registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
-                                        producto, descripción, sTPrecioUnitario, stCantidad, stPrecioTotalXProducto, stComision, stTotalDelivery, stGananciaDelivery, stGananciaComision,
-                                        totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion, numeroPedido, encargado, estadoPedido, sTlatitud, sTLongitud, referencia);
+        if (!nombreCliente.isEmpty() && !telefonoCliente.isEmpty() && !conCuantoVaAPagar.isEmpty() && !direccion.isEmpty() && !referencia.isEmpty()) {
+            sendNotificaction();
+            if (!numeroPedido.isEmpty()) {
+                mDialog.show();
+                mDialog.setMessage("Registrando pedido...");
+                //metodos
+                registrarPedido(stHoraPedido, stFechaPedido, stHoraEntrega, stFechaEntrega, proveedor,
+                        producto, descripción, sTPrecioUnitario, stCantidad, stPrecioTotalXProducto, stComision, stTotalDelivery, stGananciaDelivery, stGananciaComision,
+                        totalPagoProducto, nombreCliente, telefono, conCuantoVaAPagar, totalCobro, stVuelto, direccion, numeroPedido, encargado, estadoPedido, sTlatitud, sTLongitud, referencia);
 
-                                clickRegistroPedidoAukdeliver();
-                            } else {
+                clickRegistroPedidoAukdeliver();
+            } else {
 
-                                Toasty.warning(RealizarPedido.this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_LONG, true).show();
-                            }
-                        } else {
-                            mDialog.dismiss();
-                            Toasty.warning(RealizarPedido.this, "Verifique que los campos no estén vacios", Toast.LENGTH_LONG, true).show();
-                        }
-
-                    }
-                    else {
-                        Toast.makeText(RealizarPedido.this, "Repartidor Ocupado", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
+                Toasty.warning(RealizarPedido.this, "Agrege el NÚMERO DE PEDIDO", Toast.LENGTH_LONG, true).show();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-
+        } else {
+            mDialog.dismiss();
+            Toasty.warning(RealizarPedido.this, "Verifique que los campos no estén vacios", Toast.LENGTH_LONG, true).show();
+        }
 
     }
+
 
     private void registrarPedido(final String horaPedido, final String fechaPedido,
                                  final String horaEntrega, final String fechaEntrega, final String proveedor,
@@ -1223,6 +1254,28 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
+    private void showEstadoOcupado(){
+        aukdeliverOcupado.setContentView(R.layout.dialog_ocupado);
+        cerrarImg = (ImageView) aukdeliverOcupado.findViewById(R.id.closeDialog);
+        cerrarPopup = (Button) aukdeliverOcupado.findViewById(R.id.btnCerrarDialog);
+
+        cerrarImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aukdeliverOcupado.dismiss();
+            }
+        });
+
+        cerrarPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aukdeliverOcupado.dismiss();
+            }
+        });
+
+        aukdeliverOcupado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aukdeliverOcupado.show();
+    }
 
     @Override
     public void onBackPressed()

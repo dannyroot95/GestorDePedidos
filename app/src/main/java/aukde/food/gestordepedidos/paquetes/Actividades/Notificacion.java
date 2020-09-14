@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,18 +118,15 @@ public class Notificacion extends AppCompatActivity {
 
         if(doubleDelivery < 4.00){
             finalGananciaDelivery = doubleDelivery * 0.5;
-            String ganancia50P = String.valueOf(finalGananciaDelivery);
-            ntfGanancia.setText(ganancia50P);
+            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
         if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
             finalGananciaDelivery = doubleDelivery * 0.4;
-            String ganancia40P = String.valueOf(finalGananciaDelivery);
-            ntfGanancia.setText(ganancia40P);
+            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
         if(doubleDelivery >= 9.00){
             finalGananciaDelivery = doubleDelivery * 0.3;
-            String ganancia30P = String.valueOf(finalGananciaDelivery);
-            ntfGanancia.setText(ganancia30P);
+            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
 
         mediaPlayer = MediaPlayer.create(this,R.raw.ringtone);
@@ -145,6 +143,7 @@ public class Notificacion extends AppCompatActivity {
                 Intent service = new Intent(Notificacion.this, ForegroundServiceCronometro.class);
                 service.putExtra("inputExtra",textoCronometro.getText().toString());
                 startService(service);
+                estadoAceptadoAdmin();
                 finishAndRemoveTask();
                 cerrar();
                 verLista();
@@ -192,6 +191,12 @@ public class Notificacion extends AppCompatActivity {
 
     }
 
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
+    }
+
     private void verLista() {
         Intent intent = new Intent(getApplicationContext(), ListaPedidosAukdeliver.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -213,7 +218,37 @@ public class Notificacion extends AppCompatActivity {
                     String key = childSnapshot.getKey();
                     //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
                     Map<String, Object> map = new HashMap<>();
-                    map.put("estado", "Cancelado");
+                    map.put("estado", "Rechazado");
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void estadoAceptadoAdmin(){
+        String dataNumPedido = ntfNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("estado", "En proceso");
                     mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

@@ -86,11 +86,15 @@ public class AdapterPedidoPorLlamada extends RecyclerView.Adapter<AdapterPedidoP
                 holder.txtListEstado.setTextColor(Color.parseColor("#2E86C1"));
             }
 
+           if ( holder.txtListEstado.getText().toString().equals("En proceso")){
+            holder.txtListEstado.setTextColor(Color.parseColor("#FFC300"));
+            }
+
             if ( holder.txtListEstado.getText().toString().equals("Completado")){
             holder.txtListEstado.setTextColor(Color.parseColor("#5bbd00"));
             }
 
-            if ( holder.txtListEstado.getText().toString().equals("Cancelado")){
+            if ( holder.txtListEstado.getText().toString().equals("Cancelado") || holder.txtListEstado.getText().toString().equals("Rechazado")){
             holder.txtListEstado.setTextColor(Color.parseColor("#E74C3C"));
             }
 

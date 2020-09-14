@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -290,18 +291,15 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
         if(doubleDelivery < 4.00){
             finalGananciaDelivery = doubleDelivery * 0.5;
-            String ganancia50P = String.valueOf(finalGananciaDelivery);
-            listGananciaDelivery.setText(ganancia50P);
+            listGananciaDelivery.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
         if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
             finalGananciaDelivery = doubleDelivery * 0.4;
-            String ganancia40P = String.valueOf(finalGananciaDelivery);
-            listGananciaDelivery.setText(ganancia40P);
+            listGananciaDelivery.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
         if(doubleDelivery >= 9.00){
             finalGananciaDelivery = doubleDelivery * 0.3;
-            String ganancia30P = String.valueOf(finalGananciaDelivery);
-            listGananciaDelivery.setText(ganancia30P);
+            listGananciaDelivery.setText(obtieneDosDecimales(finalGananciaDelivery));
         }
 
         if (stEstado.equals("Completado")) {
@@ -321,6 +319,13 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             btnError.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+
+    private String obtieneDosDecimales(double valor) {
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(2); //Define 2 decimales.
+        return format.format(valor);
     }
 
     public void showPopupEstado(View view) {
@@ -347,7 +352,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 return true;
 
             case R.id.item2:
-                detenerCronometro();
                 confirmarRechazo();
                 return true;
 
@@ -429,7 +433,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     String key = childSnapshot.getKey();
                     //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
                     Map<String, Object> map = new HashMap<>();
-                    map.put("estado", "Cancelado");
+                    map.put("estado", "Rechazado");
                     mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -579,6 +583,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                detenerCronometro();
                 estadoCanceladoAdmin();
                 estadoCanceladoAukdeliver();
                 sendCancelNotification();

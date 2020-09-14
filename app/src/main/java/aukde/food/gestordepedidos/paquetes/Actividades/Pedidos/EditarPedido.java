@@ -61,6 +61,8 @@ import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.PedidoProvider;
 import es.dmoral.toasty.Toasty;
 
+// Nota : --->  falta implementar la obtención del tiempo del Aukdeliver si existe el child ("tiempo")
+
 public class EditarPedido  extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMarkerDragListener  {
     private ProgressDialog mDialog;

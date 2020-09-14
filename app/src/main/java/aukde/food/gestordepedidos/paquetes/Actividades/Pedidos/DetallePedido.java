@@ -300,12 +300,17 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             mLinearAsignar.setLayoutParams(parametros);
         }
 
-        if (stEstado.equals("Cancelado")){
+        if (stEstado.equals("Cancelado") || stEstado.equals("Rechazado")){
             listEstado.setTextColor(Color.parseColor("#E74C3C"));
         }
 
         if (stEstado.equals("En espera")){
             listEstado.setTextColor(Color.parseColor("#2E86C1"));
+            mLinearAsignar.setLayoutParams(parametros);
+        }
+
+        if (stEstado.equals("En proceso")){
+            listEstado.setTextColor(Color.parseColor("#FFC300"));
             mLinearAsignar.setLayoutParams(parametros);
         }
 
@@ -326,7 +331,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             popupMenu.inflate(R.menu.popup_menu_estado2);
             popupMenu.show();
         }
-        if (listEstado.getText().toString().equals("En espera")){
+        if (listEstado.getText().toString().equals("En espera") || listEstado.getText().toString().equals("En proceso")){
             popupMenu.inflate(R.menu.popup_menu_estado);
             popupMenu.show();
         }
