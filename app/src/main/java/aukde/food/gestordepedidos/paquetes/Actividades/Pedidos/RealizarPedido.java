@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -142,12 +143,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
     DatabaseReference pedidos;
     private DatabaseReference pedidoParaAukdeliver;
     Spinner mSpinner, mSpinnerEstado, mSpinnerProveedor;
-    FloatingActionButton mFloatingButton, mFloatingMap;
+    FloatingActionButton mFloatingMap;
     TextView estado;
     TextView txtEncargado, idAukdeliver;
     String stEncargado = "";
     TextView latitud, logitud;
-    Button mButtonMapear;
+    Button mButtonMapear,mFloatingButton;
 
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
@@ -519,7 +520,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         obtenerUsuarioAukdeliver();
         obtenerProveedor();
         mFloatingButton = findViewById(R.id.floatRegister);
-        mFloatingButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
+
         mFloatingMap = findViewById(R.id.booleanMap);
         mFloatingMap.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googred)));
 
@@ -1262,6 +1263,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         cerrarImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 aukdeliverOcupado.dismiss();
             }
         });
@@ -1269,11 +1271,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         cerrarPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 aukdeliverOcupado.dismiss();
             }
         });
 
         aukdeliverOcupado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aukdeliverOcupado.setCancelable(false);
         aukdeliverOcupado.show();
     }
 

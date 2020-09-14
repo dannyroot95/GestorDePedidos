@@ -605,6 +605,7 @@ public class AsignarRepartidor extends AppCompatActivity{
         cerrarImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 aukdeliverOcupado.dismiss();
             }
         });
@@ -612,6 +613,7 @@ public class AsignarRepartidor extends AppCompatActivity{
         cerrarPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 aukdeliverOcupado.dismiss();
             }
         });

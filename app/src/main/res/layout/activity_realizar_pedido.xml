@@ -1368,7 +1368,7 @@
                             <EditText
                                 android:id="@+id/referenciaCliente"
                                 android:layout_width="match_parent"
-                                android:hint="Al costado de aukde"
+                                android:text="Ninguna"
                                 android:textColor="#000"
                                 android:inputType="textCapSentences"
                                 android:gravity="left"
@@ -1535,13 +1535,25 @@
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>
-
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:text="Registrar pedido"
+                    android:id="@+id/floatRegister"
+                    android:textColor="#fff"
+                    android:fontFamily="@font/futura"
+                    android:background="@drawable/redondo"
+                    android:backgroundTint="@drawable/btn_background_negro"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"/>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="20dp"
                     ></LinearLayout>
 
             </GridLayout>
@@ -1569,17 +1581,6 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="6dp"
         android:layout_height="wrap_content">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="6dp"
-            android:src="@drawable/ic_register"
-            app:fabSize="normal"
-            app:backgroundTint="#000"
-            app:elevation="6dp"
-            android:id="@+id/floatRegister"
-            android:layout_height="wrap_content"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
