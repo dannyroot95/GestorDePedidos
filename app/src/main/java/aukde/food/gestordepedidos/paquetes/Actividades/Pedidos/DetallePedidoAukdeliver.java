@@ -98,6 +98,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     GpsReceiver gpsReceiver = new GpsReceiver();
     private Vibrator vibrator;
     long tiempo = 100;
+    TextView txtTiempo;
 
     private ProgressDialog mDialog;
 
@@ -144,7 +145,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listEstado = findViewById(R.id.detalleEstado);
         listLatitud = findViewById(R.id.detalleLatitud);
         listLongitud = findViewById(R.id.detalleLongitudd);
-
+        txtTiempo = findViewById(R.id.detalleTiempo);
         mGanasteComision = findViewById(R.id.txtGanaste);
         mGanasteDelivery = findViewById(R.id.txtGanasteDelivery);
         txtDetallePTotal = findViewById(R.id.DetallePTotal);
@@ -356,8 +357,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 return true;
 
             case R.id.item2:
-                confirmarRechazo();
                 resetearTiempo();
+                confirmarRechazo();
                 return true;
 
             default:
@@ -989,8 +990,13 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                                 String referencia = dataSnapshot.child("referencia").getValue().toString();
                                 txtDetalleReferencia.setText(referencia);
                             }
+                            if (dataSnapshot.hasChild("tiempo")){
+                                String time = dataSnapshot.child("tiempo").getValue().toString();
+                                txtTiempo.setText(time);
+                            }
                             else{
                                 txtDetalleReferencia.setText("Ninguna");
+                                txtTiempo.setText("No disponible!");
                             }
                         }
 
@@ -1007,6 +1013,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
             }
         });
 
+
     }
 
     private void detenerCronometro(){
@@ -1016,22 +1023,9 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     private void resetearTiempo()
     {
-        mDatabase.child("Tiempo").child(mAuth.getUid()).child("tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
                     Map<String , Object> map = new HashMap<>();
                     map.put("tiempo","00:00:00");
                     mDatabase.child("Tiempo").child(mAuth.getUid()).updateChildren(map);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     @Override
