@@ -347,12 +347,12 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 mDialog.setCancelable(false);
                 mDialog.setMessage(Html.fromHtml("<font color='#FFFFFF'>Completando pedido...</font>"));
                 detenerCronometro();
-                resetearTiempo();
                 estadoCompletadoAdmin();
                 estadoCompletadoAukdeliver();
                 tiempoDeEntrega();
                 tiempoDeEntregaAdmin();
                 sendCompletedNotification();
+                //resetearTiempo();
                 finish();
                 return true;
 
