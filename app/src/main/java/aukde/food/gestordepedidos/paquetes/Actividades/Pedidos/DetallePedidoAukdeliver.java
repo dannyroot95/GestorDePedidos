@@ -48,7 +48,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,7 +103,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     private Vibrator vibrator;
     long tiempo = 100;
     TextView txtTiempo;
-
+    SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm:ss");
+    String formatoHora = simpleDateFormatHora.format(new Date());
     private ProgressDialog mDialog;
 
     @SuppressLint("SetTextI18n")
@@ -263,6 +268,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         listLatitud.setText(arrayList.get(21));
         listLongitud.setText(arrayList.get(22));
         checkReference();
+        tiempoEntrega();
 
         mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -349,15 +355,15 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 detenerCronometro();
                 estadoCompletadoAdmin();
                 estadoCompletadoAukdeliver();
-                tiempoDeEntrega();
+                //tiempoDeEntrega();
                 tiempoDeEntregaAdmin();
                 sendCompletedNotification();
-                //resetearTiempo();
+                hora();
                 finish();
                 return true;
 
             case R.id.item2:
-                resetearTiempo();
+                //resetearTiempo();
                 confirmarRechazo();
                 return true;
 
@@ -990,13 +996,8 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                                 String referencia = dataSnapshot.child("referencia").getValue().toString();
                                 txtDetalleReferencia.setText(referencia);
                             }
-                            if (dataSnapshot.hasChild("tiempo")){
-                                String time = dataSnapshot.child("tiempo").getValue().toString();
-                                txtTiempo.setText(time);
-                            }
                             else{
                                 txtDetalleReferencia.setText("Ninguna");
-                                txtTiempo.setText("No disponible!");
                             }
                         }
 
@@ -1021,11 +1022,93 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         stopService(service);
     }
 
-    private void resetearTiempo()
-    {
-                    Map<String , Object> map = new HashMap<>();
-                    map.put("tiempo","00:00:00");
-                    mDatabase.child("Tiempo").child(mAuth.getUid()).updateChildren(map);
+    private void hora(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    final String key = childSnapshot.getKey();
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String , Object> map = new HashMap<>();
+                            map.put("tiempo2",formatoHora);
+                            mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).child("tiempo").updateChildren(map);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void tiempoEntrega(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    String key=childSnapshot.getKey();
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).child("tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild("tiempo2")) {
+                                String time1 = dataSnapshot.child("tiempo1").getValue().toString();
+                                String time2 = dataSnapshot.child("tiempo2").getValue().toString();
+                                try {
+                                    Date date1 = simpleDateFormatHora.parse(time1);
+                                    Date date2 = simpleDateFormatHora.parse(time2);
+                                    Date difference = getDifferenceBetwenDates(date1,date2);
+                                    txtTiempo.setText(simpleDateFormatHora.format(difference));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                //Toast.makeText(DetallePedidoAukdeliver.this, "Tiempo Ini : "+time1+" Tiempo Fin : "+time2, Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                txtTiempo.setText("No disponible!");
+                                //Toast.makeText(DetallePedidoAukdeliver.this, "Sin tiempo 2", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public static Date getDifferenceBetwenDates(Date dateInicio, Date dateFinal) {
+        long milliseconds = dateFinal.getTime() - dateInicio.getTime();
+        int seconds = (int) (milliseconds / 1000) % 60;
+        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.SECOND, seconds);
+        c.set(Calendar.MINUTE, minutes);
+        c.set(Calendar.HOUR_OF_DAY, hours);
+        return c.getTime();
     }
 
     @Override

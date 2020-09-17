@@ -1,5 +1,4 @@
 package aukde.food.gestordepedidos.paquetes.Menus;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -84,15 +84,13 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
-
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mTokenProvider = new TokenProvider();
         mAuth = new AuthProviders();
-
-
+        getDataUser();
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +102,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 finish();
             }
         });
-
         btnRegistrarUsuarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +112,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(MenuAdmin.this, MenuRegistros.class));
             }
         });
-
         btnListaPedidos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +122,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(MenuAdmin.this, ListaDePedidos.class));
             }
         });
-
         btnMapaRepartidores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +133,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 finish();
             }
         });
-
         btnMapProveedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +144,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 finish();
             }
         });
-
         btnPerfilX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +154,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(MenuAdmin.this, PerfilAdmin.class));
             }
         });
-
         btnPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,17 +163,15 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setMessage("Cargando...");*/
             }
         });
-
         btnFinanza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               Cronometro.getInstance().pauseTimer();
             }
         });
-
         generarToken();
         getPhotoUsuario();
-        getDataUser();
+        //getDataUser();
     }
 
     private void getPhotoUsuario(){
@@ -195,7 +185,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                     Glide.with(MenuAdmin.this).load(setFoto).into(foto);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -205,49 +194,35 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
     private void getDataUser(){
         String id = mAuth.getId();
-        mDatabase.child("Usuarios").child("Administrador").child(id).addValueEventListener(new ValueEventListener() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").child(id);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                {
-                    String nombres = dataSnapshot.child("nombres").getValue().toString();
-                    String apellidos = dataSnapshot.child("apellidos").getValue().toString();
-                    LinearShimmer.setBackground(null);
-                    Txtnombres.setBackground(null);
-                    Txtnombres.setText(nombres);
-                    Txtapellidos.setBackground(null);
-                    Txtapellidos.setText(apellidos);
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setShimmer(null);
-                }
-                else {
-                    Toast.makeText(MenuAdmin.this,"Error al cargar datos",Toast.LENGTH_SHORT).show();
-                }
-
+                String nombres = dataSnapshot.child("nombres").getValue().toString();
+                String apellidos = dataSnapshot.child("apellidos").getValue().toString();
+                LinearShimmer.setBackground(null);
+                Txtnombres.setBackground(null);
+                Txtnombres.setText(nombres);
+                Txtapellidos.setBackground(null);
+                Txtapellidos.setText(apellidos);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setShimmer(null);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MenuAdmin.this,"Error de Base de datos",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void show_popup(View view){
-
         Context wrapper = new ContextThemeWrapper(this, R.style.popupThemeBlack);
         PopupMenu popupMenu = new PopupMenu(wrapper,view);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_menu);
         popupMenu.show();
-
     }
 
-
     void logout(){
-        //final SharedPreferences.Editor editor = mSharedPreference.edit();
-        //editor.putString("","");
-        //editor.apply();
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         mAuthProviders.Logout();
         Intent intent = new Intent(MenuAdmin.this, Inicio.class);
@@ -255,7 +230,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         finish();
         mDialog.dismiss();
     }
-
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -280,8 +254,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == GALLERY && resultCode == RESULT_OK){
             mDialog.setMessage("Actualizando foto de perfil...");
             mDialog.setCancelable(false);
@@ -325,6 +297,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     @Override
     protected void onResume() {
         super.onResume();
-        mDialog.dismiss();
+        //mDialog.dismiss();
     }
 }

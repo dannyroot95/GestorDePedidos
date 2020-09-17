@@ -28,6 +28,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +71,8 @@ public class Notificacion extends AppCompatActivity {
     String defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/fotoDefault.jpg?alt=media&token=f74486bf-432e-4af6-b114-baa523e1f801";
     long[] pattern = {400, 600, 100,300,100,150,100,75};
     private TextView textoCronometro;
+    SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm:ss");
+    String formatoHora = simpleDateFormatHora.format(new Date());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +147,7 @@ public class Notificacion extends AppCompatActivity {
                 Intent service = new Intent(Notificacion.this, ForegroundServiceCronometro.class);
                 service.putExtra("inputExtra",textoCronometro.getText().toString());
                 startService(service);
+                hora();
                 estadoAceptadoAdmin();
                 finishAndRemoveTask();
                 cerrar();
@@ -632,6 +637,38 @@ public class Notificacion extends AppCompatActivity {
             }
         });
     }
+
+    private void hora(){
+        String dataNumPedido = ntfNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    final String key = childSnapshot.getKey();
+                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String , Object> map = new HashMap<>();
+                            map.put("tiempo1",formatoHora);
+                            mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).child("tiempo").updateChildren(map);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    }
+                }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 
     @Override
