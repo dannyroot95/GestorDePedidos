@@ -110,6 +110,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, MenuRegistros.class));
+                finish();
             }
         });
         btnListaPedidos.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +167,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnFinanza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Cronometro.getInstance().pauseTimer();
+
             }
         });
         generarToken();

@@ -148,6 +148,7 @@ public class Notificacion extends AppCompatActivity {
                 service.putExtra("inputExtra",textoCronometro.getText().toString());
                 startService(service);
                 hora();
+                horaAdmin();
                 estadoAceptadoAdmin();
                 finishAndRemoveTask();
                 cerrar();
@@ -669,6 +670,40 @@ public class Notificacion extends AppCompatActivity {
         });
     }
 
+
+    private void horaAdmin(){
+        String dataNumPedido = ntfNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                   final String key = childSnapshot.getKey();
+                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("tiempo1",formatoHora);
+                            mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).child("tiempo").updateChildren(map);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     @Override

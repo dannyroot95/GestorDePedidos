@@ -66,6 +66,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.ForegroundServiceCronometro;
+import aukde.food.gestordepedidos.paquetes.Utils.CalculoHoras;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -106,6 +107,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
     SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm:ss");
     String formatoHora = simpleDateFormatHora.format(new Date());
     private ProgressDialog mDialog;
+    CalculoHoras calculoHoras;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -120,7 +122,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
-
+        calculoHoras = new CalculoHoras();
         listHoraRegistro = findViewById(R.id.detalleHoraRegistro);
         listFechaRegistro = findViewById(R.id.detalleFechaRegistro);
         listHoraEntrega = findViewById(R.id.detalleHoraEntrega);
@@ -356,9 +358,10 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 estadoCompletadoAdmin();
                 estadoCompletadoAukdeliver();
                 //tiempoDeEntrega();
-                tiempoDeEntregaAdmin();
+                //tiempoDeEntregaAdmin();
                 sendCompletedNotification();
                 hora();
+                horaAdmin();
                 finish();
                 return true;
 
@@ -499,7 +502,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                             String key = childSnapshot.getKey();
                             Map<String, Object> map = new HashMap<>();
-                            map.put("tiempo", time);
+                            map.put("tiempo2", time);
                             mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -544,7 +547,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                             String key = childSnapshot.getKey();
                             Map<String, Object> map = new HashMap<>();
-                            map.put("tiempo", time);
+                            map.put("tiempo2", time);
                             mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -1053,6 +1056,40 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
         });
     }
 
+    private void horaAdmin(){
+        String dataNumPedido = listNumPedido.getText().toString();
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    final String key = childSnapshot.getKey();
+                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
+                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("tiempo2",formatoHora);
+                            mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).child("tiempo").updateChildren(map);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void tiempoEntrega(){
         String dataNumPedido = listNumPedido.getText().toString();
         Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
@@ -1064,13 +1101,13 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).child("tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild("tiempo2")) {
+                            if(dataSnapshot.hasChild("tiempo2") && dataSnapshot.hasChild("tiempo1")) {
                                 String time1 = dataSnapshot.child("tiempo1").getValue().toString();
                                 String time2 = dataSnapshot.child("tiempo2").getValue().toString();
                                 try {
                                     Date date1 = simpleDateFormatHora.parse(time1);
                                     Date date2 = simpleDateFormatHora.parse(time2);
-                                    Date difference = getDifferenceBetwenDates(date1,date2);
+                                    Date difference = calculoHoras.getDiferenciaHoras(date1,date2);
                                     txtTiempo.setText(simpleDateFormatHora.format(difference));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -1099,17 +1136,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     }
 
-    public static Date getDifferenceBetwenDates(Date dateInicio, Date dateFinal) {
-        long milliseconds = dateFinal.getTime() - dateInicio.getTime();
-        int seconds = (int) (milliseconds / 1000) % 60;
-        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
-        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.SECOND, seconds);
-        c.set(Calendar.MINUTE, minutes);
-        c.set(Calendar.HOUR_OF_DAY, hours);
-        return c.getTime();
-    }
+
 
     @Override
     public void onBackPressed() {

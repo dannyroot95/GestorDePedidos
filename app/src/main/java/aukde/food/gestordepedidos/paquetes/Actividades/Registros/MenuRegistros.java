@@ -78,7 +78,6 @@ public class MenuRegistros extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(MenuRegistros.this, MenuAdmin.class));
         finish();
     }
 }
