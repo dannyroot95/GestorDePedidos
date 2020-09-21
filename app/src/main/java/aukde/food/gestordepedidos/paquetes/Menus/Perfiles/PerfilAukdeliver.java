@@ -1,24 +1,29 @@
 package aukde.food.gestordepedidos.paquetes.Menus.Perfiles;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
@@ -29,18 +34,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
-import aukde.food.gestordepedidos.paquetes.Providers.AdminProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AukdeliverProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
+import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -51,7 +56,6 @@ public class PerfilAukdeliver extends AppCompatActivity {
     private TextInputEditText txtNombres , txtApellidos;
     private AukdeliverProvider mAukdeliverProvider;
     private AuthProviders mAuthProviders;
-    private File mImageFile;
     private ProgressDialog mDialog;
     private DatabaseReference mDatabase;
     private final int GALLERY_REQUEST = 1;
@@ -61,6 +65,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
     GpsReceiver gpsReceiver = new GpsReceiver();
     private Vibrator vibrator;
     long tiempo = 100;
+    DeleteCache deleteCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_aukdeliver);
         MiToolbar.Mostrar(this,"Actualizar Perfil",true);
+        deleteCache = new DeleteCache();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mAukdeliverProvider = new AukdeliverProvider();
         mAuthProviders = new AuthProviders();
@@ -98,7 +104,6 @@ public class PerfilAukdeliver extends AppCompatActivity {
                 startActivityForResult(intent,GALLERY_REQUEST);
             }
         });
-
         ObtenerDataUser();
         getPhotoUsuario();
     }
@@ -116,13 +121,17 @@ public class PerfilAukdeliver extends AppCompatActivity {
             Uri uri = data.getData();
             final String id = mAuthProviders.getId();
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoAdmin").child(mAuthProviders.getId()+".jpg");
-
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
+            File directory = new File(root);
+            File photo = new File(root,"/profile.jpg");
+            photo.delete();
+            directory.delete();
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onSuccess(Uri uri) {
+                        public void onSuccess(final Uri uri) {
                             DatabaseReference imagestore = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(id);
                             HashMap<String,Object> fotoMap = new HashMap<>();
                             fotoMap.put("foto" , String.valueOf(uri));
@@ -130,6 +139,32 @@ public class PerfilAukdeliver extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     getPhotoUsuario();
+                                    String imageURL = String.valueOf(uri);
+                                    String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name) + "/";
+                                    final File dir = new File(dirPath);
+                                    final String fileName = "profile.jpg";
+                                    Glide.with(PerfilAukdeliver.this)
+                                            .load(imageURL)
+                                            .into(new CustomTarget<Drawable>() {
+                                                @Override
+                                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                                    Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                                                    //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
+                                                    saveImage(bitmap, dir, fileName);
+                                                    deleteCache.trimCache(PerfilAukdeliver.this);
+                                                }
+
+                                                @Override
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                }
+
+                                                @Override
+                                                public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                                    super.onLoadFailed(errorDrawable);
+                                                    //Toast.makeText(MenuAdmin.this, "Failed to Download Image! Please try again later.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                     mDialog.dismiss();
                                     Toasty.success(PerfilAukdeliver.this, "Foto de perfil actualizada", Toast.LENGTH_LONG,true).show();
                                 }
@@ -178,6 +213,14 @@ public class PerfilAukdeliver extends AppCompatActivity {
 
     private void getPhotoUsuario(){
         String id = mAuthProviders.getId();
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
+        File directory = new File(root);
+        if(directory.exists()){
+            // Mostrar en el CircleImageView
+            File toLoad = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name) + "/profile.jpg");
+            Glide.with(PerfilAukdeliver.this).load(toLoad).into(CrMyPhoto);
+        }
+        else{
         mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -185,6 +228,30 @@ public class PerfilAukdeliver extends AppCompatActivity {
                     //Obtener el url y setearlo en la imagem
                     String setFoto = dataSnapshot.child("foto").getValue().toString();
                     Glide.with(PerfilAukdeliver.this).load(setFoto).into(CrMyPhoto);
+                    String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name) + "/";
+                    final File dir = new File(dirPath);
+                    final String fileName = "profile.jpg";
+                    Glide.with(PerfilAukdeliver.this)
+                            .load(setFoto)
+                            .into(new CustomTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                                    //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
+                                    saveImage(bitmap, dir, fileName);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+
+                                @Override
+                                public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                    super.onLoadFailed(errorDrawable);
+                                    //Toast.makeText(MenuAdmin.this, "Failed to Download Image! Please try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
             }
 
@@ -193,6 +260,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
 
             }
         });
+        }
     }
 
 
@@ -221,6 +289,31 @@ public class PerfilAukdeliver extends AppCompatActivity {
                 Toasty.error(PerfilAukdeliver.this, "Hubo un error al actualizar datos", Toast.LENGTH_SHORT,true).show();
             }
         });
+    }
+
+
+    private void saveImage(Bitmap image, File storageDir, String imageFileName) {
+
+        boolean successDirCreated = false;
+        if (!storageDir.exists()) {
+            successDirCreated = storageDir.mkdir();
+        }
+        if (successDirCreated) {
+            File imageFile = new File(storageDir, imageFileName);
+            try {
+                OutputStream fOut = new FileOutputStream(imageFile);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+                // Toast.makeText(MenuAdmin.this, "Imagen guardada!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                //Toast.makeText(MenuAdmin.this, "ERROR!", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+
+        }
+        else{
+            // Toast.makeText(this, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

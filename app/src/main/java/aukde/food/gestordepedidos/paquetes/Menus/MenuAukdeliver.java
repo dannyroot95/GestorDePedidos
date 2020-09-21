@@ -18,12 +18,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -38,6 +42,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -50,20 +56,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
-import aukde.food.gestordepedidos.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
+import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -85,14 +90,15 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     public static final int LOCATION_REQUEST_CODE = 1;
     private final static int ID_SERVICIO = 99;
     public static final int SETTINGS_REQUEST_CODE = 2;
-    private static final int GALLERY = 3;
     private FusedLocationProviderClient mFusedLocation;
     private LocationRequest mLocationRequest;
     private LatLng origen;
-    private LinearLayout mDisconnect;
     private Vibrator vibrator;
     long tiempo = 100;
     TextView txtCronometro;
+    SharedPreferences dataNombre;
+    SharedPreferences dataApellido;
+    DeleteCache deleteCache;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -123,8 +129,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         btnPerfil = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
+        deleteCache = new DeleteCache();
         foto = findViewById(R.id.fotodefault);
-
+        dataNombre = PreferenceManager.getDefaultSharedPreferences(this);
+        dataApellido = PreferenceManager.getDefaultSharedPreferences(this);
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
@@ -175,6 +183,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         generarToken();
         getDataUser();
         startLocacion();
+        verify();
         startJobSchedule();
         showCronometro();
 
@@ -215,31 +224,50 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     }
 
     private void getDataUser() {
-        String id = mAuth.getId();
-        mDatabase.child("Usuarios").child("Aukdeliver").child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String nombres = dataSnapshot.child("nombres").getValue().toString();
-                    String apellidos = dataSnapshot.child("apellidos").getValue().toString();
-                    LinearShimmer.setBackground(null);
-                    Txtnombres.setBackground(null);
-                    Txtnombres.setText(nombres);
-                    Txtapellidos.setBackground(null);
-                    Txtapellidos.setText(apellidos);
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setShimmer(null);
-                } else {
-                    Toast.makeText(MenuAukdeliver.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
+
+        String mypref = dataNombre.getString("Mi llave","Vacío");
+        String mypref2 = dataApellido.getString("Mi llave 2","Vacío");
+
+        if (mypref.equals("Vacío")) {
+            String id = mAuth.getId();
+            mDatabase.child("Usuarios").child("Aukdeliver").child(id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String nombres = dataSnapshot.child("nombres").getValue().toString();
+                        String apellidos = dataSnapshot.child("apellidos").getValue().toString();
+                        LinearShimmer.setBackground(null);
+                        Txtnombres.setBackground(null);
+                        Txtnombres.setText(nombres);
+                        Txtapellidos.setBackground(null);
+                        Txtapellidos.setText(apellidos);
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setShimmer(null);
+                        SharedPreferences.Editor editor = dataNombre.edit();
+                        SharedPreferences.Editor editor2 = dataApellido.edit();
+                        editor.putString("Mi llave",Txtnombres.getText().toString());
+                        editor2.putString("Mi llave 2",Txtapellidos.getText().toString());
+                        editor.apply();
+                        editor2.apply();
+                    } else {
+                        Toast.makeText(MenuAukdeliver.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MenuAukdeliver.this, "Error de Base de datos", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MenuAukdeliver.this, "Error de Base de datos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            LinearShimmer.setBackground(null);
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setShimmer(null);
+            Txtnombres.setText(mypref);
+            Txtapellidos.setText(mypref2);
+        }
     }
 
     public void startLocacion() {
@@ -304,22 +332,55 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     }
 
     private void getPhotoUsuario(){
-        String id = mAuth.getId();
-        mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("foto")){
-                    //Obtener el url y setearlo en la imagem
-                    String setFoto = dataSnapshot.child("foto").getValue().toString();
-                    Glide.with(MenuAukdeliver.this).load(setFoto).into(foto);
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
+        File directory = new File(root);
+        if(directory.exists()){
+            // Mostrar en el CircleImageView
+            File toLoad = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name) + "/profile.jpg");
+            Glide.with(MenuAukdeliver.this).load(toLoad).into(foto);
+        }
+        else {
+            String id = mAuth.getId();
+            mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild("foto")) {
+                        //Obtener el url y setearlo en la imagem
+                        String setFoto = dataSnapshot.child("foto").getValue().toString();
+                        Glide.with(MenuAukdeliver.this).load(setFoto).into(foto);
+                        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name) + "/";
+                        final File dir = new File(dirPath);
+                        final String fileName = "profile.jpg";
+                        Glide.with(MenuAukdeliver.this)
+                                .load(setFoto)
+                                .into(new CustomTarget<Drawable>() {
+                                    @Override
+                                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                        Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
+                                        //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
+                                        saveImage(bitmap, dir, fileName);
+                                    }
+
+                                    @Override
+                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                    }
+
+                                    @Override
+                                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                        super.onLoadFailed(errorDrawable);
+                                        //Toast.makeText(MenuAdmin.this, "Failed to Download Image! Please try again later.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private void showAlertDialog() {
@@ -358,10 +419,12 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         editor.putString("", "");
         editor.apply();*/
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
+        deleteDirectory();
         mAuthProviders.Logout();
         //eliminar si sigue causando errores
         Intent intent = new Intent(MenuAukdeliver.this, Inicio.class);
         startActivity(intent);
+        deleteCache.trimCache(MenuAukdeliver.this);
         finish();
         mDialog.dismiss();
     }
@@ -377,6 +440,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                 mDialog.show();
                 mDialog.setMessage("Cerrando sesión...");
                 stopJobSchedule();
+                DeleteDataAdmin();
                 deleteTokenFCM();
                 logout();
                 return true;
@@ -445,11 +509,71 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         });
     }
 
+    private void saveImage(Bitmap image, File storageDir, String imageFileName) {
 
+        boolean successDirCreated = false;
+        if (!storageDir.exists()) {
+            successDirCreated = storageDir.mkdir();
+        }
+        if (successDirCreated) {
+            File imageFile = new File(storageDir, imageFileName);
+            try {
+                OutputStream fOut = new FileOutputStream(imageFile);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+                deleteCache.trimCache(MenuAukdeliver.this);
+                // Toast.makeText(MenuAdmin.this, "Imagen guardada!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                //Toast.makeText(MenuAdmin.this, "ERROR!", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+
+        }
+        else{
+            // Toast.makeText(this, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteDirectory(){
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
+        File directory = new File(root);
+        File photo = new File(root,"/profile.jpg");
+        photo.delete();
+        directory.delete();
+    }
+
+    private void DeleteDataAdmin() {
+        SharedPreferences.Editor editor = dataNombre.edit();
+        SharedPreferences.Editor editor2 = dataApellido.edit();
+        editor.remove("Mi llave");
+        editor2.remove("Mi llave 2");
+        editor.apply();
+        editor2.apply();
+    }
+
+
+    private void verify(){
+        if (!verifyPermissions()) {
+            return;
+        }
+    }
+
+    public Boolean verifyPermissions() {
+        // Esto devolverá el estado actual
+        int permissionExternalMemory = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionExternalMemory != PackageManager.PERMISSION_GRANTED) {
+            String[] STORAGE_PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            //Si no se otorga el permiso, solicite permiso en tiempo real.
+            ActivityCompat.requestPermissions(this, STORAGE_PERMISSIONS, 1);
+            return false;
+        }
+        return true;
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
+        deleteCache.trimCache(this);
         startLocacion();
         unregisterReceiver(networkReceiver);
         unregisterReceiver(gpsReceiver);
@@ -458,6 +582,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onResume() {
         super.onResume();
+        deleteCache.trimCache(this);
         mDialog.dismiss();
         startLocacion();
     }
@@ -465,10 +590,12 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onRestart() {
         super.onRestart();
+        deleteCache.trimCache(this);
     }
 
     @Override
     protected void onStart() {
+        deleteCache.trimCache(this);
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkReceiver, filter);
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
@@ -478,6 +605,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        deleteCache.trimCache(this);
     }
 
 }

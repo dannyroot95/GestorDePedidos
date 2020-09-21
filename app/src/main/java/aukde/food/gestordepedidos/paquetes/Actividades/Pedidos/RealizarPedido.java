@@ -757,14 +757,12 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     mSpinnerProveedor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if (parent.getItemAtPosition(position).toString().equals("-")) {
+                            if (parent.getItemAtPosition(position).toString().equals("Q' Tal Concha")) {
                                 mSocio.setText("");
                             } else {
                                 String stProveedor = parent.getItemAtPosition(position).toString();
                                 mSocio.setText(stProveedor);
                             }
-
-
                         }
 
                         @Override
@@ -782,7 +780,6 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             }
         });
     }
-
 
     @Override
     protected void onResume() {

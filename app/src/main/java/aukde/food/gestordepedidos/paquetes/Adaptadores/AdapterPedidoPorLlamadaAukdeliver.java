@@ -82,6 +82,10 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
             holder.txtListEstado.setTextColor(Color.parseColor("#2E86C1"));
         }
 
+        if ( holder.txtListEstado.getText().toString().equals("En proceso")){
+            holder.txtListEstado.setTextColor(Color.parseColor("#FFC300"));
+        }
+
         if ( holder.txtListEstado.getText().toString().equals("Completado")){
             holder.txtListEstado.setTextColor(Color.parseColor("#5bbd00"));
         }
