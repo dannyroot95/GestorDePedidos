@@ -46,6 +46,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
+import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -66,6 +67,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
     private Vibrator vibrator;
     long tiempo = 100;
     DeleteCache deleteCache;
+    SaveStorageImage saveStorageImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_aukdeliver);
         MiToolbar.Mostrar(this,"Actualizar Perfil",true);
         deleteCache = new DeleteCache();
+        saveStorageImage = new SaveStorageImage();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mAukdeliverProvider = new AukdeliverProvider();
         mAuthProviders = new AuthProviders();
@@ -150,7 +153,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
                                                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                                     Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                                                     //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
-                                                    saveImage(bitmap, dir, fileName);
+                                                    saveStorageImage.saveImage(bitmap, dir, fileName);
                                                     deleteCache.trimCache(PerfilAukdeliver.this);
                                                 }
 
@@ -238,7 +241,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
                                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                     Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                                     //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
-                                    saveImage(bitmap, dir, fileName);
+                                    saveStorageImage.saveImage(bitmap, dir, fileName);
                                 }
 
                                 @Override
@@ -292,29 +295,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
     }
 
 
-    private void saveImage(Bitmap image, File storageDir, String imageFileName) {
 
-        boolean successDirCreated = false;
-        if (!storageDir.exists()) {
-            successDirCreated = storageDir.mkdir();
-        }
-        if (successDirCreated) {
-            File imageFile = new File(storageDir, imageFileName);
-            try {
-                OutputStream fOut = new FileOutputStream(imageFile);
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                fOut.close();
-                // Toast.makeText(MenuAdmin.this, "Imagen guardada!", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                //Toast.makeText(MenuAdmin.this, "ERROR!", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-
-        }
-        else{
-            // Toast.makeText(this, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onBackPressed(){

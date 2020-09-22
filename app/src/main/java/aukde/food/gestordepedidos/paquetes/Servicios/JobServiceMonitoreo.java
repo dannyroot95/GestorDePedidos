@@ -1,6 +1,5 @@
 package aukde.food.gestordepedidos.paquetes.Servicios;
 
-
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -57,7 +56,6 @@ public class JobServiceMonitoreo extends JobService {
                     nameGeofire();
                     }
                 }
-
                 //Toast.makeText(ServiceMonitoreo.this, "lat : "+lat+" lon : "+lon, Toast.LENGTH_SHORT).show();
                 Log.d("LOCATION_UPDATE",latitude+" , "+longitude);
             }
@@ -83,6 +81,7 @@ public class JobServiceMonitoreo extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
+        //estaba en true
         return true;
     }
 

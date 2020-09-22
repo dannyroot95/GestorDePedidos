@@ -33,4 +33,5 @@ public class DeleteCache extends AppCompatActivity {
         // The directory is now empty so delete it
         return dir.delete();
     }
+
 }

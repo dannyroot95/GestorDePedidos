@@ -6,6 +6,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,7 @@ import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
+import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -78,6 +80,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     SharedPreferences dataNombre;
     SharedPreferences dataApellido;
     private static final int GALLERY = 1;
+    SaveStorageImage saveStorageImage;
     long tiempo = 100;
     DeleteCache deleteCache;
 
@@ -87,6 +90,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_admin);
         deleteCache = new DeleteCache();
+        saveStorageImage = new SaveStorageImage();
         foto = findViewById(R.id.fotodefault);
         dataNombre = PreferenceManager.getDefaultSharedPreferences(this);
         dataApellido = PreferenceManager.getDefaultSharedPreferences(this);
@@ -225,7 +229,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                         Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                                         //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
-                                        saveImage(bitmap, dir, fileName);
+                                        saveStorageImage.saveImage(bitmap, dir, fileName);
                                         deleteCache.trimCache(MenuAdmin.this);
                                     }
 
@@ -368,7 +372,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                                                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                                     Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                                                     //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
-                                                    saveImage(bitmap, dir, fileName);
+                                                    saveStorageImage.saveImage(bitmap, dir, fileName);
                                                     deleteCache.trimCache(MenuAdmin.this);
                                                 }
 
@@ -432,30 +436,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
     }
 
-    private void saveImage(Bitmap image, File storageDir, String imageFileName) {
-
-        boolean successDirCreated = false;
-        if (!storageDir.exists()) {
-            successDirCreated = storageDir.mkdir();
-        }
-        if (successDirCreated) {
-            File imageFile = new File(storageDir, imageFileName);
-            try {
-                OutputStream fOut = new FileOutputStream(imageFile);
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                fOut.close();
-               // Toast.makeText(MenuAdmin.this, "Imagen guardada!", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                //Toast.makeText(MenuAdmin.this, "ERROR!", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-
-        }
-        else{
-           // Toast.makeText(this, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void deleteDirectory(){
         String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
         File directory = new File(root);
@@ -466,8 +446,14 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
 
     @Override
     protected void onResume() {
-        super.onResume();
         deleteCache.trimCache(MenuAdmin.this);
+        super.onResume();
         //mDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        deleteCache.trimCache(this);
+        super.onDestroy();
     }
 }

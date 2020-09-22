@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
@@ -57,8 +58,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
@@ -69,6 +68,7 @@ import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
+import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -99,6 +99,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     SharedPreferences dataNombre;
     SharedPreferences dataApellido;
     DeleteCache deleteCache;
+    SaveStorageImage saveStorageImage;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -122,6 +123,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
+        saveStorageImage = new SaveStorageImage();
         mDialog = new ProgressDialog(MenuAukdeliver.this,R.style.ThemeOverlay);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario", MODE_PRIVATE);
@@ -358,7 +360,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
                                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                         Bitmap bitmap = ((BitmapDrawable)resource).getBitmap();
                                         //Toast.makeText(MenuAdmin.this, "Guardando imagen...", Toast.LENGTH_SHORT).show();
-                                        saveImage(bitmap, dir, fileName);
+                                        saveStorageImage.saveImage(bitmap, dir, fileName);
                                     }
 
                                     @Override
@@ -424,7 +426,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         //eliminar si sigue causando errores
         Intent intent = new Intent(MenuAukdeliver.this, Inicio.class);
         startActivity(intent);
-        deleteCache.trimCache(MenuAukdeliver.this);
         finish();
         mDialog.dismiss();
     }
@@ -509,31 +510,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         });
     }
 
-    private void saveImage(Bitmap image, File storageDir, String imageFileName) {
-
-        boolean successDirCreated = false;
-        if (!storageDir.exists()) {
-            successDirCreated = storageDir.mkdir();
-        }
-        if (successDirCreated) {
-            File imageFile = new File(storageDir, imageFileName);
-            try {
-                OutputStream fOut = new FileOutputStream(imageFile);
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                fOut.close();
-                deleteCache.trimCache(MenuAukdeliver.this);
-                // Toast.makeText(MenuAdmin.this, "Imagen guardada!", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                //Toast.makeText(MenuAdmin.this, "ERROR!", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-
-        }
-        else{
-            // Toast.makeText(this, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void deleteDirectory(){
         String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
         File directory = new File(root);
@@ -573,7 +549,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onStop() {
         super.onStop();
-        deleteCache.trimCache(this);
+        deleteCache.trimCache(MenuAukdeliver.this);
         startLocacion();
         unregisterReceiver(networkReceiver);
         unregisterReceiver(gpsReceiver);
@@ -582,7 +558,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onResume() {
         super.onResume();
-        deleteCache.trimCache(this);
+        deleteCache.trimCache(MenuAukdeliver.this);
         mDialog.dismiss();
         startLocacion();
     }
@@ -590,12 +566,11 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onRestart() {
         super.onRestart();
-        deleteCache.trimCache(this);
+        deleteCache.trimCache(MenuAukdeliver.this);
     }
 
     @Override
     protected void onStart() {
-        deleteCache.trimCache(this);
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkReceiver, filter);
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
@@ -604,8 +579,8 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         deleteCache.trimCache(this);
+        super.onDestroy();
     }
 
 }
