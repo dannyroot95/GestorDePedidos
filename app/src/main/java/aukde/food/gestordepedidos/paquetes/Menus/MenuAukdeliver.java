@@ -67,6 +67,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
+import aukde.food.gestordepedidos.paquetes.Utils.ApplicationCronometro;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -423,7 +424,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         deleteDirectory();
         mAuthProviders.Logout();
-        //eliminar si sigue causando errores
         Intent intent = new Intent(MenuAukdeliver.this, Inicio.class);
         startActivity(intent);
         finish();
@@ -544,6 +544,18 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             return false;
         }
         return true;
+    }
+
+    private void deleteAppData() {
+        try {
+            // clearing app data
+            String packageName = getApplicationContext().getPackageName();
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear "+packageName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

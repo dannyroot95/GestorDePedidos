@@ -97,7 +97,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
     private ProgressDialog mDialog;
     private Dialog aukdeliverOcupado;
-    private Button cerrarPopup;
+    private Button cerrarPopup , forzarEnvio;
     private ImageView cerrarImg;
     SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm");
     SimpleDateFormat simpleDateFormatFecha = new SimpleDateFormat("dd/MM/yyy");
@@ -757,17 +757,13 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
                     mSpinnerProveedor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if (parent.getItemAtPosition(position).toString().equals("Q' Tal Concha")) {
-                                mSocio.setText("");
-                            } else {
-                                String stProveedor = parent.getItemAtPosition(position).toString();
-                                mSocio.setText(stProveedor);
-                            }
+                            String stProveedor = parent.getItemAtPosition(position).toString();
+                            mSocio.setText(stProveedor);
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-
+                            mSocio.setText("");
                         }
                     });
                 }
@@ -779,6 +775,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
 
             }
         });
+
     }
 
     @Override
@@ -1256,6 +1253,7 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
         aukdeliverOcupado.setContentView(R.layout.dialog_ocupado);
         cerrarImg = (ImageView) aukdeliverOcupado.findViewById(R.id.closeDialog);
         cerrarPopup = (Button) aukdeliverOcupado.findViewById(R.id.btnCerrarDialog);
+        forzarEnvio = (Button) aukdeliverOcupado.findViewById(R.id.btnForzarEnvio);
 
         cerrarImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1270,6 +1268,14 @@ public class RealizarPedido extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
                 aukdeliverOcupado.dismiss();
+            }
+        });
+
+        forzarEnvio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vibrator.vibrate(tiempo);
+                procesoRegistro();
             }
         });
 
