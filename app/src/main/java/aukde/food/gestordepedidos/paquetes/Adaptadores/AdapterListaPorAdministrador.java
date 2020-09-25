@@ -18,8 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.Detalle_Administrador;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.DetalleAdministrador;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaAdministrador;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -81,7 +81,7 @@ public class AdapterListaPorAdministrador extends RecyclerView.Adapter<AdapterLi
                     final long tiempo = 100;
                     vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(tiempo);
-                    Intent intent = new Intent(v.getContext(), Detalle_Administrador.class);
+                    Intent intent = new Intent(v.getContext(), DetalleAdministrador.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("key",ls);
                     intent.putExtras(bundle);

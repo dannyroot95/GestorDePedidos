@@ -4,16 +4,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
-import android.app.ActivityManager;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,8 +43,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
@@ -58,6 +57,9 @@ import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
+import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.ListaAdministrador;
+import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.ListaAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.ListaProveedor;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -69,7 +71,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
-            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnPrueba , btnFinanza;
+            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnFinanza;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -83,6 +85,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     SaveStorageImage saveStorageImage;
     long tiempo = 100;
     DeleteCache deleteCache;
+    Dialog mDialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +102,12 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         cronometro = new Cronometro();
         btnFinanza = findViewById(R.id.btnFinanzas);
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
+        mDialog2 = new Dialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         btnHacerPedido = findViewById(R.id.btnHacerPedido);
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);
         btnMapaRepartidores = findViewById(R.id.btnMonitoreoRepartidor);
         btnMapProveedor = findViewById(R.id.btnMapaProveedor);
-        btnPrueba = findViewById(R.id.btnListaDeUsuarios);
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
@@ -180,15 +183,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(MenuAdmin.this, PerfilAdmin.class));
             }
         });
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*vibrator.vibrate(tiempo);
-                mDialog.show();
-                mDialog.setCancelable(false);
-                mDialog.setMessage("Cargando...");*/
-            }
-        });
+
         btnFinanza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -443,6 +438,55 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         photo.delete();
         directory.delete();
     }
+
+    public void ShowPopupLista(View vista){
+        mDialog2.setContentView(R.layout.activity_dialogo_lista_de_administrador);
+        TextView txtCerrar;
+        Button btnListaAdministrador;
+        Button btnListaAukdeDelivery;
+        Button btnListaProveedor;
+        btnListaAdministrador=mDialog2.findViewById(R.id.btnListaDeAdmmistrasdor);
+        btnListaAukdeDelivery=mDialog2.findViewById(R.id.btnListaDeEmpleados);
+        btnListaProveedor=mDialog2.findViewById(R.id.btnListaDeProveedor);
+
+        txtCerrar=mDialog2.findViewById(R.id.txtClose);
+
+        btnListaAdministrador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuAdmin.this, ListaAdministrador.class));
+            }
+        });
+
+        btnListaAukdeDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuAdmin.this, ListaAukdeliver.class));
+            }
+        });
+
+        btnListaProveedor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuAdmin.this, ListaProveedor.class));
+            }
+        });
+
+        txtCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog2.dismiss();
+            }
+        });
+        mDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog2.show();
+
+    }
+
+
+
+
+
 
     @Override
     protected void onResume() {

@@ -132,6 +132,30 @@
         <activity
             android:name=".paquetes.Menus.MenuAdmin"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.ListaAdministrador"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.ListaAukdeliver"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.ListaProveedor"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.DetalleAdministrador"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.DetalleAukdeliver"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Menus.ListaUsuarios.DetalleProveedor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Actividades.Registros.RegistroProveedor"
             android:parentActivityName=".paquetes.Actividades.Registros.MenuRegistros" />

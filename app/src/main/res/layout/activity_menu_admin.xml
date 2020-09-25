@@ -409,9 +409,9 @@
                     android:padding="16dp">
 
                     <Button
+                        android:onClick="ShowPopupLista"
                         android:layout_width="80dp"
                         android:gravity="center"
-                        android:id="@+id/btnListaDeUsuarios"
                         android:background="@drawable/btn_lista_usuarios"
                         android:layout_height="80dp"/>
 
@@ -425,6 +425,7 @@
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
+
 
             </androidx.cardview.widget.CardView>
 

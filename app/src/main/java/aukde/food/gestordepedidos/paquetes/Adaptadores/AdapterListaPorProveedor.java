@@ -10,16 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
-import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.Detalle_Proveedor;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.DetalleProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaProveedor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -87,7 +83,7 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
                 final long tiempo = 100;
                 vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(tiempo);
-                Intent intent = new Intent(v.getContext(), Detalle_Proveedor.class);
+                Intent intent = new Intent(v.getContext(), DetalleProveedor.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("key",ls);
                 intent.putExtras(bundle);

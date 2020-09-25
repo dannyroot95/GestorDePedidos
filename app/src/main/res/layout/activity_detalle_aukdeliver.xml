@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".paquetes.Actividades.Usuarios.Detalle_Aukdeliver">
+    tools:context=".paquetes.Menus.ListaUsuarios.DetalleAukdeliver">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:background="#fff"
                 android:id="@+id/photoDetalleAukdeliver"
-                android:src="@drawable/lista_proveedor"
+                android:src="@drawable/lista_deliver"
                 android:layout_height="match_parent"/>
         </com.github.florent37.shapeofview.shapes.CircleView>
 
@@ -77,7 +77,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:text="Datos de Audeliver"
+                        android:text="Datos de Aukdeliver"
                         android:textColor="#000"
                         android:textSize="18sp"
                         android:fontFamily="@font/futura"
