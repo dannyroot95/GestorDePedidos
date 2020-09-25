@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".paquetes.Actividades.Usuarios.Detalle_Proveedor">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <com.github.florent37.shapeofview.shapes.ArcView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:elevation="4dp"
+            app:shape_arc_cropDirection="outside"
+            app:shape_arc_height="20dp"
+            app:shape_arc_position="bottom">
+            <View
+                android:layout_width="match_parent"
+                android:background="#000"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Detalle Proveedor"
+                    android:layout_marginTop="30dp"
+                    android:textColor="#fff"
+                    android:fontFamily="@font/futura"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </com.github.florent37.shapeofview.shapes.ArcView>
+
+        <com.github.florent37.shapeofview.shapes.CircleView
+            android:layout_width="100dp"
+            app:shape_circle_borderColor="#A2A2A2"
+            android:layout_gravity="center"
+            android:elevation="16dp"
+            android:layout_marginTop="-50dp"
+            app:shape_circle_borderWidth="3dp"
+            android:layout_height="100dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:background="#fff"
+                android:id="@+id/photoDetalleProveedor"
+                android:src="@drawable/lista_proveedor"
+                android:layout_height="match_parent"/>
+        </com.github.florent37.shapeofview.shapes.CircleView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_height="match_parent">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/scroll">
+                <GridLayout
+                    android:columnCount="1"
+                    android:columnOrderPreserved="false"
+                    android:rowCount="2"
+                    android:padding="8dp"
+                    android:alignmentMode="alignMargins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Datos del Proveedor"
+                        android:textColor="#000"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/futura"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardElevation="6dp"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="8dp"
+                        >
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/detalle_nombre"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginLeft="15dp"
+                                    android:text="Nombre : "
+                                    android:layout_gravity="center"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorNombre"
+                                    android:layout_width="wrap_content"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearTelefono"
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/detalle_apellido"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Apellido : "
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorApellido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/detalle_usuario"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Nombre Usuario : "
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#000"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorUsuario"
+                                    android:layout_width="wrap_content"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/detalle_correo"
+                                    android:layout_height="40dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Correo :"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:textColor="#000"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorCorreo"
+                                    android:layout_width="wrap_content"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/detalle_dni"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Dni : "
+                                    android:textSize="16sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorDni"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/ic_telefono"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Telefono : "
+                                    android:textSize="16sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorTelefono"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:src="@drawable/sunat"
+                                    android:layout_height="40dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Ruc : "
+                                    android:textSize="16sp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/detalleProveedorRuc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16sp"
+                                    android:textColor="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Editar Proveedor"
+                                android:textColor="#ffffff"
+                                android:background="@drawable/redondo"
+                                android:id="@+id/btnEditarProveedor"
+                                android:backgroundTint="@drawable/btn_background_negro"/>
+
+
+
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </GridLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
