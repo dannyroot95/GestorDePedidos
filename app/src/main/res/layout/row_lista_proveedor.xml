@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="15dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:padding="2dp"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_margin="5dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_height="70dp"
+                    android:id="@+id/fotoProveedor"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="2dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:onClick="show_popup"
+                    android:background="@drawable/ic_admin"
+                    android:foreground="@drawable/selecion"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="50dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/posi1"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idNombreProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/posi2"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idApellidoProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/posi3"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idTelefonoProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/posi4"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idEmailProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/posi5"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idDniProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/posi6"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idRucProveedor"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:id="@+id/linearButtonsProveedor"
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="VER DETALLES"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#A2A2A2"
+                        android:textSize="14sp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_detalle"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
