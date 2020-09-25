@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".paquetes.Actividades.Usuarios.Detalle_Proveedor">
+    tools:context=".paquetes.Menus.ListaUsuarios.DetalleProveedor">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"

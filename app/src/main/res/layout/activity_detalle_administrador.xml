@@ -17,7 +17,6 @@
             app:shape_arc_cropDirection="outside"
             app:shape_arc_height="20dp"
             app:shape_arc_position="bottom">
-
             <View
                 android:layout_width="match_parent"
                 android:background="#000"
