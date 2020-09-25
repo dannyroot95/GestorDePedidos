@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tamano">
+        <item>Pequeña</item>
+        <item>Mediana</item>
+        <item>Grande</item>
+        <item>Familiar</item>
+        <item>Extra Familiar</item>
+    </string-array>
+</resources>

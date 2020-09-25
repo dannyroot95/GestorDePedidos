@@ -25,7 +25,7 @@
 
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/comida_producto"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:layout_height="120dp">
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="95dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/descripcionproducto"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 android:layout_height="120dp">
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="90dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/contenidoproducto"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/stockproduc"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -126,7 +126,7 @@
 
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/tarifas"/>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -155,7 +155,7 @@
                 >
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/tarifa_publicada"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -182,7 +182,7 @@
                 >
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/codigo"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -207,9 +207,10 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/embalaje"/>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -304,6 +305,5 @@
         </LinearLayout>
 
     </ScrollView>
-    
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
