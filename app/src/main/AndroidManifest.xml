@@ -20,14 +20,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".paquetes.Utils.ApplicationCronometro"
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:name=".paquetes.Utils.ApplicationCronometro"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".paquetes.Productos.Tortas.AgregarProductoTortas"></activity>
+        <activity android:name=".paquetes.Productos.Pollos.AgregarProductoPollos" />
         <activity
             android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
             android:parentActivityName=".paquetes.Menus.MenuAdmin" />
@@ -38,7 +40,6 @@
         <service
             android:name=".paquetes.Servicios.JobServiceMonitoreo"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <service
             android:name=".paquetes.Servicios.ForegroundServiceCronometro"
             android:enabled="true"
@@ -87,6 +88,14 @@
 
         <activity
             android:name=".paquetes.Productos.Default.AgregarProductoPorDefecto"
+            android:parentActivityName=".paquetes.Productos.MenuAddProduct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Productos.Pizza.AgregarProductoPizza"
+            android:parentActivityName=".paquetes.Productos.MenuAddProduct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Productos.MenuAddProduct"
             android:parentActivityName=".paquetes.Menus.MenuProveedor"
             android:screenOrientation="portrait" />
         <activity

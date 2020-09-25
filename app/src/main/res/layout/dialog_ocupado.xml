@@ -60,17 +60,34 @@
                 android:text="Asigne un nuevo repartidor ó espere a \nQue el repartidor complete el pedido."
                 android:layout_height="wrap_content"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <Button
                 android:layout_width="200dp"
                 android:background="@drawable/redondo"
                 android:layout_weight="1"
-                android:layout_marginTop="20dp"
                 android:textColor="#fff"
-                android:layout_gravity="center_horizontal"
                 android:text="Cerrar"
+                android:layout_marginRight="12dp"
                 android:id="@+id/btnCerrarDialog"
                 android:backgroundTint="@drawable/btn_background_negro"
                 android:layout_height="wrap_content"/>
+
+                <Button
+                    android:layout_width="200dp"
+                    android:background="@drawable/redondo"
+                    android:layout_weight="1"
+                    android:textColor="#fff"
+                    android:text="Forzar envío"
+                    android:id="@+id/btnForzarEnvio"
+                    android:backgroundTint="@drawable/btn_background_negro"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>

@@ -41,6 +41,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
+import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,7 +56,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private TokenProvider mTokenProvider;
     private AuthProviders mAuth;
     private LinearLayout LinearShimmer;
-    private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa;
+    private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa , TxtCategoria , TxtTituloCat;
     private ShimmerFrameLayout shimmerFrameLayout;
     private final static int ID_SERVICIO = 99;
     private Vibrator vibrator;
@@ -85,6 +86,8 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
         TxtNombreEmpresa = findViewById(R.id.txtEmpresa);
+        TxtCategoria = findViewById(R.id.txtCategoria);
+        TxtTituloCat = findViewById(R.id.txtTituloCat);
 
         LinearShimmer = findViewById(R.id.linearShimmer);
         shimmerFrameLayout = findViewById(R.id.shimmer);
@@ -94,7 +97,15 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                startActivity(new Intent(MenuProveedor.this, AgregarProductoPorDefecto.class));
+                String cat = TxtCategoria.getText().toString();
+                if (!cat.equals("")) {
+                    Intent intent = new Intent(MenuProveedor.this, MenuAddProduct.class);
+                    intent.putExtra("keyProduct", cat);
+                    startActivity(intent);
+                }
+                else {
+                    Toasty.info(MenuProveedor.this, "Espere un momento...", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -264,6 +275,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                     String nombres = dataSnapshot.child("nombres").getValue().toString();
                     String apellidos = dataSnapshot.child("apellidos").getValue().toString();
                     String nombreEmpresa = dataSnapshot.child("nombre empresa").getValue().toString();
+                    String categoria = dataSnapshot.child("categoria").getValue().toString();
                     LinearShimmer.setBackground(null);
                     Txtnombres.setBackground(null);
                     Txtnombres.setText(nombres);
@@ -272,6 +284,8 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setShimmer(null);
                     TxtNombreEmpresa.setText(nombreEmpresa);
+                    TxtTituloCat.setVisibility(View.VISIBLE);
+                    TxtCategoria.setText(categoria);
                 } else {
                     Toast.makeText(MenuProveedor.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
                 }

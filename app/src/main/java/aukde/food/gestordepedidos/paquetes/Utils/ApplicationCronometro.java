@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+import java.io.File;
+
 public class ApplicationCronometro extends Application {
     public static final String CHANNEL_ID = "cronometroServiceChannel";
 
@@ -14,6 +16,7 @@ public class ApplicationCronometro extends Application {
         createNotificationChannel();
 
     }
+
     private void createNotificationChannel(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel serviceChannel = new NotificationChannel(CHANNEL_ID,"Pedido en proceso", NotificationManager.IMPORTANCE_DEFAULT);
@@ -22,4 +25,5 @@ public class ApplicationCronometro extends Application {
 
         }
     }
+
 }
