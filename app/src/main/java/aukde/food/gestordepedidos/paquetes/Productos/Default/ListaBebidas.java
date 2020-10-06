@@ -1,36 +1,35 @@
 package aukde.food.gestordepedidos.paquetes.Productos.Default;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
+
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterAdicionales;
+import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterBebidas;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterProductoDefault;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Modelos.ProductoDefault;
 import es.dmoral.toasty.Toasty;
 
-public class ListaProductosDefault extends AppCompatActivity {
+public class ListaBebidas extends AppCompatActivity {
 
     private ProgressDialog mDialogActualizeData;
     private FirebaseAuth mAuth;
@@ -38,19 +37,16 @@ public class ListaProductosDefault extends AppCompatActivity {
     ArrayList<ProductoDefault> listProductos;
     RecyclerView recyclerViewProducto;
     SearchView searchViewProducto;
-    AdapterProductoDefault adapterProductoDefault;
+    AdapterBebidas adapterProductoDefault;
     LinearLayoutManager linearLayoutManager;
-    Button btnAdicional,btnBebidas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppThemeRedCake);
-        setContentView(R.layout.activity_lista_productos_default);
-        MiToolbar.Mostrar(this,"Lista de productos",true);
+        setContentView(R.layout.activity_list_bebidas);
+        MiToolbar.Mostrar(this,"Lista de bebidas",false);
         mAuth = FirebaseAuth.getInstance();
-        btnAdicional = findViewById(R.id.btnListAdicional);
-        btnBebidas = findViewById(R.id.btnListBebidas);
         mDialogActualizeData = new ProgressDialog(this,R.style.MyAlertDialogData);
         mDialogActualizeData.setCancelable(false);
         mDialogActualizeData.show();
@@ -58,30 +54,15 @@ public class ListaProductosDefault extends AppCompatActivity {
         mDialogActualizeData.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         String id = mAuth.getCurrentUser().getUid();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").child(id).child("Productos");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").child(id).child("Bebidas");
         recyclerViewProducto = findViewById(R.id.recyclerProductoDefault);
         searchViewProducto = findViewById(R.id.searchProductoDefault);
         searchViewProducto.setBackgroundColor(Color.WHITE);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewProducto.setLayoutManager(linearLayoutManager);
         listProductos = new ArrayList<>();
-        adapterProductoDefault = new AdapterProductoDefault(listProductos);
+        adapterProductoDefault = new AdapterBebidas(listProductos);
         recyclerViewProducto.setAdapter(adapterProductoDefault);
-
-        btnAdicional.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ListaProductosDefault.this, ListaAdicionales.class));
-            }
-        });
-
-        btnBebidas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ListaProductosDefault.this, ListaBebidas.class));
-
-            }
-        });
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,14 +79,14 @@ public class ListaProductosDefault extends AppCompatActivity {
                     mDialogActualizeData.dismiss();
                 }
                 else {
-                    Toasty.info(ListaProductosDefault.this, "Sin Productos", Toast.LENGTH_SHORT,true).show();
+                    Toasty.info(ListaBebidas.this, "Sin Productos", Toast.LENGTH_SHORT,true).show();
                     mDialogActualizeData.dismiss();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toasty.error(ListaProductosDefault.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
+                Toasty.error(ListaBebidas.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
             }
         });
 
@@ -148,9 +129,7 @@ public class ListaProductosDefault extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        NavUtils.navigateUpFromSameTask(this);/*
-        startActivity(new Intent(ListaDePedidos.this, MenuAdmin.class));
-        finish(); */
+        finish();
     }
 
     @Override

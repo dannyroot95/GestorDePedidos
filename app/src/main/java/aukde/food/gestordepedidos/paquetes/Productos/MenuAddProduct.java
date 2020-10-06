@@ -10,14 +10,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Productos.Default.Adicionales;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
+import aukde.food.gestordepedidos.paquetes.Productos.Default.Bebidas;
 import aukde.food.gestordepedidos.paquetes.Productos.Pizza.AgregarProductoPizza;
 import aukde.food.gestordepedidos.paquetes.Productos.Pollos.AgregarProductoPollos;
 import aukde.food.gestordepedidos.paquetes.Productos.Tortas.AgregarProductoTortas;
 
 public class MenuAddProduct extends AppCompatActivity {
 
-    LinearLayout btnProducto;
+    LinearLayout btnProducto , btnAdicional , btnBebidas;
     private Vibrator vibrator;
     long tiempo = 100;
     @Override
@@ -29,12 +31,15 @@ public class MenuAddProduct extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        btnAdicional = findViewById(R.id.btnAddAdicional);
+        btnBebidas = findViewById(R.id.btnAddBebidas);
+
         btnProducto = findViewById(R.id.btnAddProduct);
         btnProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
-                if(id.equals("Pizza")){
+                if(id.equals("Pizzas")){
                     startActivity(new Intent(MenuAddProduct.this, AgregarProductoPizza.class));
                 }
                 else if (id.equals("Pollos y Parrillas")){
@@ -49,8 +54,25 @@ public class MenuAddProduct extends AppCompatActivity {
             }
         });
 
+        btnAdicional.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuAddProduct.this, Adicionales.class);
+                intent.putExtra("keyProduct",id);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-
+        btnBebidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuAddProduct.this, Bebidas.class);
+                intent.putExtra("keyProduct",id);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 }

@@ -1,13 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Menus;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
@@ -42,6 +35,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -66,8 +67,8 @@ import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Receptor.GpsReceiver;
 import aukde.food.gestordepedidos.paquetes.Receptor.NetworkReceiver;
+import aukde.food.gestordepedidos.paquetes.Reportes.ReporteAukdeliver;
 import aukde.food.gestordepedidos.paquetes.Servicios.JobServiceMonitoreo;
-import aukde.food.gestordepedidos.paquetes.Utils.ApplicationCronometro;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -101,6 +102,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     SharedPreferences dataApellido;
     DeleteCache deleteCache;
     SaveStorageImage saveStorageImage;
+    Button textReporte;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -124,6 +126,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_menu_aukdeliver);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
         mAuthProviders = new AuthProviders();
+        textReporte = findViewById(R.id.txtReporte);
         saveStorageImage = new SaveStorageImage();
         mDialog = new ProgressDialog(MenuAukdeliver.this,R.style.ThemeOverlay);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -141,6 +144,14 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         shimmerFrameLayout.startShimmer();
 
         txtCronometro = findViewById(R.id.realTimeCronometro);
+
+        textReporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(new Intent(MenuAukdeliver.this, ReporteAukdeliver.class));
+            }
+        });
 
         mAuth = new AuthProviders();
         mTokenProvider = new TokenProvider();
@@ -584,7 +595,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     protected void onStart() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(networkReceiver, filter);
+        registerReceiver(networkReceiver,filter);
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         super.onStart();
     }

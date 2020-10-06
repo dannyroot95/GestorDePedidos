@@ -13,13 +13,15 @@ public class ProductoDefault implements Serializable {
     String codigoINEA;
     String embalaje;
     String urlPhoto;
+    String disponibilidad;
 
     public ProductoDefault(){
     }
 
-    public ProductoDefault(String nombreProducto, String descripcionProducto, String contenidoProducto,
-                           String stock, String tarifaConfidencial, String tarifaPublicada, String codigoINEA,
-                           String embalaje, String urlPhoto) {
+    public ProductoDefault(String nombreProducto, String descripcionProducto, String contenidoProducto, String stock,
+                           String tarifaConfidencial, String tarifaPublicada, String codigoINEA, String embalaje,
+                           String urlPhoto, String disponibilidad) {
+
         this.nombreProducto = nombreProducto;
         this.descripcionProducto = descripcionProducto;
         this.contenidoProducto = contenidoProducto;
@@ -29,8 +31,8 @@ public class ProductoDefault implements Serializable {
         this.codigoINEA = codigoINEA;
         this.embalaje = embalaje;
         this.urlPhoto = urlPhoto;
+        this.disponibilidad = disponibilidad;
     }
-
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -103,4 +105,14 @@ public class ProductoDefault implements Serializable {
     public void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
     }
+
+    public String getDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(String disponibilidad) {
+        this.disponibilidad = disponibilidad;
+    }
+
+
 }

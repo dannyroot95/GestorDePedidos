@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    tools:context=".paquetes.Productos.Default.Adicionales">
 
     <include layout="@layout/toolbar3"/>
 
@@ -26,7 +26,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pizzax"/>
+                    android:src="@drawable/comida_producto"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_marginLeft="5dp"
@@ -67,136 +67,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/contenidoproducto"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_height="110dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:hint="Contenido del Producto"
-                        android:id="@+id/ContenidoProducto"
-                        android:inputType="textCapSentences">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/boxpizza"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
-                    android:textColorHint="#000"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="6dp"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Tamaño"
-                        android:layout_gravity="center"
-                        android:textColorHint="#000"
-                        android:id="@+id/tamano"
-                        android:inputType="text">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Spinner
-                    android:id="@+id/spinnerTamano"
-                    android:spinnerMode="dialog"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/disponibilidad"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
-                    android:textColorHint="#000"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="6dp"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Disponibilidad"
-                        android:layout_gravity="center"
-                        android:textColorHint="#000"
-                        android:id="@+id/edtDisp"
-                        android:inputType="text">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Spinner
-                    android:id="@+id/spinnerDispo"
-                    android:spinnerMode="dialog"
-                    android:layout_gravity="center"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/stockproduc"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="6dp"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Stock"
-                        android:id="@+id/Stock"
-                        android:maxLength="8"
-                        android:inputType="number">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -256,6 +126,45 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/disponibilidad"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:textColorHint="#000"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDisp"
+                        android:layout_width="182dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Disponibilidad"
+                        android:inputType="text"
+                        android:textColorHint="#000">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerDispo"
+                    android:spinnerMode="dialog"
+                    android:layout_gravity="center"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 >
@@ -272,7 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Codigo INEA"
-                        android:text="AUK00X"
+                        android:text="ADD-00X"
                         android:id="@+id/CodigoInea"
                         android:inputType="text">
 
@@ -280,8 +189,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -347,6 +254,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -204,6 +204,15 @@
             android:textSize="70dp"
             android:id="@+id/realTimeCronometro"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_width="300dp"
+            android:text="Reporte"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:id="@+id/txtReporte"
+            android:layout_height="wrap_content"/>
         </LinearLayout>
 
 </LinearLayout>

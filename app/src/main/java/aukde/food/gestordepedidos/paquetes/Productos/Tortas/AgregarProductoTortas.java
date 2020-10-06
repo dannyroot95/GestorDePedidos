@@ -49,7 +49,7 @@ import es.dmoral.toasty.Toasty;
 
 public class AgregarProductoTortas extends AppCompatActivity {
 
-    Spinner spTamano;
+    Spinner spTamano,spDisponibilidad;
     private TextInputEditText edtNombreProducto , edtDescripcionProducto , edtContenido , edtStock ,
             edtTarifaConfidencial, edtTarifaPublicada , edtCodigoINEA , edtTamano;
     private Button btnRegProducto , btnAbrirGallery;
@@ -57,7 +57,7 @@ public class AgregarProductoTortas extends AppCompatActivity {
     private File mImageFile ;
     FirebaseAuth mAuth ;
     private final int GALLERY_REQUEST = 11;
-    private EditText edtUrlPhoto;
+    private EditText edtUrlPhoto,edtDisponibilidad;
     private ProgressDialog mDialog;
     private DatabaseReference mDatabase;
 
@@ -69,6 +69,9 @@ public class AgregarProductoTortas extends AppCompatActivity {
         setContentView(R.layout.activity_agregar_producto_tortas);
         MiToolbar.Mostrar(this,"Agregar Producto",false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        edtDisponibilidad = findViewById(R.id.edtDisp);
+        edtDisponibilidad.setEnabled(false);
+        spDisponibilidad = findViewById(R.id.spinnerDispo);
         mDialog = new ProgressDialog(this);
         edtTamano = findViewById(R.id.tamano);
         edtTamano.setEnabled(false);
@@ -96,6 +99,21 @@ public class AgregarProductoTortas extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 edtTamano.setText(parent.getItemAtPosition(position).toString());
                 edtTamano.setTextColor(Color.BLACK);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapterSpinnerDisponibilidad = ArrayAdapter.createFromResource(this,R.
+                array.disponibilidad,R.layout.custom_spinner);
+        spDisponibilidad.setAdapter(adapterSpinnerDisponibilidad );
+        spDisponibilidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtDisponibilidad.setText(parent.getItemAtPosition(position).toString());
+                edtDisponibilidad.setTextColor(Color.BLACK);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -154,10 +172,11 @@ public class AgregarProductoTortas extends AppCompatActivity {
         final String codigoINEA = edtCodigoINEA.getText().toString();
         final String tamano = edtTamano.getText().toString();
         final String urlPhoto = edtUrlPhoto.getText().toString();
+        final String disp = edtDisponibilidad.getText().toString();
 
         if (!nombreProducto.isEmpty() && !descripcionProducto.isEmpty() && !contenidoProducto.isEmpty() && !stock.isEmpty()
                 && !tarifaConfidencial.isEmpty() && !tarifaPublicada.isEmpty() && !codigoINEA.isEmpty() && !tamano.isEmpty()
-                && !urlPhoto.isEmpty()){
+                && !urlPhoto.isEmpty() && !disp.isEmpty()){
             mDialog.show();
             mDialog.setCancelable(false);
             mDialog.setMessage("Registrando producto...");
@@ -170,6 +189,7 @@ public class AgregarProductoTortas extends AppCompatActivity {
                     map.put("descripcionProducto",descripcionProducto);
                     map.put("contenidoProducto",contenidoProducto);
                     map.put("stock",stock);
+                    map.put("disponibilidad",disp);
                     map.put("tarifaConfidencial",tarifaConfidencial);
                     map.put("tarifaPublicada",tarifaPublicada);
                     map.put("codigoINEA",codigoINEA);

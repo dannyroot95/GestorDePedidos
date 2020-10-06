@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="disponibilidad">
+        <item>Disponible</item>
+        <item>No disponible</item>
+    </string-array>
+
+</resources>

@@ -34,15 +34,11 @@ public class DetalleProveedor extends AppCompatActivity {
 
     CircleImageView clrPhotoProveedor;
     Button BtnEditarProveedor;
-
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     private ProgressDialog mDialog;
     private Vibrator vibrator;
     long tiempo = 100;
-    private NotificationProvider notificationProvider;
-    private TokenProvider tokenProvider;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +46,6 @@ public class DetalleProveedor extends AppCompatActivity {
         setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_proveedor);
 
-        tokenProvider = new TokenProvider();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mAuth = FirebaseAuth.getInstance();

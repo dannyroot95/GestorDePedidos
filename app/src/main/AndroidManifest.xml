@@ -28,7 +28,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Productos.Tortas.AgregarProductoTortas"></activity>
+        <activity android:name=".paquetes.Productos.Default.DetalleBebidas"></activity>
+        <activity android:name=".paquetes.Productos.Default.DetalleAdicionales" />
+        <activity android:name=".paquetes.Productos.Default.ListaBebidas" />
+        <activity android:name=".paquetes.Productos.Default.ListaAdicionales" />
+        <activity android:name=".paquetes.Productos.Default.Bebidas" />
+        <activity android:name=".paquetes.Productos.Default.Adicionales" />
+        <activity
+            android:name=".paquetes.Reportes.ReporteAukdeliver"
+            android:screenOrientation="portrait" />
+        <activity android:name=".paquetes.Productos.Tortas.AgregarProductoTortas" />
         <activity android:name=".paquetes.Productos.Pollos.AgregarProductoPollos" />
         <activity
             android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
@@ -132,27 +141,21 @@
         <activity
             android:name=".paquetes.Menus.MenuAdmin"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.ListaAdministrador"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.ListaAukdeliver"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.ListaProveedor"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.DetalleAdministrador"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.DetalleAukdeliver"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Menus.ListaUsuarios.DetalleProveedor"
             android:screenOrientation="portrait" />

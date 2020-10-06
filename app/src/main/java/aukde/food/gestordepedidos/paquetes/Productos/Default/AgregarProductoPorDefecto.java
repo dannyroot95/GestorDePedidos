@@ -49,7 +49,7 @@ import es.dmoral.toasty.Toasty;
 
 public class AgregarProductoPorDefecto extends AppCompatActivity {
 
-    Spinner spEmbalaje;
+    Spinner spEmbalaje,spDisponibilidad;
     private TextInputEditText edtNombreProducto , edtDescripcionProducto , edtContenido , edtStock ,
             edtTarifaConfidencial, edtTarifaPublicada , edtCodigoINEA , edtEmbalaje;
     private Button btnRegProducto , btnAbrirGallery;
@@ -57,7 +57,7 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
     private File mImageFile ;
     FirebaseAuth mAuth ;
     private final int GALLERY_REQUEST = 11;
-    private EditText edtUrlPhoto;
+    private EditText edtUrlPhoto,edtDisponibilidad;
     private ProgressDialog mDialog;
     private DatabaseReference mDatabase;
 
@@ -69,10 +69,13 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
         MiToolbar.Mostrar(this,"Agregar producto",false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDialog = new ProgressDialog(this);
+        spDisponibilidad = findViewById(R.id.spinnerDispo);
         edtEmbalaje = findViewById(R.id.embalaje);
         edtEmbalaje.setEnabled(false);
         edtUrlPhoto = findViewById(R.id.pathUrlPhoto);
         edtUrlPhoto.setEnabled(false);
+        edtDisponibilidad = findViewById(R.id.edtDisp);
+        edtDisponibilidad.setEnabled(false);
         mAuth = FirebaseAuth.getInstance();
         photoProducto = findViewById(R.id.imgProducto);
         btnAbrirGallery = findViewById(R.id.btnAbrirGaleria);
@@ -95,6 +98,21 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 edtEmbalaje.setText(parent.getItemAtPosition(position).toString());
                 edtEmbalaje.setTextColor(Color.BLACK);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapterSpinnerDisponibilidad = ArrayAdapter.createFromResource(this,R.
+                array.disponibilidad,R.layout.custom_spinner);
+        spDisponibilidad.setAdapter(adapterSpinnerDisponibilidad );
+        spDisponibilidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtDisponibilidad.setText(parent.getItemAtPosition(position).toString());
+                edtDisponibilidad.setTextColor(Color.BLACK);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -156,10 +174,12 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
         final String codigoINEA = edtCodigoINEA.getText().toString();
         final String embalaje = edtEmbalaje.getText().toString();
         final String urlPhoto = edtUrlPhoto.getText().toString();
+        final String disp = edtDisponibilidad.getText().toString();
 
         if (!nombreProducto.isEmpty() && !descripcionProducto.isEmpty() && !contenidoProducto.isEmpty() && !stock.isEmpty()
             && !tarifaConfidencial.isEmpty() && !tarifaPublicada.isEmpty() && !codigoINEA.isEmpty() && !embalaje.isEmpty()
-        && !urlPhoto.isEmpty()){
+            && !urlPhoto.isEmpty() && !disp.isEmpty())
+        {
             mDialog.show();
             mDialog.setCancelable(false);
             mDialog.setMessage("Registrando producto...");
@@ -175,6 +195,7 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
                     map.put("tarifaConfidencial",tarifaConfidencial);
                     map.put("tarifaPublicada",tarifaPublicada);
                     map.put("codigoINEA",codigoINEA);
+                    map.put("disponibilidad",disp);
                     map.put("embalaje",embalaje);
                     map.put("urlPhoto",urlPhoto);
 

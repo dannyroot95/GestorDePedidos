@@ -1,4 +1,8 @@
-package aukde.food.gestordepedidos.paquetes.Productos.Pizza;
+package aukde.food.gestordepedidos.paquetes.Productos.Default;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,10 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,17 +42,19 @@ import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Utils.CompressorBitmapImage;
 import aukde.food.gestordepedidos.paquetes.Utils.FileUtil;
 import es.dmoral.toasty.Toasty;
 
-public class AgregarProductoPizza extends AppCompatActivity {
+public class Bebidas extends AppCompatActivity {
 
-    Spinner spTamano,spDisponibilidad;
-    private TextInputEditText edtNombreProducto , edtDescripcionProducto , edtContenido , edtStock ,
-            edtTarifaConfidencial, edtTarifaPublicada , edtCodigoINEA , edtTamano;
+    Spinner spTipo , spDisponibilidad;
+    private TextInputEditText edtNombreProducto , edtDescripcionProducto,
+            edtTarifaConfidencial, edtTarifaPublicada , edtCodigoINEA , edtStock ;
     private Button btnRegProducto , btnAbrirGallery;
     private ImageView photoProducto;
+    private EditText beb;
     private File mImageFile ;
     FirebaseAuth mAuth ;
     private final int GALLERY_REQUEST = 11;
@@ -61,19 +63,17 @@ public class AgregarProductoPizza extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_producto_pizza);
-        MiToolbar.Mostrar(this,"Agregar Producto",false);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDialog = new ProgressDialog(this);
+        setContentView(R.layout.activity_bebidas);
+        MiToolbar.Mostrar(this,"Agregar bebidas",false);
         edtDisponibilidad = findViewById(R.id.edtDisp);
         edtDisponibilidad.setEnabled(false);
-        edtTamano = findViewById(R.id.tamano);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        edtStock = findViewById(R.id.Stock);
+        mDialog = new ProgressDialog(this);
         spDisponibilidad = findViewById(R.id.spinnerDispo);
-        edtTamano.setEnabled(false);
         edtUrlPhoto = findViewById(R.id.pathUrlPhoto);
         edtUrlPhoto.setEnabled(false);
         mAuth = FirebaseAuth.getInstance();
@@ -81,23 +81,22 @@ public class AgregarProductoPizza extends AppCompatActivity {
         btnAbrirGallery = findViewById(R.id.btnAbrirGaleria);
         edtNombreProducto = findViewById(R.id.NombreProducto);
         edtDescripcionProducto = findViewById(R.id.DescripcionProducto);
-        edtContenido = findViewById(R.id.ContenidoProducto);
         edtCodigoINEA = findViewById(R.id.CodigoInea);
+        beb = findViewById(R.id.typeBebi);
         //edtCodigoINEA.setEnabled(false);
-        edtStock = findViewById(R.id.Stock);
         edtTarifaConfidencial = findViewById(R.id.TarifaConfidencial);
         edtTarifaPublicada = findViewById(R.id.TarifaPublicada);
         btnRegProducto = findViewById(R.id.btnRegistroProductoDefault);
 
-        spTamano = findViewById(R.id.spinnerTamano);
-        ArrayAdapter<CharSequence> adapterSpinnerTamano = ArrayAdapter.createFromResource(this,R.
-                array.tamano,R.layout.custom_spinner);
-        spTamano.setAdapter(adapterSpinnerTamano);
-        spTamano.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spTipo = findViewById(R.id.spinnerTipo);
+        ArrayAdapter<CharSequence> adapterSpinnerBebidas = ArrayAdapter.createFromResource(this,R.
+                array.bebidas,R.layout.custom_spinner);
+        spTipo.setAdapter(adapterSpinnerBebidas);
+        spTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                edtTamano.setText(parent.getItemAtPosition(position).toString());
-                edtTamano.setTextColor(Color.BLACK);
+               beb.setText(parent.getItemAtPosition(position).toString());
+                beb.setTextColor(Color.BLACK);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -120,11 +119,10 @@ public class AgregarProductoPizza extends AppCompatActivity {
             }
         });
 
-
         btnRegProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AgregarProductoPizza.this,R.style.ThemeOverlay);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Bebidas.this,R.style.ThemeOverlay);
                 builder.setTitle("Advertencia!");
                 builder.setCancelable(false);
                 builder.setIcon(R.drawable.ic_alerta_producto);
@@ -152,31 +150,31 @@ public class AgregarProductoPizza extends AppCompatActivity {
             public void onClick(View v) {
                 final String name = edtNombreProducto.getText().toString();
                 if (name.isEmpty()){
-                    Toasty.info(AgregarProductoPizza.this, "Agrege el nombre del producto", Toast.LENGTH_SHORT,true).show();
+                    Toasty.info(Bebidas.this, "Agrege el nombre del producto", Toast.LENGTH_SHORT,true).show();
                 }
                 else {
                     openGallery();
                 }
             }
         });
+
     }
 
     private void clickRegistro() {
 
         final String nombreProducto = edtNombreProducto.getText().toString();
         final String descripcionProducto = edtDescripcionProducto.getText().toString();
-        final String contenidoProducto = edtContenido.getText().toString();
-        final String stock = edtStock.getText().toString();
         final String tarifaConfidencial = edtTarifaConfidencial.getText().toString();
         final String tarifaPublicada = edtTarifaPublicada.getText().toString();
         final String codigoINEA = edtCodigoINEA.getText().toString();
-        final String tamano = edtTamano.getText().toString();
+        final String bebidaType = beb.getText().toString();
         final String urlPhoto = edtUrlPhoto.getText().toString();
         final String disp = edtDisponibilidad.getText().toString();
+        final String stock = edtStock.getText().toString();
 
-        if (!nombreProducto.isEmpty() && !descripcionProducto.isEmpty() && !contenidoProducto.isEmpty() && !stock.isEmpty()
-                && !tarifaConfidencial.isEmpty() && !tarifaPublicada.isEmpty() && !codigoINEA.isEmpty() && !tamano.isEmpty()
-                && !urlPhoto.isEmpty() && !disp.isEmpty()){
+
+        if (!nombreProducto.isEmpty() && !descripcionProducto.isEmpty() && !tarifaConfidencial.isEmpty()  && !stock.isEmpty()
+                && !tarifaPublicada.isEmpty() && !codigoINEA.isEmpty() && !urlPhoto.isEmpty() && !disp.isEmpty()){
             mDialog.show();
             mDialog.setCancelable(false);
             mDialog.setMessage("Registrando producto...");
@@ -187,19 +185,18 @@ public class AgregarProductoPizza extends AppCompatActivity {
                     Map<String , Object> map = new HashMap<>();
                     map.put("nombreProducto",nombreProducto);
                     map.put("descripcionProducto",descripcionProducto);
-                    map.put("contenidoProducto",contenidoProducto);
-                    map.put("stock",stock);
                     map.put("tarifaConfidencial",tarifaConfidencial);
                     map.put("tarifaPublicada",tarifaPublicada);
-                    map.put("codigoINEA",codigoINEA);
+                    map.put("tipo",bebidaType);
+                    map.put("stock",stock);
                     map.put("disponibilidad",disp);
-                    map.put("tamano",tamano);
+                    map.put("codigoINEA",codigoINEA);
                     map.put("urlPhoto",urlPhoto);
 
-                    mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Productos").push().setValue(map);
+                    mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Bebidas").push().setValue(map);
                     mDialog.dismiss();
                     finish();
-                    Toasty.success(AgregarProductoPizza.this, "Producto Agregado!", Toast.LENGTH_SHORT).show();
+                    Toasty.success(Bebidas.this, "Producto Agregado!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -242,7 +239,7 @@ public class AgregarProductoPizza extends AppCompatActivity {
         mDialog.setCancelable(false);
         mDialog.setMessage("Subiendo foto...");
         byte[] imageByte = CompressorBitmapImage.getImage(this,mImageFile.getPath(),500,500);
-        final StorageReference storage = FirebaseStorage.getInstance().getReference().child("productos").child(mAuth.getUid()).child(edtNombreProducto.getText().toString()+".jpg");
+        final StorageReference storage = FirebaseStorage.getInstance().getReference().child("bebidas").child(mAuth.getUid()).child(edtNombreProducto.getText().toString()+".jpg");
         UploadTask uploadTask = storage.putBytes(imageByte);
         uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -259,11 +256,20 @@ public class AgregarProductoPizza extends AppCompatActivity {
                     });
                 }
                 else {
-                    Toasty.error(AgregarProductoPizza.this, "Error al subir imagen", Toast.LENGTH_SHORT,true).show();
+                    Toasty.error(Bebidas.this, "Error al subir imagen", Toast.LENGTH_SHORT,true).show();
                 }
 
             }
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        String id = getIntent().getStringExtra("keyProduct");
+        Intent intent = new Intent(Bebidas.this, MenuAddProduct.class);
+        intent.putExtra("keyProduct",id);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -440,6 +440,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     }
 
     public void ShowPopupLista(View vista){
+        vibrator.vibrate(tiempo);
         mDialog2.setContentView(R.layout.activity_dialogo_lista_de_administrador);
         TextView txtCerrar;
         Button btnListaAdministrador;
@@ -449,11 +450,12 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnListaAukdeDelivery=mDialog2.findViewById(R.id.btnListaDeEmpleados);
         btnListaProveedor=mDialog2.findViewById(R.id.btnListaDeProveedor);
 
-        txtCerrar=mDialog2.findViewById(R.id.txtClose);
+        txtCerrar = mDialog2.findViewById(R.id.txtClose);
 
         btnListaAdministrador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaAdministrador.class));
             }
         });
@@ -461,6 +463,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnListaAukdeDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaAukdeliver.class));
             }
         });
@@ -468,6 +471,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnListaProveedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaProveedor.class));
             }
         });
@@ -475,6 +479,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         txtCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 mDialog2.dismiss();
             }
         });
@@ -482,11 +487,6 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         mDialog2.show();
 
     }
-
-
-
-
-
 
     @Override
     protected void onResume() {

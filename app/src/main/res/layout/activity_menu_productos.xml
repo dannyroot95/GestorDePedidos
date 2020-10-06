@@ -54,6 +54,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
+            android:id="@+id/btnAddAdicional"
             android:background="@drawable/btn_adicional"
             android:layout_height="230dp"/>
 
@@ -61,6 +62,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
+            android:id="@+id/btnAddBebidas"
             android:background="@drawable/btn_bebidas"
             android:layout_height="230dp"/>
 

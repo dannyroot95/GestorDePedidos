@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".paquetes.Productos.Default.ListaProductosDefault">
+    tools:context=".paquetes.Productos.Default.ListaAdicionales">
 
     <include layout="@layout/toolbar3"/>
 
@@ -13,36 +13,10 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:id="@+id/searchProductoDefault"
-        app:queryHint="Buscar producto..."
+        app:queryHint="Buscar adicional..."
         app:iconifiedByDefault="false"
         android:layout_margin="10dp"
         android:layout_height="?attr/actionBarSize"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom|center"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="150dp"
-            android:text="Adicionales"
-            android:id="@+id/btnListAdicional"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:layout_width="150dp"
-            android:text="Bebidas"
-            android:id="@+id/btnListBebidas"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProductoDefault"
