@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".paquetes.Actividades.Usuarios.DetalleAukdeliver">
+    tools:context=".paquetes.Actividades.Usuarios.EditarAukdeliver">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
-        <com.github.florent37.shapeofview.shapes.ArcView
+
+        <com.github.florent37.shapeofview.shapes.CutCornerView
+            android:id="@+id/clipCorner"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="60dp"
             android:elevation="4dp"
-            app:shape_arc_cropDirection="outside"
-            app:shape_arc_height="20dp"
-            app:shape_arc_position="bottom"
+            android:backgroundTint="#B00000"
+            android:background="#B00000"
+            app:shape_cutCorner_bottomLeftSize="20dp"
+            app:shape_cutCorner_bottomRightSize="20dp"
             >
             <View
                 android:layout_width="match_parent"
@@ -23,44 +26,36 @@
                 android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:src="@drawable/lista_admin"
+                    android:layout_height="50dp"/>
+
                 <TextView
-                    android:layout_width="match_parent"
-                    android:text="Detalle Aukdeliver"
-                    android:layout_marginTop="30dp"
-                    android:textColor="#fff"
-                    android:fontFamily="@font/futura"
+                    android:layout_width="wrap_content"
+                    android:text="Editar Aukdeliver "
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/futura"
+                    android:background="#000"
+                    android:textColor="#fff"
+                    android:layout_marginLeft="2dp"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
-        </com.github.florent37.shapeofview.shapes.ArcView>
-
-        <com.github.florent37.shapeofview.shapes.CircleView
-            android:layout_width="100dp"
-            app:shape_circle_borderColor="#A2A2A2"
-            android:layout_gravity="center"
-            android:elevation="16dp"
-            android:layout_marginTop="-50dp"
-            app:shape_circle_borderWidth="3dp"
-            android:layout_height="100dp">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="match_parent"
-                android:background="#fff"
-                android:id="@+id/photoDetalleAukdeliver"
-                android:src="@drawable/lista_proveedor"
-                android:layout_height="match_parent"/>
-        </com.github.florent37.shapeofview.shapes.CircleView>
+        </com.github.florent37.shapeofview.shapes.CutCornerView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_margin="5dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -70,15 +65,15 @@
                     android:columnCount="1"
                     android:columnOrderPreserved="false"
                     android:rowCount="2"
-                    android:padding="8dp"
+                    android:padding="5dp"
                     android:alignmentMode="alignMargins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <TextView
                         android:layout_width="match_parent"
-                        android:text="Datos de Audeliver"
+                        android:text="Descripción del Aukdeliver"
                         android:textColor="#000"
+                        android:gravity="center"
                         android:textSize="18sp"
                         android:fontFamily="@font/futura"
                         android:textStyle="bold"
@@ -86,20 +81,54 @@
                         android:layout_marginBottom="5dp"
                         android:layout_height="wrap_content"/>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:gravity="center|bottom"
+                        android:layout_height="wrap_content"
+                        >
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_height="200dp"
+                            android:id="@+id/myPhotoAukdeliver"
+                            android:layout_gravity="center"
+                            app:civ_border_color="#E7E7E7"
+                            app:civ_border_width="2dp"
+                            android:backgroundTint="#CACACA"
+                            android:clickable="true"
+                            android:background="@drawable/ic_admin"
+                            android:foreground="@drawable/selecion"
+                            android:layout_width="200dp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/fotodefaultAukdeliver"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="130dp"
+                            android:layout_marginTop="130dp"
+                            android:layout_height="70dp"
+                            android:layout_alignBottom="@id/fotodefaultAukdeliver"
+                            android:layout_marginBottom="0dp"
+                            android:background="@drawable/camera"
+                            android:clickable="true"
+                            android:foreground="@drawable/selecion"
+                            app:civ_border_color="#B4B4B4"
+                            app:civ_border_width="2dp" />
+
+                    </RelativeLayout>
+
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="6dp"
+                        android:backgroundTint="#F4F4F4"
                         app:cardCornerRadius="32dp"
-                        android:layout_margin="8dp"
+                        android:layout_margin="12dp"
                         >
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="10dp">
-
+                            android:padding="16dp">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="vertical"
@@ -107,32 +136,33 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:orientation="horizontal"
+                                    android:gravity="center"
                                     android:layout_height="wrap_content">
                                     <ImageView
-                                        android:layout_width="40dp"
-                                        android:src="@drawable/detalle_nombre"
-                                        android:layout_height="40dp"/>
+                                        android:layout_width="50dp"
+                                        android:src="@drawable/listaadministrador"
+                                        android:layout_height="50dp"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
-                                        android:layout_marginLeft="15dp"
                                         android:text="Nombre : "
-                                        android:layout_gravity="center"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:textColor="#000"
-                                        android:fontFamily="@font/futura"
                                         android:textStyle="bold"
+                                        android:fontFamily="@font/futura"
+                                        android:layout_marginLeft="10dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverNombre"
-                                        android:layout_width="wrap_content"
-                                        android:textSize="16sp"
-                                        android:textColor="#000"
-                                        android:layout_gravity="center"
-                                        android:fontFamily="@font/futura"
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:hint="Nombre"
+                                        android:textSize="14sp"
+                                        android:inputType="textCapSentences"
                                         android:textStyle="bold"
+                                        android:fontFamily="@font/futura"
+                                        android:id="@+id/edtNombreAukde"
                                         android:layout_height="wrap_content"/>
+
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -143,39 +173,35 @@
                                 android:layout_height="wrap_content">
 
                                 <LinearLayout
-                                    android:id="@+id/linearTelefono"
                                     android:layout_width="match_parent"
+                                    android:layout_marginTop="15dp"
                                     android:orientation="horizontal"
-                                    android:layout_marginTop="20dp"
+                                    android:gravity="center"
                                     android:layout_height="wrap_content">
-
                                     <ImageView
-                                        android:layout_width="40dp"
+                                        android:layout_width="50dp"
                                         android:src="@drawable/detalle_apellido"
-                                        android:layout_height="40dp"/>
-
+                                        android:layout_height="50dp"/>
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:text="Apellido : "
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:textColor="#000"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="15dp"
-                                        android:fontFamily="@font/futura"
                                         android:textStyle="bold"
-                                        android:layout_marginRight="5dp"
+                                        android:fontFamily="@font/futura"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"/>
+
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:hint="Apellido"
+                                        android:id="@+id/edtApellidoAukde"
+                                        android:textSize="14sp"
+                                        android:inputType="textCapSentences"
+                                        android:textStyle="bold"
+                                        android:fontFamily="@font/futura"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverApellido"
-                                        android:layout_width="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
-                                        android:fontFamily="@font/futura"
-                                        android:textStyle="bold"
-                                        android:textSize="16sp"
-                                        android:textColor="#000"
-                                        android:layout_height="wrap_content"/>
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -187,42 +213,43 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:orientation="horizontal"
-                                    android:layout_marginTop="20dp"
+                                    android:gravity="center"
+                                    android:layout_marginTop="15dp"
                                     android:layout_height="wrap_content">
-                                    <ImageView
-                                        android:layout_width="40dp"
-                                        android:src="@drawable/detalle_usuario"
-                                        android:layout_height="40dp"/>
 
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:src="@drawable/detalle_usuario"
+                                        android:layout_height="50dp"/>
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:text="Nombre Usuario : "
-                                        android:textSize="16sp"
-                                        android:layout_marginLeft="15dp"
+                                        android:textSize="14sp"
                                         android:textColor="#000"
-                                        android:layout_gravity="center"
-                                        android:fontFamily="@font/futura"
                                         android:textStyle="bold"
-                                        android:layout_marginRight="5dp"
+                                        android:fontFamily="@font/futura"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"/>
+
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:hint="Usuario"
+                                        android:id="@+id/edtUsuarioAukdeliver"
+                                        android:textSize="14sp"
+                                        android:inputType="textCapSentences"
+                                        android:textStyle="bold"
+                                        android:fontFamily="@font/futura"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverUsuario"
-                                        android:layout_width="wrap_content"
-                                        android:textSize="16sp"
-                                        android:textColor="#000"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
-                                        android:fontFamily="@font/futura"
-                                        android:textStyle="bold"
-                                        android:layout_height="wrap_content"/>
                                 </LinearLayout>
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="vertical"
                                 android:layout_height="wrap_content">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:orientation="horizontal"
@@ -230,7 +257,7 @@
                                     android:layout_height="wrap_content">
                                     <ImageView
                                         android:layout_width="40dp"
-                                        android:src="@drawable/detalle_correo"
+                                        android:src="@drawable/lista_correoelectronico"
                                         android:layout_height="40dp"/>
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -244,9 +271,9 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverCorreo"
-                                        android:layout_width="wrap_content"
+                                    <EditText
+                                        android:id="@+id/detalleAukdeCorreo"
+                                        android:layout_width="match_parent"
                                         android:textSize="16sp"
                                         android:textColor="#000"
                                         android:layout_marginLeft="5dp"
@@ -254,8 +281,10 @@
                                         android:fontFamily="@font/futura"
                                         android:textStyle="bold"
                                         android:layout_height="wrap_content"/>
+
                                 </LinearLayout>
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -269,7 +298,7 @@
                                     android:layout_height="wrap_content">
                                     <ImageView
                                         android:layout_width="40dp"
-                                        android:src="@drawable/detalle_dni"
+                                        android:src="@drawable/lista_dni"
                                         android:layout_height="40dp"/>
 
                                     <TextView
@@ -284,9 +313,9 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverDni"
-                                        android:layout_width="wrap_content"
+                                    <EditText
+                                        android:id="@+id/detalleAukdeDni"
+                                        android:layout_width="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="5dp"
                                         android:textSize="16sp"
@@ -296,14 +325,12 @@
                                         android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
-
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:orientation="vertical"
                                 android:layout_height="wrap_content">
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:orientation="horizontal"
@@ -311,7 +338,7 @@
                                     android:layout_height="wrap_content">
                                     <ImageView
                                         android:layout_width="40dp"
-                                        android:src="@drawable/ic_telefono"
+                                        android:src="@drawable/lista_telefono"
                                         android:layout_height="40dp"/>
 
                                     <TextView
@@ -326,9 +353,9 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverTelefono"
-                                        android:layout_width="wrap_content"
+                                    <EditText
+                                        android:id="@+id/detalleAukdeTelefono"
+                                        android:layout_width="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="5dp"
                                         android:textSize="16sp"
@@ -338,9 +365,7 @@
                                         android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
-
                             </LinearLayout>
-
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -352,14 +377,15 @@
                                     android:orientation="horizontal"
                                     android:layout_marginTop="15dp"
                                     android:layout_height="wrap_content">
+
                                     <ImageView
                                         android:layout_width="40dp"
-                                        android:src="@drawable/detalle_categoria_licencia"
+                                        android:src="@drawable/lista_licenciaconducir"
                                         android:layout_height="40dp"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
-                                        android:text="Categoria Licencia : "
+                                        android:text="Categoria Licencia :"
                                         android:textSize="16sp"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="15dp"
@@ -369,9 +395,9 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverCateL"
-                                        android:layout_width="wrap_content"
+                                    <EditText
+                                        android:id="@+id/edtAukdeliverCl"
+                                        android:layout_width="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="5dp"
                                         android:textSize="16sp"
@@ -381,8 +407,8 @@
                                         android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
-
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -412,8 +438,8 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverMarcaMoto"
+                                    <EditText
+                                        android:id="@+id/edtAukdeliverMarcaMoto"
                                         android:layout_width="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="5dp"
@@ -422,6 +448,50 @@
                                         android:fontFamily="@font/futura"
                                         android:textStyle="bold"
                                         android:layout_height="wrap_content"/>
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="vertical"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:src="@drawable/numero_licencia"
+                                        android:layout_height="40dp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:text="Numero de Licencia :"
+                                        android:textSize="16sp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="15dp"
+                                        android:textColor="#000"
+                                        android:fontFamily="@font/futura"
+                                        android:textStyle="bold"
+                                        android:layout_marginRight="5dp"
+                                        android:layout_height="wrap_content"/>
+
+                                    <EditText
+                                        android:id="@+id/edtAukdeliverNumeroLic"
+                                        android:layout_width="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="5dp"
+                                        android:textSize="16sp"
+                                        android:textColor="#000"
+                                        android:fontFamily="@font/futura"
+                                        android:textStyle="bold"
+                                        android:layout_height="wrap_content"/>
+
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -452,49 +522,8 @@
                                         android:layout_marginRight="5dp"
                                         android:layout_height="wrap_content"/>
 
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverPlaca"
-                                        android:layout_width="match_parent"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
-                                        android:textSize="16sp"
-                                        android:textColor="#000"
-                                        android:fontFamily="@font/futura"
-                                        android:textStyle="bold"
-                                        android:layout_height="wrap_content"/>
-                                </LinearLayout>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:orientation="vertical"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:orientation="horizontal"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageView
-                                        android:layout_width="40dp"
-                                        android:src="@drawable/numero_licencia"
-                                        android:layout_height="40dp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:text="Numero de Licencia :"
-                                        android:textSize="16sp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="15dp"
-                                        android:textColor="#000"
-                                        android:fontFamily="@font/futura"
-                                        android:textStyle="bold"
-                                        android:layout_marginRight="5dp"
-                                        android:layout_height="wrap_content"/>
-
-                                    <TextView
-                                        android:id="@+id/detalleAukdeliverNumeroLic"
+                                    <EditText
+                                        android:id="@+id/edtAukdeliverPlaca"
                                         android:layout_width="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_marginLeft="5dp"
@@ -505,24 +534,19 @@
                                         android:layout_height="wrap_content"/>
 
                                 </LinearLayout>
-
                             </LinearLayout>
-
 
 
 
                             <Button
+                                android:layout_marginTop="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
                                 android:text="Editar Producto"
                                 android:textColor="#ffffff"
                                 android:background="@drawable/redondo"
                                 android:id="@+id/btnEditarAukdeliver"
                                 android:backgroundTint="@drawable/btn_background_negro"/>
-
-
-
 
                         </LinearLayout>
 
@@ -530,18 +554,96 @@
                     </androidx.cardview.widget.CardView>
 
 
-                </GridLayout>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:cardElevation="6dp"
+                        android:backgroundTint="#F4F4F4"
+                        app:cardCornerRadius="32dp"
+                        android:layout_margin="5dp">
 
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:src="@drawable/repartidor"
+                                    android:layout_height="20dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:id="@+id/txtEditarRepartidor"
+                                    android:textColor="#5bbd00"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:textStyle="bold"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Cambiar : "
+                                    android:textSize="14sp"
+                                    android:layout_gravity="center"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/futura"
+                                    android:textColor="#000"
+                                    android:layout_height="wrap_content"/>
+
+                                <Spinner
+                                    android:id="@+id/spinnerEditarAukdeliver"
+                                    android:spinnerMode="dialog"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:orientation="horizontal"
+                                android:layout_height="0dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="14sp"
+                                    android:text="ID repartidor : "
+                                    android:textColor="#000000"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textSize="12sp"
+                                    android:id="@+id/txtIdAukdeliver"
+                                    android:textColor="#5bbd00"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                </GridLayout>
 
 
             </ScrollView>
 
-
-
         </LinearLayout>
 
-
-
     </LinearLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

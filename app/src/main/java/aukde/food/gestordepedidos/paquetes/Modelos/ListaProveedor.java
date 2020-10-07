@@ -13,7 +13,7 @@ public class ListaProveedor implements Serializable {
     String telefono;
     String direccion;
     String categoria;
-    String nombreempresa;
+    String nombre_empresa;
     String ruc;
     String email;
     String latitud;
@@ -23,7 +23,7 @@ public class ListaProveedor implements Serializable {
     public ListaProveedor(){
 
     }
-    public ListaProveedor(String id, String nombres, String apellidos, String username, String dni, String telefono, String direccion, String categoria, String nombreempresa, String ruc, String email, String latitud, String longitud, String foto) {
+    public ListaProveedor(String id, String nombres, String apellidos, String username, String dni, String telefono, String direccion, String categoria, String nombre_empresa, String ruc, String email, String latitud, String longitud, String foto) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -32,7 +32,7 @@ public class ListaProveedor implements Serializable {
         this.telefono = telefono;
         this.direccion = direccion;
         this.categoria = categoria;
-        this.nombreempresa = nombreempresa;
+        this.nombre_empresa = nombre_empresa;
         this.ruc = ruc;
         this.email = email;
         this.latitud = latitud;
@@ -113,12 +113,12 @@ public class ListaProveedor implements Serializable {
         this.categoria = categoria;
     }
 
-    public String getNombreEmpresa() {
-        return nombreempresa;
+    public String getNombre_Empresa() {
+        return nombre_empresa;
     }
 
-    public void setNombreEmpresa(String nombreempresa) {
-        this.nombreempresa = nombreempresa;
+    public void setNombre_Empresa(String nombre_empresa) {
+        this.nombre_empresa = nombre_empresa;
     }
 
     public String getRuc() {

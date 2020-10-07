@@ -18,8 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.DetalleAdministrador;
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.DetalleAdministrador;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaAdministrador;
 import de.hdodenhof.circleimageview.CircleImageView;
 

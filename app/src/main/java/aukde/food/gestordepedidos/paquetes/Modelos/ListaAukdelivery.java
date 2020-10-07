@@ -10,10 +10,10 @@ public class ListaAukdelivery implements Serializable {
     String username;
     String dni;
     String telefono;
-    String marcademoto;
+    String marca_de_moto;
     String placa;
     String categoria_licencia;
-    String numero_Licencia;
+    String numero_licencia;
     String email;
     String soat;
     String foto;
@@ -21,17 +21,17 @@ public class ListaAukdelivery implements Serializable {
     public ListaAukdelivery() {
 
     }
-    public ListaAukdelivery(String id, String nombres, String apellidos, String username, String dni, String telefono, String marcademoto, String placa, String categoria_licencia, String numero_Licencia, String email, String soat, String foto) {
+    public ListaAukdelivery(String id, String nombres, String apellidos, String username, String dni, String telefono, String marca_de_moto, String placa, String categoria_licencia, String numero_licencia, String email, String soat, String foto) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.username = username;
         this.dni = dni;
         this.telefono = telefono;
-        this.marcademoto = marcademoto;
+        this.marca_de_moto = marca_de_moto;
         this.placa = placa;
         this.categoria_licencia = categoria_licencia;
-        this.numero_Licencia = numero_Licencia;
+        this.numero_licencia = numero_licencia;
         this.email = email;
         this.soat = soat;
         this.foto = foto;
@@ -85,12 +85,12 @@ public class ListaAukdelivery implements Serializable {
         this.telefono = telefono;
     }
 
-    public String getMarcademoto() {
-        return marcademoto;
+    public String getMarca_de_moto() {
+        return marca_de_moto;
     }
 
-    public void setMarcademoto(String marcademoto) {
-        this.marcademoto = marcademoto;
+    public void setMarca_de_moto(String marca_de_moto) {
+        this.marca_de_moto = marca_de_moto;
     }
 
     public String getPlaca() {
@@ -110,11 +110,11 @@ public class ListaAukdelivery implements Serializable {
     }
 
     public String getNumero_Licencia() {
-        return numero_Licencia;
+        return numero_licencia;
     }
 
-    public void setNumero_Licencia(String numero_Licencia) {
-        this.numero_Licencia = numero_Licencia;
+    public void setNumero_Licencia(String numero_licencia) {
+        this.numero_licencia = numero_licencia;
     }
 
     public String getEmail() {

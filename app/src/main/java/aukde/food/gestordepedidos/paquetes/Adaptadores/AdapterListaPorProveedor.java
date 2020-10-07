@@ -10,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.DetalleProveedor;
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.DetalleProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaProveedor;
 import de.hdodenhof.circleimageview.CircleImageView;
 

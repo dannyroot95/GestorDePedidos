@@ -195,6 +195,26 @@
             android:name=".paquetes.Actividades.Logins.RecuperarProveedor"
             android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.DetalleAdministrador"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.DetalleAukdeliver"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.DetalleProveedor"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.EditarAdministrador"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.EditarAukdeliver"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Actividades.Usuarios.EditarProveedor"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".paquetes.Actividades.Inicio"
             android:screenOrientation="portrait"

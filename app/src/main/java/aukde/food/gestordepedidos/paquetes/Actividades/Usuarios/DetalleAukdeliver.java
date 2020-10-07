@@ -1,5 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Actividades.Usuarios;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -13,8 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,7 +31,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-public class Detalle_Aukdeliver extends AppCompatActivity {
+public class DetalleAukdeliver extends AppCompatActivity {
 
     TextView txtNombreAukdeliver , txtApellidoAukdeliver , txtNombreUsuarioAukdeliver ,
             txtDniAukdeliver , txtTelefonoAukdeliver , txtCorreoAukdeliver ,txtCategoriaLicencia ;
@@ -45,7 +50,7 @@ public class Detalle_Aukdeliver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppThemeRedCake);
+        setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_aukdeliver);
 
         tokenProvider = new TokenProvider();
@@ -101,10 +106,38 @@ public class Detalle_Aukdeliver extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                Toasty.success(Detalle_Aukdeliver.this, "Activity", Toast.LENGTH_SHORT,true).show();
+                getDataUser();
             }
         });
 
+    }
+
+    private void getDataUser(){
+
+        Query mReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").orderByChild("nombres").equalTo(txtNombreAukdeliver.getText().toString());
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot childsnapsot : dataSnapshot.getChildren()){
+                        String name = childsnapsot.getKey();
+                        Intent intent = new Intent(DetalleAukdeliver.this, EditarAukdeliver.class);
+                        intent.putExtra("key",name);
+                        startActivity(intent);
+                    }
+
+                }
+                else {
+                    Toast.makeText(DetalleAukdeliver.this, "error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

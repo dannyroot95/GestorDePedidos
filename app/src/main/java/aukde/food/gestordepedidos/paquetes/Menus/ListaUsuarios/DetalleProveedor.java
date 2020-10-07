@@ -1,6 +1,7 @@
 package aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -14,13 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.EditarAdministrador;
+import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.EditarProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaProveedor;
 import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
@@ -78,7 +85,7 @@ public class DetalleProveedor extends AppCompatActivity {
         arrayList.add(ProveedorDefault.getEmail());
         arrayList.add(ProveedorDefault.getDni());
         arrayList.add(ProveedorDefault.getTelefono());
-        arrayList.add(ProveedorDefault.getNombreEmpresa());
+        arrayList.add(ProveedorDefault.getNombre_Empresa());
         arrayList.add(ProveedorDefault.getRuc());
 
 
@@ -105,7 +112,36 @@ public class DetalleProveedor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                Toasty.success(aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.DetalleProveedor.this, "Activity", Toast.LENGTH_SHORT,true).show();
+                getDataUser();
+            }
+        });
+
+    }
+
+    private void getDataUser(){
+
+        Query mReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").orderByChild("nombres").equalTo(txtNombreProveedor.getText().toString());
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot childsnapsot : dataSnapshot.getChildren()){
+                        String name = childsnapsot.getKey();
+                        Intent intent = new Intent(DetalleProveedor.this, EditarProveedor.class);
+                        intent.putExtra("key",name);
+                        startActivity(intent);
+                    }
+
+                }
+                else {
+                    Toast.makeText(DetalleProveedor.this, "error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 

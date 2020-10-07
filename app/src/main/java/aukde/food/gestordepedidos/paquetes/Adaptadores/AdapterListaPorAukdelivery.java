@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.Detalle_Aukdeliver;
+import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.DetalleAukdeliver;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaAukdelivery;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,7 +87,7 @@ public class AdapterListaPorAukdelivery extends RecyclerView.Adapter<AdapterList
                     final long tiempo = 100;
                     vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(tiempo);
-                    Intent intent = new Intent(v.getContext(), Detalle_Aukdeliver.class);
+                    Intent intent = new Intent(v.getContext(), DetalleAukdeliver.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("key",ls);
                     intent.putExtras(bundle);

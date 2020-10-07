@@ -22,82 +22,78 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterListaPorAdministrador;
+import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterListaPorProveedor;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
-import aukde.food.gestordepedidos.paquetes.Modelos.ListaAdministrador;
+import aukde.food.gestordepedidos.paquetes.Modelos.ListaProveedor;
 
-public class Lista_de_Administrador extends AppCompatActivity {
+public class ListaDeProveedor extends AppCompatActivity {
 
     private ProgressDialog mDialogActualizeData;
     DatabaseReference mDatabaseReference;
-    RecyclerView recyclerViewPedidos;
-    SearchView searchViewUsuarios;
+    RecyclerView recyclerViewProveedor;
+    SearchView searchViewUsuariosProveedor;
     LinearLayoutManager linearLayoutManager;
-    AdapterListaPorAdministrador adapterListaPorAdministrador;
+    AdapterListaPorProveedor adapterListaPorProveedor;
 
-    ArrayList<ListaAdministrador> listAdministrador;
+    ArrayList<ListaProveedor> listUsuariosProveedor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppThemeDark);
-        setContentView(R.layout.activity_lista_de_administrador);
-        MiToolbar.Mostrar(this,"Lista de Administrador",false);
+        setContentView(R.layout.activity_lista_de_proveedor);
+
+        MiToolbar.Mostrar(this,"Lista de Proveedor",false);
         mDialogActualizeData = new ProgressDialog(this,R.style.MyAlertDialogData);
         mDialogActualizeData.setCancelable(false);
         mDialogActualizeData.show();
         mDialogActualizeData.setContentView(R.layout.dialog_data);
         mDialogActualizeData.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-
-        //mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador");
-
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios");
 
-        recyclerViewPedidos = findViewById(R.id.recyclerListaAdministrador);
-        searchViewUsuarios = findViewById(R.id.searchListaAdministrador);
+        recyclerViewProveedor = findViewById(R.id.recyclerListaProveedor);
+        searchViewUsuariosProveedor = findViewById(R.id.searchListaProveedor);
 
-
-        searchViewUsuarios.setBackgroundColor(Color.WHITE);
+        searchViewUsuariosProveedor.setBackgroundColor(Color.WHITE);
         linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewPedidos.setLayoutManager(linearLayoutManager);
-        listAdministrador = new ArrayList<>();
-        adapterListaPorAdministrador = new AdapterListaPorAdministrador(listAdministrador);
-        recyclerViewPedidos.setAdapter(adapterListaPorAdministrador);
+        recyclerViewProveedor.setLayoutManager(linearLayoutManager);
+        listUsuariosProveedor = new ArrayList<>();
+        adapterListaPorProveedor = new AdapterListaPorProveedor(listUsuariosProveedor);
+        recyclerViewProveedor.setAdapter(adapterListaPorProveedor);
 
-        String [] users = {"Administrador"};
-        for(final String datos:users){
+        String [] usersEmpleado = {"Proveedor"};
+        for(final String datos:usersEmpleado){
 
             mDatabaseReference.child(datos).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
-                        listAdministrador.clear();
+                        listUsuariosProveedor.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            ListaAdministrador pd = snapshot.getValue(ListaAdministrador.class);
-                            listAdministrador.add(pd);
+                            ListaProveedor pd = snapshot.getValue(ListaProveedor.class);
+                            listUsuariosProveedor.add(pd);
                         }
-                        Collections.reverse(listAdministrador);
-                        adapterListaPorAdministrador.notifyDataSetChanged();
+                        Collections.reverse(listUsuariosProveedor);
+                        adapterListaPorProveedor.notifyDataSetChanged();
                         mDialogActualizeData.dismiss();
                     }
                     else {
-                        Toast.makeText(Lista_de_Administrador.this, "Sin Usuarios", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListaDeProveedor.this, "Sin Usuarios", Toast.LENGTH_SHORT).show();
                         mDialogActualizeData.dismiss();
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(Lista_de_Administrador.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaDeProveedor.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
 
-
-        searchViewUsuarios.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewUsuariosProveedor.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -114,8 +110,8 @@ public class Lista_de_Administrador extends AppCompatActivity {
     }
 
     private void buscar(String texto) {
-        ArrayList<ListaAdministrador> lista = new ArrayList<>();
-        for(ListaAdministrador object : listAdministrador){
+        ArrayList<ListaProveedor> lista = new ArrayList<>();
+        for(ListaProveedor object : listUsuariosProveedor){
             if (object.getNombres().toLowerCase().contains(texto.toLowerCase()) || object.getDni().toLowerCase().contains(texto.toLowerCase())
                     || object.getTelefono().toLowerCase().contains(texto.toLowerCase()))
             {
@@ -124,8 +120,9 @@ public class Lista_de_Administrador extends AppCompatActivity {
             else {
             }
         }
-        AdapterListaPorAdministrador adapter = new AdapterListaPorAdministrador(lista);
-        recyclerViewPedidos.setAdapter(adapter);
+        AdapterListaPorProveedor adapter = new AdapterListaPorProveedor(lista);
+        recyclerViewProveedor.setAdapter(adapter);
+
     }
 
     @Override
@@ -138,7 +135,7 @@ public class Lista_de_Administrador extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //NavUtils.navigateUpFromSameTask(this);
-        startActivity(new Intent(Lista_de_Administrador.this, MenuAdmin.class));
+        startActivity(new Intent(ListaDeProveedor.this, MenuAdmin.class));
         finish();
     }
 
@@ -146,4 +143,5 @@ public class Lista_de_Administrador extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
 }

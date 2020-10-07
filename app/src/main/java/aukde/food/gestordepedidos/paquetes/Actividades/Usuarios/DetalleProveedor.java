@@ -26,7 +26,7 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-public class Detalle_Proveedor extends AppCompatActivity {
+public class DetalleProveedor extends AppCompatActivity {
 
     TextView txtNombreProveedor , txtApellidoProveedor , txtNombreUsuarioProveedor ,
             txtDniProveedor , txtTelefonoProveedor , txtCorreoProveedor ,txtRucProveedor, txtNombreEmpresaProveedor ;
@@ -82,7 +82,7 @@ public class Detalle_Proveedor extends AppCompatActivity {
         arrayList.add(ProveedorDefault.getEmail());
         arrayList.add(ProveedorDefault.getDni());
         arrayList.add(ProveedorDefault.getTelefono());
-        arrayList.add(ProveedorDefault.getNombreEmpresa());
+        arrayList.add(ProveedorDefault.getNombre_Empresa());
         arrayList.add(ProveedorDefault.getRuc());
 
 
@@ -109,7 +109,7 @@ public class Detalle_Proveedor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                Toasty.success(Detalle_Proveedor.this, "Activity", Toast.LENGTH_SHORT,true).show();
+                Toasty.success(DetalleProveedor.this, "Activity", Toast.LENGTH_SHORT,true).show();
             }
         });
 

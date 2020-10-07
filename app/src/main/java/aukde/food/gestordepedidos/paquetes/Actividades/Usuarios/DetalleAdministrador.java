@@ -1,5 +1,6 @@
 package aukde.food.gestordepedidos.paquetes.Actividades.Usuarios;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -9,12 +10,20 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,12 +35,14 @@ import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-public class Detalle_Administrador extends AppCompatActivity {
+public class DetalleAdministrador extends AppCompatActivity {
 
-    TextView txtNombre_detalle,txtApellido_detalle,txtNombre_usuario_detalle,txtCorreo_electronico_detalle,txtDni_detalle,
-            txtTele_detalle;
     Button btnEditar_admin_detalle;
-    CircleImageView clrPhotoDetalleAdmin;
+    ImageView clrPhotoDetalleAdmin;
+    EditText txtNombre_detalle;
+    TextInputEditText txtApellido_detalle ,
+            txtCorreo_electronico_detalle,
+            txtDni_detalle, txtTele_detalle;
 
 
     FirebaseAuth mAuth;
@@ -45,18 +56,20 @@ public class Detalle_Administrador extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppThemeRedCake);
+        setTheme(R.style.AppThemeDark);
         setContentView(R.layout.activity_detalle_administrador);
 
         txtNombre_detalle=findViewById(R.id.detalleAdminNombre);
+        txtNombre_detalle.setEnabled(false);
         txtApellido_detalle=findViewById(R.id.detalleAdminApellido);
-        //txtNombre_usuario_detalle=findViewById(R.id.detalleAdminUsuario);
+        txtApellido_detalle.setEnabled(false);
         txtCorreo_electronico_detalle=findViewById(R.id.detalleAdminCorreo);
+        txtCorreo_electronico_detalle.setEnabled(false);
         txtDni_detalle=findViewById(R.id.detalleAdminDni);
+        txtDni_detalle.setEnabled(false);
         txtTele_detalle=findViewById(R.id.detalleAdminTelefono);
-
+        txtTele_detalle.setEnabled(false);
         clrPhotoDetalleAdmin=findViewById(R.id.photoDetalleAdmin);
-
 
         btnEditar_admin_detalle=findViewById(R.id.btnEditarAdmin);
 
@@ -98,9 +111,38 @@ public class Detalle_Administrador extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
-                Toasty.success(Detalle_Administrador.this, "Activity", Toast.LENGTH_SHORT,true).show();
+                getDataUser();
             }
         });
+    }
+
+    private void getDataUser(){
+
+        Query mReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").orderByChild("nombres").equalTo(txtNombre_detalle.getText().toString());
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot childsnapsot : dataSnapshot.getChildren()){
+                        String name = childsnapsot.getKey();
+                        Intent intent = new Intent(DetalleAdministrador.this, EditarAdministrador.class);
+                        intent.putExtra("key",name);
+                        startActivity(intent);
+                    }
+
+                }
+                else {
+                    Toast.makeText(DetalleAdministrador.this, "error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override

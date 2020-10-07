@@ -27,7 +27,7 @@ import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaAukdelivery;
 
-public class Lista_de_AukdeDelivery extends AppCompatActivity {
+public class ListaDeAukdeliver extends AppCompatActivity {
 
     private ProgressDialog mDialogActualizeData;
     DatabaseReference mDatabaseReference;
@@ -82,14 +82,14 @@ public class Lista_de_AukdeDelivery extends AppCompatActivity {
                         mDialogActualizeData.dismiss();
                     }
                     else {
-                        Toast.makeText(Lista_de_AukdeDelivery.this, "Sin Usuarios", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListaDeAukdeliver.this, "Sin Usuarios", Toast.LENGTH_SHORT).show();
                         mDialogActualizeData.dismiss();
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(Lista_de_AukdeDelivery.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaDeAukdeliver.this, "Error de base de datos", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -139,7 +139,7 @@ public class Lista_de_AukdeDelivery extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //NavUtils.navigateUpFromSameTask(this);
-        startActivity(new Intent(Lista_de_AukdeDelivery.this, MenuAdmin.class));
+        startActivity(new Intent(ListaDeAukdeliver.this, MenuAdmin.class));
         finish();
     }
 
