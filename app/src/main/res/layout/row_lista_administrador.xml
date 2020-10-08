@@ -33,7 +33,6 @@
                     app:civ_border_width="2dp"
                     android:layout_gravity="center"
                     android:clickable="true"
-                    android:onClick="show_popup"
                     android:background="@drawable/ic_admin"
                     android:foreground="@drawable/selecion"
                     android:layout_alignParentRight="true"

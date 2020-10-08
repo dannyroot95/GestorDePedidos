@@ -2,19 +2,26 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Usuarios;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +51,7 @@ public class DetalleAdministrador extends AppCompatActivity {
             txtCorreo_electronico_detalle,
             txtDni_detalle, txtTele_detalle;
 
+    LinearLayout mLinearEditarAdmin;
 
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
@@ -52,7 +60,9 @@ public class DetalleAdministrador extends AppCompatActivity {
     long tiempo = 100;
     private NotificationProvider notificationProvider;
     private TokenProvider tokenProvider;
+    private FloatingActionButton mFloat;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +80,11 @@ public class DetalleAdministrador extends AppCompatActivity {
         txtTele_detalle=findViewById(R.id.detalleAdminTelefono);
         txtTele_detalle.setEnabled(false);
         clrPhotoDetalleAdmin=findViewById(R.id.photoDetalleAdmin);
-
+        mFloat = findViewById(R.id.btnEditarPerfilAdmin);
+        mFloat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.quantum_googgreen)));
+        mFloat.setVisibility(View.INVISIBLE);
         btnEditar_admin_detalle=findViewById(R.id.btnEditarAdmin);
+        mLinearEditarAdmin = findViewById(R.id.linearEditarPerfilAdmin);
 
         tokenProvider = new TokenProvider();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
@@ -107,13 +120,29 @@ public class DetalleAdministrador extends AppCompatActivity {
         txtCorreo_electronico_detalle.setText(arrayList.get(4));
         txtTele_detalle.setText(arrayList.get(5));
 
+        mFloat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toasty.success(DetalleAdministrador.this, "Acción", Toast.LENGTH_SHORT).show();
+                mFloat.setVisibility(View.INVISIBLE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
+                mLinearEditarAdmin.setLayoutParams(params);
+            }
+        });
+
         btnEditar_admin_detalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
-                getDataUser();
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
+                mLinearEditarAdmin.setLayoutParams(params);
+                focusableEditText();
+                //getDataUser();
+                mFloat.setVisibility(View.VISIBLE);
+
             }
         });
+
     }
 
     private void getDataUser(){
@@ -143,6 +172,15 @@ public class DetalleAdministrador extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void focusableEditText(){
+        txtNombre_detalle.setEnabled(true);
+        txtApellido_detalle.setEnabled(true);
+        txtCorreo_electronico_detalle.setEnabled(true);
+        txtDni_detalle.setEnabled(true);
+        txtTele_detalle.setEnabled(true);
+        txtNombre_detalle.requestFocus();
     }
 
     @Override
