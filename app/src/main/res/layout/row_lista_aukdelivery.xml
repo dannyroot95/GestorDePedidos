@@ -68,6 +68,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idNombreAukdeDelivery"
                         android:layout_height="wrap_content"/>
 
@@ -91,6 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idApellidoAukdeDelivery"
                         android:layout_height="wrap_content"/>
 
@@ -114,6 +116,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idUsuarioNombreAukdeDelivery"
                         android:layout_height="wrap_content"/>
 
@@ -135,6 +138,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idTelefonoAukdeDelivery"
                         android:layout_height="wrap_content"/>
 
@@ -159,6 +163,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idEmailAukdeDelivery"
                         android:layout_height="wrap_content"/>
 
@@ -184,6 +189,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:visibility="visible"
+                        android:fontFamily="@font/futura"
                         android:id="@+id/idCategoriaLicAukdeliver"
                         android:layout_height="wrap_content"/>
 

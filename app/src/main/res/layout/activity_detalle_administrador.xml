@@ -60,6 +60,7 @@
             android:layout_margin="5dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_height="match_parent">
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -253,17 +254,6 @@
                                 android:id="@+id/btnEditarAdmin"
                                 android:backgroundTint="@drawable/btn_background_negro"/>
                             </LinearLayout>
-
-                            <Button
-                                android:layout_width="match_parent"
-                                android:layout_weight="1"
-                                android:layout_height="wrap_content"
-                                android:text="Ver reportes"
-                                android:layout_marginLeft="5dp"
-                                android:textColor="#ffffff"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/redondo"
-                                android:backgroundTint="@drawable/btn_background_negro"/>
                         </LinearLayout>
                         </LinearLayout>
 

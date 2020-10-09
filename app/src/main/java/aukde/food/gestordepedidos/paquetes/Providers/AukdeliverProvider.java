@@ -25,10 +25,10 @@ public class AukdeliverProvider {
         map.put("username",aukdeliver.getNombreUsuario());
         map.put("dni",aukdeliver.getDni());
         map.put("telefono",aukdeliver.getTelefono());
-        map.put("marca de moto",aukdeliver.getMarcaDeMoto());
+        map.put("marca_de_moto",aukdeliver.getMarcaDeMoto());
         map.put("placa",aukdeliver.getPlaca());
         map.put("categoria_licencia",aukdeliver.getCategoriaLic());
-        map.put("numero licencia",aukdeliver.getNumLicencia());
+        map.put("numero_licencia",aukdeliver.getNumLicencia());
         map.put("email",aukdeliver.getEmail());
         map.put("soat",aukdeliver.getSoat());
 

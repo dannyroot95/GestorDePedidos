@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +36,12 @@ import es.dmoral.toasty.Toasty;
 
 public class DetalleAukdeliver extends AppCompatActivity {
 
-    TextView txtNombreAukdeliver , txtApellidoAukdeliver , txtNombreUsuarioAukdeliver ,
+    TextInputEditText  txtApellidoAukdeliver , txtNombreUsuarioAukdeliver ,
             txtDniAukdeliver , txtTelefonoAukdeliver , txtCorreoAukdeliver ,txtCategoriaLicencia ;
 
-    CircleImageView clrPhotoAukdeliver;
+    ImageView clrPhotoAukdeliver;
     Button BtnEditarAukdeliver;
+    EditText txtNombreAukdeliver;
 
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;

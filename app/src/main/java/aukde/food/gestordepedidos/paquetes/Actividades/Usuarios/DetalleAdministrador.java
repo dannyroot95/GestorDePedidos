@@ -34,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaAdministrador;
@@ -58,8 +60,6 @@ public class DetalleAdministrador extends AppCompatActivity {
     private ProgressDialog mDialog;
     private Vibrator vibrator;
     long tiempo = 100;
-    private NotificationProvider notificationProvider;
-    private TokenProvider tokenProvider;
     private FloatingActionButton mFloat;
 
     @SuppressLint("RestrictedApi")
@@ -86,13 +86,10 @@ public class DetalleAdministrador extends AppCompatActivity {
         btnEditar_admin_detalle=findViewById(R.id.btnEditarAdmin);
         mLinearEditarAdmin = findViewById(R.id.linearEditarPerfilAdmin);
 
-        tokenProvider = new TokenProvider();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        notificationProvider = new NotificationProvider();
-
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -123,10 +120,11 @@ public class DetalleAdministrador extends AppCompatActivity {
         mFloat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toasty.success(DetalleAdministrador.this, "Acción", Toast.LENGTH_SHORT).show();
                 mFloat.setVisibility(View.INVISIBLE);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
                 mLinearEditarAdmin.setLayoutParams(params);
+                updateData();
+                noFocusableEditText();
             }
         });
 
@@ -137,7 +135,6 @@ public class DetalleAdministrador extends AppCompatActivity {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
                 mLinearEditarAdmin.setLayoutParams(params);
                 focusableEditText();
-                //getDataUser();
                 mFloat.setVisibility(View.VISIBLE);
 
             }
@@ -145,42 +142,51 @@ public class DetalleAdministrador extends AppCompatActivity {
 
     }
 
-    private void getDataUser(){
+    private void updateData(){
 
-        Query mReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador").orderByChild("nombres").equalTo(txtNombre_detalle.getText().toString());
-        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDialog.show();
+        mDialog.setMessage("Actualizando datos...");
+        mDialog.setCancelable(false);
+
+        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Administrador")
+                .orderByChild("nombres").equalTo(txtNombre_detalle.getText().toString());
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot childsnapsot : dataSnapshot.getChildren()){
-                        String name = childsnapsot.getKey();
-                        Intent intent = new Intent(DetalleAdministrador.this, EditarAdministrador.class);
-                        intent.putExtra("key",name);
-                        startActivity(intent);
-                    }
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nombres", txtNombre_detalle.getText().toString());
+                    map.put("apellidos", txtApellido_detalle.getText().toString());
+                    map.put("dni", txtDni_detalle.getText().toString());
+                    map.put("telefono", txtTele_detalle.getText().toString());
 
+                    mDatabase.child("Usuarios").child("Administrador").child(key).updateChildren(map);
+                    mDialog.dismiss();
+                    Toasty.success(DetalleAdministrador.this, "Datos Actualizados!", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Toast.makeText(DetalleAdministrador.this, "error", Toast.LENGTH_SHORT).show();
-                }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toasty.error(DetalleAdministrador.this, "Error al actualizar datos!", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     private void focusableEditText(){
-        txtNombre_detalle.setEnabled(true);
         txtApellido_detalle.setEnabled(true);
-        txtCorreo_electronico_detalle.setEnabled(true);
         txtDni_detalle.setEnabled(true);
         txtTele_detalle.setEnabled(true);
         txtNombre_detalle.requestFocus();
+    }
+
+    private void noFocusableEditText(){
+        txtApellido_detalle.setEnabled(false);
+        txtDni_detalle.setEnabled(false);
+        txtTele_detalle.setEnabled(false);
     }
 
     @Override

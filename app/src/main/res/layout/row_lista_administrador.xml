@@ -68,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:visibility="visible"
                     android:id="@+id/idNombre"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -91,6 +92,7 @@
                     android:layout_width="wrap_content"
                     android:visibility="visible"
                     android:id="@+id/idApellido"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -113,6 +115,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
+                    android:fontFamily="@font/futura"
                     android:id="@+id/idDni"
                     android:layout_height="wrap_content"/>
 
@@ -135,6 +138,7 @@
                     android:layout_width="wrap_content"
                     android:visibility="visible"
                     android:id="@+id/idEmail"
+                    android:fontFamily="@font/futura"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -158,6 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:visibility="visible"
+                    android:fontFamily="@font/futura"
                     android:id="@+id/idTelefono"
                     android:layout_height="wrap_content"/>
 
