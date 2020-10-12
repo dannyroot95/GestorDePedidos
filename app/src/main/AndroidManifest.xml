@@ -28,24 +28,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Reportes.ReportePedidoPorLlamada"></activity>
-        <activity android:name=".paquetes.Productos.Default.DetalleBebidas" />
-        <activity android:name=".paquetes.Productos.Default.DetalleAdicionales" />
-        <activity android:name=".paquetes.Productos.Default.ListaBebidas" />
-        <activity android:name=".paquetes.Productos.Default.ListaAdicionales" />
-        <activity android:name=".paquetes.Productos.Default.Bebidas" />
-        <activity android:name=".paquetes.Productos.Default.Adicionales" />
+        <activity android:name=".paquetes.Productos.Solicitud.FichaDeSolicitud"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".paquetes.Reportes.ReportePedidoPorLlamada"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.DetalleBebidas"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.DetalleAdicionales"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.ListaBebidas"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.ListaAdicionales"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.Bebidas"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Default.Adicionales"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Reportes.ReporteAukdeliver"
             android:screenOrientation="portrait" />
-        <activity android:name=".paquetes.Productos.Tortas.AgregarProductoTortas" />
-        <activity android:name=".paquetes.Productos.Pollos.AgregarProductoPollos" />
+        <activity android:name=".paquetes.Productos.Tortas.AgregarProductoTortas"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".paquetes.Productos.Pollos.AgregarProductoPollos"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Menus.Perfiles.PerfilAdmin"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin" />
+            android:parentActivityName=".paquetes.Menus.MenuAdmin"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Menus.Perfiles.PerfilAukdeliver"
-            android:parentActivityName=".paquetes.Menus.MenuAukdeliver" />
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".paquetes.Servicios.JobServiceMonitoreo"

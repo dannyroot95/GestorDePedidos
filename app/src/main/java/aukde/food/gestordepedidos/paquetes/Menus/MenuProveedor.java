@@ -42,6 +42,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
 import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
+import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.FichaDeSolicitud;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,7 +64,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private static final int GALLERY = 1;
     long tiempo = 100;
     private CircleImageView foto;
-    private Button addProducto , listProducto;
+    private Button addProducto , listProducto , solicitarDelivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_proveedor);
         mAuthProviders = new AuthProviders();
+        solicitarDelivery = findViewById(R.id.btnSolicitarDelivery);
         mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
         foto = findViewById(R.id.fotodefault);
@@ -115,6 +117,14 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuProveedor.this, ListaProductosDefault.class));
+            }
+        });
+
+        solicitarDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuProveedor.this, FichaDeSolicitud.class));
             }
         });
 
