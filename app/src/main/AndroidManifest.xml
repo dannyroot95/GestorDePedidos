@@ -28,7 +28,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Productos.Default.DetalleBebidas"></activity>
+        <activity android:name=".paquetes.Reportes.ReportePedidoPorLlamada"></activity>
+        <activity android:name=".paquetes.Productos.Default.DetalleBebidas" />
         <activity android:name=".paquetes.Productos.Default.DetalleAdicionales" />
         <activity android:name=".paquetes.Productos.Default.ListaBebidas" />
         <activity android:name=".paquetes.Productos.Default.ListaAdicionales" />
@@ -195,7 +196,6 @@
             android:name=".paquetes.Actividades.Logins.RecuperarProveedor"
             android:parentActivityName=".paquetes.Actividades.Logins.RecuperarProveedor"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Actividades.Usuarios.DetalleAdministrador"
             android:screenOrientation="portrait" />
@@ -214,7 +214,6 @@
         <activity
             android:name=".paquetes.Actividades.Usuarios.EditarProveedor"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Actividades.Inicio"
             android:screenOrientation="portrait"

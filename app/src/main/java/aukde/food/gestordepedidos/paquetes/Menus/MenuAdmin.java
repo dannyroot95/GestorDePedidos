@@ -55,6 +55,7 @@ import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.Cronometro;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
+import aukde.food.gestordepedidos.paquetes.Reportes.ReportePedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
 import aukde.food.gestordepedidos.paquetes.Menus.ListaUsuarios.ListaAdministrador;
@@ -187,7 +188,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnFinanza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              startActivity(new Intent(MenuAdmin.this, ReportePedidoPorLlamada.class));
             }
         });
         generarToken();
