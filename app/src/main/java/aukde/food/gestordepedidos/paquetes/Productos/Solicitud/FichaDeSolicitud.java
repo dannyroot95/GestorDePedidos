@@ -363,8 +363,9 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                         new LatLng(-12.582466, -69.193675),
                         new LatLng(-12.582487, -69.194373),
                         new LatLng(-12.580812, -69.202741),
-                        new LatLng(-12.580856, -69.203307),
-                        new LatLng(-12.599560, -69.201145),
+                        new LatLng(-12.580856, -69.203307),//--
+                        new LatLng(-12.595631, -69.201218),
+                        new LatLng(-12.599560, -69.201145),//--
                         new LatLng(-12.599644, -69.197218),
                         new LatLng(-12.602586, -69.197165),
                         new LatLng(-12.605716, -69.195877),
@@ -390,11 +391,161 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
         googleMap.addMarker(new MarkerOptions().position(zona1)
                 .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
 
+        //-----------------------------------------------------------------
+
+        Polygon polygon2 = googleMap.addPolygon(new PolygonOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(-12.580870, -69.203288),
+                        new LatLng(-12.581417, -69.206823),
+                        new LatLng(-12.582690, -69.208899),
+                        new LatLng(-12.584417, -69.213292),//----
+                        new LatLng(-12.587360, -69.212300),
+                        new LatLng(-12.587265, -69.210937),
+                        new LatLng(-12.589894, -69.210551),
+                        new LatLng(-12.590229, -69.212225),
+                        new LatLng(-12.590815, -69.212160),
+                        new LatLng(-12.590648, -69.210798),
+                        new LatLng(-12.594302, -69.210347),
+                        new LatLng(-12.594229, -69.209102),
+                        new LatLng(-12.595558, -69.209360),
+                        new LatLng(-12.596061, -69.208909),
+                        new LatLng(-12.597077, -69.208974),
+                        new LatLng(-12.599003, -69.209585),//----
+                        new LatLng(-12.600406, -69.205111),
+                        new LatLng(-12.599710, -69.202283),
+                        new LatLng(-12.599542, -69.201146),//--
+                        new LatLng(-12.595631, -69.201218),
+                        new LatLng(-12.592071, -69.201647),
+                        new LatLng(-12.587139, -69.202323),
+                        new LatLng(-12.580870, -69.203288)));
+
+        polygon2.setTag("ZONA B");
+        polygon2.setFillColor(0x3A77C157);
+        polygon2.setStrokeColor(0x3A77C157);
+        polygon2.setStrokeWidth(5);
+
+        BitmapDrawable bitmapdraw2 = (BitmapDrawable)getResources().getDrawable(R.drawable.zonaa);
+        Bitmap b2 = bitmapdraw2.getBitmap();
+        Bitmap smallMarker2 = Bitmap.createScaledBitmap(b2, width, height, false);
+
+        LatLng zona2 = new LatLng(-12.590186, -69.206071);
+        googleMap.addMarker(new MarkerOptions().position(zona2)
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker2)));
+
+        //-----------------------------------------------------------------
+
+        Polygon polygon3 = googleMap.addPolygon(new PolygonOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(-12.584417, -69.213292),
+                        new LatLng(-12.587360, -69.212300),
+                        new LatLng(-12.587265, -69.210937),
+                        new LatLng(-12.589894, -69.210551),
+                        new LatLng(-12.590229, -69.212225),
+                        new LatLng(-12.590815, -69.212160),
+                        new LatLng(-12.590648, -69.210798),
+                        new LatLng(-12.594302, -69.210347),
+                        new LatLng(-12.594229, -69.209102),
+                        new LatLng(-12.595558, -69.209360),
+                        new LatLng(-12.596061, -69.208909),
+                        new LatLng(-12.597077, -69.208974),
+                        new LatLng(-12.599003, -69.209585),
+                        new LatLng(-12.597694, -69.214043),
+                        new LatLng(-12.597401, -69.215481),
+                        new LatLng(-12.597448, -69.219901),
+                        new LatLng(-12.588920, -69.219547),
+                        new LatLng(-12.588490, -69.219332),
+                        new LatLng(-12.584689, -69.213914),
+                        new LatLng(-12.584417, -69.213292)));
+
+        polygon3.setTag("ZONA C");
+        polygon3.setFillColor(0x3F95326A);
+        polygon3.setStrokeColor(0x3F95326A);
+        polygon3.setStrokeWidth(5);
+
+        BitmapDrawable bitmapdraw3 = (BitmapDrawable)getResources().getDrawable(R.drawable.zonaa);
+        Bitmap b3 = bitmapdraw3.getBitmap();
+        Bitmap smallMarker3 = Bitmap.createScaledBitmap(b3, width, height, false);
+
+        LatLng zona3 = new LatLng(-12.595841, -69.215427);
+        googleMap.addMarker(new MarkerOptions().position(zona3)
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker3)));
+
+
+        //-----------------------------------------------------------------
+
+        Polygon polygon4 = googleMap.addPolygon(new PolygonOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(-12.597448, -69.219901),
+                        new LatLng(-12.588920, -69.219547),
+                        new LatLng(-12.589082, -69.220121),
+                        new LatLng(-12.591009, -69.222814),
+                        new LatLng(-12.592004, -69.224150),
+                        new LatLng(-12.592532, -69.225110),
+                        new LatLng(-12.593831, -69.228189),
+                        new LatLng(-12.599517, -69.228243),
+                        new LatLng(-12.599391, -69.219960),
+                        new LatLng(-12.597433, -69.219853),
+                        new LatLng(-12.597448, -69.219901)));
+
+        polygon4.setTag("ZONA D");
+        polygon4.setFillColor(0x3A57A0C1);
+        polygon4.setStrokeColor(0x3A57A0C1);
+        polygon4.setStrokeWidth(5);
+
+        BitmapDrawable bitmapdraw4 = (BitmapDrawable)getResources().getDrawable(R.drawable.zonaa);
+        Bitmap b4= bitmapdraw4.getBitmap();
+        Bitmap smallMarker4 = Bitmap.createScaledBitmap(b4, width, height, false);
+
+        LatLng zona4 = new LatLng(-12.597490, -69.224171);
+        googleMap.addMarker(new MarkerOptions().position(zona4)
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker4)));
+
+
+        //-----------------------------------------------------------------
+
+        Polygon polygon5 = googleMap.addPolygon(new PolygonOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(-12.597403, -69.219835),
+                        new LatLng(-12.599437, -69.220154),
+                        new LatLng(-12.599814, -69.219790),
+                        new LatLng(-12.602453, -69.219757),
+                        new LatLng(-12.606180, -69.219918),
+                        new LatLng(-12.606295, -69.218760),
+                        new LatLng(-12.607143, -69.219489),
+                        new LatLng(-12.609513, -69.216470),
+                        new LatLng(-12.607985, -69.215188),
+                        new LatLng(-12.608408, -69.214597),
+                        new LatLng(-12.607730, -69.213985),
+                        new LatLng(-12.605901, -69.212177),
+                        new LatLng(-12.602624, -69.209023),
+                        new LatLng(-12.601566, -69.207928),
+                        new LatLng(-12.600707, -69.205664),
+                        new LatLng(-12.600519, -69.205010),
+                        new LatLng(-12.600310, -69.205163),
+                        new LatLng(-12.597679, -69.213896),
+                        new LatLng(-12.597386, -69.215398),
+                        new LatLng(-12.597403, -69.219835)));
+
+        polygon5.setTag("ZONA E");
+        polygon5.setFillColor(0x3AB1C157);
+        polygon5.setStrokeColor(0x3AB1C157);
+        polygon5.setStrokeWidth(5);
+
+        BitmapDrawable bitmapdraw5 = (BitmapDrawable)getResources().getDrawable(R.drawable.zonaa);
+        Bitmap b5= bitmapdraw5.getBitmap();
+        Bitmap smallMarker5 = Bitmap.createScaledBitmap(b5, width, height, false);
+
+        LatLng zona5 = new LatLng(-12.604045, -69.214969);
+        googleMap.addMarker(new MarkerOptions().position(zona5)
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker5)));
 
     }
 
-
-
+    
     @Override
     protected void onResume() {
         super.onResume();
