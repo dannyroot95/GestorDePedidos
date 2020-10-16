@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import aukde.food.gestordepedidos.R;
@@ -49,6 +51,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
     private Vibrator vibrator;
     long tiempo = 100;
     TextView id1,id2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,6 +350,8 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
         format.setMaximumFractionDigits(2); //Define 2 decimales.
         return format.format(valor);
     }
+
+
 
 
     @Override

@@ -522,7 +522,7 @@
                         android:layout_height="50dp"/>
                     <TextView
                         android:layout_width="wrap_content"
-                            android:text="Dirección : "
+                            android:text="Ubicación : "
                         android:textSize="14sp"
                         android:textColor="#000"
                         android:textStyle="bold"
@@ -530,9 +530,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"/>
 
-                    <EditText
+                    <Button
                         android:layout_width="match_parent"
                         android:textSize="14sp"
+                        android:text="Pulse aquí"
                         android:textStyle="bold"
                         android:inputType="textCapSentences"
                         android:fontFamily="@font/futura"
@@ -587,5 +588,20 @@
 
         </androidx.cardview.widget.CardView>
         </ScrollView>
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:id="@+id/map_container">
+
+        <com.google.android.gms.maps.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map_view" />
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
