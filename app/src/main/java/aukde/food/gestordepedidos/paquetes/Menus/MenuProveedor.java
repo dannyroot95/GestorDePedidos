@@ -57,7 +57,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private TokenProvider mTokenProvider;
     private AuthProviders mAuth;
     private LinearLayout LinearShimmer;
-    private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa , TxtCategoria , TxtTituloCat;
+    private TextView Txtnombres, Txtapellidos , TxtNombreEmpresa , TxtCategoria , TxtTituloCat , txtUrlPhoto;
     private ShimmerFrameLayout shimmerFrameLayout;
     private final static int ID_SERVICIO = 99;
     private Vibrator vibrator;
@@ -79,6 +79,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         foto = findViewById(R.id.fotodefault);
         addProducto = findViewById(R.id.btnAgregarProducto);
         listProducto = findViewById(R.id.btnListaProductos);
+        txtUrlPhoto = findViewById(R.id.urlPhotoProv);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
@@ -99,6 +100,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
+
                 String cat = TxtCategoria.getText().toString();
                 if (!cat.equals("")) {
                     Intent intent = new Intent(MenuProveedor.this, MenuAddProduct.class);
@@ -124,7 +126,17 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                startActivity(new Intent(MenuProveedor.this, FichaDeSolicitud.class));
+                String urlPhoto = txtUrlPhoto.getText().toString();
+                String cat = TxtNombreEmpresa.getText().toString();
+                if (!cat.equals("")) {
+                    Intent intent = new Intent(MenuProveedor.this, FichaDeSolicitud.class);
+                    intent.putExtra("keyProduct", cat);
+                    intent.putExtra("keyPhoto",urlPhoto);
+                    startActivity(intent);
+                }
+                else {
+                    Toasty.info(MenuProveedor.this, "Espere un momento...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -225,6 +237,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                     //Obtener el url y setearlo en la imagem
                     String setFoto = dataSnapshot.child("foto").getValue().toString();
                     Glide.with(MenuProveedor.this).load(setFoto).into(foto);
+                    txtUrlPhoto.setText(setFoto);
                 }
             }
 
