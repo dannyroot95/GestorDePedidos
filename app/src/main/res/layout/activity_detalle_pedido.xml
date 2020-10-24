@@ -1330,6 +1330,20 @@
                     android:drawableLeft="@drawable/ic_arrow_back"
                     android:layout_height="wrap_content"/>
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="Reporte Pedido"
+                    android:background="@drawable/redondo"
+                    android:backgroundTint="#00bb2d"
+                    android:id="@+id/showReporteDetalle"
+                    android:textColor="#fff"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content"/>
+
+
             </LinearLayout>
 
 

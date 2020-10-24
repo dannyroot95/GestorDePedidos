@@ -6,13 +6,21 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,6 +39,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +80,14 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     Button mButtonEditar;
     Button mAsignar;
 
+    Button mShowReporteDetalle;
+
+    SimpleDateFormat simpleDateFormatFecha = new SimpleDateFormat("dd/MM/yyy");
+    Bitmap bmp,ScaledBitmap,imagendelivery,imagendeliveryUbicacion;
+    int pageWidth=1200;
+    Date dateObje;
+    DateFormat dateFormat;
+
     TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , detalleGanancia1 , detalleGanancia2 , txtDetalleReferencia;
 
     private LinearLayout mLinearProductos ;
@@ -82,6 +103,23 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     private FirebaseAuth mAuth;
     CalculoHoras calculoHoras;
 
+    String datosProveedor;
+    String datosProducto;
+    String datosCantidad;
+    String datosPrecioU;
+    String datosPrecioTotalProd;
+    String datosTelefonoCliente;
+    String datosNombreCliente;
+    String datosListaNumeroPedidos;
+    String datosFecha;
+    String datosHora;
+    String datosComision;
+    String datosDelivery;
+    String datosTotalProducto;
+    String datosRepartidor;
+    String datosDireccion;
+
+    ArrayList<String> arrayList;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +148,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         listVuelto = findViewById(R.id.detalleVuelto);
         listRepartidor = findViewById(R.id.detallevRepartidor);
         listProveedores = findViewById(R.id.detalleSocio);
+
         listProducto = findViewById(R.id.detalleProductos);
         listDescripcion = findViewById(R.id.detalleProductosDescripcion);
         //
@@ -137,6 +176,13 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mMapa = findViewById(R.id.showMapa);
         mButtonEditar = findViewById(R.id.showEditarPedido);
         mAsignar = findViewById(R.id.showAsignarRrepartidor);
+
+        mShowReporteDetalle=findViewById(R.id.showReporteDetalle);
+        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.aukfoodreportefinal);
+        imagendelivery=BitmapFactory.decodeResource(getResources(),R.drawable.deliveryruta);
+        ScaledBitmap= Bitmap.createScaledBitmap(bmp,490,218,false);
+        imagendeliveryUbicacion=Bitmap.createScaledBitmap(imagendelivery,490,218,false);
+        dateObje= new Date();
 
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
 
@@ -213,10 +259,20 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             }
         });
 
+        mShowReporteDetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createPdf();
+                showPDFDialog();
+                Toasty.success(DetallePedido.this, "PDF Guardado!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         PedidoLlamada pedidoLlamada = (PedidoLlamada)bundle.getSerializable("key");
-        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList = new ArrayList<>();
         arrayList.add(pedidoLlamada.getNumPedido());
         arrayList.add(pedidoLlamada.getHoraPedido());
         arrayList.add(pedidoLlamada.getFechaPedido());
@@ -278,6 +334,23 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         checkReference();
 
         String stEstado = listEstado.getText().toString();
+
+        datosProducto=listProducto.getText().toString();
+        datosProveedor=listProveedores.getText().toString();
+        datosCantidad=listCantidad.getText().toString();
+        datosPrecioU=listPrecioUnitario.getText().toString();
+        datosPrecioTotalProd=listPrecioTotalPorProducto.getText().toString();
+        datosTelefonoCliente=listTelefonoCliente.getText().toString();
+        datosNombreCliente=listNombreCliente.getText().toString();
+        datosListaNumeroPedidos= listNumPedido2.getText().toString();
+        datosFecha=listFechaEntrega.getText().toString();
+        datosHora=listHoraEntrega.getText().toString();
+        datosComision=listComision.getText().toString();
+        datosDelivery=listTotalDelivery.getText().toString();
+        datosTotalProducto= txtDetallePTotal.getText().toString();
+        datosRepartidor=listRepartidor.getText().toString();
+        datosDireccion=listDireccion.getText().toString();
+
 
         String Delivery = listGananciaDelivery.getText().toString();
         Double doubleDelivery = Double.parseDouble(Delivery);
@@ -840,9 +913,211 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
 
     }
 
+    private void createPdf(){
+
+        PdfDocument myPdfDocument= new PdfDocument();
+        Paint myPaint =new Paint();
+        Paint titlePaint= new Paint();
+
+        PdfDocument.PageInfo myPageInfo1 = new  PdfDocument.PageInfo.Builder(1200 ,2010,1).create();
+        PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
+
+        Canvas canvas =myPage1.getCanvas();
+        canvas.drawBitmap(ScaledBitmap, 100,80,myPaint);
+        canvas.drawBitmap(imagendeliveryUbicacion, 100,540,myPaint);
+
+
+        titlePaint.setTextAlign(Paint.Align.RIGHT);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+        titlePaint.setTextSize(60);
+        canvas.drawText("Reporte Pedidos",pageWidth-90,190,titlePaint);
+        myPaint.setColor(Color.rgb(0,0,0));
+        myPaint.setTextSize(30f);
+        myPaint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("N.Celular: +51 992-997-223",pageWidth-90,250,myPaint);
+        canvas.drawText("+51 992-787-316",pageWidth-90,320,myPaint);
+
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.ITALIC));
+        titlePaint.setTextSize(70);
+        //canvas.drawText("Pedidos",pageWidth/2,500,titlePaint);
+
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        myPaint.setTextSize(40f);
+        myPaint.setColor(Color.BLACK);
+        canvas.drawText("Nombre del Cliente:"+"\t"+ datosNombreCliente,100,400,myPaint);
+        canvas.drawText("No.Contacto:"+"\t"+ datosTelefonoCliente,100,470,myPaint);
+
+
+        myPaint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("No.Pedido:"+ "234567",pageWidth-90,400,myPaint);
+
+        dateFormat= new SimpleDateFormat("dd/MM/yy");
+        canvas.drawText("Fecha de entrega: ",pageWidth-90,470,myPaint);
+        canvas.drawText(datosFecha,pageWidth-110,530,myPaint);
+
+        dateFormat= new SimpleDateFormat("HH:mm/ss");
+        canvas.drawText("Hora de entrega: ",pageWidth-90,590,myPaint);
+        canvas.drawText(datosHora,pageWidth-110,650,myPaint);
+
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        myPaint.setStyle(Paint.Style.FILL);
+        canvas.drawText("Producto: ",100,830,myPaint);
+        canvas.drawText("Cantidad: ",570,830,myPaint);
+        canvas.drawText("Precio.U: ",770,830,myPaint);
+        canvas.drawText("Total: ",970,830,myPaint);
+
+        canvas.drawText("Proveedor: ",100,1100,myPaint);
+        canvas.drawText("Comision: ",570,1100,myPaint);
+        canvas.drawText("Delivery: ",790,1100,myPaint);
+
+
+        canvas.drawText("Total(Producto): ",680,1430,myPaint);
+        canvas.drawText("Repartidor Encargado: ",100,1430,myPaint);
+        canvas.drawText("Direccion del Cliente: ",100,1600,myPaint);
+
+
+
+
+        canvas.drawLine(560,790,560,840,myPaint);
+        canvas.drawLine(760,790,760,840,myPaint);
+        canvas.drawLine(960,790,960,840,myPaint);
+
+        //Parte de abajo
+        canvas.drawLine(560,1050,560,1120,myPaint);
+        canvas.drawLine(780,1050,780,1120,myPaint);
+
+        int y=950;
+        int w=950;
+        int z=950;
+        int H=950;
+        int k=1200;
+        int P=1200;
+        int x=1200;
+        int o=1500;
+        int gh=1500;
+        int gj=1650;
+
+        String[] DatosProducto = datosProducto.split("\n");
+        String[] CantidadProducto= datosCantidad.split("\n");
+        String[] PrecioUnitario= datosPrecioU.split("\n");
+        String[] PrecioTotal=datosPrecioTotalProd.split("\n");
+        String[] DatoProveedor= datosProveedor.split("\n");
+        String[] DatosComision=datosComision.split("\n");
+        String[] DatosDelivery=datosDelivery.split("\n");
+
+
+        for(String txt : DatosProducto){
+            canvas.drawText(txt, 100, y, myPaint);
+            y += 50;
+        }
+        for(String txt1 : CantidadProducto){
+            canvas.drawText(txt1, 660, w, myPaint);
+            w += 50;
+        }
+        for(String txt2 : PrecioUnitario){
+            canvas.drawText(txt2, 820, z, myPaint);
+            z += 50;
+        }
+
+        for(String txt3 : PrecioTotal){
+            canvas.drawText(txt3, 970, H, myPaint);
+            H += 50;
+        }
+        for(String txt4: DatoProveedor){
+            canvas.drawText(txt4, 100, k,myPaint);
+           k+=50;
+        }
+
+        for(String txt5: DatosComision){
+            canvas.drawText(txt5, 660, P,myPaint);
+            P+=50;
+        }
+        for(String txt6: DatosDelivery){
+            canvas.drawText(txt6, 825,x,myPaint);
+            x+=50;
+    }
+
+        canvas.drawText(datosTotalProducto, 680,o,myPaint);
+        canvas.drawText(datosRepartidor, 100,gh,myPaint);
+        canvas.drawText(datosDireccion, 100,gj,myPaint);
+
+        myPdfDocument.finishPage(myPage1);
+        String stNumPedido = listNumPedido.getText().toString();
+        File file =new File(this.getExternalFilesDir("/"),
+                "Pedido-"+stNumPedido+".pdf");
+
+        try{
+            myPdfDocument.writeTo(new FileOutputStream(file));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        myPdfDocument.close();
+    }
+
+    private void showPDFDialog(){
+        AlertDialog.Builder builderPDF = new AlertDialog.Builder(DetallePedido.this,R.style.ThemeOverlay);
+        builderPDF.setTitle("PDF creado!");
+        builderPDF.setCancelable(false);
+        builderPDF.setIcon(R.drawable.lista_admin);
+        builderPDF.setMessage("Seleccione una opción");
+        builderPDF.setPositiveButton("Abrir Carpeta", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Uri selectedUri = Uri.parse(Environment.getExternalStorageDirectory() + "/Android/data/aukde.food.gestordepedidos/files/");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(selectedUri, "resource/folder");
+                if (intent.resolveActivityInfo(getPackageManager(), 0) != null)
+                {
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toasty.info(DetallePedido.this, "Se requiere que instale esta APP!", Toast.LENGTH_LONG,false).show();
+                    Intent intentx = new Intent(Intent.ACTION_VIEW);
+                    Uri.Builder uriBuilder = Uri.parse("https://play.google.com/store/apps/details?id=com.alphainventor.filemanager")
+                            .buildUpon()
+                            .appendQueryParameter("id", "aukde.food.gestordepedidos")
+                            .appendQueryParameter("launch", "true");
+
+                    uriBuilder.appendQueryParameter("referrer", "IdLaunchGGplay");
+
+                    intentx.setData(uriBuilder.build());
+                    intentx.setPackage("com.android.vending");
+                    startActivity(intentx);
+                }
+            }
+        });
+        builderPDF.setNegativeButton("Ver PDF", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                File filePDF = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/aukde.food.gestordepedidos/files/Pedido-536.pdf");
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                Uri uri = Uri.fromFile(filePDF);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(uri, "application/pdf");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        builderPDF.setNeutralButton("Cerrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builderPDF.create();
+        builderPDF.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         mDialog.dismiss();
     }
+
 }

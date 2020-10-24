@@ -148,7 +148,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
         btnCloseMap.setVisibility(View.INVISIBLE);
 
 
-        Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("SolicitudDelivery").child(mAuth.getUid()).orderByKey().limitToLast(1);
+        Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Solicitudes").orderByKey().limitToLast(1);
         ultimoDato.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1227,6 +1227,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     map.put("photo",stPhoto);
                     map.put("estado","Sin confirmar");
                     mDatabase.child("SolicitudDelivery").push().setValue(map);
+                    mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Solicitudes").push().setValue(map);
                     Toasty.success(FichaDeSolicitud.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
                     finish();
                 }
