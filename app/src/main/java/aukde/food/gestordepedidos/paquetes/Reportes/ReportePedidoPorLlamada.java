@@ -65,9 +65,10 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
     LineChart LnMoney;
     ArrayList<Entry> x;
     ArrayList<String> y;
-    private AdapterAllData mAdapterAllData;
-    private RecyclerView recyclerViewData;
-    private ArrayList<AllData> allDataArrayList = new ArrayList<>();
+    //private AdapterAllData mAdapterAllData;
+    //private RecyclerView recyclerViewData;
+    //private ArrayList<AllData> allDataArrayList = new ArrayList<>();
+    TextView txt ;
 
 
     @Override
@@ -75,14 +76,15 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reporte_pedido_por_llamada);
-        recyclerViewData = (RecyclerView) findViewById(R.id.recyclerAllData);
-        recyclerViewData.setLayoutManager(new LinearLayoutManager(this));
+        // para reutilizar recycler view  - >  recyclerViewData = (RecyclerView) findViewById(R.id.recyclerAllData);
+        // ""  recyclerViewData.setLayoutManager(new LinearLayoutManager(this));
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         checkBoxFiltro = findViewById(R.id.checkFilter);
         mLinearLayout = findViewById(R.id.linearFiltro);
         mLinearLayout.setVisibility(View.INVISIBLE);
         mLinearLayoutFilter = findViewById(R.id.showFilterGanancia);
         mLinearLayoutFilter.setVisibility(View.INVISIBLE);
+        txt = findViewById(R.id.txtGananciaDeliveryReporte);
 
         id1 = findViewById(R.id.idPedidoSeleccionado1);
         id2 = findViewById(R.id.idPedidoSeleccionado2);
@@ -422,11 +424,11 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                 {
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         String delivery = ds.child("gananciaDelivery").getValue().toString();
-                        allDataArrayList.add(new AllData(delivery));
-                        Toast.makeText(ReportePedidoPorLlamada.this, "", Toast.LENGTH_SHORT).show();
+                        txt.append(delivery+"\n");
+                        //allDataArrayList.add(new AllData(delivery));
                     }
-                    mAdapterAllData = new AdapterAllData(allDataArrayList , R.layout.row_all_data);
-                    recyclerViewData.setAdapter(mAdapterAllData);
+                    //mAdapterAllData = new AdapterAllData(allDataArrayList , R.layout.row_all_data);
+                    //recyclerViewData.setAdapter(mAdapterAllData);
                 }
 
             }

@@ -137,17 +137,35 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000"
+                        android:text="Ganancia De Delivery"
+                        android:layout_height="wrap_content"/>
+
                 <TextView
                     android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textColor="#000"
-                    android:text="Ganancia De Delivery"
+                    android:textAlignment="center"
+                    android:id="@+id/txtGananciaDeliveryReporte"
                     android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <!--
+
+                para reutilizar recycler view
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:id="@+id/recyclerAllData"
-                    android:layout_height="300dp"/>
+                    android:layout_height="0dp"/>
+                <-->
 
                 <View
                     android:layout_width="match_parent"
