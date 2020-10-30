@@ -136,6 +136,19 @@
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:text="Ganancia De Delivery"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:id="@+id/recyclerAllData"
+                    android:layout_height="300dp"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_marginLeft="10dp"
@@ -267,7 +280,15 @@
                     android:textSize="16sp"
                     android:id="@+id/idPedidoSeleccionado2"
                     android:textColor="#fc0000" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:layout_width="match_parent"
+                    android:id="@+id/dateChart"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="0dp"/>
+
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

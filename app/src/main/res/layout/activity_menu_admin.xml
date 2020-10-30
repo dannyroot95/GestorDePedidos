@@ -409,7 +409,7 @@
 
                     <Button
                         android:layout_width="80dp"
-                        android:id="@+id/btnSolicitudProducto"
+                        android:id="@+id/btnSolicitudProductoAdmin"
                         android:gravity="center"
                         android:background="@drawable/btn_solicitud_producto"
                         android:layout_height="80dp" />

@@ -2,12 +2,13 @@ package aukde.food.gestordepedidos.paquetes.Reportes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -18,6 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,18 +38,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
-
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
-import aukde.food.gestordepedidos.paquetes.Menus.MenuAukdeliver;
+import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterAllData;
+import aukde.food.gestordepedidos.paquetes.Modelos.AllData;
 import es.dmoral.toasty.Toasty;
 
-public class ReportePedidoPorLlamada extends AppCompatActivity {
+public class ReportePedidoPorLlamada extends AppCompatActivity{
 
     FirebaseAuth mAuth;
     TextView txtGanancia , txtFecha1 , txtFecha2 , txtCountTotal , txtGanancia2;
@@ -51,6 +62,12 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
     private Vibrator vibrator;
     long tiempo = 100;
     TextView id1,id2;
+    LineChart LnMoney;
+    ArrayList<Entry> x;
+    ArrayList<String> y;
+    private AdapterAllData mAdapterAllData;
+    private RecyclerView recyclerViewData;
+    private ArrayList<AllData> allDataArrayList = new ArrayList<>();
 
 
     @Override
@@ -58,6 +75,8 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reporte_pedido_por_llamada);
+        recyclerViewData = (RecyclerView) findViewById(R.id.recyclerAllData);
+        recyclerViewData.setLayoutManager(new LinearLayoutManager(this));
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         checkBoxFiltro = findViewById(R.id.checkFilter);
         mLinearLayout = findViewById(R.id.linearFiltro);
@@ -84,7 +103,17 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
         txtFecha1 = findViewById(R.id.txtPrimerPedido);
         txtFecha2 = findViewById(R.id.txtUltimoPedido);
         txtCountTotal = findViewById(R.id.txtTotalCompletados);
-
+        x = new ArrayList<Entry>();
+        y = new ArrayList<String>();
+        LnMoney = findViewById(R.id.dateChart);
+        LnMoney.setDragEnabled(true);
+        LnMoney.setDrawGridBackground(false);
+        LnMoney.setScaleEnabled(true);
+        LnMoney.setTouchEnabled(true);
+        LnMoney.setPinchZoom(true);
+        LnMoney.setScaleMinima(2f, 1f);
+        LnMoney.fitScreen();
+        exampleChart();
         checkBoxFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +151,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
 
         getMoney();
         totalPedidosCompletados();
+        getAllData();
 
     }
 
@@ -296,7 +326,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
         String stID1 = id1.getText().toString();
         String stID2 = id2.getText().toString();
 
-        if(!stFechaIni.equals("PULSE AQUÍ!") && !stFechaFin.equals("PULSE AQUÍ!")){
+        if(!stFechaIni.equals("PULSE AQUÍ!") && !stFechaFin.equals("PULSE AQUÍ!") && !stFechaIni.equals("Cargando...") && !stFechaFin.equals("Cargando...")){
             Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().startAt(stID1).endAt(stID2);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -351,6 +381,62 @@ public class ReportePedidoPorLlamada extends AppCompatActivity {
         return format.format(valor);
     }
 
+    private void exampleChart(){
+
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("estado").equalTo("Completado");
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              if(dataSnapshot.exists()) {
+                  for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                      String value = childSnapshot.child("gananciaComision").getValue().toString();
+                      Float val = Float.parseFloat(value);
+                      x.add(new Entry(val, dataSnapshot.getChildrenCount()));
+                  }
+                  LineDataSet set = new LineDataSet(x,"Ganancias");
+                  set.setFillAlpha(110);
+                  set.setColor(Color.RED);
+                  set.setValueTextSize(10f);
+                  set.setValueTextColor(Color.BLACK);
+                  ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                  dataSets.add(set);
+                  LineData data = new LineData(dataSets);
+                  LnMoney.setData(data);
+              }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getAllData(){
+        mDatabase.child("PedidosPorLlamada").child("pedidos").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String delivery = ds.child("gananciaDelivery").getValue().toString();
+                        allDataArrayList.add(new AllData(delivery));
+                        Toast.makeText(ReportePedidoPorLlamada.this, "", Toast.LENGTH_SHORT).show();
+                    }
+                    mAdapterAllData = new AdapterAllData(allDataArrayList , R.layout.row_all_data);
+                    recyclerViewData.setAdapter(mAdapterAllData);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
 

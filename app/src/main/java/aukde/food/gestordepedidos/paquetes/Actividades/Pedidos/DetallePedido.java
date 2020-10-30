@@ -1092,7 +1092,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                File filePDF = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/aukde.food.gestordepedidos/files/Pedido-536.pdf");
+                File filePDF = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/aukde.food.gestordepedidos/files/Pedido-"+listNumPedido.getText().toString()+".pdf");
                 StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder.build());
                 Uri uri = Uri.fromFile(filePDF);
