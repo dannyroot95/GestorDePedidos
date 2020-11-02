@@ -7,43 +7,13 @@
     android:fitsSystemWindows="true"
     tools:context=".paquetes.Reportes.ReportePedidoPorLlamada">
 
+    <include layout="@layout/toolbar2"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
-
-        <com.github.florent37.shapeofview.shapes.ArcView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:elevation="4dp"
-            app:shape_arc_cropDirection="outside"
-            app:shape_arc_height="20dp"
-            app:shape_arc_position="bottom">
-
-            <View
-                android:layout_width="match_parent"
-                android:background="#000000"
-                android:layout_height="wrap_content"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="REPORTES"
-                    android:layout_marginTop="30dp"
-                    android:textColor="#fff"
-                    android:fontFamily="@font/futura"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-        </com.github.florent37.shapeofview.shapes.ArcView>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -52,14 +22,117 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardElevation="6dp"
+                    app:cardCornerRadius="3dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:background="#F9F9F9"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Fecha"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/futura"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/ic_date_range"
+                            android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:background="#F9F9F9"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Ene 01/01/2020"
+                            android:textSize="14sp"
+                            android:id="@+id/txtDate1Report"
+                            android:fontFamily="@font/futura"
+                            android:textColor="#000000"
+                            android:layout_height="wrap_content"/>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:background="#F9F9F9"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="vs Dic 01/01/2020"
+                                android:textSize="14sp"
+                                android:id="@+id/txtDate2Report"
+                                android:fontFamily="@font/futura"
+                                android:textColor="#838383"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardElevation="6dp"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="#F9F9F9"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Pedidos"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/futura"
+                            android:textSize="18sp"
+                            android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:gravity="left"
-                    android:padding="10dp"
+                    android:padding="7dp"
                     android:layout_marginLeft="5dp"
                     android:layout_height="wrap_content">
 
@@ -68,7 +141,7 @@
                         android:textAlignment="center"
                         android:fontFamily="@font/futura"
                         android:textSize="16sp"
-                        android:text="Total de pedidos completados :  "
+                        android:text="Completados :  "
                         android:layout_height="wrap_content"/>
 
                     <TextView
@@ -82,8 +155,93 @@
                         android:textColor="#fff"
                         android:background="#000"
                         android:layout_height="25dp"/>
-
                 </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="left"
+                            android:padding="7dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/futura"
+                                android:textSize="16sp"
+                                android:text="En Espera  :      "
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:layout_width="40dp"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/futura"
+                                android:textSize="16sp"
+                                android:id="@+id/txtTotalEnEspera"
+                                android:text="00"
+                                android:gravity="center"
+                                android:textColor="#fff"
+                                android:background="#000"
+                                android:layout_height="25dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="left"
+                            android:padding="7dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/futura"
+                                android:textSize="16sp"
+                                android:text="Procesando :    "
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:layout_width="40dp"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/futura"
+                                android:textSize="16sp"
+                                android:id="@+id/txtTotalProcesando"
+                                android:text="00"
+                                android:gravity="center"
+                                android:textColor="#fff"
+                                android:background="#000"
+                                android:layout_height="25dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:text="Grafico"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:id="@+id/btn_graph"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -115,6 +273,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@android:color/darker_gray"
                     android:layout_height="1dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
@@ -137,42 +296,13 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:textColor="#000"
-                        android:text="Ganancia De Delivery"
-                        android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="match_parent"
-                    android:textColor="#000"
-                    android:textAlignment="center"
-                    android:id="@+id/txtGananciaDeliveryReporte"
-                    android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <!--
-
-                para reutilizar recycler view
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="0dp"
-                    android:id="@+id/recyclerAllData"
-                    android:layout_height="0dp"/>
-                <-->
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@android:color/darker_gray"
                     android:layout_height="1dp"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -282,7 +412,55 @@
                         android:layout_marginLeft="5dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000"
+                        android:text="Ganancia De Delivery"
+                        android:layout_height="wrap_content"/>
+
                 <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:textColor="#000"
+                    android:textAlignment="center"
+                    android:id="@+id/txtGananciaDeliveryReporte"
+                    android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <!--
+
+                para reutilizar recycler view
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="0dp"
+                    android:id="@+id/recyclerAllData"
+                    android:layout_height="0dp"/>
+                <-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+
+
+                 <TextView
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:layout_height="0dp"
@@ -290,7 +468,7 @@
                     android:textSize="16sp"
                     android:id="@+id/idPedidoSeleccionado1"
                     android:textColor="#fc0000" />
-                <TextView
+                 <TextView
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:layout_height="0dp"
@@ -299,14 +477,8 @@
                     android:id="@+id/idPedidoSeleccionado2"
                     android:textColor="#fc0000" />
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:layout_width="match_parent"
-                    android:id="@+id/dateChart"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="0dp"/>
+                  </LinearLayout>
 
-            </LinearLayout>
-
-        </ScrollView>
-    </LinearLayout>
+                  </ScrollView>
+              </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

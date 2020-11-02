@@ -2,13 +2,10 @@ package aukde.food.gestordepedidos.paquetes.Reportes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -18,19 +15,6 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,17 +24,16 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import aukde.food.gestordepedidos.R;
-import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterAllData;
-import aukde.food.gestordepedidos.paquetes.Modelos.AllData;
+import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import es.dmoral.toasty.Toasty;
 
 public class ReportePedidoPorLlamada extends AppCompatActivity{
 
     FirebaseAuth mAuth;
-    TextView txtGanancia , txtFecha1 , txtFecha2 , txtCountTotal , txtGanancia2;
+    TextView txtGanancia , txtFecha1 , txtFecha2 , txtCountTotal , txtGanancia2
+            , txtCountEspera , txtCountProcesando;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private ProgressDialog mDialogActualizeData;
     int dia, mes, year;
@@ -62,13 +45,11 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
     private Vibrator vibrator;
     long tiempo = 100;
     TextView id1,id2;
-    LineChart LnMoney;
-    ArrayList<Entry> x;
-    ArrayList<String> y;
     //private AdapterAllData mAdapterAllData;
     //private RecyclerView recyclerViewData;
     //private ArrayList<AllData> allDataArrayList = new ArrayList<>();
     TextView txt ;
+    Button btnGrafico;
 
 
     @Override
@@ -76,6 +57,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reporte_pedido_por_llamada);
+        MiToolbar.Mostrar(ReportePedidoPorLlamada.this,"Financas y Reportes",true);
         // para reutilizar recycler view  - >  recyclerViewData = (RecyclerView) findViewById(R.id.recyclerAllData);
         // ""  recyclerViewData.setLayoutManager(new LinearLayoutManager(this));
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -92,6 +74,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         txtFechaIni = findViewById(R.id.txtIni);
         txtFechaFin = findViewById(R.id.txtFin);
         btnGananciaDate = findViewById(R.id.btnFechaGanancia);
+        btnGrafico = findViewById(R.id.btn_graph);
 
         mDialogActualizeData = new ProgressDialog(this,R.style.MyAlertDialogData);
         mDialogActualizeData.setCancelable(false);
@@ -105,17 +88,9 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         txtFecha1 = findViewById(R.id.txtPrimerPedido);
         txtFecha2 = findViewById(R.id.txtUltimoPedido);
         txtCountTotal = findViewById(R.id.txtTotalCompletados);
-        x = new ArrayList<Entry>();
-        y = new ArrayList<String>();
-        LnMoney = findViewById(R.id.dateChart);
-        LnMoney.setDragEnabled(true);
-        LnMoney.setDrawGridBackground(false);
-        LnMoney.setScaleEnabled(true);
-        LnMoney.setTouchEnabled(true);
-        LnMoney.setPinchZoom(true);
-        LnMoney.setScaleMinima(2f, 1f);
-        LnMoney.fitScreen();
-        exampleChart();
+        txtCountEspera = findViewById(R.id.txtTotalEnEspera);
+        txtCountProcesando = findViewById(R.id.txtTotalProcesando);
+
         checkBoxFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,9 +126,20 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
             }
         });
 
+        btnGrafico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                Intent intent = new Intent(ReportePedidoPorLlamada.this,GraficoGanancias.class);
+                intent.putExtra("keyValue",txt.getText().toString());
+                startActivity(intent);
+            }
+        });
+
         getMoney();
         totalPedidosCompletados();
         getAllData();
+
 
     }
 
@@ -298,14 +284,15 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
 
     private void totalPedidosCompletados(){
 
-        mDatabase.child("PedidosPorLlamada").child("pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("PedidosPorLlamada").child("pedidos").orderByChild("estado").equalTo("Completado").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     long n  =  dataSnapshot.getChildrenCount();
                     String num = String.valueOf(n);
                     txtCountTotal.setText(num);
-                    mDialogActualizeData.dismiss();
+                    totalPedidosEnEspera();
+                    totalPedidosProcesando();
                 }
                 else {
                     finish();
@@ -313,7 +300,50 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                 }
 
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
+            }
+        });
+    }
 
+    private void totalPedidosEnEspera(){
+
+        mDatabase.child("PedidosPorLlamada").child("pedidos").orderByChild("estado").equalTo("En espera").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    long n  =  dataSnapshot.getChildrenCount();
+                    String num = String.valueOf(n);
+                    txtCountEspera.setText(num);
+                }
+                else {
+                    Toasty.info(ReportePedidoPorLlamada.this, "error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
+            }
+        });
+    }
+
+    private void totalPedidosProcesando(){
+
+        mDatabase.child("PedidosPorLlamada").child("pedidos").orderByChild("estado").equalTo("Cancelado").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    long n  =  dataSnapshot.getChildrenCount();
+                    String num = String.valueOf(n);
+                    txtCountProcesando.setText(num);
+                }
+                else {
+                    Toasty.info(ReportePedidoPorLlamada.this, "error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
@@ -354,15 +384,12 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                                 mLinearLayoutFilter.setVisibility(View.VISIBLE);
                                 String dd = obtieneDosDecimales(c);
                                 txtGanancia2.setText("S/" + dd);
-
                         }
-                        //implementar
                     }
                     else {
                         Toasty.error(ReportePedidoPorLlamada.this, "Sin pedidos completados", Toast.LENGTH_SHORT, true).show();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
@@ -383,39 +410,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         return format.format(valor);
     }
 
-    private void exampleChart(){
-
-        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("estado").equalTo("Completado");
-
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-              if(dataSnapshot.exists()) {
-                  for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                      String value = childSnapshot.child("gananciaComision").getValue().toString();
-                      Float val = Float.parseFloat(value);
-                      x.add(new Entry(val, dataSnapshot.getChildrenCount()));
-                  }
-                  LineDataSet set = new LineDataSet(x,"Ganancias");
-                  set.setFillAlpha(110);
-                  set.setColor(Color.RED);
-                  set.setValueTextSize(10f);
-                  set.setValueTextColor(Color.BLACK);
-                  ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                  dataSets.add(set);
-                  LineData data = new LineData(dataSets);
-                  LnMoney.setData(data);
-              }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void getAllData(){
         mDatabase.child("PedidosPorLlamada").child("pedidos").addValueEventListener(new ValueEventListener() {
             @Override
@@ -425,10 +419,8 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         String delivery = ds.child("gananciaDelivery").getValue().toString();
                         txt.append(delivery+"\n");
-                        //allDataArrayList.add(new AllData(delivery));
+                        mDialogActualizeData.dismiss();
                     }
-                    //mAdapterAllData = new AdapterAllData(allDataArrayList , R.layout.row_all_data);
-                    //recyclerViewData.setAdapter(mAdapterAllData);
                 }
 
             }

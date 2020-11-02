@@ -28,10 +28,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".paquetes.Reportes.GraficoGanancias"
+            android:parentActivityName=".paquetes.Menus.MenuAdmin"></activity>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaSolicitudProveedor"
             android:parentActivityName=".paquetes.Menus.MenuAdmin"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".paquetes.Productos.Solicitud.FichaDeSolicitud"
             android:screenOrientation="portrait" />
