@@ -233,8 +233,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         datePickerDialog.show();
     }
 
-
-
     private void ClickFechaFin() {
 
         final Calendar c = Calendar.getInstance();
@@ -395,7 +393,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                     Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
                 }
             });
-
         }
 
         else {
@@ -431,8 +428,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
             }
         });
     }
-
-
 
     @Override
     public void onBackPressed() {
