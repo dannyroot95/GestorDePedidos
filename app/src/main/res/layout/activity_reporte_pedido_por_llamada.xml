@@ -40,16 +40,6 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Fecha"
-                            android:textAlignment="center"
-                            android:fontFamily="@font/futura"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"/>
-
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -61,7 +51,8 @@
                         android:layout_width="wrap_content"
                         android:layout_marginRight="5dp"
                         android:background="#F9F9F9"
-                        android:layout_height="wrap_content">
+                        android:gravity="center"
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -88,21 +79,47 @@
                                 android:fontFamily="@font/futura"
                                 android:textColor="#838383"
                                 android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="left"
+                            android:padding="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:fontFamily="@font/futura"
+                                android:textSize="16sp"
+                                android:text="Filtrar"
+                                android:layout_height="wrap_content"/>
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:id="@+id/checkFilter"
+                                android:layout_height="wrap_content"/>
 
                         </LinearLayout>
-                    </LinearLayout>
-                    </LinearLayout>
 
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:id="@+id/floatBtnRefresh"
+                            android:src="@drawable/ic_refresh_white"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/linearFiltro"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -110,203 +127,11 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     app:cardElevation="6dp"
-                    android:layout_margin="8dp"
+                    android:layout_margin="12dp"
                     app:cardCornerRadius="5dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:background="#F9F9F9"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:text="Pedidos"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="@font/futura"
-                            android:textSize="18sp"
-                            android:layout_height="wrap_content"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="left"
-                    android:padding="7dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:text="Completados :  "
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:id="@+id/txtTotalCompletados"
-                        android:text="00"
-                        android:gravity="center"
-                        android:textColor="#fff"
-                        android:background="#000"
-                        android:layout_height="25dp"/>
-                </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="left"
-                            android:padding="7dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:text="En Espera  :      "
-                                android:layout_height="wrap_content"/>
-
-                            <TextView
-                                android:layout_width="40dp"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:id="@+id/txtTotalEnEspera"
-                                android:text="00"
-                                android:gravity="center"
-                                android:textColor="#fff"
-                                android:background="#000"
-                                android:layout_height="25dp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="left"
-                            android:padding="7dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:text="Procesando :    "
-                                android:layout_height="wrap_content"/>
-
-                            <TextView
-                                android:layout_width="40dp"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:id="@+id/txtTotalProcesando"
-                                android:text="00"
-                                android:gravity="center"
-                                android:textColor="#fff"
-                                android:background="#000"
-                                android:layout_height="25dp"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:text="Grafico"
-                    android:layout_weight="1"
-                    android:padding="10dp"
-                    android:id="@+id/btn_graph"
-                    android:layout_height="wrap_content"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:text="Ganancias Totales : "
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/txtReporteGanancia"
-                        android:fontFamily="@font/futura"
-                        android:textSize="18sp"
-                        android:text="$$$"
-                        android:textColor="#28B463"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:fontFamily="@font/futura"
-                        android:textSize="16sp"
-                        android:text="Filtrar por fecha "
-                        android:layout_height="wrap_content"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/checkFilter"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_height="1dp"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:id="@+id/linearFiltro"
                     android:padding="10dp"
                     android:gravity="left"
                     android:layout_marginLeft="5dp"
@@ -341,7 +166,7 @@
                                 android:textSize="16sp"
                                 android:id="@+id/txtIni"
                                 android:text="PULSE AQUÍ!"
-                                android:textColor="#fc0000" />
+                                android:textColor="#C0392B" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -367,44 +192,13 @@
                                 android:textSize="16sp"
                                 android:id="@+id/txtFin"
                                 android:text="PULSE AQUÍ!"
-                                android:textColor="#fc0000" />
+                                android:textColor="#7FB3D5" />
 
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:id="@+id/showFilterGanancia"
-                            android:layout_marginTop="10dp"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:text="Ganancia : "
-                                android:textColor="#000" />
-
-                            <TextView
-                                android:layout_width="90dp"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/futura"
-                                android:textSize="16sp"
-                                android:id="@+id/txtGananciaFiltrada"
-                                android:text=""
-                                android:gravity="center"
-                                android:textColor="#fff"
-                                android:background="#fc0000"
-                                android:layout_height="25dp"/>
-
-                        </LinearLayout>
-
                     </LinearLayout>
                     <Button
                         android:layout_width="wrap_content"
-                        android:text="Ver\nganancia"
+                        android:text="Filtrar"
                         android:background="@drawable/redondo"
                         android:id="@+id/btnFechaGanancia"
                         android:textColor="#fff"
@@ -412,6 +206,324 @@
                         android:layout_marginLeft="5dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardElevation="6dp"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#F9F9F9"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/futura"
+                            android:text="Pedidos"
+                            android:textColor="#000"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="left"
+                                android:orientation="vertical"
+                                android:padding="7dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura"
+                                    android:text="Completados :  "
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/futura"
+                                    android:text="En espera : "
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/futura"
+                                    android:text="En proceso : "
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="left"
+                                android:orientation="vertical"
+                                android:padding="7dp">
+
+                                <TextView
+                                    android:id="@+id/txtTotalCompletados"
+                                    android:layout_width="40dp"
+                                    android:layout_height="25dp"
+                                    android:background="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:gravity="center"
+                                    android:text="00"
+                                    android:textAlignment="center"
+                                    android:textColor="#5bbd00"
+                                    android:textSize="16sp" />
+
+
+                                <TextView
+                                    android:id="@+id/txtTotalEnEspera"
+                                    android:layout_width="40dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:gravity="center"
+                                    android:text="00"
+                                    android:textAlignment="center"
+                                    android:textColor="#5DA9FF"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/txtTotalProcesando"
+                                    android:layout_width="40dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="#000"
+                                    android:fontFamily="@font/futura"
+                                    android:gravity="center"
+                                    android:text="00"
+                                    android:textAlignment="center"
+                                    android:textColor="#FFFB16"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardElevation="6dp"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#F9F9F9"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/futura"
+                            android:text="Análisis financiero"
+                            android:textColor="#000"
+                            android:textSize="18sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:background="@android:color/darker_gray"
+                            android:layout_height="1dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:padding="5dp"
+                                android:background="#000"
+                                android:orientation="vertical"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Delivery\nAukde"
+                                    android:textColor="#fff"
+                                    android:textAlignment="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginRight="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="18sp"
+                                    android:id="@+id/txtReporteGanancia"
+                                    android:text="S/10"
+                                    android:textColor="#5bbd00"
+                                    android:textAlignment="center"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:padding="5dp"
+                                android:background="#5bbd00"
+                                android:orientation="vertical"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Delivery\nRepartidor"
+                                    android:textAlignment="center"
+                                    android:textColor="#fff"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginRight="15dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="18sp"
+                                    android:id="@+id/txtReporteGananciaRepartidor"
+                                    android:text="S/10"
+                                    android:textAlignment="center"
+                                    android:textColor="#fff"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:padding="5dp"
+                                android:background="#5DA9FF"
+                                android:orientation="vertical"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:text="Delivery\nTotal"
+                                    android:textAlignment="center"
+                                    android:textColor="#fff"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:fontFamily="@font/futura"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:fontFamily="@font/futura"
+                                    android:textSize="18sp"
+                                    android:text="S/10"
+                                    android:id="@+id/txtReporteGananciaDeliveryTotal"
+                                    android:textAlignment="center"
+                                    android:textColor="#fff"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/futura"
+                            android:text="Comisión"
+                            android:textColor="#000"
+                            android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="#000"
+                                android:id="@+id/txtGananciaComision"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="22sp"
+                                android:fontFamily="@font/futura"
+                                android:text="S/10.00"
+                                android:layout_marginBottom="5dp"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center"
+                                    android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:textSize="22sp"
+                                    android:fontFamily="@font/futura"
+                                    android:text="Total"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#000"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="22sp"
+                                    android:id="@+id/txtTotalGanancia"
+                                    android:fontFamily="@font/futura"
+                                    android:text="S/10"
+                                    android:layout_height="wrap_content"/>
+                                </LinearLayout>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:textColor="#fc0000"
+                                    android:textSize="12sp"
+                                    android:fontFamily="@font/futura"
+                                    android:text="(Comisión + Delivery Aukde)"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
                 <View
                     android:layout_width="match_parent"
@@ -420,6 +532,22 @@
                     android:background="@android:color/darker_gray"
                     android:layout_height="1dp"/>
 
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:text="Grafico"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:id="@+id/btn_graph"
+                    android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -431,6 +559,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:textColor="#000"
+                        android:fontFamily="@font/futura"
                         android:text="Ganancia De Delivery"
                         android:layout_height="wrap_content"/>
 

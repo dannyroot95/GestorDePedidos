@@ -32,7 +32,7 @@ public class GraficoGanancias extends AppCompatActivity {
         mData = (LineChart) findViewById(R.id.dateChart2);
         mData.setDragEnabled(true);
         mData.setScaleEnabled(true);
-        mData.setScaleMinima(8f, 1f);
+        mData.setScaleMinima(3f, 1f);
         mData.zoom(3,1,3,1);
 
         value = getIntent().getExtras();
