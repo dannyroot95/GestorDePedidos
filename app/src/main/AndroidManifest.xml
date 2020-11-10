@@ -23,13 +23,17 @@
         android:name=".paquetes.Utils.ApplicationCronometro"
         android:allowBackup="false"
         android:fullBackupContent="false"
+        android:grantUriPermissions="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Reportes.GraficoGanancias"
-            android:parentActivityName=".paquetes.Menus.MenuAdmin"></activity>
+        <activity android:name=".paquetes.Actividades.Pedidos.SolicitarProducto"
+            android:parentActivityName=".paquetes.Menus.MenuAdmin" ></activity>
+        <activity
+            android:name=".paquetes.Reportes.GraficoGanancias"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.ListaSolicitudProveedor"
             android:parentActivityName=".paquetes.Menus.MenuAdmin"

@@ -6,7 +6,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -39,7 +39,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,19 +66,18 @@ import retrofit2.Response;
 public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     String ruta = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/delete.png?alt=media&token=8eb49918-1713-4e1e-aaf8-38573da32206";
+
     TextView listNumPedido,listNumPedido2,listNombreCliente , listTelefonoCliente ,listHoraRegistro , listFechaRegistro
             , listHoraEntrega , listFechaEntrega , listTotalPagoProducto , listDireccion , listPagoCliente
             , listTotalACobrar , listVuelto , listRepartidor , listProveedores , listProducto , listDescripcion
-
-            , listPrecioUnitario , listCantidad ,listPrecioTotalPorProducto , listComision , listTotalDelivery ,
-            listGananciaDelivery , listGananciaComision , listEstado ,listLatitud , listLongitud;
+            , listPrecioUnitario , listCantidad ,listPrecioTotalPorProducto , listComision , listTotalDelivery
+            , listGananciaDelivery , listGananciaComision , listEstado ,listLatitud , listLongitud;
 
     Button mButtonShow ;
     Button mButtonShow2;
     Button mMapa;
     Button mButtonEditar;
     Button mAsignar;
-
     Button mShowReporteDetalle;
 
     SimpleDateFormat simpleDateFormatFecha = new SimpleDateFormat("dd/MM/yyy");
@@ -91,7 +89,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
     TextView mGanasteComision , mGanasteDelivery , txtDetallePTotal , detalleGanancia1 , detalleGanancia2 , txtDetalleReferencia;
 
     private LinearLayout mLinearProductos ;
-
     private DatabaseReference mDatabase ;
     private ProgressDialog mDialog;
     private TokenProvider tokenProvider;
@@ -185,7 +182,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         dateObje= new Date();
 
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
-
         txtDetalleReferencia = findViewById(R.id.detalleReferencia);
 
         int alto = 0;
@@ -193,7 +189,6 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         LinearLayout mLinearAsignar = findViewById(R.id.linearBtnAsignar);
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
         mLinearProductos.setLayoutParams(params);
-
         LinearLayout.LayoutParams parametros = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,alto);
 
         mButtonShow.setOnClickListener(new View.OnClickListener() {
@@ -262,6 +257,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         mShowReporteDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(tiempo);
                 createPdf();
                 showPDFDialog();
                 Toasty.success(DetallePedido.this, "PDF Guardado!", Toast.LENGTH_SHORT).show();
@@ -1064,6 +1060,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         builderPDF.setPositiveButton("Abrir Carpeta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                vibrator.vibrate(tiempo);
                 Uri selectedUri = Uri.parse(Environment.getExternalStorageDirectory() + "/Android/data/aukde.food.gestordepedidos/files/");
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(selectedUri, "resource/folder");
@@ -1091,21 +1088,41 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         builderPDF.setNegativeButton("Ver PDF", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                vibrator.vibrate(tiempo);
                 File filePDF = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/aukde.food.gestordepedidos/files/Pedido-"+listNumPedido.getText().toString()+".pdf");
                 StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder.build());
                 Uri uri = Uri.fromFile(filePDF);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(uri, "application/pdf");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                Intent intent  = new Intent(Intent.ACTION_VIEW);
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+
+                        intent.setDataAndType(uri, "application/pdf");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                }
+
+                else {
+                    Toasty.info(DetallePedido.this, "Se requiere que instale esta APP!", Toast.LENGTH_LONG, false).show();
+                    Intent intentPdf = new Intent(Intent.ACTION_VIEW);
+                    Uri.Builder uriBuilder = Uri.parse("https://play.google.com/store/apps/details?id=com.rizwan.simplepdfreader2018")
+                            .buildUpon()
+                            .appendQueryParameter("id", "aukde.food.gestordepedidos")
+                            .appendQueryParameter("launch", "true");
+
+                    uriBuilder.appendQueryParameter("referrer", "IdLaunchPDFGGplay");
+
+                    intentPdf.setData(uriBuilder.build());
+                    intentPdf.setPackage("com.android.vending");
+                    startActivity(intentPdf);
+                }
             }
         });
-
+        
         builderPDF.setNeutralButton("Cerrar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                vibrator.vibrate(tiempo);
                 dialog.cancel();
             }
         });
@@ -1113,6 +1130,7 @@ public class DetallePedido extends AppCompatActivity implements PopupMenu.OnMenu
         builderPDF.create();
         builderPDF.show();
     }
+
 
     @Override
     protected void onResume() {

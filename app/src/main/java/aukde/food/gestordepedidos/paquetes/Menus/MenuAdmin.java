@@ -49,6 +49,7 @@ import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaSolicitudProveedor;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.SolicitarProducto;
 import aukde.food.gestordepedidos.paquetes.Actividades.Registros.MenuRegistros;
 import aukde.food.gestordepedidos.paquetes.Mapas.MapaProveedores;
 import aukde.food.gestordepedidos.paquetes.Mapas.MonitoreoRepartidor;
@@ -73,7 +74,8 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     private DatabaseReference mDatabase;
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
-            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnFinanza , btnListaSolicitudes;
+            , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnFinanza , btnListaSolicitudes,
+            btnSolicitudDeProducto;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -112,6 +114,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnMapProveedor = findViewById(R.id.btnMapaProveedor);
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
         btnListaSolicitudes = findViewById(R.id.btnListaSolicitudesAdmin);
+        btnSolicitudDeProducto = findViewById(R.id.btnSolicitudProductoAdmin);
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
@@ -190,14 +193,35 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnFinanza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              startActivity(new Intent(MenuAdmin.this, ReportePedidoPorLlamada.class));
+                vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                startActivity(new Intent(MenuAdmin.this, ReportePedidoPorLlamada.class));
+                mDialog.dismiss();
             }
         });
 
         btnListaSolicitudes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, ListaSolicitudProveedor.class));
+                mDialog.dismiss();
+            }
+        });
+
+        btnSolicitudDeProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                startActivity(new Intent(MenuAdmin.this, SolicitarProducto.class));
             }
         });
 

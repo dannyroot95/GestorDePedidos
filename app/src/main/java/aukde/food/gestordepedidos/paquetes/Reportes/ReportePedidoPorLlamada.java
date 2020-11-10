@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -17,6 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
@@ -58,6 +65,8 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
     TextView txt , txtGananciaComisionTotal , txtGananciaTotal ;
     Button btnGrafico;
     FloatingActionButton btnRefresh;
+    LineChart mData;
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
 
     @Override
@@ -105,6 +114,13 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         txtGananciaTotal = findViewById(R.id.txtTotalGanancia);
         btnRefresh = findViewById(R.id.floatBtnRefresh);
 
+        mData = (LineChart) findViewById(R.id.dateChart);
+        mData.setDragEnabled(true);
+        mData.getLegend().setEnabled(false);
+        mData.setScaleEnabled(true);
+        mData.setScaleMinima(6f, 1f);
+        mData.zoom(3,1,3,1);
+
         checkBoxFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +156,8 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
                 getMoneyForDate();
-                totalPedidosCompletadosFiltrado();
+                //totalPedidosCompletadosFiltrado();
+                getComisionForDate();
             }
         });
 
@@ -180,7 +197,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                         String delivery = childSnapshot.child("gananciaDelivery").getValue().toString();
                         Double d = Double.parseDouble(delivery);
                         Double e;
-
                         if (d < 4.00) {
                             e = d * 0.5;
                             c = (c + e);
@@ -250,9 +266,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                 Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
             }
         });
-
-
-
     }
 
     private void getMoneyAukdeliver(){
@@ -359,7 +372,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                             }
                         }
                         else {
-                            Toasty.error(ReportePedidoPorLlamada.this, "Sin fecha!", Toast.LENGTH_SHORT).show();
+                            Toasty.error(ReportePedidoPorLlamada.this, "Sin registros!", Toast.LENGTH_SHORT).show();
                             txtFechaIni.setText("PULSE AQUÍ!");
                         }
                     }
@@ -431,7 +444,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                             }
                         }
                         else {
-                            Toasty.error(ReportePedidoPorLlamada.this, "Sin fecha!", Toast.LENGTH_SHORT).show();
+                            Toasty.error(ReportePedidoPorLlamada.this, "Sin registros!", Toast.LENGTH_SHORT).show();
                             txtFechaFin.setText("PULSE AQUÍ!");
                         }
                     }
@@ -526,16 +539,24 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         String stID1 = id1.getText().toString();
         String stID2 = id2.getText().toString();
 
+
         if(!stFechaIni.equals("PULSE AQUÍ!") && !stFechaFin.equals("PULSE AQUÍ!") && !stFechaIni.equals("Cargando...") && !stFechaFin.equals("Cargando...")){
-            Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().startAt(stID1).endAt(stID2);
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            txt.setText("");
+            reference.child("PedidosPorLlamada").child("pedidos").orderByKey().startAt(stID1).endAt(stID2).addListenerForSingleValueEvent(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        double c = 0;
+
                         double cc = 0;
+                        double ccc = 0;
+                        int ctxComple = 0;
+                        int ctxEsper = 0;
+                        int ctxProce = 0;
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                String delivery = childSnapshot.child("gananciaDelivery").getValue().toString();
+                            String delivery = childSnapshot.child("gananciaDelivery").getValue().toString();
+                            String completados = childSnapshot.child("estado").getValue().toString();
+                                double c = 0;
                                 Double total =  Double.parseDouble(delivery);
                                 cc = cc + total;
                                 String stTotal = obtieneDosDecimales(cc);
@@ -545,19 +566,66 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                                 Double e;
                                 if (d < 4.00) {
                                     e = d * 0.5;
+                                    ccc = (ccc + e);
                                     c = (c + e);
                                 }
                                 if (d >= 4.00 && d < 9.00) {
                                     e = d * 0.6;
-                                    c = (c + e);
+                                    ccc = (ccc + e);
+                                    c = (c+ e);
                                 }
                                 if (d >= 9.00) {
                                     e = d * 0.7;
+                                    ccc = (ccc + e);
                                     c = (c + e);
                                 }
-                                String dd = obtieneDosDecimales(c);
+
+                                String dd = obtieneDosDecimales(ccc);
+                                String ddd = obtieneDosDecimales(c);
                                 txtGanancia.setText("S/" + dd);
+                                txt.append(ddd+"\n");
+
+                            if(completados.equals("Completado")){
+                                ctxComple = ctxComple + 1;
+                            }
+                            else if(completados.equals("En espera")){
+                                ctxEsper = ctxEsper + 1;
+                            }
+                            else if(completados.equals("En proceso")){
+                                ctxProce= ctxProce+ 1;
+                            }
+
+                            String sTCtx1 = String.valueOf(ctxComple);
+                            String sTCtx2 = String.valueOf(ctxEsper);
+                            String sTCtx3 = String.valueOf(ctxProce);
+                            txtCountTotal.setText(sTCtx1);
+                            txtCountEspera.setText(sTCtx2);
+                            txtCountProcesando.setText(sTCtx3);
+
+
                         }
+
+                        String [] Desc = txt.getText().toString().split("\n");
+                        ArrayList<Entry> yValues = new ArrayList<>();
+
+                        for (int index = 0; index < Desc.length; index++) {
+                            Float mFloat = Float.parseFloat(Desc[index]);
+                            yValues.add(new Entry(index,mFloat));
+                        }
+
+                        LineDataSet set = new LineDataSet(yValues,null);
+                        set.setFillAlpha(110);
+                        set.setLineWidth(1.5f);
+                        set.setColor(Color.rgb(126, 0, 138));
+                        //set.setCircleColor(Color.rgb(126, 0, 138));
+                        set.setDrawCircles(false);
+                        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                        dataSets.add(set);
+                        LineData data = new LineData(dataSets);
+                        mData.clear();
+                        mData.invalidate();
+                        mData.setData(data);
+
                     }
                     else {
                         Toasty.error(ReportePedidoPorLlamada.this, "Sin pedidos completados", Toast.LENGTH_SHORT, true).show();
@@ -626,33 +694,6 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         }
     }
 
-    private void totalPedidosCompletadosFiltrado(){
-
-        String stID1 = id1.getText().toString();
-        String stID2 = id2.getText().toString();
-
-        mDatabase.child("PedidosPorLlamada").child("pedidos").orderByKey().startAt(stID1).endAt(stID2).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                        long n = dataSnapshot.getChildrenCount();
-                        String num = String.valueOf(n);
-                        txtCountTotal.setText(num);
-                }
-                else {
-                    finish();
-                    Toasty.info(ReportePedidoPorLlamada.this, "error", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
-            }
-        });
-    }
-
-
     private String obtieneDosDecimales(double valor) {
         DecimalFormat format = new DecimalFormat();
         format.setMaximumFractionDigits(2); //Define 2 decimales.
@@ -660,7 +701,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
     }
 
     private void getAllData(){
-        mDatabase.child("PedidosPorLlamada").child("pedidos").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("PedidosPorLlamada").child("pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
@@ -684,8 +725,29 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                         }
                         String ctx = obtieneDosDecimales(c);
                         txt.append(ctx+"\n");
-                        mDialogActualizeData.dismiss();
+
                     }
+
+                    String [] Desc = txt.getText().toString().split("\n");
+                    ArrayList<Entry> yValues = new ArrayList<>();
+
+                    for (int index = 0; index < Desc.length; index++) {
+                        Float mFloat = Float.parseFloat(Desc[index]);
+                        yValues.add(new Entry(index,mFloat));
+                    }
+
+                    LineDataSet set = new LineDataSet(yValues,null);
+                    set.setFillAlpha(110);
+                    set.setLineWidth(1.5f);
+                    set.setColor(Color.rgb(126, 0, 138));
+                    //set.setCircleColor(Color.rgb(126, 0, 138));
+                    set.setDrawCircles(false);
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set);
+                    LineData data = new LineData(dataSets);
+                    mData.invalidate();
+                    mData.setData(data);
+                    mDialogActualizeData.dismiss();
                 }
             }
 
@@ -782,6 +844,47 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                     }
                 });
 
+    }
+
+    private void getComisionForDate(){
+
+        String stID1 = id1.getText().toString();
+        String stID2 = id2.getText().toString();
+
+        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByKey().startAt(stID1).endAt(stID2);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    double c = 0;
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        String comision = childSnapshot.child("gananciaComision").getValue().toString();
+                        Double d = Double.parseDouble(comision);
+                        c = c + d;
+                        String dd = obtieneDosDecimales(c);
+                        txtGananciaComisionTotal.setText("S/" + dd);
+                        String sTcomision = txtGananciaComisionTotal.getText().toString();
+                        String sTDelivery = txtGanancia.getText().toString();
+                        String [] desc1 = sTcomision.split("S/");
+                        String [] desc2 = sTDelivery.split("S/");
+                        Double com = Double.parseDouble(desc1[1]);
+                        Double del = Double.parseDouble(desc2[1]);
+                        Double sum = com + del;
+                        String stSum = String.valueOf(sum);
+                        txtGananciaTotal.setText("S/"+stSum);
+                    }
+                    //implementar
+                } else {
+                    Toasty.error(ReportePedidoPorLlamada.this, "Sin pedidos completados", Toast.LENGTH_SHORT, true).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toasty.error(ReportePedidoPorLlamada.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
+            }
+        });
     }
 
     @Override
