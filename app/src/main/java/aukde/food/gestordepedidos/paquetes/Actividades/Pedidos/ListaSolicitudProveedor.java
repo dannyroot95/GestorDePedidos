@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterListaSolicitud;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterPedidoPorLlamada;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaSolicitud;
 import aukde.food.gestordepedidos.paquetes.Modelos.PedidoLlamada;
 import es.dmoral.toasty.Toasty;
@@ -124,6 +126,7 @@ public class ListaSolicitudProveedor extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(ListaSolicitudProveedor.this, MenuAdmin.class));
         finish();
     }
 }

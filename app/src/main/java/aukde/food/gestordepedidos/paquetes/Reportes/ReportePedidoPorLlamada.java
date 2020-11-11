@@ -532,7 +532,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
         });
     }
 
-    private void getMoneyForDate(){
+    private void getMoneyForDate() {
 
         String stFechaIni = txtFechaIni.getText().toString();
         String stFechaFin = txtFechaFin.getText().toString();
@@ -553,6 +553,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
                         int ctxComple = 0;
                         int ctxEsper = 0;
                         int ctxProce = 0;
+
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                             String delivery = childSnapshot.child("gananciaDelivery").getValue().toString();
                             String completados = childSnapshot.child("estado").getValue().toString();

@@ -147,6 +147,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 finish();
             }
         });
+
         btnListaPedidos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +158,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(MenuAdmin.this, ListaDePedidos.class));
             }
         });
+
         btnMapaRepartidores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +200,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, ReportePedidoPorLlamada.class));
-                mDialog.dismiss();
+                finish();
             }
         });
 
@@ -210,7 +212,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, ListaSolicitudProveedor.class));
-                mDialog.dismiss();
+                finish();
             }
         });
 
@@ -222,6 +224,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, SolicitarProducto.class));
+                finish();
             }
         });
 
