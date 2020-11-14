@@ -27,14 +27,20 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import aukde.food.gestordepedidos.paquetes.Modelos.SpinnerProduct;
+import es.dmoral.toasty.Toasty;
 
 public class SolicitarProducto extends AppCompatActivity {
 
     Spinner mSpinnerProducto, mSpinnerProveedor , mSpinnerAdicionales , mSpinnerBebidas;
     DatabaseReference mUsuarioProveedor , mProductoReference;
-    EditText mProveedor , mProducto , mPrecio ,mPrecioAdicional , mPrecioBebida, mAdicional, mBebidas;
+    EditText mProveedor , mProducto  , mPrecio ,mPrecioAdicional , mPrecioBebida,
+            mAdicional, mBebidas , mNota;
     TextView mID,mIDProducto,mIDAdicional,mIDBebida, TxtStock ,TxtCant;
-    Button mBtnAdd, mbtnMin, mbtnMax, mBtnClean;
+    Button mBtnAddProduct , mBtnAddAdicional , mBtnAddBebidas , mbtnMin, mbtnMax, mBtnClean , mbtnMinAdicional , mbtnMaxAdicional
+            , mbtnMinBebida , mbtnMaxBebida , mBtnDeleteElement;
+    TextView txtProductoList, txtNotaList , txtPrecioUniList, txtCantidadList , txtCantidadAdicionalList
+            , txtCantidadABebidaList , txtPrecioTotalList;
+    TextView txtPrecioNeto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mAdicional.setEnabled(false);
         mBebidas = findViewById(R.id.edtSolicitarBebidas);
         mBebidas.setEnabled(false);
+        mNota = findViewById(R.id.edtSolicitarDescripcion);
         mID = findViewById(R.id.txtID);
         mIDProducto = findViewById(R.id.txtIDProducto);
         mIDAdicional = findViewById(R.id.txtIDAdicional);
@@ -68,10 +75,26 @@ public class SolicitarProducto extends AppCompatActivity {
         mPrecioAdicional.setEnabled(false);
         mPrecioBebida = findViewById(R.id.edtSolicitarPrecBebidaUnitario);
         mPrecioBebida.setEnabled(false);
-        mBtnAdd = findViewById(R.id.add);
+        mBtnAddProduct = findViewById(R.id.add);
+        mBtnAddAdicional = findViewById(R.id.add2);
+        mBtnAddBebidas = findViewById(R.id.add3);
         mbtnMin = findViewById(R.id.btnMin);
         mbtnMax = findViewById(R.id.btnMax);
+        mbtnMinAdicional = findViewById(R.id.btnMinAdicional);
+        mbtnMaxAdicional = findViewById(R.id.btnMaxAdicional);
+        mbtnMinBebida = findViewById(R.id.btnMinBebida);
+        mbtnMaxBebida = findViewById(R.id.btnMaxBebida);
         mBtnClean = findViewById(R.id.btnClean);
+        mBtnDeleteElement = findViewById(R.id.btnDeleteElement);
+
+        txtProductoList = findViewById(R.id.lsProducto);
+        txtNotaList = findViewById(R.id.lsDescripcion);
+        txtPrecioUniList = findViewById(R.id.lsPUnitario);
+        txtCantidadABebidaList = findViewById(R.id.txtSolicitarBebidaCantidad);
+        txtCantidadList = findViewById(R.id.lsCant);
+        txtCantidadAdicionalList = findViewById(R.id.txtSolicitarAdicionalCantidad);
+        txtPrecioTotalList = findViewById(R.id.lsPTotal);
+        txtPrecioNeto = findViewById(R.id.txtNeto);
 
         mbtnMin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +120,129 @@ public class SolicitarProducto extends AppCompatActivity {
                 int res = Cc + 1;
                 String Min = String.valueOf(res);
                 TxtCant.setText(Min);
+            }
+        });
+
+        mbtnMinAdicional.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = txtCantidadAdicionalList.getText().toString();
+                if (num.equals("1")) {
+                    TxtCant.setText("1");
+                } else {
+                    int Cc = Integer.parseInt(num);
+                    int res = Cc - 1;
+                    String Min = String.valueOf(res);
+                    txtCantidadAdicionalList.setText(Min);
+                }
+
+            }
+        });
+
+        mbtnMaxAdicional.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = txtCantidadAdicionalList.getText().toString();
+                int Cc = Integer.parseInt(num);
+                int res = Cc + 1;
+                String Min = String.valueOf(res);
+                txtCantidadAdicionalList.setText(Min);
+            }
+        });
+
+        mbtnMinBebida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = txtCantidadABebidaList.getText().toString();
+                if (num.equals("1")) {
+                    TxtCant.setText("1");
+                } else {
+                    int Cc = Integer.parseInt(num);
+                    int res = Cc - 1;
+                    String Min = String.valueOf(res);
+                    txtCantidadABebidaList.setText(Min);
+                }
+
+            }
+        });
+
+        mbtnMaxBebida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = txtCantidadABebidaList.getText().toString();
+                int Cc = Integer.parseInt(num);
+                int res = Cc + 1;
+                String Min = String.valueOf(res);
+                txtCantidadABebidaList.setText(Min);
+            }
+        });
+
+        mBtnDeleteElement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String desc [] = txtProductoList.getText().toString().split("\n");
+                String desc2 [] = txtNotaList.getText().toString().split("\n");
+                String desc3 [] = txtPrecioUniList.getText().toString().split("\n");
+                String desc4 [] = txtCantidadList.getText().toString().split("\n");
+                String desc5 [] = txtPrecioTotalList.getText().toString().split("\n");
+                StringBuilder builder = new StringBuilder();
+                StringBuilder builder2 = new StringBuilder();
+                StringBuilder builder3 = new StringBuilder();
+                StringBuilder builder4 = new StringBuilder();
+                StringBuilder builder5 = new StringBuilder();
+                for (int i = 0 ; i<desc.length - 1 ; i++){
+                    builder.append(desc[i]+"\n");
+                }
+                for (int j = 0 ; j<desc2.length - 1 ; j++){
+                    builder2.append(desc2[j]+"\n");
+                }
+                for (int k = 0 ; k<desc3.length - 1 ; k++){
+                    builder3.append(desc3[k]+"\n");
+                }
+                for (int l = 0 ; l<desc4.length - 1 ; l++){
+                    builder4.append(desc4[l]+"\n");
+                }
+                for (int m = 0 ; m<desc5.length - 1 ; m++){
+                    builder5.append(desc5[m]+"\n");
+                }
+                String joined = builder.toString();
+                String joined2 = builder2.toString();
+                String joined3 = builder3.toString();
+                String joined4 = builder4.toString();
+                String joined5 = builder5.toString();
+                txtProductoList.setText("");
+                txtNotaList.setText("");
+                txtPrecioUniList.setText("");
+                txtCantidadList.setText("");
+                txtPrecioTotalList.setText("");
+                txtProductoList.append(joined);
+                txtNotaList.append(joined2);
+                txtPrecioUniList.append(joined3);
+                txtCantidadList.append(joined4);
+                txtPrecioTotalList.append(joined5);
+                //Toast.makeText(SolicitarProducto.this, joined, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        mBtnAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddProduct();
+            }
+        });
+
+        mBtnAddAdicional.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddAditional();
+            }
+        });
+
+        mBtnAddBebidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddBebida();
             }
         });
 
@@ -471,6 +617,86 @@ public class SolicitarProducto extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void AddProduct(){
+
+        String stProduct = mProducto.getText().toString();
+        String stNota = mNota.getText().toString();
+        String stCantidad = TxtCant.getText().toString();
+        String stPrecioUnitario = mPrecio.getText().toString();
+        String netoValor = txtPrecioNeto.getText().toString();
+
+        if(!stProduct.isEmpty() && !stCantidad.isEmpty() && !stPrecioUnitario.isEmpty()){
+            txtProductoList.append(stProduct+"\n");
+            txtNotaList.append(stNota+"\n");
+            txtCantidadList.append(stCantidad+"\n");
+            txtPrecioUniList.append(stPrecioUnitario+"\n");
+            int Cantidad = Integer.parseInt(stCantidad);
+            Double Precio = Double.parseDouble(stPrecioUnitario);
+            Double total = Cantidad * Precio;
+            String sTotal = String.valueOf(total);
+            txtPrecioTotalList.append(sTotal + "\n");
+            Double dNeto = Double.parseDouble(netoValor);
+            Double finalNeto = total + dNeto;
+            String stNeto = String.valueOf(finalNeto);
+            txtPrecioNeto.setText(stNeto);
+
+        }
+        else {
+            Toasty.error(SolicitarProducto.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void AddAditional(){
+
+        String stProduct = mAdicional.getText().toString();
+        String stNota = "ninguno";
+        String stCantidad = txtCantidadAdicionalList.getText().toString();
+        String stPrecioUnitario = mPrecioAdicional.getText().toString();
+
+        if(!stProduct.isEmpty() && !stCantidad.isEmpty() && !stPrecioUnitario.isEmpty()){
+            txtProductoList.append(stProduct+"\n");
+            txtCantidadList.append(stCantidad+"\n");
+            txtPrecioUniList.append(stPrecioUnitario+"\n");
+            txtNotaList.append(stNota+"\n");
+            int Cantidad = Integer.parseInt(stCantidad);
+            Double Precio = Double.parseDouble(stPrecioUnitario);
+            Double total = Cantidad * Precio;
+            String sTotal = String.valueOf(total);
+            txtPrecioTotalList.append(sTotal + "\n");
+
+        }
+        else {
+            Toasty.error(SolicitarProducto.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void AddBebida(){
+
+        String stProduct = mBebidas.getText().toString();
+        String stNota = "ninguno";
+        String stCantidad = txtCantidadABebidaList.getText().toString();
+        String stPrecioUnitario = mPrecioBebida.getText().toString();
+
+        if(!stProduct.isEmpty() && !stCantidad.isEmpty() && !stPrecioUnitario.isEmpty()){
+            txtProductoList.append(stProduct+"\n");
+            txtCantidadList.append(stCantidad+"\n");
+            txtPrecioUniList.append(stPrecioUnitario+"\n");
+            txtNotaList.append(stNota+"\n");
+            int Cantidad = Integer.parseInt(stCantidad);
+            Double Precio = Double.parseDouble(stPrecioUnitario);
+            Double total = Cantidad * Precio;
+            String sTotal = String.valueOf(total);
+            txtPrecioTotalList.append(sTotal + "\n");
+
+        }
+        else {
+            Toasty.error(SolicitarProducto.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void cleaner(){

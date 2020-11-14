@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuAdmin;
 import es.dmoral.toasty.Toasty;
 
 public class ReportePedidoPorLlamada extends AppCompatActivity{
@@ -890,6 +891,7 @@ public class ReportePedidoPorLlamada extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(ReportePedidoPorLlamada.this, MenuAdmin.class));
         finish();
     }
 }

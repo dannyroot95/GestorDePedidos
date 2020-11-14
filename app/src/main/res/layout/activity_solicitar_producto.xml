@@ -237,9 +237,10 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:hint="Sin aji y con su yapa"
+                    android:text="ninguno"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:textColor="#808B96"
                     android:inputType="textCapSentences"
                     android:fontFamily="@font/futura"
                     android:id="@+id/edtSolicitarDescripcion"
@@ -472,6 +473,7 @@
                     android:fontFamily="@font/futura"
                     android:textSize="14sp"
                     android:layout_height="match_parent"/>
+
                 <EditText
                     android:layout_width="wrap_content"
                     android:id="@+id/edtSolicitarPrecAdicionalUnitario"
@@ -481,6 +483,7 @@
                     android:fontFamily="@font/futura"
                     android:inputType="numberDecimal"
                     android:layout_height="match_parent"/>
+
             </LinearLayout>
 
                 <LinearLayout
@@ -771,33 +774,12 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Socio"
-                            android:textSize="12dp"
-                            android:textStyle="bold"
-                            android:textAlignment="center"
-                            android:fontFamily="@font/futura"
-                            android:textColor="#000"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:textSize="12dp"
-                            android:textColor="#000"
-                            android:layout_width="60dp"
-                            android:id="@+id/lsSocio"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -910,9 +892,9 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="P.Total"
-                            android:textSize="12dp"
+                            android:text="Precio Total"
                             android:textStyle="bold"
+                            android:textSize="12dp"
                             android:textColor="#000"
                             android:fontFamily="@font/futura"
                             android:layout_height="wrap_content"/>
@@ -926,61 +908,13 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Comisión"
-                            android:textSize="12dp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="12dp"
-                            android:textColor="#000"
-                            android:gravity="center"
-                            android:id="@+id/lsComision"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Delivery"
-                            android:textSize="12dp"
-                            android:textColor="#000"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="12dp"
-                            android:textColor="#000"
-                            android:gravity="center"
-                            android:id="@+id/lsPDelivery"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
+
             <Button
-                android:layout_width="wrap_content"
-                android:text="Limpiar lista"
-                android:id="@+id/btnClean"
+                android:layout_width="200dp"
+                android:text="Quitar elemento"
+                android:id="@+id/btnDeleteElement"
                 android:fontFamily="@font/futura"
                 android:textSize="12sp"
                 android:background="@drawable/redondo"
@@ -989,7 +923,45 @@
                 android:backgroundTint="@drawable/btn_background_negro"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Total a pagar : "
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/futura"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="S/"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/futura"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="0.0"
+                    android:id="@+id/txtNeto"
+                    android:textColor="#fff"
+                    android:textSize="18sp"
+                    android:background="#FC0000"
+                    android:fontFamily="@font/futura"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -1006,5 +978,6 @@
             android:layout_height="wrap_content"/>
 
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

@@ -495,6 +495,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaAdministrador.class));
+                finish();
             }
         });
 
@@ -503,6 +504,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaAukdeliver.class));
+                finish();
             }
         });
 
@@ -511,6 +513,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
             public void onClick(View view) {
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuAdmin.this, ListaProveedor.class));
+                finish();
             }
         });
 
