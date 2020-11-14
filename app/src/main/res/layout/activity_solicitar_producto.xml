@@ -913,7 +913,7 @@
 
             <Button
                 android:layout_width="200dp"
-                android:text="Quitar elemento"
+                android:text="Quitar Producto"
                 android:id="@+id/btnDeleteElement"
                 android:fontFamily="@font/futura"
                 android:textSize="12sp"

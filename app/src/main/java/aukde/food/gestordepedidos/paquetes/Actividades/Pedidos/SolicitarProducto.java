@@ -3,8 +3,11 @@ package aukde.food.gestordepedidos.paquetes.Actividades.Pedidos;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
@@ -37,10 +46,16 @@ public class SolicitarProducto extends AppCompatActivity {
             mAdicional, mBebidas , mNota;
     TextView mID,mIDProducto,mIDAdicional,mIDBebida, TxtStock ,TxtCant;
     Button mBtnAddProduct , mBtnAddAdicional , mBtnAddBebidas , mbtnMin, mbtnMax, mBtnClean , mbtnMinAdicional , mbtnMaxAdicional
-            , mbtnMinBebida , mbtnMaxBebida , mBtnDeleteElement;
+            , mbtnMinBebida , mbtnMaxBebida , mBtnDeleteElement , mBtnSolicitar;
     TextView txtProductoList, txtNotaList , txtPrecioUniList, txtCantidadList , txtCantidadAdicionalList
             , txtCantidadABebidaList , txtPrecioTotalList;
     TextView txtPrecioNeto;
+    private Vibrator vibrator;
+    long tiempo = 100;
+    private ProgressDialog mDialog;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mDatabase2 = FirebaseDatabase.getInstance().getReference();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +63,8 @@ public class SolicitarProducto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitar_producto);
         MiToolbar.Mostrar(SolicitarProducto.this,"Solicitar Producto",true);
+        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mSpinnerProveedor = findViewById(R.id.spinnerProveedor);
         mSpinnerProducto = findViewById(R.id.spinnerProductosDisponibles);
         mSpinnerAdicionales = findViewById(R.id.spinnerAdicionalesDisponibles);
@@ -86,6 +103,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMaxBebida = findViewById(R.id.btnMaxBebida);
         mBtnClean = findViewById(R.id.btnClean);
         mBtnDeleteElement = findViewById(R.id.btnDeleteElement);
+        mBtnSolicitar = findViewById(R.id.btnSolicitarProducto);
 
         txtProductoList = findViewById(R.id.lsProducto);
         txtNotaList = findViewById(R.id.lsDescripcion);
@@ -96,9 +114,11 @@ public class SolicitarProducto extends AppCompatActivity {
         txtPrecioTotalList = findViewById(R.id.lsPTotal);
         txtPrecioNeto = findViewById(R.id.txtNeto);
 
+
         mbtnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = TxtCant.getText().toString();
                 if (num.equals("1")) {
                     TxtCant.setText("1");
@@ -115,6 +135,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = TxtCant.getText().toString();
                 int Cc = Integer.parseInt(num);
                 int res = Cc + 1;
@@ -126,6 +147,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMinAdicional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = txtCantidadAdicionalList.getText().toString();
                 if (num.equals("1")) {
                     TxtCant.setText("1");
@@ -142,6 +164,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMaxAdicional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = txtCantidadAdicionalList.getText().toString();
                 int Cc = Integer.parseInt(num);
                 int res = Cc + 1;
@@ -153,6 +176,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMinBebida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = txtCantidadABebidaList.getText().toString();
                 if (num.equals("1")) {
                     TxtCant.setText("1");
@@ -169,6 +193,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mbtnMaxBebida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String num = txtCantidadABebidaList.getText().toString();
                 int Cc = Integer.parseInt(num);
                 int res = Cc + 1;
@@ -180,6 +205,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mBtnDeleteElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 String desc [] = txtProductoList.getText().toString().split("\n");
                 String desc2 [] = txtNotaList.getText().toString().split("\n");
                 String desc3 [] = txtPrecioUniList.getText().toString().split("\n");
@@ -220,6 +246,8 @@ public class SolicitarProducto extends AppCompatActivity {
                 txtPrecioUniList.append(joined3);
                 txtCantidadList.append(joined4);
                 txtPrecioTotalList.append(joined5);
+                subtractPriceList();
+
                 //Toast.makeText(SolicitarProducto.this, joined, Toast.LENGTH_SHORT).show();
 
             }
@@ -228,6 +256,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mBtnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AddProduct();
             }
         });
@@ -235,6 +264,7 @@ public class SolicitarProducto extends AppCompatActivity {
         mBtnAddAdicional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AddAditional();
             }
         });
@@ -242,7 +272,16 @@ public class SolicitarProducto extends AppCompatActivity {
         mBtnAddBebidas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AddBebida();
+            }
+        });
+
+        mBtnSolicitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                sendSolicitudeProvider();
             }
         });
 
@@ -655,6 +694,7 @@ public class SolicitarProducto extends AppCompatActivity {
         String stNota = "ninguno";
         String stCantidad = txtCantidadAdicionalList.getText().toString();
         String stPrecioUnitario = mPrecioAdicional.getText().toString();
+        String netoValor = txtPrecioNeto.getText().toString();
 
         if(!stProduct.isEmpty() && !stCantidad.isEmpty() && !stPrecioUnitario.isEmpty()){
             txtProductoList.append(stProduct+"\n");
@@ -666,6 +706,10 @@ public class SolicitarProducto extends AppCompatActivity {
             Double total = Cantidad * Precio;
             String sTotal = String.valueOf(total);
             txtPrecioTotalList.append(sTotal + "\n");
+            Double dNeto = Double.parseDouble(netoValor);
+            Double finalNeto = total + dNeto;
+            String stNeto = String.valueOf(finalNeto);
+            txtPrecioNeto.setText(stNeto);
 
         }
         else {
@@ -680,6 +724,7 @@ public class SolicitarProducto extends AppCompatActivity {
         String stNota = "ninguno";
         String stCantidad = txtCantidadABebidaList.getText().toString();
         String stPrecioUnitario = mPrecioBebida.getText().toString();
+        String netoValor = txtPrecioNeto.getText().toString();
 
         if(!stProduct.isEmpty() && !stCantidad.isEmpty() && !stPrecioUnitario.isEmpty()){
             txtProductoList.append(stProduct+"\n");
@@ -691,12 +736,72 @@ public class SolicitarProducto extends AppCompatActivity {
             Double total = Cantidad * Precio;
             String sTotal = String.valueOf(total);
             txtPrecioTotalList.append(sTotal + "\n");
+            Double dNeto = Double.parseDouble(netoValor);
+            Double finalNeto = total + dNeto;
+            String stNeto = String.valueOf(finalNeto);
+            txtPrecioNeto.setText(stNeto);
 
         }
         else {
             Toasty.error(SolicitarProducto.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void subtractPriceList(){
+        String desc [] = txtPrecioTotalList.getText().toString().split("\n");
+        double sub = 0;
+        for (int i = 0 ; i<desc.length ; i++){
+            if(!desc[i].isEmpty()){
+            sub += Double.parseDouble(desc[i]);
+            }
+            else{
+                txtPrecioNeto.setText("0.0");
+            }
+        }
+        String stSub = String.valueOf(sub);
+        txtPrecioNeto.setText(stSub);
+    }
+
+    private void sendSolicitudeProvider(){
+        String producto = txtProductoList.getText().toString();
+        String nota = txtNotaList.getText().toString();
+        String cantidad = txtCantidadList.getText().toString();
+        String precioTotal = txtPrecioTotalList.getText().toString();
+        String neto = txtPrecioNeto.getText().toString();
+        String precioUnitario = txtPrecioUniList.getText().toString();
+
+        if (!producto.isEmpty() && !nota.isEmpty() && !cantidad.isEmpty() && !precioTotal.isEmpty() && !neto.isEmpty() && !precioUnitario.isEmpty()) {
+            mDialog.show();
+            mDialog.setMessage("Enviando Solicitud...");
+            mDialog.setCancelable(false);
+            final Map<String, Object> map = new HashMap<>();
+            map.put("nombreProducto", producto);
+            map.put("descripcion", nota);
+            map.put("cantidad", cantidad);
+            map.put("precioTotalPorProducto", precioTotal);
+            map.put("totalACobrar", neto);
+
+            mDatabase.child("Usuarios").child("Proveedor")
+                    .child(mID.getText().toString()).child("SolicitudDeProductos").push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    mDatabase2.child("SolicitudDeProductos").push().setValue(map);
+                    mDialog.dismiss();
+                    Toasty.success(SolicitarProducto.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
+                }
+            }).addOnCanceledListener(new OnCanceledListener() {
+                @Override
+                public void onCanceled() {
+                    Toasty.error(SolicitarProducto.this, "Error!", Toast.LENGTH_SHORT, true).show();
+
+                }
+            });
+
+        }
+        else {
+            Toasty.info(SolicitarProducto.this, "Agrege sus Productos", Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     private void cleaner(){
