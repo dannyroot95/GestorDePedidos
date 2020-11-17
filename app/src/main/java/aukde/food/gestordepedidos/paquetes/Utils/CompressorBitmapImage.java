@@ -9,9 +9,6 @@ import java.io.IOException;
 
 import id.zelory.compressor.Compressor;
 
-/**
- * Created by Optic on 24/01/2018.
- */
 
 public class CompressorBitmapImage {
 

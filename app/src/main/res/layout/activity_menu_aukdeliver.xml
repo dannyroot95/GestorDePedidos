@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:background="@drawable/aukdeliverback"
             android:layout_height="100dp">
-        <RelativeLayout
+         <RelativeLayout
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="7dp"

@@ -104,7 +104,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppThemeDark);
+        setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ficha_de_solicitud);
         mAuth = FirebaseAuth.getInstance();

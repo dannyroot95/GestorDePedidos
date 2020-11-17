@@ -45,7 +45,8 @@ public class SolicitarProducto extends AppCompatActivity {
     EditText mProveedor , mProducto  , mPrecio ,mPrecioAdicional , mPrecioBebida,
             mAdicional, mBebidas , mNota;
     TextView mID,mIDProducto,mIDAdicional,mIDBebida, TxtStock ,TxtCant;
-    Button mBtnAddProduct , mBtnAddAdicional , mBtnAddBebidas , mbtnMin, mbtnMax, mBtnClean , mbtnMinAdicional , mbtnMaxAdicional
+    Button   mBtnAddProduct , mBtnAddAdicional , mBtnAddBebidas , mbtnMin, mbtnMax,
+            mBtnClean , mbtnMinAdicional , mbtnMaxAdicional
             , mbtnMinBebida , mbtnMaxBebida , mBtnDeleteElement , mBtnSolicitar;
     TextView txtProductoList, txtNotaList , txtPrecioUniList, txtCantidadList , txtCantidadAdicionalList
             , txtCantidadABebidaList , txtPrecioTotalList;
@@ -55,7 +56,6 @@ public class SolicitarProducto extends AppCompatActivity {
     private ProgressDialog mDialog;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mDatabase2 = FirebaseDatabase.getInstance().getReference();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,6 @@ public class SolicitarProducto extends AppCompatActivity {
         mBtnClean = findViewById(R.id.btnClean);
         mBtnDeleteElement = findViewById(R.id.btnDeleteElement);
         mBtnSolicitar = findViewById(R.id.btnSolicitarProducto);
-
         txtProductoList = findViewById(R.id.lsProducto);
         txtNotaList = findViewById(R.id.lsDescripcion);
         txtPrecioUniList = findViewById(R.id.lsPUnitario);
@@ -113,7 +112,6 @@ public class SolicitarProducto extends AppCompatActivity {
         txtCantidadAdicionalList = findViewById(R.id.txtSolicitarAdicionalCantidad);
         txtPrecioTotalList = findViewById(R.id.lsPTotal);
         txtPrecioNeto = findViewById(R.id.txtNeto);
-
 
         mbtnMin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,7 +245,6 @@ public class SolicitarProducto extends AppCompatActivity {
                 txtCantidadList.append(joined4);
                 txtPrecioTotalList.append(joined5);
                 subtractPriceList();
-
                 //Toast.makeText(SolicitarProducto.this, joined, Toast.LENGTH_SHORT).show();
 
             }
@@ -257,7 +254,20 @@ public class SolicitarProducto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                AddProduct();
+                int stock = Integer.parseInt(TxtCant.getText().toString());
+                int cant = Integer.parseInt(TxtStock.getText().toString());
+                int res;
+                if (stock>cant) {
+                    Toasty.error(SolicitarProducto.this, "Stock Insuficiente", Toast.LENGTH_SHORT).show();
+                }
+
+                else{
+                    res = cant - stock;
+                    String newStock = String.valueOf(res);
+                    TxtStock.setText(newStock);
+                    AddProduct();
+                }
+
             }
         });
 
@@ -314,7 +324,6 @@ public class SolicitarProducto extends AppCompatActivity {
                             mProveedor.setTextColor(0xff000000);
                             obtenerKeyProveedor();
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
                             mProveedor.setText("");
@@ -322,7 +331,6 @@ public class SolicitarProducto extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -635,7 +643,7 @@ public class SolicitarProducto extends AppCompatActivity {
                 .child(mID.getText().toString())
                 .child("Productos")
                 .child(mIDProducto.getText().toString())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
@@ -745,7 +753,6 @@ public class SolicitarProducto extends AppCompatActivity {
         else {
             Toasty.error(SolicitarProducto.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void subtractPriceList(){
@@ -772,6 +779,8 @@ public class SolicitarProducto extends AppCompatActivity {
         String precioUnitario = txtPrecioUniList.getText().toString();
 
         if (!producto.isEmpty() && !nota.isEmpty() && !cantidad.isEmpty() && !precioTotal.isEmpty() && !neto.isEmpty() && !precioUnitario.isEmpty()) {
+
+
             mDialog.show();
             mDialog.setMessage("Enviando Solicitud...");
             mDialog.setCancelable(false);
@@ -779,25 +788,28 @@ public class SolicitarProducto extends AppCompatActivity {
             map.put("nombreProducto", producto);
             map.put("descripcion", nota);
             map.put("cantidad", cantidad);
+            map.put("estado","Sin confirmar");
+            map.put("IDsocio",mID.getText().toString());
             map.put("precioTotalPorProducto", precioTotal);
             map.put("totalACobrar", neto);
-
+            map.put("nombreSocio", mProveedor.getText().toString());
             mDatabase.child("Usuarios").child("Proveedor")
                     .child(mID.getText().toString()).child("SolicitudDeProductos").push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     mDatabase2.child("SolicitudDeProductos").push().setValue(map);
+                    UpdateStock();
                     mDialog.dismiss();
+                    startActivity(new Intent(SolicitarProducto.this,MenuAdmin.class));
+                    finish();
                     Toasty.success(SolicitarProducto.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
                 }
             }).addOnCanceledListener(new OnCanceledListener() {
                 @Override
                 public void onCanceled() {
                     Toasty.error(SolicitarProducto.this, "Error!", Toast.LENGTH_SHORT, true).show();
-
                 }
             });
-
         }
         else {
             Toasty.info(SolicitarProducto.this, "Agrege sus Productos", Toast.LENGTH_SHORT, true).show();
@@ -821,6 +833,18 @@ public class SolicitarProducto extends AppCompatActivity {
         mPrecioAdicional.setText("");
         mPrecioBebida.setText("");
         TxtStock.setText("");
+    }
+
+    private void UpdateStock(){
+        String idSocio = mID.getText().toString();
+        String idProducto = mIDProducto.getText().toString();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("stock",TxtStock.getText().toString());
+
+        mProductoReference.child("Usuarios").child("Proveedor").child(idSocio).child("Productos")
+                .child(idProducto).updateChildren(map);
+
     }
 
     @Override

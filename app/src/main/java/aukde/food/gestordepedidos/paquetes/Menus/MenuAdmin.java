@@ -47,6 +47,7 @@ import java.util.HashMap;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaSolicitudProductos;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaSolicitudProveedor;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.RealizarPedido;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.SolicitarProducto;
@@ -75,7 +76,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     SharedPreferences mSharedPreference;
     private Button btnHacerPedido , btnRegistrarUsuarios , btnListaPedidos
             , btnMapaRepartidores , btnPerfilX , btnMapProveedor , btnFinanza , btnListaSolicitudes,
-            btnSolicitudDeProducto;
+            btnSolicitudDeProducto , mBtnListaSolicitudProucto , mBtnConfiguraciones;
     private TextView Txtnombres , Txtapellidos;
     private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayout LinearShimmer;
@@ -115,6 +116,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnListaPedidos = findViewById(R.id.botnListaDePedidos);
         btnListaSolicitudes = findViewById(R.id.btnListaSolicitudesAdmin);
         btnSolicitudDeProducto = findViewById(R.id.btnSolicitudProductoAdmin);
+        mBtnListaSolicitudProucto = findViewById(R.id.btnListaSolicitudProducto);
         btnPerfilX = findViewById(R.id.btnPerfil);
         Txtnombres = findViewById(R.id.txtNombres);
         Txtapellidos = findViewById(R.id.txtApellidos);
@@ -224,6 +226,18 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
                 startActivity(new Intent(MenuAdmin.this, SolicitarProducto.class));
+                finish();
+            }
+        });
+
+        mBtnListaSolicitudProucto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                startActivity(new Intent(MenuAdmin.this, ListaSolicitudProductos.class));
                 finish();
             }
         });
