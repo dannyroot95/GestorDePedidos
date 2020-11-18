@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class SolicitarProducto extends AppCompatActivity {
             , mbtnMinBebida , mbtnMaxBebida , mBtnDeleteElement , mBtnSolicitar;
     TextView txtProductoList, txtNotaList , txtPrecioUniList, txtCantidadList , txtCantidadAdicionalList
             , txtCantidadABebidaList , txtPrecioTotalList;
-    TextView txtPrecioNeto;
+    TextView txtPrecioNeto , txtNumSolicitudProducto;
     private Vibrator vibrator;
     long tiempo = 100;
     private ProgressDialog mDialog;
@@ -112,6 +113,31 @@ public class SolicitarProducto extends AppCompatActivity {
         txtCantidadAdicionalList = findViewById(R.id.txtSolicitarAdicionalCantidad);
         txtPrecioTotalList = findViewById(R.id.lsPTotal);
         txtPrecioNeto = findViewById(R.id.txtNeto);
+        txtNumSolicitudProducto = findViewById(R.id.numSolicitudProducto);
+
+        Query ultimoDato = FirebaseDatabase.getInstance().getReference().child("SolicitudDeProductos").orderByKey().limitToLast(1);
+        ultimoDato.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        String num = childSnapshot.child("numSolicitud").getValue().toString();
+                        int numToString = Integer.parseInt(num);
+                        int newNumPedido = numToString + 1;
+                        String stNewNumPedido = String.valueOf(newNumPedido);
+                        txtNumSolicitudProducto.setText(stNewNumPedido);
+                    }
+            }
+                else{
+                    txtNumSolicitudProducto.setText("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         mbtnMin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,7 +401,6 @@ public class SolicitarProducto extends AppCompatActivity {
                         String nombreP = ds.child("nombreProducto").getValue().toString();
                         producto.add(new SpinnerProduct(id, nombreP));
                     }
-
                     final ArrayAdapter<SpinnerProduct> arrayAdapter
                             = new ArrayAdapter<>(SolicitarProducto.this, R.layout.custom_spinner, producto);
                     mSpinnerProducto.setAdapter(arrayAdapter);
@@ -388,7 +413,6 @@ public class SolicitarProducto extends AppCompatActivity {
                             mProducto.setTextColor(0xff000000);
                             obtenerProductoID();
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
                             mProducto.setText("");
@@ -398,18 +422,14 @@ public class SolicitarProducto extends AppCompatActivity {
                 else {
                     mProducto.setText("");
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     private void obtenerProductoID() {
-
         mUsuarioProveedor.child("Usuarios").child("Proveedor")
                 .child(mID.getText().toString())
                 .child("Productos")
@@ -429,10 +449,8 @@ public class SolicitarProducto extends AppCompatActivity {
                     Toast.makeText(SolicitarProducto.this, "error", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -449,7 +467,6 @@ public class SolicitarProducto extends AppCompatActivity {
                                 String nombreP = ds.child("nombreProducto").getValue().toString();
                                 producto.add(new SpinnerProduct(id, nombreP));
                             }
-
                             final ArrayAdapter<SpinnerProduct> arrayAdapter
                                     = new ArrayAdapter<>(SolicitarProducto.this, R.layout.custom_spinner, producto);
                             mSpinnerAdicionales.setAdapter(arrayAdapter);
@@ -462,7 +479,6 @@ public class SolicitarProducto extends AppCompatActivity {
                                     mAdicional.setTextColor(0xff000000);
                                     obtenerAdicionalID();
                                 }
-
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                     mAdicional.setText("");
@@ -472,18 +488,14 @@ public class SolicitarProducto extends AppCompatActivity {
                         else {
                             mAdicional.setText("");
                         }
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-
     }
 
     private void obtenerAdicionalID() {
-
         mUsuarioProveedor.child("Usuarios").child("Proveedor")
                 .child(mID.getText().toString())
                 .child("Adicionales")
@@ -549,7 +561,6 @@ public class SolicitarProducto extends AppCompatActivity {
                                 String nombreP = ds.child("nombreProducto").getValue().toString();
                                 producto.add(new SpinnerProduct(id, nombreP));
                             }
-
                             final ArrayAdapter<SpinnerProduct> arrayAdapter
                                     = new ArrayAdapter<>(SolicitarProducto.this, R.layout.custom_spinner, producto);
                             mSpinnerBebidas.setAdapter(arrayAdapter);
@@ -562,7 +573,6 @@ public class SolicitarProducto extends AppCompatActivity {
                                     mBebidas.setTextColor(0xff000000);
                                     obtenerBebidasID();
                                 }
-
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                     mBebidas.setText("");
@@ -572,14 +582,11 @@ public class SolicitarProducto extends AppCompatActivity {
                         else {
                             mBebidas.setText("");
                         }
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-
     }
 
     private void obtenerBebidasID() {
@@ -780,7 +787,6 @@ public class SolicitarProducto extends AppCompatActivity {
 
         if (!producto.isEmpty() && !nota.isEmpty() && !cantidad.isEmpty() && !precioTotal.isEmpty() && !neto.isEmpty() && !precioUnitario.isEmpty()) {
 
-
             mDialog.show();
             mDialog.setMessage("Enviando Solicitud...");
             mDialog.setCancelable(false);
@@ -793,6 +799,7 @@ public class SolicitarProducto extends AppCompatActivity {
             map.put("precioTotalPorProducto", precioTotal);
             map.put("totalACobrar", neto);
             map.put("nombreSocio", mProveedor.getText().toString());
+            map.put("numSolicitud",txtNumSolicitudProducto.getText().toString());
             mDatabase.child("Usuarios").child("Proveedor")
                     .child(mID.getText().toString()).child("SolicitudDeProductos").push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

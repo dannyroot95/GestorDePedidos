@@ -12,12 +12,13 @@ public class ListaSolicitudProducto implements Serializable {
     String estado;
     String descripcion;
     String nombreSocio;
+    String numSolicitud;
 
     public ListaSolicitudProducto(){}
 
     public ListaSolicitudProducto(String IDProoveedor, String nombreProducto, String cantidad,
                                   String precioTotalPorProducto, String totalACobrar, String estado,
-                                  String descripcion, String nombreSocio) {
+                                  String descripcion, String nombreSocio, String numSolicitud) {
         this.IDProoveedor = IDProoveedor;
         this.nombreProducto = nombreProducto;
         this.cantidad = cantidad;
@@ -26,6 +27,7 @@ public class ListaSolicitudProducto implements Serializable {
         this.estado = estado;
         this.descripcion = descripcion;
         this.nombreSocio = nombreSocio;
+        this.numSolicitud = numSolicitud;
     }
 
     public String getIDProoveedor() {
@@ -90,5 +92,13 @@ public class ListaSolicitudProducto implements Serializable {
 
     public void setNombreSocio(String nombreSocio) {
         this.nombreSocio = nombreSocio;
+    }
+
+    public String getNumSolicitud() {
+        return numSolicitud;
+    }
+
+    public void setNumSolicitud(String numSolicitud) {
+        this.numSolicitud = numSolicitud;
     }
 }

@@ -43,6 +43,7 @@ import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorD
 import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
 import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.FichaDeSolicitud;
+import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.MenuListaDeSolicitudes;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -64,7 +65,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private static final int GALLERY = 1;
     long tiempo = 100;
     private CircleImageView foto;
-    private Button addProducto , listProducto , solicitarDelivery;
+    private Button addProducto , listProducto , solicitarDelivery , btnListaSolicitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_menu_proveedor);
         mAuthProviders = new AuthProviders();
         solicitarDelivery = findViewById(R.id.btnSolicitarDelivery);
+        btnListaSolicitud = findViewById(R.id.btnListaDeSolicitudes);
         mAuth = new AuthProviders();
         mDialog = new ProgressDialog(this);
         foto = findViewById(R.id.fotodefault);
@@ -137,6 +139,15 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                 else {
                     Toasty.info(MenuProveedor.this, "Espere un momento...", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnListaSolicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                startActivity(new Intent(MenuProveedor.this, MenuListaDeSolicitudes.class));
+                finish();
             }
         });
 

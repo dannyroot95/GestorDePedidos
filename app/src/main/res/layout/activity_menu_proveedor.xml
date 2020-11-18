@@ -331,7 +331,7 @@
                     <Button
                         android:layout_width="80dp"
                         android:gravity="center"
-                        android:id="@+id/botnListaDePedidos"
+                        android:id="@+id/btnListaDeSolicitudes"
                         android:background="@drawable/btn_lista_pedidos"
                         android:layout_height="80dp"/>
 
