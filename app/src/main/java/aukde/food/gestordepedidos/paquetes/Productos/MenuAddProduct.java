@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.Adicionales;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.Bebidas;
@@ -74,5 +75,11 @@ public class MenuAddProduct extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MenuAddProduct.this, MenuProveedor.class));
+        finish();
     }
 }

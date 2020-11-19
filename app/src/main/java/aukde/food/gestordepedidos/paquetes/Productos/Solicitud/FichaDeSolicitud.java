@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Productos.Pizza.AgregarProductoPizza;
 import es.dmoral.toasty.Toasty;
@@ -847,6 +848,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaD = (ImageView) zonaD.findViewById(R.id.closeDialog);
             cerrarPopupZonaD = (Button) zonaD.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryD = (TextView) zonaD.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaD = (Button) zonaD.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryD.setText("8");
@@ -875,6 +877,14 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
+
 
             zonaD.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaD.setCancelable(false);
@@ -897,6 +907,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaE = (ImageView) zonaE.findViewById(R.id.closeDialog);
             cerrarPopupZonaE = (Button) zonaE.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryE = (TextView) zonaE.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaE = (Button) zonaE.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryE.setText("7");
@@ -925,6 +936,14 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaE.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
+
 
             zonaE.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaE.setCancelable(false);
@@ -946,6 +965,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaF = (ImageView) zonaF.findViewById(R.id.closeDialog);
             cerrarPopupZonaF = (Button) zonaF.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryF = (TextView) zonaF.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaF = (Button) zonaF.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryF.setText("6");
@@ -974,6 +994,13 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaF.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
 
             zonaF.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaF.setCancelable(false);
@@ -995,6 +1022,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaG = (ImageView) zonaG.findViewById(R.id.closeDialog);
             cerrarPopupZonaG = (Button) zonaG.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryG = (TextView) zonaG.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaG = (Button) zonaG.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryG.setText("8");
@@ -1023,6 +1051,13 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaG.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
 
             zonaG.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaG.setCancelable(false);
@@ -1044,6 +1079,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaH = (ImageView) zonaH.findViewById(R.id.closeDialog);
             cerrarPopupZonaH = (Button) zonaH.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryH = (TextView) zonaH.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaH = (Button) zonaH.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryH.setText("6");
@@ -1072,6 +1108,13 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaH.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
 
             zonaH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaH.setCancelable(false);
@@ -1093,6 +1136,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaI = (ImageView) zonaI.findViewById(R.id.closeDialog);
             cerrarPopupZonaI = (Button) zonaI.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryI = (TextView) zonaI.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaI = (Button) zonaI.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza") || StProducto.contains("Torta") || StProducto.contains("torta")) {
                 txtCostoDeliveryI.setText("7");
@@ -1121,6 +1165,13 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            btnZonaI.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
+                }
+            });
 
             zonaI.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaI.setCancelable(false);
@@ -1142,6 +1193,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             cerrarImgZonaJ = (ImageView) zonaJ.findViewById(R.id.closeDialog);
             cerrarPopupZonaJ = (Button) zonaJ.findViewById(R.id.btnCerrarDialog);
             txtCostoDeliveryJ = (TextView) zonaJ.findViewById(R.id.txtSolicitudCostoDelivery);
+            btnZonaJ = (Button) zonaJ.findViewById(R.id.btnConfirmacion);
 
             if (StProducto.contains("Pizza") || StProducto.contains("pizza")) {
                 txtCostoDeliveryJ.setText("7");
@@ -1167,6 +1219,14 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     vibrator.vibrate(tiempo);
                     zonaJ.dismiss();
                     txtDeliverySolicitud.setText("");
+                }
+            });
+
+            btnZonaJ.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.vibrate(tiempo);
+                    showConfirmation();
                 }
             });
 
@@ -1317,6 +1377,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(FichaDeSolicitud.this, MenuProveedor.class));
         finish();
     }
 

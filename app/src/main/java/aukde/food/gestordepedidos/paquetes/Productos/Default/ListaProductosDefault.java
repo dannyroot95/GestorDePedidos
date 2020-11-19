@@ -27,6 +27,7 @@ import java.util.Collections;
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Adaptadores.AdapterProductoDefault;
 import aukde.food.gestordepedidos.paquetes.Inclusiones.MiToolbar;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ProductoDefault;
 import es.dmoral.toasty.Toasty;
 
@@ -148,9 +149,9 @@ public class ListaProductosDefault extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        NavUtils.navigateUpFromSameTask(this);/*
-        startActivity(new Intent(ListaDePedidos.this, MenuAdmin.class));
-        finish(); */
+        //NavUtils.navigateUpFromSameTask(this);/*
+        startActivity(new Intent(ListaProductosDefault.this, MenuProveedor.class));
+        finish();
     }
 
     @Override

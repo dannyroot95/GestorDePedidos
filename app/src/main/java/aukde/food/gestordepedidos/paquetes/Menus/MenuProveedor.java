@@ -73,6 +73,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_proveedor);
+        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
         mAuthProviders = new AuthProviders();
         solicitarDelivery = findViewById(R.id.btnSolicitarDelivery);
         btnListaSolicitud = findViewById(R.id.btnListaDeSolicitudes);
@@ -102,12 +103,15 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-
                 String cat = TxtCategoria.getText().toString();
                 if (!cat.equals("")) {
+                    mDialog.show();
+                    mDialog.setCancelable(false);
+                    mDialog.setMessage("Cargando...");
                     Intent intent = new Intent(MenuProveedor.this, MenuAddProduct.class);
                     intent.putExtra("keyProduct", cat);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     Toasty.info(MenuProveedor.this, "Espere un momento...", Toast.LENGTH_SHORT).show();
@@ -119,8 +123,12 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         listProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuProveedor.this, ListaProductosDefault.class));
+                finish();
             }
         });
 
@@ -131,10 +139,14 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                 String urlPhoto = txtUrlPhoto.getText().toString();
                 String cat = TxtNombreEmpresa.getText().toString();
                 if (!cat.equals("")) {
+                    mDialog.show();
+                    mDialog.setCancelable(false);
+                    mDialog.setMessage("Cargando...");
                     Intent intent = new Intent(MenuProveedor.this, FichaDeSolicitud.class);
                     intent.putExtra("keyProduct", cat);
                     intent.putExtra("keyPhoto",urlPhoto);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     Toasty.info(MenuProveedor.this, "Espere un momento...", Toast.LENGTH_SHORT).show();
@@ -145,6 +157,9 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         btnListaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
                 vibrator.vibrate(tiempo);
                 startActivity(new Intent(MenuProveedor.this, MenuListaDeSolicitudes.class));
                 finish();

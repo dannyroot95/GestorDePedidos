@@ -29,6 +29,9 @@
         <Button
             android:layout_width="150dp"
             android:text="Adicionales"
+            android:background="@drawable/redondo"
+            android:backgroundTint="@drawable/btn_background_rosa"
+            android:textColor="#fff"
             android:id="@+id/btnListAdicional"
             android:layout_height="wrap_content"/>
 
@@ -39,6 +42,9 @@
         <Button
             android:layout_width="150dp"
             android:text="Bebidas"
+            android:textColor="#fff"
+            android:background="@drawable/redondo"
+            android:backgroundTint="@drawable/btn_background_rosa"
             android:id="@+id/btnListBebidas"
             android:layout_height="wrap_content"/>
 

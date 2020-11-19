@@ -236,6 +236,7 @@
             android:elevation="6dp"
             android:padding="8dp"
             android:gravity="center"
+            android:id="@+id/linearConfirm"
             android:layout_gravity="bottom|center"
             android:layout_height="wrap_content">
 
@@ -243,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:text="Confirmar Solicitud"
                 android:background="@drawable/redondo"
-                android:backgroundTint="@drawable/btn_background_rosa"
+                android:backgroundTint="#5bbd00"
                 android:id="@+id/btnConfirmar"
                 android:textColor="#fff"
                 android:layout_weight="1"
@@ -254,19 +255,40 @@
                 android:layout_width="wrap_content"
                 android:text="Rechazar"
                 android:background="@drawable/redondo"
-                android:backgroundTint="@drawable/btn_background_rosa"
+                android:backgroundTint="#fc0000"
                 android:id="@+id/btnRechazar"
                 android:textColor="#fff"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/linearCancel"
+            android:padding="8dp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:text="Cancelar Solicitud"
+                android:background="@drawable/redondo"
+                android:backgroundTint="@drawable/btn_background_rosa"
+                android:id="@+id/btnCancelarSoli"
+                android:textColor="#fff"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"/>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/floatBtnRotate"
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_rotate"
