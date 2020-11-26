@@ -98,7 +98,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -110,13 +110,14 @@
                             android:text="Producto : "
                             android:textSize="14sp"
                             android:textColor="#000"
+                            android:gravity="center"
                             android:textStyle="bold"
                             android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"/>
 
                         <EditText
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:id="@+id/edtProductoSolicitud"
                             android:textSize="14sp"
                             android:textColorHint="#000"
@@ -124,32 +125,17 @@
                             android:inputType="textCapSentences"
                             android:textStyle="bold"
                             android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginBottom="7dp"
-                        android:orientation="horizontal"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:text="Seleccionar producto : "
-                            android:textColor="#000"
-                            android:layout_marginLeft="7dp"
-                            android:fontFamily="@font/futura"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="match_parent"/>
 
                         <Spinner
                             android:id="@+id/spinnerProducto"
                             android:spinnerMode="dialog"
                             android:tooltipText="-"
                             android:layout_width="40dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="match_parent"/>
 
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -192,6 +178,29 @@
                         android:fontFamily="@font/futura"
                         android:inputType="numberDecimal"
                         android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Stock : "
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/txtStock"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:gravity="center"
+                        android:textColorHint="#000"
+                        android:fontFamily="@font/futura"
+                        android:layout_height="match_parent"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -437,7 +446,7 @@
 
                         <Button
                             android:layout_width="170dp"
-                            android:text="Limpiar lista?"
+                            android:text="Quitar producto"
                             android:id="@+id/btnClean"
                             android:layout_marginTop="7dp"
                             android:layout_marginBottom="7dp"
@@ -484,6 +493,11 @@
                 <TextView
                     android:layout_width="0dp"
                     android:id="@+id/txtPrecioDeliverySol"
+                    android:layout_height="0dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:id="@+id/txtIdProducto"
                     android:layout_height="0dp"/>
 
             </LinearLayout>

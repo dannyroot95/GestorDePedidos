@@ -1,7 +1,11 @@
 package aukde.food.gestordepedidos.paquetes.Adaptadores;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetalleSolicitudProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaSolicitud;
+import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.DetalleSolicitudDeProductoParaProveedor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterListaSolicitud extends RecyclerView.Adapter<AdapterListaSolicitud.viewHolderListaSolicitud> {
@@ -59,6 +65,26 @@ public class AdapterListaSolicitud extends RecyclerView.Adapter<AdapterListaSoli
         else {
             holder.txtEstado.setTextColor(Color.parseColor("#5bbd00"));
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressDialog mDialog;
+                mDialog = new ProgressDialog(v.getContext(),R.style.ThemeOverlay);
+                mDialog.show();
+                mDialog.setCancelable(false);
+                mDialog.setMessage("Cargando...");
+                final Vibrator vibrator;
+                final long tiempo = 100;
+                vibrator = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(tiempo);
+                Intent intent = new Intent(v.getContext(), DetalleSolicitudProveedor.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("key",ls);
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+            }
+        });
 
     }
 

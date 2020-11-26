@@ -67,13 +67,11 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
     long tiempo = 100;
     private TokenProvider tokenProvider;
     private NotificationProvider notificationProvider;
-    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_solicitud_de_producto_para_proveedor);
-        mDialog = new ProgressDialog(this, R.style.ThemeOverlay);
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -111,7 +109,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
         mTxtPrecioTotal.setText(arrayList.get(3));
         mTxtEstado.setText(arrayList.get(4));
         if (mTxtEstado.getText().toString().equals("Sin confirmar") || mTxtEstado.getText().toString().equals("Rechazado")
-                || mTxtEstado.getText().toString().equals("Cancelado")   ){
+                || mTxtEstado.getText().toString().equals("Cancelado")){
             mTxtEstado.setTextColor(Color.parseColor("#FC0000"));
         }
         else
@@ -162,6 +160,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
         mBtnRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetalleSolicitudDeProductoParaProveedor.this,R.style.ThemeOverlay);
                 builder.setTitle("Confirme!");
                 builder.setIcon(R.drawable.ic_error);
@@ -170,9 +169,6 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mDialog.show();
-                        mDialog.setCancelable(false);
-                        mDialog.setMessage("Rechazando solicitud...");
                         nulled();
                         startActivity(new Intent(DetalleSolicitudDeProductoParaProveedor.this, MenuProveedor.class));
                         finish();
@@ -194,6 +190,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
         mBtnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(tiempo);
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetalleSolicitudDeProductoParaProveedor.this,R.style.ThemeOverlay);
                 builder.setTitle("Confirme!");
                 builder.setIcon(R.drawable.ic_error);
@@ -202,9 +199,6 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                 builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mDialog.show();
-                        mDialog.setCancelable(false);
-                        mDialog.setMessage("Cancelando solicitud...");
                         cancelSolicitude();
                         startActivity(new Intent(DetalleSolicitudDeProductoParaProveedor.this, MenuProveedor.class));
                         finish();
@@ -227,9 +221,14 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
 
     private void statusButtom(){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        LinearLayout.LayoutParams paramsMatch = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        if (mTxtEstado.getText().toString().equals("Confirmado") || mTxtEstado.getText().toString().equals("Cancelado") ){
+        if (mTxtEstado.getText().toString().equals("Confirmado")){
             lnLinearConfirm.setLayoutParams(params);
+        }
+        else if (mTxtEstado.getText().toString().equals("Cancelado")){
+            lnLinearConfirm.setLayoutParams(paramsMatch);
+            lnLinearCancel.setLayoutParams(params);
         }
         else{
             lnLinearCancel.setLayoutParams(params);
@@ -390,13 +389,10 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-
                     final String nameBussiness = dataSnapshot.child("nombre_empresa").getValue().toString();
                     final String photo = dataSnapshot.child("foto").getValue().toString();
-
                     String[] admins = {"nS8J0zEj53OcXSugQsXIdMKUi5r1", "UnwAmhwRzmRLn8aozWjnYFOxYat2",
                             "9sjTQMmowxWYJGTDUY98rAR2jzB3"};
-
                     for (int i = 0; i < admins.length; i++) {
                         tokenProvider.getToken(admins[i]).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -404,7 +400,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                                 if (dataSnapshot.exists()) {
                                     String token = dataSnapshot.child("token").getValue().toString();
                                     Map<String, String> map = new HashMap<>();
-                                    map.put("title", "Solicitud CONFIRMADA!");
+                                    map.put("title", "Solicitud de producto CONFIRMADA!");
                                     map.put("body",  "Del PRODUCTO\ndel SOCIO : " + nameBussiness);
                                     map.put("path", photo);
                                     FCMBody fcmBody = new FCMBody(token, "high", map);
@@ -421,7 +417,6 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                                                 Toasty.error(DetalleSolicitudDeProductoParaProveedor.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
                                             }
                                         }
-
                                         @Override
                                         public void onFailure(Call<FCMResponse> call, Throwable t) {
                                             Log.d("Error", "Error encontrado" + t.getMessage());
@@ -430,29 +425,20 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(DetalleSolicitudDeProductoParaProveedor.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                             }
                         });
                     }
-
                 }
                 else {
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-
     }
 
     private void sendNulledNotification(){
@@ -475,7 +461,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                                 if (dataSnapshot.exists()) {
                                     String token = dataSnapshot.child("token").getValue().toString();
                                     Map<String, String> map = new HashMap<>();
-                                    map.put("title", "Solicitud RECHAZADA!");
+                                    map.put("title", "Solicitud de producto RECHAZADA!");
                                     map.put("body",  "Del SOCIO : "+nameBussiness);
                                     map.put("path", photo);
                                     FCMBody fcmBody = new FCMBody(token, "high", map);
@@ -545,7 +531,7 @@ public class DetalleSolicitudDeProductoParaProveedor extends AppCompatActivity {
                                 if (dataSnapshot.exists()) {
                                     String token = dataSnapshot.child("token").getValue().toString();
                                     Map<String, String> map = new HashMap<>();
-                                    map.put("title", "Solicitud CANCELADA!");
+                                    map.put("title", "Solicitud de producto CANCELADA!");
                                     map.put("body",  "Del SOCIO : "+nameBussiness);
                                     map.put("path", photo);
                                     FCMBody fcmBody = new FCMBody(token, "high", map);

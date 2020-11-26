@@ -149,14 +149,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:background="#E4FFEF"
+                    android:background="#FFE3FA"
                     android:padding="16dp">
 
                     <Button
                         android:layout_width="80dp"
                         android:id="@+id/btnPerfil"
                         android:gravity="center"
-                        android:background="@drawable/btn_user"
+                        android:background="@drawable/btn_provider"
                         android:layout_height="80dp"/>
 
                     <TextView

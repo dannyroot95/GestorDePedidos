@@ -78,7 +78,6 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         solicitarDelivery = findViewById(R.id.btnSolicitarDelivery);
         btnListaSolicitud = findViewById(R.id.btnListaDeSolicitudes);
         mAuth = new AuthProviders();
-        mDialog = new ProgressDialog(this);
         foto = findViewById(R.id.fotodefault);
         addProducto = findViewById(R.id.btnAgregarProducto);
         listProducto = findViewById(R.id.btnListaProductos);
@@ -183,7 +182,6 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         popupMenu.show();
 
     }
-
 
     void logout() {
         /*final SharedPreferences.Editor editor = mSharedPreference.edit();

@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,6 +17,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -60,17 +63,25 @@ import java.util.List;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.SolicitarProducto;
 import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMBody;
+import aukde.food.gestordepedidos.paquetes.Modelos.FCMResponse;
 import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Productos.Pizza.AgregarProductoPizza;
+import aukde.food.gestordepedidos.paquetes.Providers.NotificationProvider;
+import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener {
 
     Spinner mSpinner;
     DatabaseReference mProducto;
     EditText edtProducto , edtPrecio;
-    TextView edtCantidad;
+    TextView edtCantidad , mTxtStock , mIDProducto;
     FirebaseAuth mAuth;
     private Button mBtnAdd, mbtnMin, mbtnMax, mBtnClean;
     public EditText  edtNombreCliente, edtTelefono, edtReferencia , edtSolDireccion;
@@ -102,12 +113,16 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
 
     private TextView txtDeliverySolicitud;
     DatabaseReference mDatabase;
+    private TokenProvider tokenProvider;
+    private NotificationProvider notificationProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ficha_de_solicitud);
+        tokenProvider = new TokenProvider();
+        notificationProvider = new NotificationProvider();
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -140,6 +155,8 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
         dialogConfirm = new Dialog(this);
 
         txtProducto = findViewById(R.id.lsProducto);
+        mTxtStock = findViewById(R.id.txtStock);
+        mIDProducto = findViewById(R.id.txtIdProducto);
         txtPrecioUnitario = findViewById(R.id.lsPUnitario);
         txtCantidad = findViewById(R.id.lsCant);
         txtPtotal = findViewById(R.id.lsPTotal);
@@ -166,9 +183,6 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     txtNumSolicitud.setText("0");
                 }
             }
-
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -205,7 +219,6 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     String Min = String.valueOf(res);
                     edtCantidad.setText(Min);
                 }
-
             }
         });
 
@@ -224,13 +237,42 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
         mBtnClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reduceStock();
                 vibrator.vibrate(tiempo);
+                String desc [] = txtProducto.getText().toString().split("\n");
+                String desc2 [] = txtPrecioUnitario.getText().toString().split("\n");
+                String desc3 [] = txtCantidad.getText().toString().split("\n");
+                String desc4 [] = txtPtotal.getText().toString().split("\n");
+                StringBuilder builder = new StringBuilder();
+                StringBuilder builder2 = new StringBuilder();
+                StringBuilder builder3 = new StringBuilder();
+                StringBuilder builder4 = new StringBuilder();
+                for (int i = 0 ; i<desc.length - 1 ; i++){
+                    builder.append(desc[i]+"\n");
+                }
+                for (int j = 0 ; j<desc2.length - 1 ; j++){
+                    builder2.append(desc2[j]+"\n");
+                }
+                for (int k = 0 ; k<desc3.length - 1 ; k++){
+                    builder3.append(desc3[k]+"\n");
+                }
+                for (int l = 0 ; l<desc4.length - 1 ; l++){
+                    builder4.append(desc4[l]+"\n");
+                }
+                String joined = builder.toString();
+                String joined2 = builder2.toString();
+                String joined3 = builder3.toString();
+                String joined4 = builder4.toString();
                 txtProducto.setText("");
                 txtPrecioUnitario.setText("");
                 txtCantidad.setText("");
                 txtPtotal.setText("");
-                txtNeto.setText("0");
-
+                txtProducto.append(joined);
+                txtPrecioUnitario.append(joined2);
+                txtCantidad.append(joined3);
+                txtPtotal.append(joined4);
+                subtractPriceList();
+                listReduceProduct();
             }
         });
 
@@ -238,28 +280,41 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
-                String P = edtProducto.getText().toString();
-                String Pu = edtPrecio.getText().toString();
-                String Cant = edtCantidad.getText().toString();
-                String netoValor = txtNeto.getText().toString();
-                Double dNeto = Double.parseDouble(netoValor);
-                if ( P.isEmpty() || Pu.isEmpty()) {
-                    Toasty.error(FichaDeSolicitud.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
-                } else {
-                    txtProducto.append(P + "\n");
-                    txtPrecioUnitario.append(Pu + "\n");
-                    txtCantidad.append(Cant + "\n");
-                    int Cantidad = Integer.parseInt(Cant);
-                    Double Precio = Double.parseDouble(Pu);
-                    Double total = Cantidad * Precio;
-                    String sTotal = String.valueOf(total);
-                    txtPtotal.append(sTotal + "\n");
+                int stock = Integer.parseInt(edtCantidad.getText().toString());
+                int cant = Integer.parseInt(mTxtStock.getText().toString());
+                int res;
+                if (!(stock > cant)) {
+                    String P = edtProducto.getText().toString();
+                    String Pu = edtPrecio.getText().toString();
+                    String Cant = edtCantidad.getText().toString();
+                    String netoValor = txtNeto.getText().toString();
+                    Double dNeto = Double.parseDouble(netoValor);
 
-                    Double finalNeto = total + dNeto;
-                    String stNeto = String.valueOf(finalNeto);
-                    txtNeto.setText(stNeto);
+                    if (P.isEmpty() || Pu.isEmpty()) {
+                        Toasty.error(FichaDeSolicitud.this, "Complete los Campos", Toast.LENGTH_SHORT).show();
+                    }
 
+                    else {
+                        txtProducto.append(P + "\n");
+                        txtPrecioUnitario.append(Pu + "\n");
+                        txtCantidad.append(Cant + "\n");
+                        int Cantidad = Integer.parseInt(Cant);
+                        Double Precio = Double.parseDouble(Pu);
+                        Double total = Cantidad * Precio;
+                        String sTotal = String.valueOf(total);
+                        txtPtotal.append(sTotal + "\n");
 
+                        Double finalNeto = total + dNeto;
+                        String stNeto = String.valueOf(finalNeto);
+                        txtNeto.setText(stNeto);
+
+                        res = cant - stock;
+                        String newStock = String.valueOf(res);
+                        mTxtStock.setText(newStock);
+                    }
+                }
+                else {
+                    Toasty.error(FichaDeSolicitud.this, "Stock Insuficiente", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -283,7 +338,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        checkDirecctions();
+        //checkDirecctions();
 
     }
 
@@ -321,6 +376,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String stProducto = parent.getItemAtPosition(position).toString();
                             edtProducto.setText(stProducto);
+                            edtCantidad.setText("1");
                             getDataProduct();
                         }
 
@@ -348,22 +404,38 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String id = childSnapshot.getKey();
                     String num = childSnapshot.child("tarifaPublicada").getValue().toString();
+                    String stock = childSnapshot.child("stock").getValue().toString();
                     edtPrecio.setText(num);
+                    mTxtStock.setText(stock);
+                    mIDProducto.setText(id);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
     }
 
-    private void checkDirecctions(){
+    private void subtractPriceList(){
+        String desc [] = txtPtotal.getText().toString().split("\n");
+        double sub = 0;
+        for (int i = 0 ; i<desc.length ; i++){
+            if(!desc[i].isEmpty()){
+                sub += Double.parseDouble(desc[i]);
+            }
+            else{
+                txtNeto.setText("0.0");
+            }
+        }
+        String stSub = String.valueOf(sub);
+        txtNeto.setText(stSub);
+    }
+
+    /*private void checkDirecctions(){
 
         String [] joya = {"joya","JOYA","Joya"};
-
        String dir = edtDireccion.getText().toString();
        if (dir.contains("mayo")){
            Toast.makeText(this, "delivery 3 lucas", Toast.LENGTH_SHORT).show();
@@ -371,14 +443,12 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
        else if (dir.contains("agosto")){
            Toast.makeText(this, "delivery 4 lucas", Toast.LENGTH_SHORT).show();
        }
-
-       for (final String c1 : joya){
-          if (dir.contains(c1)){
-                Toast.makeText(this, "delivery 8 lucas", Toast.LENGTH_SHORT).show();
-            }
-          }
-
-    }
+       for (final String c1 : joya) {
+           if (dir.contains(c1)) {
+               Toast.makeText(this, "delivery 8 lucas", Toast.LENGTH_SHORT).show();
+           }
+       }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -1266,30 +1336,52 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     String stTelefono = edtTelefono.getText().toString();
                     String stDireccion = edtSolDireccion.getText().toString();
                     String stReferencia = edtReferencia.getText().toString();
-                    String stNombreEmpresa = getIntent().getStringExtra("keyProduct");
-                    String stPhoto = getIntent().getStringExtra("keyPhoto");
+                    final String stNombreEmpresa = getIntent().getStringExtra("keyProduct");
+                    final String stPhoto = getIntent().getStringExtra("keyPhoto");
 
                     if (!stNombre.isEmpty() && !stTelefono.isEmpty() && !stDireccion.isEmpty() && !stReferencia.isEmpty()) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", mAuth.getUid());
-                    map.put("numSolicitud", txtNumSolicitud.getText().toString());
-                    map.put("listaDeProductos", txtProducto.getText().toString());
-                    map.put("cantidadProducto", txtCantidad.getText().toString());
-                    map.put("precioUnitario", txtPrecioUnitario.getText().toString());
-                    map.put("precioTotalProductos", txtPtotal.getText().toString());
-                    map.put("nombreCliente", edtNombreCliente.getText().toString());
-                    map.put("telefonoCliente", edtTelefono.getText().toString());
-                    map.put("direccionCliente", edtSolDireccion.getText().toString());
-                    map.put("referenciaCliente", edtReferencia.getText().toString());
-                    map.put("totalNetoProducto",txtNeto.getText().toString());
-                    map.put("costoDelivery", txtCostoDeliveryConfirmacion.getText().toString());
-                    map.put("proveedor",stNombreEmpresa);
-                    map.put("photo",stPhoto);
-                    map.put("estado","Sin confirmar");
-                    mDatabase.child("SolicitudDelivery").push().setValue(map);
-                    mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Solicitudes").push().setValue(map);
-                    Toasty.success(FichaDeSolicitud.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
-                    finish();
+
+                        vibrator.vibrate(tiempo);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(FichaDeSolicitud.this,R.style.ThemeOverlay);
+                        builder.setTitle("Confirme!");
+                        builder.setIcon(R.drawable.ic_error);
+                        builder.setCancelable(false);
+                        builder.setMessage("Todos los datos son Correctos?");
+                        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("id", mAuth.getUid());
+                                map.put("numSolicitud", txtNumSolicitud.getText().toString());
+                                map.put("listaDeProductos", txtProducto.getText().toString());
+                                map.put("cantidadProducto", txtCantidad.getText().toString());
+                                map.put("precioUnitario", txtPrecioUnitario.getText().toString());
+                                map.put("precioTotalProductos", txtPtotal.getText().toString());
+                                map.put("nombreCliente", edtNombreCliente.getText().toString());
+                                map.put("telefonoCliente", edtTelefono.getText().toString());
+                                map.put("direccionCliente", edtSolDireccion.getText().toString());
+                                map.put("referenciaCliente", edtReferencia.getText().toString());
+                                map.put("totalNetoProducto",txtNeto.getText().toString());
+                                map.put("costoDelivery", txtCostoDeliveryConfirmacion.getText().toString());
+                                map.put("proveedor",stNombreEmpresa);
+                                map.put("photo",stPhoto);
+                                map.put("estado","Sin confirmar");
+                                mDatabase.child("SolicitudDelivery").push().setValue(map);
+                                mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Solicitudes").push().setValue(map);
+                                sendSolicitudeNotification();
+                                Toasty.success(FichaDeSolicitud.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
+                                startActivity(new Intent(FichaDeSolicitud.this,MenuProveedor.class));
+                                finish();
+                            }
+                        });
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.create();
+                        builder.show();
                 }
                     else {
                         Toasty.warning(FichaDeSolicitud.this, "Complete los campos", Toast.LENGTH_SHORT,true).show();
@@ -1300,7 +1392,53 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             dialogConfirm.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialogConfirm.setCancelable(false);
             dialogConfirm.show();
+    }
 
+                private void sendSolicitudeNotification(){
+
+                    final String nameBussiness = getIntent().getStringExtra("keyProduct");
+                    final String photo = getIntent().getStringExtra("keyPhoto");
+                    String[] admins = {"nS8J0zEj53OcXSugQsXIdMKUi5r1", "UnwAmhwRzmRLn8aozWjnYFOxYat2",
+                            "9sjTQMmowxWYJGTDUY98rAR2jzB3"};
+
+                    for (int i = 0; i < admins.length; i++) {
+                        tokenProvider.getToken(admins[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    String token = dataSnapshot.child("token").getValue().toString();
+                                    Map<String, String> map = new HashMap<>();
+                                    map.put("title", "Solicitud de DELIVERY!");
+                                    map.put("body",  "El SOCIO : " +nameBussiness+" está solicitando delivery");
+                                    map.put("path", photo);
+                                    FCMBody fcmBody = new FCMBody(token, "high", map);
+                                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                                        @Override
+                                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                            if (response.body() != null) {
+                                                if (response.body().getSuccess() == 1) {
+                                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    Toasty.error(FichaDeSolicitud.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                                }
+                                            } else {
+                                                Toasty.error(FichaDeSolicitud.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                                            Log.d("Error", "Error encontrado" + t.getMessage());
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(FichaDeSolicitud.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
     }
 
     @Override
@@ -1373,6 +1511,88 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
             showZonaJ();
         }
         return false;
+    }
+
+
+    private void listReduceProduct(){
+        final String desc [] = txtProducto.getText().toString().split("\n");
+        for (final String s : desc){
+            Query reference = FirebaseDatabase.getInstance().getReference()
+                    .child("Usuarios").child("Proveedor").child(mAuth.getUid())
+                    .child("Productos").orderByChild("nombreProducto").equalTo(s);
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            final String key = childSnapshot.getKey();
+                          mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid())
+                                    .child("Productos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                              @Override
+                              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                  String sTstock = dataSnapshot.child("stock").getValue().toString();
+                                  int intStock = Integer.parseInt(sTstock);
+                                  String descCant [] = txtCantidad.getText().toString().split("\n");
+                                  for(final String c : descCant){
+                                      int cant = Integer.parseInt(c);
+                                      int newStock = intStock - cant;
+                                      String newStockSt = String.valueOf(newStock);
+                                      Map<String,Object> map = new HashMap<>();
+                                      map.put("stock",newStockSt);
+                                      mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid())
+                                              .child("Productos").child(key).updateChildren(map);
+                                  }
+                              }
+                              @Override
+                              public void onCancelled(@NonNull DatabaseError databaseError) {
+                              }
+                          });
+                        }
+                    }
+                    else{
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void reduceStock(){
+        String desc [] = txtCantidad.getText().toString().split("\n");
+        String desc2 [] = txtProducto.getText().toString().split("\n");
+        String ultimoStock = desc[desc.length-1];
+        String ultimoProducto =  desc2[desc2.length-1];
+        int ultimoStockInt = Integer.parseInt(ultimoStock);
+        int stock = Integer.parseInt(mTxtStock.getText().toString());
+        int sum;
+
+        if(ultimoProducto.equals(edtProducto.getText().toString())){
+            sum = stock + ultimoStockInt;
+            String newStock = String.valueOf(sum);
+            mTxtStock.setText(newStock);
+        }
+        else {
+        }
+        removeVariousCant();
+    }
+
+    private void removeVariousCant(){
+        String desc [] = txtCantidad.getText().toString().split("\n");
+        String desc2 [] = txtProducto.getText().toString().split("\n");
+        int suma = 0;
+        for(int i = 0 ; i<desc2.length ; i++) {
+            if (desc2[i].equals(edtProducto.getText().toString())){
+                int cant = Integer.parseInt(desc[i]);
+                //Toast.makeText(this, desc2[i] + " -> " + desc[i], Toast.LENGTH_SHORT).show();
+                suma = cant + suma;
+        }
+        }
+        String s = String.valueOf(suma);
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

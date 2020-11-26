@@ -56,7 +56,13 @@ public class AdapterListaSolicitudProductoProveedor  extends RecyclerView.Adapte
         holder.txtEstado.setText(ls.getEstado());
 
 
-        if ( holder.txtEstado.getText().toString().equals("Sin confirmar")){
+        if ( holder.txtEstado.getText().toString().equals("Sin confirmar" )){
+            holder.txtEstado.setTextColor(Color.parseColor("#FC0000"));
+        }
+        else if(holder.txtEstado.getText().toString().equals("Cancelado")){
+            holder.txtEstado.setTextColor(Color.parseColor("#FC0000"));
+        }
+        else if(holder.txtEstado.getText().toString().equals("Rechazado")){
             holder.txtEstado.setTextColor(Color.parseColor("#FC0000"));
         }
         else {
