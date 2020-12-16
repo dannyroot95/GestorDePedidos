@@ -48,7 +48,7 @@ public class LoginAdmin extends AppCompatActivity {
   TextView recuperarClave;
   private Vibrator vibrator;
   long tiempo = 100;
-
+//
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
