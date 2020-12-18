@@ -38,4 +38,8 @@ public class ProveedorProvider {
 
     }
 
+    public DatabaseReference getProveedorData(String idProveedor){
+        return mDatabaseReference.child(idProveedor);
+    }
+
 }
