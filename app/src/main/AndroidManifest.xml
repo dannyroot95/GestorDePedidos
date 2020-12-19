@@ -30,7 +30,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paquetes.Menus.Perfiles.Perfilproveedoraukde"></activity>
+        <activity android:name=".paquetes.Menus.Perfiles.Perfilproveedoraukde"
+            android:parentActivityName=".paquetes.Menus.MenuProveedor"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".paquetes.Actividades.Pedidos.DetalleSolicitudProveedor"
             android:screenOrientation="portrait" />
