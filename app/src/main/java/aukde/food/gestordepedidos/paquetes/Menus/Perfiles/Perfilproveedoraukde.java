@@ -77,7 +77,7 @@ public class Perfilproveedoraukde extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppThemeRedCake);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfil_proveedor);
+        setContentView(R.layout.activity_perfil_proveedor_aukde);
         deleteCache = new DeleteCache();
         saveStorageImage = new SaveStorageImage();
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
@@ -274,7 +274,7 @@ public class Perfilproveedoraukde extends AppCompatActivity {
         final String id = mAuthProviders.getId();
         final String nombre = txtNombres.getText().toString();
         final String apellido = txtApellidos.getText().toString();
-        mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("Usuarios").child("Proveedor").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String,Object> datos = new HashMap<>();

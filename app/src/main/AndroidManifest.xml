@@ -35,10 +35,6 @@
             android:name=".paquetes.Actividades.Pedidos.DetalleSolicitudProveedor"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".paquetes.Menus.Perfiles.PerfilProveedor"
-            android:parentActivityName=".paquetes.Menus.MenuProveedor"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".paquetes.Productos.Solicitud.DetalleSolicitudDeProductoParaProveedor"
             android:screenOrientation="landscape" />
         <activity
