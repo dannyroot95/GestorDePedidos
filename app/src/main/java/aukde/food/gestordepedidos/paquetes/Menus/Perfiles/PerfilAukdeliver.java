@@ -123,7 +123,7 @@ public class PerfilAukdeliver extends AppCompatActivity {
             mDialog.show();
             Uri uri = data.getData();
             final String id = mAuthProviders.getId();
-            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoAdmin").child(mAuthProviders.getId()+".jpg");
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("PhotoProveedor").child(mAuthProviders.getId()+".jpg");
             String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
             File directory = new File(root);
             File photo = new File(root,"/profile.jpg");
