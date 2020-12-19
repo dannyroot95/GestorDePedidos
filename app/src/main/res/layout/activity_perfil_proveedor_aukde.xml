@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".paquetes.Menus.Perfiles.perfilproveedoraukde">
+    <include layout="@layout/toolbar3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center|bottom"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_height="200dp"
+                android:id="@+id/myPhotoProv"
+                android:layout_gravity="center"
+                app:civ_border_color="#E7E7E7"
+                app:civ_border_width="2dp"
+                android:backgroundTint="#CACACA"
+                android:clickable="true"
+                android:background="@drawable/ic_admin"
+                android:foreground="@drawable/selecion"
+                android:layout_width="200dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fotodefaultProv"
+                android:layout_width="70dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="130dp"
+                android:layout_height="70dp"
+                android:layout_alignBottom="@id/fotodefaultProv"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/camera"
+                android:clickable="true"
+                android:foreground="@drawable/selecion"
+                app:civ_border_color="#B4B4B4"
+                app:civ_border_width="2dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_persona"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombres"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/futura"
+                    android:id="@+id/ProvNombres"
+                    android:inputType="text">
+
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_persona2"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellidos"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/futura"
+                    android:id="@+id/ProvApellidos"
+                    android:inputType="text">
+
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnUpdateProv"
+        android:text="Actualizar Datos"
+        android:fontFamily="@font/futura"
+        android:layout_margin="20dp"
+        android:backgroundTint="@drawable/btn_background_negro"
+        android:background="@drawable/redondo"
+        android:textColor="#fff"
+        android:layout_gravity="bottom"
+        android:textSize="18dp"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

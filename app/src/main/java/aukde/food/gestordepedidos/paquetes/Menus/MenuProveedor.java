@@ -51,6 +51,7 @@ import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilProveedor;
+import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.Perfilproveedoraukde;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.ListaProductosDefault;
 import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
@@ -203,7 +204,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                 mDialog.show();
                 mDialog.setCancelable(false);
                 mDialog.setMessage("Cargando...");
-                startActivity(new Intent(MenuProveedor.this, PerfilProveedor.class));
+                startActivity(new Intent(MenuProveedor.this, Perfilproveedoraukde.class));
             }
         });
 
