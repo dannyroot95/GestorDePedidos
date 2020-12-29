@@ -422,12 +422,9 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
                                                     saveStorageImage.saveImage(bitmap, dir, fileName);
                                                     deleteCache.trimCache(MenuAdmin.this);
                                                 }
-
                                                 @Override
                                                 public void onLoadCleared(@Nullable Drawable placeholder) {
-
                                                 }
-
                                                 @Override
                                                 public void onLoadFailed(@Nullable Drawable errorDrawable) {
                                                     super.onLoadFailed(errorDrawable);

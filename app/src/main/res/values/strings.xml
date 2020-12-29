@@ -2,5 +2,6 @@
     <string name="app_name">Gestor de pedidos AukdeFood</string>
     <string name="title_activity_lista_de_pedidos">ListaDePedidos</string>
     <string name="title_activity_mapa_cliente_por_llamada">Map</string>
+    <string name="tokenGithub">ea2036fb0a727a9081c0939a4178250d3a08ce59</string>
 
 </resources>

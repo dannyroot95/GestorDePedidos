@@ -2,11 +2,9 @@ package aukde.food.gestordepedidos.paquetes.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-
 import id.zelory.compressor.Compressor;
 
 

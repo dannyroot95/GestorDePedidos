@@ -236,7 +236,6 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
             }catch(Exception e){
                 Log.d("error","Mensaje" + e.getMessage());
             }
-
         }
     }
 
@@ -250,7 +249,6 @@ public class AgregarProductoPorDefecto extends AppCompatActivity {
         uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
                 if(task.isSuccessful()){
                     storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
