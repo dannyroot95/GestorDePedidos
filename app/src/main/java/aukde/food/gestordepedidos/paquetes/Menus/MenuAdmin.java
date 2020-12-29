@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,8 +26,10 @@ import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -43,7 +46,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
 import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.ListaDePedidos;
@@ -91,6 +97,15 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
     long tiempo = 100;
     DeleteCache deleteCache;
     Dialog mDialog2;
+    Dialog mDialog3;
+    private int hora,minutos,segundos;
+
+    Button hora1;
+    Button hora2;
+    Button BotonHorario;
+    EditText EditHora1;
+    EditText EditHora2;
+    private DatabaseReference HoraAtencionActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +123,7 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         btnFinanza = findViewById(R.id.btnFinanzas);
         mDialog = new ProgressDialog(this,R.style.ThemeOverlay);
         mDialog2 = new Dialog(this);
+        mDialog3=new Dialog(this);
         mSharedPreference = getApplicationContext().getSharedPreferences("tipoUsuario",MODE_PRIVATE);
         btnHacerPedido = findViewById(R.id.btnHacerPedido);
         btnRegistrarUsuarios = findViewById(R.id.btnRegUsers);
@@ -541,6 +557,85 @@ public class MenuAdmin extends AppCompatActivity implements PopupMenu.OnMenuItem
         mDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog2.show();
 
+    }
+
+    public void ShowPopupListaHoraAtencion(View vista){
+        vibrator.vibrate(tiempo);
+        mDialog3.setContentView(R.layout.activity_horario_atencion_aukde);
+        TextView txtCerrarHoraAtencion;
+        hora1=mDialog3.findViewById(R.id.horaApertura);
+        hora2=mDialog3.findViewById(R.id.HoradeCierre);
+        BotonHorario=mDialog3.findViewById(R.id.botonHorario);
+        EditHora1=mDialog3.findViewById(R.id.horaAtencion);
+        EditHora2=mDialog3.findViewById(R.id.horaCierre);
+        txtCerrarHoraAtencion = mDialog3.findViewById(R.id.txtClose);
+        HoraAtencionActual = FirebaseDatabase.getInstance().getReference();
+
+        txtCerrarHoraAtencion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog3.dismiss();
+            }
+        });
+        hora1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v==hora1){
+                    final Calendar c=Calendar.getInstance();
+                    hora=c.get(Calendar.HOUR_OF_DAY);
+                    minutos=c.get(Calendar.MINUTE);
+                    TimePickerDialog timepickerdialog=new TimePickerDialog(MenuAdmin.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                            EditHora1.setText(i+":"+i1);
+
+                        }
+                    },hora,minutos,false);
+                    timepickerdialog.show();
+                }
+
+            }
+        });
+
+        hora2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+
+                if(vi==hora2){
+                    final Calendar c=Calendar.getInstance();
+                    hora=c.get(Calendar.HOUR_OF_DAY);
+                    minutos=c.get(Calendar.MINUTE);
+                    TimePickerDialog timepickerdialog=new TimePickerDialog(MenuAdmin.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int h, int h1) {
+                            EditHora2.setText(h+":"+h1);
+
+                        }
+                    },hora,minutos,false);
+                    timepickerdialog.show();
+                }
+
+            }
+        });
+
+        BotonHorario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickRegistroHora();
+            }
+        });
+
+
+        mDialog3.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog3.show();
+
+    }
+    private void clickRegistroHora(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("HoraApertura", EditHora1.getText().toString());
+        map.put("HoraCierre", EditHora2.getText().toString());
+        HoraAtencionActual.child("HorarioAtencion").push().setValue(map);
     }
 
     @Override
