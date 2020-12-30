@@ -259,6 +259,46 @@
 
                 <Spinner
                     android:layout_width="wrap_content"
+                    android:id="@+id/spinnerCategory"
+                    android:gravity="bottom"
+                    android:spinnerMode="dialog"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/linearCategoryFood"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic__restaurant"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="Categoría"
+                    android:textColorHint="#000"
+                    android:textColor="#000"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ProveedorCategoriaComida"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColorHint="#000"
+                        android:textColor="#000"
+                        android:maxLength="20">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:layout_width="wrap_content"
                     android:id="@+id/spinnerFood"
                     android:gravity="bottom"
                     android:spinnerMode="dialog"
@@ -448,6 +488,7 @@
         <com.google.android.gms.maps.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
+            android:visibility="invisible"
             android:layout_height="match_parent"
             android:id="@+id/map_view" />
     </LinearLayout>

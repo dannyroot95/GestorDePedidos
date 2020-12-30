@@ -67,13 +67,13 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
 
     private TextInputEditText edtNombres, edtApellidos,edtUsername,edtDni, edtTelefono,
             edtDireccion,edtCategoria,edtNombreEmpresa,edtRUC,edtEmail, edtPassword,
-            edtRepetirPass, edtClaveAuth;
+            edtRepetirPass, edtClaveAuth ,edtSubCat;
 
     private ProgressDialog mDialog;
     Button mButtonRegistro,btnMap;
     AuthProviders mAuthProviders;
     ProveedorProvider mProveedorProvider;
-    Spinner mSpinner;
+    Spinner mSpinner ,mSpinnerFoods;
     private MapView mapView;
     private GoogleMap mMap;
     private Geocoder geocoder;
@@ -108,6 +108,8 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         edtDireccion.setEnabled(false);
         edtCategoria = findViewById(R.id.ProveedorCategoria);
         edtCategoria.setEnabled(false);
+        edtSubCat = findViewById(R.id.ProveedorCategoriaComida);
+        edtSubCat.setEnabled(false);
         edtNombreEmpresa = findViewById(R.id.ProveedorNombreEmpre);
         edtRUC= findViewById(R.id.ProveedorRUC);
         edtEmail = findViewById(R.id.ProveedorEmail);
@@ -169,7 +171,24 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        mSpinner = findViewById(R.id.spinnerFood);
+        mSpinner = findViewById(R.id.spinnerCategory);
+        ArrayAdapter<CharSequence> adapterSpinnerCat = ArrayAdapter.createFromResource(this,R.
+                array.allCategory,R.layout.custom_spinner);
+        adapterSpinnerCat.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        mSpinner.setAdapter(adapterSpinnerCat);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtCategoria.setText(parent.getItemAtPosition(position).toString());
+                //String stSpinnerEstado = edtCategoriaLic.getText().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mSpinnerFoods = findViewById(R.id.spinnerFood);
         ArrayAdapter<CharSequence> adapterSpinnerFood = ArrayAdapter.createFromResource(this,R.
                 array.categoriaFood,R.layout.custom_spinner);
         adapterSpinnerFood.setDropDownViewResource(R.layout.custom_spinner_dropdown);
@@ -177,7 +196,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                edtCategoria.setText(parent.getItemAtPosition(position).toString());
+                edtSubCat.setText(parent.getItemAtPosition(position).toString());
                 //String stSpinnerEstado = edtCategoriaLic.getText().toString();
             }
             @Override
@@ -456,6 +475,7 @@ public class RegistroProveedor extends AppCompatActivity implements OnMapReadyCa
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(RegistroProveedor.this,MenuRegistros.class));
                 finish();
             }
         });

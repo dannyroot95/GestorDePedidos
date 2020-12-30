@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="allCategory">
+        <item>Comidas y Bebidas</item>
+        <item>Todo Calzados</item>
+        <item>Prendas de Vestir</item>
+        <item>Artículos de Diversión</item>
+    </string-array>
+</resources>

@@ -272,7 +272,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 txtCantidad.append(joined3);
                 txtPtotal.append(joined4);
                 subtractPriceList();
-                listReduceProduct();
+                //listReduceProduct();
             }
         });
 
@@ -322,10 +322,15 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
         edtDireccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toasty.info(FichaDeSolicitud.this, "Seleccione una zona de su envío!", Toast.LENGTH_LONG).show();
-                CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                mLinearMap.setLayoutParams(params);
-                btnCloseMap.setVisibility(View.VISIBLE);
+                if(!txtProducto.getText().toString().equals("")) {
+                    Toasty.info(FichaDeSolicitud.this, "Seleccione una zona de su envío!", Toast.LENGTH_LONG).show();
+                    CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    mLinearMap.setLayoutParams(params);
+                    btnCloseMap.setVisibility(View.VISIBLE);
+                }
+                else{
+                    Toasty.info(FichaDeSolicitud.this, "Agrege productos a su lista!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -1368,6 +1373,7 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                                 map.put("estado","Sin confirmar");
                                 mDatabase.child("SolicitudDelivery").push().setValue(map);
                                 mDatabase.child("Usuarios").child("Proveedor").child(mAuth.getUid()).child("Solicitudes").push().setValue(map);
+                                listReduceProduct();
                                 sendSolicitudeNotification();
                                 Toasty.success(FichaDeSolicitud.this, "Solicitud Enviada!", Toast.LENGTH_SHORT, true).show();
                                 startActivity(new Intent(FichaDeSolicitud.this,MenuProveedor.class));
@@ -1562,22 +1568,26 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void reduceStock(){
-        String desc [] = txtCantidad.getText().toString().split("\n");
-        String desc2 [] = txtProducto.getText().toString().split("\n");
-        String ultimoStock = desc[desc.length-1];
-        String ultimoProducto =  desc2[desc2.length-1];
-        int ultimoStockInt = Integer.parseInt(ultimoStock);
-        int stock = Integer.parseInt(mTxtStock.getText().toString());
-        int sum;
+        if(!txtProducto.getText().toString().equals("")) {
+            String desc[] = txtCantidad.getText().toString().split("\n");
+            String desc2[] = txtProducto.getText().toString().split("\n");
+            String ultimoStock = desc[desc.length - 1];
+            String ultimoProducto = desc2[desc2.length - 1];
+            int ultimoStockInt = Integer.parseInt(ultimoStock);
+            int stock = Integer.parseInt(mTxtStock.getText().toString());
+            int sum;
 
-        if(ultimoProducto.equals(edtProducto.getText().toString())){
-            sum = stock + ultimoStockInt;
-            String newStock = String.valueOf(sum);
-            mTxtStock.setText(newStock);
+            if (ultimoProducto.equals(edtProducto.getText().toString())) {
+                sum = stock + ultimoStockInt;
+                String newStock = String.valueOf(sum);
+                mTxtStock.setText(newStock);
+            } else {
+            }
+            removeVariousCant();
         }
         else {
+            Toasty.info(this, "Lista vacía", Toast.LENGTH_SHORT).show();
         }
-        removeVariousCant();
     }
 
     private void removeVariousCant(){
@@ -1591,8 +1601,8 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                 suma = cant + suma;
         }
         }
-        String s = String.valueOf(suma);
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        /*String s = String.valueOf(suma);
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();*/
     }
 
     @Override

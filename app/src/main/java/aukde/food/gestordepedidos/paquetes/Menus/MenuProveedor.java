@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.app.job.JobScheduler;
@@ -65,7 +66,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private static final int GALLERY = 1;
     long tiempo = 100;
     private CircleImageView foto;
-    private Button addProducto , listProducto , solicitarDelivery , btnListaSolicitud;
+    private CardView addProducto , listProducto , solicitarDelivery , btnListaSolicitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
