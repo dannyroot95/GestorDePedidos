@@ -391,7 +391,6 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                         }
                     });
                 }
-
             }
 
             @Override
@@ -399,7 +398,6 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
-
     }
 
     private void getDataProduct(){
@@ -1190,7 +1188,6 @@ public class FichaDeSolicitud extends AppCompatActivity implements OnMapReadyCal
                     showConfirmation();
                 }
             });
-
             zonaH.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             zonaH.setCancelable(false);
             zonaH.show();
