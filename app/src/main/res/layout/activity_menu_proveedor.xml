@@ -118,6 +118,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_width="62dp"
                 />
+
         </RelativeLayout>
         </LinearLayout>
 
@@ -156,12 +157,14 @@
                         android:layout_width="80dp"
                         android:id="@+id/btnPerfil"
                         android:gravity="center"
+                        android:enabled="true"
                         android:background="@drawable/btn_provider"
                         android:layout_height="80dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_marginBottom="12dp"
+                        android:id="@+id/ContentPerfil"
                         android:text="Mi Perfil"
                         android:fontFamily="@font/futura"
                         android:textSize="16sp"
@@ -199,6 +202,7 @@
                             android:layout_width="50dp"
                             android:gravity="center"
                             android:id="@+id/btnListaProductos"
+                            android:enabled="true"
                             android:background="@drawable/btn_productos"
                             android:layout_height="80dp"/>
 
@@ -206,6 +210,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:id="@+id/ContentListaProductos"
                         android:layout_marginBottom="12dp"
                         android:text="Mis productos"
                         android:textSize="16sp"
@@ -245,6 +250,7 @@
                             android:layout_width="150dp"
                             android:gravity="center"
                             android:id="@+id/btnAgregarProducto"
+                            android:enabled="true"
                             android:background="@drawable/btn_agregar_producto"
                             android:layout_height="80dp"/>
 
@@ -254,6 +260,7 @@
                         android:layout_width="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:text="Agregar\nProductos"
+                        android:id="@+id/ContentAgregarProducto"
                         android:textSize="16sp"
                         android:textAlignment="center"
                         android:fontFamily="@font/futura"
@@ -292,6 +299,7 @@
                             android:layout_width="80dp"
                             android:gravity="center"
                             android:id="@+id/btnSolicitarDelivery"
+                            android:enabled="true"
                             android:background="@drawable/btn_monitoreo"
                             android:layout_height="80dp"/>
 
@@ -302,6 +310,7 @@
                         android:layout_marginBottom="12dp"
                         android:text="Solicitar\nDelivery"
                         android:textSize="16sp"
+                        android:id="@+id/ContentSolicitarDelivery"
                         android:textAlignment="center"
                         android:fontFamily="@font/futura"
                         android:textColor="#000000"
@@ -332,6 +341,7 @@
                         android:layout_width="80dp"
                         android:gravity="center"
                         android:id="@+id/btnListaDeSolicitudes"
+                        android:enabled="true"
                         android:background="@drawable/btn_lista_pedidos"
                         android:layout_height="80dp"/>
 
@@ -339,6 +349,7 @@
                         android:layout_width="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:text="Lista\nde Solicitudes"
+                        android:id="@+id/ContentListaDeSolicitudes"
                         android:textSize="16sp"
                         android:textAlignment="center"
                         android:textColor="#000000"
@@ -370,7 +381,8 @@
                     <Button
                         android:layout_width="80dp"
                         android:gravity="center"
-                        android:id="@+id/btnConfiguraciones"
+                        android:id="@+id/btnReporte"
+                        android:enabled="true"
                         android:background="@drawable/btn_finanzas"
                         android:layout_height="80dp" />
 
@@ -378,6 +390,7 @@
                         android:layout_width="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:text="Reportes"
+                        android:id="@+id/ContentReporte"
                         android:textSize="16sp"
                         android:fontFamily="@font/futura"
                         android:textColor="#000000"
@@ -386,6 +399,77 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="12dp"
+                android:layout_margin="12dp"
+                >
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="#E5F1F1"
+                    android:padding="16dp">
+                    <Button
+                        android:onClick="ShowPopupListaHoraAtencion"
+                        android:layout_width="80dp"
+                        android:gravity="center"
+                        android:id="@+id/btnAsignarHora"
+                        android:enabled="true"
+                        android:background="@drawable/horarioatencion"
+                        android:layout_height="80dp" />
+
+                    <TextView
+                        android:id="@+id/ContenAsignarHora"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Hora de Atencion"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000000"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#E5F1F1"
+                android:padding="16dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp">
+
+                <ImageView
+                    android:layout_height="80dp"
+                    android:id="@+id/fotodefaultatencion"
+                    android:visibility="invisible"
+                    android:src="@drawable/abiertoatencion"
+                    android:layout_width="80dp"
+                    android:gravity="center"
+                    />
+
+                <ImageView
+                    android:layout_height="80dp"
+                    android:id="@+id/fotodefaultatencion2"
+                    android:src="@drawable/cerradoatencion"
+                    android:visibility="invisible"
+                    android:layout_width="80dp"
+                    android:gravity="center"
+                    />
+
+            </RelativeLayout>
+
 
         </GridLayout>
         </ScrollView>

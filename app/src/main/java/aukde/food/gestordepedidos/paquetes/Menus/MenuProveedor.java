@@ -7,14 +7,18 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +29,11 @@ import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -34,21 +41,29 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.gestordepedidos.R;
 import aukde.food.gestordepedidos.paquetes.Actividades.Inicio;
+import aukde.food.gestordepedidos.paquetes.Actividades.Pedidos.DetalleSolicitudProveedor;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.PerfilAdmin;
 import aukde.food.gestordepedidos.paquetes.Menus.Perfiles.Perfilproveedoraukde;
 import aukde.food.gestordepedidos.paquetes.Productos.Default.AgregarProductoPorDefecto;
@@ -57,6 +72,7 @@ import aukde.food.gestordepedidos.paquetes.Productos.MenuAddProduct;
 import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.FichaDeSolicitud;
 import aukde.food.gestordepedidos.paquetes.Productos.Solicitud.MenuListaDeSolicitudes;
 import aukde.food.gestordepedidos.paquetes.Providers.AuthProviders;
+import aukde.food.gestordepedidos.paquetes.Providers.ProveedorProvider;
 import aukde.food.gestordepedidos.paquetes.Providers.TokenProvider;
 import aukde.food.gestordepedidos.paquetes.Utils.DeleteCache;
 import aukde.food.gestordepedidos.paquetes.Utils.SaveStorageImage;
@@ -79,7 +95,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     private static final int GALLERY = 1;
     long tiempo = 100;
     private CircleImageView foto;
-    private Button addProducto , listProducto , solicitarDelivery , btnListaSolicitud,btnPerfilX;
+    private Button addProducto , listProducto , solicitarDelivery , btnListaSolicitud,btnPerfilX,BtnAsignarHora;
 
     DeleteCache deleteCache;
 
@@ -89,6 +105,20 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     SharedPreferences dataCategoria;
 
     SaveStorageImage saveStorageImage;
+
+    Dialog mDialog3;
+    private int hora,minutos,segundos;
+
+    Button hora1;
+    Button hora2;
+    Button BotonHorario;
+    EditText EditHora1;
+    EditText EditHora2;
+    private DatabaseReference HoraAtencionActual;
+    private DatabaseReference mDatabaseHora ;
+    private ProveedorProvider mProveedorProvider;
+    ImageView tuImageView,tuImageView2;
+    TextView contenAsignarHora,contentReporte,contentListaDeSolicitudes,contentSolicitarDelivery,contentListaProductos,contentAgregarProducto,contentPerfil;
 
 
     @Override
@@ -129,6 +159,20 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         datanombreEmpresa= PreferenceManager.getDefaultSharedPreferences(this);
         dataCategoria=PreferenceManager.getDefaultSharedPreferences(this);
         saveStorageImage = new SaveStorageImage();
+
+        mDialog3=new Dialog(this);
+        mProveedorProvider = new ProveedorProvider();
+        tuImageView=(ImageView)findViewById(R.id.fotodefaultatencion);
+        tuImageView2=(ImageView)findViewById(R.id.fotodefaultatencion2);
+        BtnAsignarHora=(Button)findViewById(R.id.btnAsignarHora);
+        contentPerfil=(TextView)findViewById(R.id.ContentPerfil);
+        contentListaProductos=(TextView)findViewById(R.id.ContentListaProductos);
+        contentAgregarProducto=(TextView)findViewById(R.id.ContentAgregarProducto);
+        contentSolicitarDelivery=(TextView)findViewById(R.id.ContentSolicitarDelivery);
+        contentListaDeSolicitudes=(TextView)findViewById(R.id.ContentListaDeSolicitudes);
+        contentReporte=(TextView)findViewById(R.id.ContentReporte);
+        contenAsignarHora=(TextView)findViewById(R.id.ContenAsignarHora);
+
 
         addProducto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +255,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         generarToken();
         getDataUser();
         getPhotoUsuario();
+        estadoHoraAtencion();
         verify();
     }
 
@@ -527,5 +572,182 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         super.onDestroy();
     }
 
+    public void ShowPopupListaHoraAtencion(View vista){
+        vibrator.vibrate(tiempo);
+        mDialog3.setContentView(R.layout.activity_horario_atencion_aukde);
+        TextView txtCerrarHoraAtencion;
+        hora1=mDialog3.findViewById(R.id.horaApertura);
+        hora2=mDialog3.findViewById(R.id.HoradeCierre);
+        BotonHorario=mDialog3.findViewById(R.id.botonHorario);
+        EditHora1=mDialog3.findViewById(R.id.horaAtencion);
+        EditHora2=mDialog3.findViewById(R.id.horaCierre);
+        txtCerrarHoraAtencion = mDialog3.findViewById(R.id.txtClose);
+        HoraAtencionActual = FirebaseDatabase.getInstance().getReference();
+
+        txtCerrarHoraAtencion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(tiempo);
+                mDialog3.dismiss();
+            }
+        });
+        hora1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v==hora1){
+                    final Calendar c=Calendar.getInstance();
+                    hora=c.get(Calendar.HOUR_OF_DAY);
+                    minutos=c.get(Calendar.MINUTE);
+                    TimePickerDialog timepickerdialog=new TimePickerDialog(MenuProveedor.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                            EditHora1.setText(i+":"+i1);
+
+                        }
+                    },hora,minutos,false);
+                    timepickerdialog.show();
+                }
+
+            }
+        });
+
+        hora2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+
+                if(vi==hora2){
+                    final Calendar c=Calendar.getInstance();
+                    hora=c.get(Calendar.HOUR_OF_DAY);
+                    minutos=c.get(Calendar.MINUTE);
+                    TimePickerDialog timepickerdialog=new TimePickerDialog(MenuProveedor.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int h, int h1) {
+                            EditHora2.setText(h+":"+h1);
+
+                        }
+                    },hora,minutos,false);
+                    timepickerdialog.show();
+                }
+
+            }
+        });
+
+        BotonHorario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickRegistroHora();
+            }
+        });
+
+
+        mDialog3.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog3.show();
+
+    }
+
+    private void clickRegistroHora(){
+        String dataNombress = Txtnombres.getText().toString();
+        Query query = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").orderByChild("nombres").equalTo(dataNombress);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot childSnapshot2 : dataSnapshot.getChildren()) {
+                        String key = childSnapshot2.getKey();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("HoraApertura", EditHora1.getText().toString());
+                        map.put("HoraCierre", EditHora2.getText().toString());
+                        HoraAtencionActual.child("Usuarios").child("Proveedor").child(key).updateChildren(map);
+
+                    }
+                } else {
+                    Toast.makeText(MenuProveedor.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void estadoHoraAtencion(){
+        String dataNombress = Txtnombres.getText().toString();
+        Query queryAtencion = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").child(mAuth.getId());
+        queryAtencion.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("HoraApertura") && dataSnapshot.hasChild("HoraCierre")) {
+                    String hora1 = dataSnapshot.child("HoraApertura").getValue().toString();
+                    DateFormat horarango1 = new SimpleDateFormat("HH:mm");
+                    String hora2 = dataSnapshot.child("HoraCierre").getValue().toString();
+                    DateFormat horarango2 = new SimpleDateFormat("HH:mm");
+
+                    DateFormat df = new SimpleDateFormat("HH:mm");
+                    String time = df.format(Calendar.getInstance().getTime());
+                    try {
+                        Date horafinal1 = horarango1.parse(hora1);
+                        Date horafinal2 = horarango2.parse(hora2);
+                        Date TimeActual = df.parse(time);
+                        if(TimeActual.after(horafinal1) && TimeActual.before(horafinal2)){
+                        tuImageView.setVisibility(View.VISIBLE);
+                        }
+                        /*else if(TimeActual.after(horafinal2) && TimeActual.before(horafinal1)){
+                        tuImageView2.setVisibility(View.VISIBLE);
+                        }*/
+                        else{
+                            tuImageView2.setVisibility(View.VISIBLE);
+                            btnPerfilX.setEnabled(false);
+                            contentPerfil.setTextColor(Color.parseColor("#9E9E9E"));
+                            listProducto.setEnabled(false);
+                            contentListaProductos.setTextColor(Color.parseColor("#9E9E9E"));
+                            addProducto.setEnabled(false);
+                            contentAgregarProducto.setTextColor(Color.parseColor("#9E9E9E"));
+                            solicitarDelivery.setEnabled(false);
+                            contentSolicitarDelivery.setTextColor(Color.parseColor("#9E9E9E"));
+                            btnListaSolicitud.setEnabled(false);
+                            contentListaDeSolicitudes.setTextColor(Color.parseColor("#9E9E9E"));
+                            contentReporte.setTextColor(Color.parseColor("#9E9E9E"));
+                            BtnAsignarHora.setEnabled(false);
+                            contenAsignarHora.setTextColor(Color.parseColor("#9E9E9E"));
+
+                        /*Toast.makeText(MenuProveedor.this, "error", Toast.LENGTH_SHORT).show();*/
+                        }
+
+                    } catch (ParseException e) {
+                        Toast.makeText(MenuProveedor.this, "error try cacth", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    Toast.makeText(MenuProveedor.this, "Tiempos error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    class CountDownRunner implements Runnable{
+        // @Override
+        public void run() {
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    //doWork();
+                    Thread.sleep(1000); // Pause of 1 Second
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }catch(Exception e){
+                }
+            }
+        }
+    }
 
 }
