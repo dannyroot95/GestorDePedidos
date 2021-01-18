@@ -3,6 +3,7 @@ package aukde.food.gestordepedidos.paquetes.Adaptadores;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
@@ -10,16 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import aukde.food.gestordepedidos.paquetes.Actividades.Usuarios.DetalleProveedor;
 import aukde.food.gestordepedidos.R;
+import aukde.food.gestordepedidos.paquetes.Menus.MenuProveedor;
 import aukde.food.gestordepedidos.paquetes.Modelos.ListaProveedor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,9 +66,18 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
         holder.txtPosi4Proveedor.setText("Email : ");
         holder.txtPosi5Proveedor.setText("Dni : ");
         holder.txtPosi6Proveedor.setText("Ruc : ");
-
+        holder.txtPosi7Proveedor.setText("Horario Apertura : ");
+        holder.txtPosi8Proveedor.setText("Horario Cirre : ");
+        holder.txtPosi9Proveedor.setText("Estado : ");
 
         holder.lineProveedor.setVisibility(View.VISIBLE);
+
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        String time = df.format(Calendar.getInstance().getTime());
+        /*String HoraApertura=ls.getHoraApertura();
+        String HoraCierre=ls.getHoraCierre();*/
+        DateFormat horarango1 = new SimpleDateFormat("HH:mm");
+        DateFormat horarango2 = new SimpleDateFormat("HH:mm");
 
         holder.txtNombreProveedor.setText(ls.getNombres());
         holder.txtApellidosProveedor.setText(ls.getApellidos());
@@ -63,6 +85,24 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
         holder.txtEmailProveedor.setText(ls.getEmail());
         holder.txtDniProveedor.setText(ls.getDni());
         holder.txtRucProveedor.setText(ls.getRuc());
+        holder.txtHorarioApertura.setText(ls.getHoraApertura());
+        holder.txtHorarioCierre.setText(ls.getHoraCierre());
+        try {
+            Date horafinal1 = horarango1.parse(holder.txtHorarioApertura.getText().toString());
+            Date horafinal2 = horarango2.parse(holder.txtHorarioCierre.getText().toString());
+            Date TimeActual = df.parse(time);
+
+            if(TimeActual.after(horafinal1) && TimeActual.before(horafinal2)){
+                holder.txtHorarioEstado.setText("Abierto");
+            }
+
+            else{
+                holder.txtHorarioEstado.setText("Cerrado");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Picasso
                 .get()
@@ -108,7 +148,8 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
     public class viewHolderProveedor extends RecyclerView.ViewHolder {
 
         TextView txtNombreProveedor,txtApellidosProveedor,txtUsuarioNombreProveedor,txtTelefonoProveedor
-                ,txtEmailProveedor,txtDniProveedor,txtRucProveedor,txtNombreEmpresaProveedor,txtCategoriaProveedor;
+                ,txtEmailProveedor,txtDniProveedor,txtRucProveedor,
+                txtNombreEmpresaProveedor,txtCategoriaProveedor,txtHorarioEstado,txtHorarioApertura,txtHorarioCierre;
 
         TextView txtPosi1Proveedor, txtPosi2Proveedor,txtPosi3Proveedor,
                 txtPosi4Proveedor,txtPosi5Proveedor,txtPosi6Proveedor,txtPosi7Proveedor,txtPosi8Proveedor,txtPosi9Proveedor;
@@ -126,6 +167,9 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
             txtPosi4Proveedor = itemView.findViewById(R.id.posi4);
             txtPosi5Proveedor = itemView.findViewById(R.id.posi5);
             txtPosi6Proveedor=itemView.findViewById(R.id.posi6);
+            txtPosi7Proveedor=itemView.findViewById(R.id.posi7);
+            txtPosi8Proveedor=itemView.findViewById(R.id.posi8);
+            txtPosi9Proveedor=itemView.findViewById(R.id.posi9);
 
             txtNombreProveedor = itemView.findViewById(R.id.idNombreProveedor);
             txtApellidosProveedor=itemView.findViewById(R.id.idApellidoProveedor);
@@ -135,6 +179,9 @@ public class AdapterListaPorProveedor extends RecyclerView.Adapter<AdapterListaP
             txtRucProveedor=itemView.findViewById(R.id.idRucProveedor);
 
             txtfotoProveedor=itemView.findViewById(R.id.fotoProveedor);
+            txtHorarioApertura=itemView.findViewById(R.id.idHorarioApertura);
+            txtHorarioCierre=itemView.findViewById(R.id.idHorarioCierre);
+            txtHorarioEstado=itemView.findViewById(R.id.idHorarioAtencion);
 
         }
 

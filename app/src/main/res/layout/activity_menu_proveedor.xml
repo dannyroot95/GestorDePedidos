@@ -106,6 +106,7 @@
 
             </LinearLayout>
 
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_height="62dp"
                 android:id="@+id/fotodefault"
@@ -119,7 +120,76 @@
                 android:layout_width="62dp"
                 />
 
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginLeft="270dp"
+                >
+
+                <ImageView
+                    android:id="@+id/fotoestado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/botonactivoestado"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginLeft="270dp">
+                <ImageView
+                    android:layout_height="match_parent"
+                    android:id="@+id/fotoestado2"
+                    android:src="@drawable/botoninactivoestado"
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="283dp">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iddisponible"
+                    android:visibility="invisible"
+                    android:text="-"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
+                    android:textColor="#ffffff"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="263dp">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:id="@+id/idnodisponible"
+                    android:text="-"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/futura"
+                    android:textColor="#ffffff"
+                    android:textSize="13sp"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    />
+            </LinearLayout>
+
+
+
         </RelativeLayout>
+
         </LinearLayout>
 
         <ScrollView

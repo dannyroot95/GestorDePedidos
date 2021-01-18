@@ -185,6 +185,75 @@
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/posi7"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idHorarioApertura"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/posi8"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idHorarioCierre"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/posi9"
+                        android:layout_width="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/futura"
+                        android:textColor="#000"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/idHorarioAtencion"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_marginTop="10dp"

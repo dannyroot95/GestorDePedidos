@@ -19,11 +19,13 @@ public class ListaProveedor implements Serializable {
     String latitud;
     String longitud;
     String foto;
+    String HoraApertura;
+    String HoraCierre;
 
     public ListaProveedor(){
 
     }
-    public ListaProveedor(String id, String nombres, String apellidos, String username, String dni, String telefono, String direccion, String categoria, String nombre_empresa, String ruc, String email, String latitud, String longitud, String foto) {
+    public ListaProveedor(String id, String nombres, String apellidos, String username, String dni, String telefono, String direccion, String categoria, String nombre_empresa, String ruc, String email, String latitud, String longitud,String HoraApertura,String HoraCierre, String foto) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -37,8 +39,26 @@ public class ListaProveedor implements Serializable {
         this.email = email;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.HoraApertura=HoraApertura;
+        this.HoraCierre=HoraCierre;
         this.foto=foto;
 
+    }
+
+    public String getHoraApertura() {
+        return HoraApertura;
+    }
+
+    public void setHoraApertura(String horaApertura) {
+        HoraApertura = horaApertura;
+    }
+
+    public String getHoraCierre() {
+        return HoraCierre;
+    }
+
+    public void setHoraCierre(String horaCierre) {
+        HoraCierre = horaCierre;
     }
 
     public String getFoto() {

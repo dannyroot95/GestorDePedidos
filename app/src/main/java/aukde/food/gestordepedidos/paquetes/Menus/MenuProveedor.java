@@ -115,11 +115,13 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
     EditText EditHora1;
     EditText EditHora2;
     private DatabaseReference HoraAtencionActual;
+    private DatabaseReference EstadoAtencionActual;
     private DatabaseReference mDatabaseHora ;
     private ProveedorProvider mProveedorProvider;
     ImageView tuImageView,tuImageView2;
     TextView contenAsignarHora,contentReporte,contentListaDeSolicitudes,contentSolicitarDelivery,contentListaProductos,contentAgregarProducto,contentPerfil;
-
+    TextView disponible,nodisponible;
+    ImageView Fotoestado,Fotoestado2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +174,12 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         contentListaDeSolicitudes=(TextView)findViewById(R.id.ContentListaDeSolicitudes);
         contentReporte=(TextView)findViewById(R.id.ContentReporte);
         contenAsignarHora=(TextView)findViewById(R.id.ContenAsignarHora);
+
+        Fotoestado=(ImageView)findViewById(R.id.fotoestado);
+        Fotoestado2=(ImageView)findViewById(R.id.fotoestado2);
+
+        disponible=(TextView)findViewById(R.id.iddisponible);
+        nodisponible=(TextView)findViewById(R.id.idnodisponible);
 
 
         addProducto.setOnClickListener(new View.OnClickListener() {
@@ -583,6 +591,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         EditHora2=mDialog3.findViewById(R.id.horaCierre);
         txtCerrarHoraAtencion = mDialog3.findViewById(R.id.txtClose);
         HoraAtencionActual = FirebaseDatabase.getInstance().getReference();
+        EstadoAtencionActual=FirebaseDatabase.getInstance().getReference();
 
         txtCerrarHoraAtencion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -688,18 +697,28 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
 
                     DateFormat df = new SimpleDateFormat("HH:mm");
                     String time = df.format(Calendar.getInstance().getTime());
+                    //Map<String, Object> map = new HashMap<>();
+
                     try {
                         Date horafinal1 = horarango1.parse(hora1);
                         Date horafinal2 = horarango2.parse(hora2);
                         Date TimeActual = df.parse(time);
+
+
                         if(TimeActual.after(horafinal1) && TimeActual.before(horafinal2)){
+
                         tuImageView.setVisibility(View.VISIBLE);
+                        Fotoestado.setVisibility(View.VISIBLE);
+                        disponible.setText("Disponible");
+                        disponible.setVisibility(View.VISIBLE);
                         }
                         /*else if(TimeActual.after(horafinal2) && TimeActual.before(horafinal1)){
                         tuImageView2.setVisibility(View.VISIBLE);
                         }*/
                         else{
+                            //enviarEstadoHora();
                             tuImageView2.setVisibility(View.VISIBLE);
+                            Fotoestado2.setVisibility(View.VISIBLE);
                             btnPerfilX.setEnabled(false);
                             contentPerfil.setTextColor(Color.parseColor("#9E9E9E"));
                             listProducto.setEnabled(false);
@@ -711,8 +730,12 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
                             btnListaSolicitud.setEnabled(false);
                             contentListaDeSolicitudes.setTextColor(Color.parseColor("#9E9E9E"));
                             contentReporte.setTextColor(Color.parseColor("#9E9E9E"));
-                            BtnAsignarHora.setEnabled(false);
-                            contenAsignarHora.setTextColor(Color.parseColor("#9E9E9E"));
+
+                            nodisponible.setText("No Disponible");
+                            nodisponible.setVisibility(View.VISIBLE);
+
+                            /*BtnAsignarHora.setEnabled(false);
+                            contenAsignarHora.setTextColor(Color.parseColor("#9E9E9E"));*/
 
                         /*Toast.makeText(MenuProveedor.this, "error", Toast.LENGTH_SHORT).show();*/
                         }
@@ -728,6 +751,7 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
 
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -735,19 +759,54 @@ public class MenuProveedor extends AppCompatActivity implements PopupMenu.OnMenu
         });
     }
 
-    class CountDownRunner implements Runnable{
-        // @Override
-        public void run() {
-            while(!Thread.currentThread().isInterrupted()){
-                try {
-                    //doWork();
-                    Thread.sleep(1000); // Pause of 1 Second
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }catch(Exception e){
+    public void enviarEstadoHora(){
+        String dataNombress = Txtnombres.getText().toString();
+        Query query = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").orderByChild("nombres").equalTo(dataNombress);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot childSnapshot2 : dataSnapshot.getChildren()) {
+                        String key = childSnapshot2.getKey();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("Estado", "Cerrado");
+                        HoraAtencionActual.child("Usuarios").child("Proveedor").child(key).updateChildren(map);
+                    }
+                } else {
+                    Toast.makeText(MenuProveedor.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+    public void enviarEstadoHora2(){
+        String dataNombress = Txtnombres.getText().toString();
+        Query query = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Proveedor").orderByChild("nombres").equalTo(dataNombress);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot childSnapshot2 : dataSnapshot.getChildren()) {
+                        String key = childSnapshot2.getKey();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("Estado", "Abierto");
+                        HoraAtencionActual.child("Usuarios").child("Proveedor").child(key).updateChildren(map);
+                    }
+                } else {
+                    Toast.makeText(MenuProveedor.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
