@@ -39,6 +39,8 @@
     <!-- creamos un nuevo estilo con el siguiente código , hacemos el llamado del xml (splashcreen) -->
     <style name="splashScreenTheme" parent="@style/AppThemeSplash">
         <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="colorPrimary">#5bbd00</item>
+        <item name="colorPrimaryDark">#5bbd00</item>
     </style>
 
     <style name="AppThemeSplash" parent="Theme.AppCompat.Light.DarkActionBar">

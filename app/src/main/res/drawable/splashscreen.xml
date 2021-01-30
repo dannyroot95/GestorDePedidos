@@ -3,7 +3,7 @@
   - creamos un item de tipo drawable , antes previamente importado nuestra imagen desde image asset
   -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/colorBlanco"></item> <!-- creamos un xml con un fondo blanco -->
+    <item android:drawable="@color/colorAccent"></item> <!-- creamos un xml con un fondo blanco -->
     <item>
         <bitmap android:src="@drawable/aukdefoodpng"
             android:gravity="center"

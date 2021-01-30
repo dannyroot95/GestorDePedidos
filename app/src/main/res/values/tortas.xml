@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="cake">
-        <item>Pequeña</item>
-        <item>Mediana</item>
-        <item>Grande</item>
-    </string-array>
-</resources>
