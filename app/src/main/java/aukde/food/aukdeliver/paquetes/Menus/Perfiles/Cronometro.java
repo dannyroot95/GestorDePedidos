@@ -47,6 +47,7 @@ public class Cronometro extends AppCompatActivity {
         mButtonReset = findViewById(R.id.button_reset);
         mAuth =FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +108,7 @@ public class Cronometro extends AppCompatActivity {
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
         final String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
         mTextViewCountDown.setText(timeLeftFormatted);
-        mDatabase.child("Tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
+        /*mDatabase.child("Tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String,Object> map = new HashMap<>();
@@ -119,7 +120,7 @@ public class Cronometro extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     private void updateButtons() {

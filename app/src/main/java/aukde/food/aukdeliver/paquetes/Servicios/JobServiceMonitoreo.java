@@ -16,6 +16,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -86,6 +88,8 @@ public class JobServiceMonitoreo extends JobService {
     }
 
    private void startLocationService() {
+        Intent intent = new Intent("value");
+        intent.putExtra("executing","true");
         String channel_id = "location_notification_channel";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id);
@@ -97,6 +101,9 @@ public class JobServiceMonitoreo extends JobService {
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText("Activo!");
         builder.setContentIntent(pendingIntent);
+        builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+        builder.setGroup("mi grupo");
+        builder.setGroupSummary(false);
         builder.setColor(Color.GREEN);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
 
@@ -125,6 +132,7 @@ public class JobServiceMonitoreo extends JobService {
         }
         LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         startForeground(Constantes.LOCATION_SERVICE_ID,builder.build());
+        LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(intent);
     }
 
     private void keyGeofire(){

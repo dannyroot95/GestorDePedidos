@@ -22,7 +22,7 @@ import aukde.food.aukdeliver.R;
 public class NotificationHelper extends ContextWrapper {
 
     private static final String CHANNEL_ID = "aukde.food.aukdeliver";
-    private static final String CHANNEL_NAME = "Gestor de pedidos";
+    private static final String CHANNEL_NAME = "Aukdeliver";
     private NotificationManager manager;
 
 

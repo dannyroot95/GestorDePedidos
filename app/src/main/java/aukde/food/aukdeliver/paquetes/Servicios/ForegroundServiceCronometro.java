@@ -6,9 +6,18 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import static aukde.food.aukdeliver.paquetes.Utils.ApplicationCronometro.CHANNEL_ID;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,14 +26,9 @@ import aukde.food.aukdeliver.paquetes.Actividades.Notificacion;
 
 public class ForegroundServiceCronometro extends Service {
 
-    private Timer temporizador = new Timer();
-    private static final long INTERVALO_ACTUALIZACION = 10; // En ms
     public static Notificacion UPDATE_LISTENER;
-    private double cronometro = 0;
-    private Handler handler;
 
     public ForegroundServiceCronometro(){
-
     }
 
     public static void setUpdateListener(Notificacion CronometroAukde) {
@@ -33,18 +37,9 @@ public class ForegroundServiceCronometro extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                UPDATE_LISTENER.actualizarCronometro(cronometro);
-            }
-        };
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        iniciarCronometro();
-        String input = intent.getStringExtra("inputExtra");
         Notification notification= new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setContentTitle("Pedido en proceso")
                 .setContentText("El pedido se está procesando")
@@ -61,7 +56,6 @@ public class ForegroundServiceCronometro extends Service {
 
     @Override
     public void onDestroy() {
-        pararCronometro();
         super.onDestroy();
     }
 
@@ -71,17 +65,4 @@ public class ForegroundServiceCronometro extends Service {
         return null;
     }
 
-    private void iniciarCronometro() {
-        temporizador.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                cronometro += 0.01;
-                handler.sendEmptyMessage(0);
-            }
-        }, 0, INTERVALO_ACTUALIZACION);
-    }
-
-    private void pararCronometro() {
-        if (temporizador != null)
-            temporizador.cancel();
-    }
 }

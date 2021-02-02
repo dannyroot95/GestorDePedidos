@@ -22,7 +22,7 @@ import aukde.food.aukdeliver.paquetes.Receptor.CancelReceiver;
 
 public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
-    private static final int NOTIFICATION_CODE = 100;
+    private static final int NOTIFICATION_CODE = 200;
 
     @Override
     public void onNewToken(@NonNull String s) {

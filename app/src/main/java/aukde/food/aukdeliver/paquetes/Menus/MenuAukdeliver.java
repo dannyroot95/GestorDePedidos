@@ -1,10 +1,12 @@
 package aukde.food.aukdeliver.paquetes.Menus;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +45,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -60,20 +63,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.File;
+import java.util.List;
+
+import aukde.food.aukdeliver.BuildConfig;
 import aukde.food.aukdeliver.R;
 import aukde.food.aukdeliver.paquetes.Actividades.Logins.LoginAukdeliver;
+import aukde.food.aukdeliver.paquetes.Actividades.Notificacion;
 import aukde.food.aukdeliver.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver;
+import aukde.food.aukdeliver.paquetes.Menus.Perfiles.Cronometro;
 import aukde.food.aukdeliver.paquetes.Menus.Perfiles.PerfilAukdeliver;
 import aukde.food.aukdeliver.paquetes.Providers.AuthProviders;
 import aukde.food.aukdeliver.paquetes.Providers.TokenProvider;
 import aukde.food.aukdeliver.paquetes.Receptor.GpsReceiver;
 import aukde.food.aukdeliver.paquetes.Receptor.NetworkReceiver;
 import aukde.food.aukdeliver.paquetes.Reportes.ReporteAukdeliver;
+import aukde.food.aukdeliver.paquetes.Servicios.ForegroundServiceCronometro;
 import aukde.food.aukdeliver.paquetes.Servicios.JobServiceMonitoreo;
 import aukde.food.aukdeliver.paquetes.Utils.DeleteCache;
 import aukde.food.aukdeliver.paquetes.Utils.SaveStorageImage;
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -81,7 +89,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     GpsReceiver gpsReceiver = new GpsReceiver();
     private AuthProviders mAuthProviders;
     private ProgressDialog mDialog;
-    private CardView btnLista , btnPerfil;
+    private CardView btnLista , btnPerfil,textReporte;
     SharedPreferences mSharedPreference;
     private DatabaseReference mDatabase;
     private AuthProviders mAuth;
@@ -98,12 +106,10 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     private LatLng origen;
     private Vibrator vibrator;
     long tiempo = 100;
-    TextView txtCronometro;
     SharedPreferences dataNombre;
     SharedPreferences dataApellido;
     DeleteCache deleteCache;
     SaveStorageImage saveStorageImage;
-    Button textReporte;
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -144,8 +150,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         shimmerFrameLayout = findViewById(R.id.shimmer);
         shimmerFrameLayout.startShimmer();
 
-        txtCronometro = findViewById(R.id.realTimeCronometro);
-
         textReporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,7 +183,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             }
         });
 
-        btnPerfil.setOnClickListener(new View.OnClickListener() {
+       btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(tiempo);
@@ -200,10 +204,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         startLocacion();
         verify();
         startJobSchedule();
-        showCronometro();
-
     }
-
 
     private boolean gpsActive() {
         boolean isActive = false;
@@ -211,7 +212,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             isActive = true;
         }
-
         return isActive;
     }
 
@@ -304,7 +304,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             } else {
                 showAlertDialog();
             }
-
         }
     }
 
@@ -355,6 +354,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
             Glide.with(MenuAukdeliver.this).load(toLoad).into(foto);
         }
         else {
+            startJobSchedule();
             String id = mAuth.getId();
             mDatabase.child("Usuarios").child("Aukdeliver").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -430,9 +430,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
 
     void logout() {
-        /*final SharedPreferences.Editor editor = mSharedPreference.edit();
-        editor.putString("", "");
-        editor.apply();*/
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
         deleteDirectory();
         mAuthProviders.Logout();
@@ -505,22 +502,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     }
 
 
-    private void showCronometro(){
-        mDatabase.child("Tiempo").child(mAuth.getId()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    String time = dataSnapshot.child("tiempo").getValue().toString();
-                    txtCronometro.setText(time);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void deleteDirectory(){
         String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
@@ -558,7 +539,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         return true;
     }
 
-    private void deleteAppData() {
+    /*private void deleteAppData() {
         try {
             // clearing app data
             String packageName = getApplicationContext().getPackageName();
@@ -568,7 +549,7 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     protected void onStop() {

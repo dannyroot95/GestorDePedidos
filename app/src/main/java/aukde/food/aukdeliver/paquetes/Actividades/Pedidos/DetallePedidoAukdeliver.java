@@ -54,6 +54,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.aukdeliver.R;
+import aukde.food.aukdeliver.paquetes.Actividades.Notificacion;
 import aukde.food.aukdeliver.paquetes.Mapas.MapaClientePorLlamada;
 import aukde.food.aukdeliver.paquetes.Modelos.FCMBody;
 import aukde.food.aukdeliver.paquetes.Modelos.FCMResponse;
@@ -929,6 +930,11 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
 
     }
 
+    private void iniciarCronometro(){
+        Intent service = new Intent(this, ForegroundServiceCronometro.class);
+        startService(service);
+    }
+
     private void detenerCronometro(){
         Intent service = new Intent(this, ForegroundServiceCronometro.class);
         stopService(service);
@@ -1127,6 +1133,7 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     estadoEnProcesoAukdeliver();
                     horaAccept();
                     horaAdminAccept();
+                    iniciarCronometro();
                     Toasty.success(DetallePedidoAukdeliver.this, "Pedido Aceptado!", Toast.LENGTH_SHORT,true).show();
                     dialog.cancel();
                     listEstado.setText("En proceso");
@@ -1228,7 +1235,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     } else {
                         Toast.makeText(DetallePedidoAukdeliver.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
                 @Override
