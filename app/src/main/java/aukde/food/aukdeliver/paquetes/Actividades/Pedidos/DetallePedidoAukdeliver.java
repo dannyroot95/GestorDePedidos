@@ -397,7 +397,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                     });
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
