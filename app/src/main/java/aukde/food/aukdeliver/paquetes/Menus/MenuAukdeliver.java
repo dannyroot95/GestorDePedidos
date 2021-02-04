@@ -502,7 +502,6 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
     }
 
 
-
     private void deleteDirectory(){
         String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.app_name);
         File directory = new File(root);

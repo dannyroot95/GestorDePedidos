@@ -90,6 +90,9 @@
             android:name="aukde.food.aukdeliver.paquetes.Menus.MenuAukdeliver"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".paquetes.Mapas.MapaClientePorLlamada"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="aukde.food.aukdeliver.paquetes.Actividades.Logins.LoginAukdeliver"
