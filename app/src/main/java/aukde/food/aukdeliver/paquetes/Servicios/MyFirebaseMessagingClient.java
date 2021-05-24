@@ -22,7 +22,7 @@ import aukde.food.aukdeliver.paquetes.Receptor.CancelReceiver;
 
 public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
-    private static final int NOTIFICATION_CODE = 200;
+    private static final int NOTIFICATION_CODE = 100;
 
     @Override
     public void onNewToken(@NonNull String s) {
@@ -40,18 +40,12 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
         if (title != null){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                if (title.contains("Nuevo pedido #")){
+                if (title.contains("SOLICITUD DE SERVICIO")){
                     String idClient = data.get("idClient");
                     String numPedido = data.get("numPedido");
-                    String nombre = data.get("nombre");
-                    String telefono = data.get("telefono");
-                    String direccion = data.get("direccion");
-                    String hora = data.get("hora");
-                    String fecha = data.get("fecha");
-                    String ganancia = data.get("ganancia");
-                    String repartidor = data.get("repartidor");
+                    String name = data.get("nombre");
                     //showNotificationApiOreoActions(title,body,path,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
+                    showNotificationActivity(idClient,numPedido,name);
                 }
                 else
                 {
@@ -59,18 +53,12 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                 }
             }
             else {
-                if (title.contains("Nuevo pedido #")){
+                if (title.contains("SOLICITUD DE SERVICIO")){
                     String idClient = data.get("idClient");
                     String numPedido = data.get("numPedido");
-                    String nombre = data.get("nombre");
-                    String telefono = data.get("telefono");
-                    String direccion = data.get("direccion");
-                    String hora = data.get("hora");
-                    String fecha = data.get("fecha");
-                    String ganancia = data.get("ganancia");
-                    String repartidor = data.get("repartidor");
+                    String name = data.get("nombre");
                     //showNotificationActions(title,body,path,idClient);
-                    showNotificationApiOreoActivity(numPedido,nombre,telefono,direccion,hora,fecha,ganancia,repartidor);
+                    showNotificationActivity(idClient,numPedido,name);
                 }
                 else {
                     showNotification(title,body,path);
@@ -80,27 +68,22 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
     }
 
-    private void showNotificationApiOreoActivity(String numPedido, String nombre, String telefono, String direccion, String hora, String fecha, String ganancia, String repartidor) {
-
+    private void showNotificationActivity(String idClient, String numPedido, String nombre) {
         PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
-        boolean screenOn = pm.isScreenOn();
-        if(!screenOn){
+        boolean isScreenOn = pm.isScreenOn();
+        if (!isScreenOn) {
             PowerManager.WakeLock wakeLock = pm.newWakeLock(
                     PowerManager.PARTIAL_WAKE_LOCK |
                             PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                            PowerManager.ON_AFTER_RELEASE,"AppName:Mylock"
+                            PowerManager.ON_AFTER_RELEASE,
+                    "AppName:MyLock"
             );
             wakeLock.acquire(10000);
         }
         Intent intent = new Intent(getBaseContext(), Notificacion.class);
-        intent.putExtra("numPedido",numPedido);
-        intent.putExtra("nombre",nombre);
-        intent.putExtra("telefono",telefono);
-        intent.putExtra("direccion",direccion);
-        intent.putExtra("hora",hora);
-        intent.putExtra("fecha",fecha);
-        intent.putExtra("ganancia",ganancia);
-        intent.putExtra("repartidor",repartidor);
+        intent.putExtra("idClient", idClient);
+        intent.putExtra("numPedido", numPedido);
+        intent.putExtra("nombre", nombre);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

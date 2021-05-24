@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="aukde.food.aukdeliver">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -20,7 +21,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="aukde.food.aukdeliver.paquetes.Utils.ApplicationCronometro"
+        android:name=".paquetes.Utils.ApplicationCronometro"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:grantUriPermissions="true"
@@ -30,43 +31,61 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="aukde.food.aukdeliver.paquetes.Reportes.ReporteAukdeliver"
-            android:screenOrientation="portrait" />
 
-        <activity
-            android:name="aukde.food.aukdeliver.paquetes.Menus.Perfiles.PerfilAukdeliver"
-            android:parentActivityName="aukde.food.aukdeliver.paquetes.Menus.MenuAukdeliver"
-            android:screenOrientation="portrait" />
-
-        <service
-            android:name="aukde.food.aukdeliver.paquetes.Servicios.JobServiceMonitoreo"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name="aukde.food.aukdeliver.paquetes.Servicios.ForegroundServiceCronometro"
-            android:enabled="true"
-            android:exported="true" />
-
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="aukde.food.aukdeliver.paquetes.Actividades.Notificacion"/>
+        <activity
+            android:name=".paquetes.Mapas.MapClient"
+            android:label="@string/title_activity_map_client"></activity>
+        <activity android:name=".paquetes.Actividades.Pedidos.DetailOrder" />
+        <activity
+            android:name=".paquetes.Actividades.OrdersList"
+            android:parentActivityName=".paquetes.Actividades.MapDriverActivity" />
+        <activity android:name=".paquetes.Actividades.MapDriverActivity" />
+        <activity
+            android:name=".paquetes.Reportes.ReporteAukdeliver"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".paquetes.Menus.Perfiles.PerfilAukdeliver"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver"/>
+        <service
+            android:name=".paquetes.Servicios.JobServiceMonitoreo"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".paquetes.Servicios.ForegroundServiceCronometro"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".paquetes.Actividades.Notificacion" />
+        <activity android:name=".paquetes.Actividades.Pedidos.DetallePedidoAukdeliver" />
+        <activity
+            android:name=".paquetes.Actividades.Logins.RecuperarAukdelivery"
+            android:parentActivityName=".paquetes.Actividades.Logins.LoginAukdeliver" />
 
         <receiver
-            android:name="aukde.food.aukdeliver.paquetes.Receptor.AcceptReceiver"
+            android:name=".paquetes.Receptor.AcceptReceiver"
             android:enabled="true" />
         <receiver
-            android:name="aukde.food.aukdeliver.paquetes.Receptor.CancelReceiver"
+            android:name=".paquetes.Receptor.CancelReceiver"
             android:enabled="true" />
         <receiver
-            android:name="aukde.food.aukdeliver.paquetes.Receptor.NetworkReceiver"
+            android:name=".paquetes.Receptor.NetworkReceiver"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name="aukde.food.aukdeliver.paquetes.Receptor.GpsReceiver"
+            android:name=".paquetes.Receptor.GpsReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -76,26 +95,24 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="aukde.food.aukdeliver.paquetes.Servicios.MyFirebaseMessagingClient">
+        <service android:name=".paquetes.Servicios.MyFirebaseMessagingClient">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name="aukde.food.aukdeliver.paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
-            android:parentActivityName="aukde.food.aukdeliver.paquetes.Menus.MenuAukdeliver"
+            android:name=".paquetes.Actividades.Pedidos.ListaPedidosAukdeliver"
+            android:parentActivityName=".paquetes.Menus.MenuAukdeliver"
             android:screenOrientation="portrait" />
         <activity
-            android:name="aukde.food.aukdeliver.paquetes.Menus.MenuAukdeliver"
+            android:name=".paquetes.Menus.MenuAukdeliver"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".paquetes.Mapas.MapaClientePorLlamada"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="aukde.food.aukdeliver.paquetes.Actividades.Logins.LoginAukdeliver"
+            android:name=".paquetes.Actividades.Logins.LoginAukdeliver"
             android:screenOrientation="portrait"
             android:theme="@style/splashScreenTheme">
             <intent-filter>

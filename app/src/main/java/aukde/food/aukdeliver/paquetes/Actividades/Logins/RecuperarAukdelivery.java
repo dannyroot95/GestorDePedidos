@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,15 +68,17 @@ public class RecuperarAukdelivery extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toasty.success(RecuperarAukdelivery.this,"Le hemos enviado instrucciones para restablecer su contraseñas", Toast.LENGTH_SHORT,true).show();
+                    Toasty.success(RecuperarAukdelivery.this,"Le hemos enviado instrucciones para restablecer su contraseña", Toast.LENGTH_SHORT,true).show();
                 }
                 else{
                     Toasty.error(RecuperarAukdelivery.this,"Error al enviar correo electronico de reinicio ", Toast.LENGTH_SHORT,true).show();
                 }
             }
         });
-
-
     }
 
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 }

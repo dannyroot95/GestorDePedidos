@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,16 +47,9 @@ import retrofit2.Response;
 
 public class Notificacion extends AppCompatActivity {
 
-    private TextView ntfNumPedido,ntfNombre , ntfTelefono , ntfDirecion,ntfHora,ntfFecha , ntfGanancia , ntfAukdeliver;
-    private Button btnListaPedido , btnCerrar;
     private String mExtraNumPedido;
     private String mExtraNombre;
-    private String mExtraTelefono;
-    private String mExtraDireccion;
-    private String mExtraHora;
-    private String mExtraFecha;
-    private String mExtraGanancia;
-    private String mExtraRepartidor;
+    private String mExtraID;
     private MediaPlayer mediaPlayer;
     private FirebaseAuth mAuth;
     private final static int ID_SERVICIO = 99;
@@ -66,68 +60,27 @@ public class Notificacion extends AppCompatActivity {
     TextView photo;
     String defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/gestor-de-pedidos-aukdefood.appspot.com/o/fotoDefault.jpg?alt=media&token=f74486bf-432e-4af6-b114-baa523e1f801";
     long[] pattern = {400, 600, 100,300,100,150,100,75};
-    private TextView textoCronometro;
-    SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat("HH:mm:ss");
-    String formatoHora = simpleDateFormatHora.format(new Date());
+    private FloatingActionButton mButtonAccept , mButtonCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacion);
-        photo = findViewById(R.id.pathPhotoCall);
-        textoCronometro = findViewById(R.id.cronometro);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         tokenProvider = new TokenProvider();
         notificationProvider = new NotificationProvider();
+        mButtonAccept = findViewById(R.id.btnFloatAccept);
+        mButtonCancel = findViewById(R.id.btnFloatCancel);
 
-        ntfNumPedido = findViewById(R.id.notifyNumPedido);
-        ntfNombre = findViewById(R.id.notifyNombreCliente);
-        ntfTelefono = findViewById(R.id.notifyTelefono);
-        ntfDirecion = findViewById(R.id.notifyDireccion);
-        ntfHora = findViewById(R.id.notifyHora);
-        ntfFecha = findViewById(R.id.notifyFecha);
-        ntfGanancia = findViewById(R.id.notifyGanancia);
-        ntfAukdeliver = findViewById(R.id.nombreAukdeliver);
-        btnListaPedido = findViewById(R.id.btnVerLista);
-        btnCerrar = findViewById(R.id.btnCerrar);
+
 
         mExtraNumPedido = getIntent().getStringExtra("numPedido");
         mExtraNombre = getIntent().getStringExtra("nombre");
-        mExtraTelefono = getIntent().getStringExtra("telefono");
-        mExtraDireccion = getIntent().getStringExtra("direccion");
-        mExtraHora = getIntent().getStringExtra("hora");
-        mExtraFecha = getIntent().getStringExtra("fecha");
-        mExtraGanancia = getIntent().getStringExtra("ganancia");
+        mExtraID = getIntent().getStringExtra("idClient");
+
         //
-        mExtraRepartidor = getIntent().getStringExtra("repartidor");
-
-        ntfNumPedido.setText(mExtraNumPedido);
-        ntfNombre.setText(mExtraNombre);
-        ntfTelefono.setText(mExtraTelefono);
-        ntfDirecion.setText(mExtraDireccion);
-        ntfHora.setText(mExtraHora);
-        ntfFecha.setText(mExtraFecha);
-        ntfGanancia.setText(mExtraGanancia);
-        ntfAukdeliver.setText(mExtraRepartidor);
-
-        String Delivery =  ntfGanancia.getText().toString();
-        Double doubleDelivery = Double.parseDouble(Delivery);
-        Double finalGananciaDelivery ;
-
-        if(doubleDelivery < 4.00){
-            finalGananciaDelivery = doubleDelivery * 0.5;
-            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
-        }
-        if(doubleDelivery >= 4.00 && doubleDelivery < 9.00){
-            finalGananciaDelivery = doubleDelivery * 0.4;
-            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
-        }
-        if(doubleDelivery >= 9.00){
-            finalGananciaDelivery = doubleDelivery * 0.3;
-            ntfGanancia.setText(obtieneDosDecimales(finalGananciaDelivery));
-        }
 
         mediaPlayer = MediaPlayer.create(this,R.raw.ringtone);
         mediaPlayer.setLooping(true);
@@ -137,64 +90,51 @@ public class Notificacion extends AppCompatActivity {
                              WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                              WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        btnListaPedido.setOnClickListener(new View.OnClickListener() {
+        mButtonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent service = new Intent(Notificacion.this, ForegroundServiceCronometro.class);
-                service.putExtra("inputExtra",textoCronometro.getText().toString());
-                startService(service);
-                hora();
-                horaAdmin();
-                estadoAceptadoAdmin();
-                estadoAceptadoAukdeliver();
-                finishAndRemoveTask();
-                cerrar();
-                verLista();
-                sendAcceptNotification();
-                vibrator.cancel();//cancela vibración
+                acceptOrder();
             }
         });
 
-        btnCerrar.setOnClickListener(new View.OnClickListener() {
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                estadoCanceladoAdmin();
-                eliminarPedidoAukdeliver();
-                sendCancelNotification();
-                vibrator.cancel();//cancela vibración
-                cerrar();
-                finishAndRemoveTask();
+                cancelOrder();
             }
         });
 
         vibrator.vibrate(pattern, 0);
-        mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+    }
+
+    private void acceptOrder() {
+
+        Map<String , Object> map = new HashMap<>();
+        map.put("status","accept");
+        mDatabase.child("ClientBooking").child(mExtraNombre).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("foto")){
-                    String Foto = dataSnapshot.child("foto").getValue().toString();
-                    photo.setText(Foto);
-                }
-                else {
-                    photo.setText(defaultPhoto);
-                }
+            public void onSuccess(Void aVoid) {
+                cerrar();
+                verLista();
             }
+        });
+    }
 
+    private void cancelOrder() {
+        Map<String , Object> map = new HashMap<>();
+        map.put("status","cancel");
+        mDatabase.child("ClientBooking").child(mExtraNombre).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onSuccess(Void aVoid) {
+                finish();
+                finishAndRemoveTask();
             }
         });
 
-        ForegroundServiceCronometro.setUpdateListener(this);
-
     }
 
-    private String obtieneDosDecimales(double valor) {
-        DecimalFormat format = new DecimalFormat();
-        format.setMaximumFractionDigits(2); //Define 2 decimales.
-        return format.format(valor);
-    }
 
     private void verLista() {
         Intent intent = new Intent(getApplicationContext(), ListaPedidosAukdeliver.class);
@@ -207,308 +147,8 @@ public class Notificacion extends AppCompatActivity {
         manager.cancel(2);
     }
 
-    private void estadoCanceladoAdmin() {
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String key = childSnapshot.getKey();
-                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("estado", "Rechazado");
-                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void estadoAceptadoAdmin(){
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String key = childSnapshot.getKey();
-                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("estado", "En proceso");
-                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void eliminarPedidoAukdeliver() {
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String key = childSnapshot.getKey();
-                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toasty.error(Notificacion.this, "Pedido rechazado!", Toast.LENGTH_LONG, true).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toasty.info(Notificacion.this, "Error al rechazar pedido", Toast.LENGTH_LONG, true).show();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void sendCancelNotification() {
-        final String numPedNotify = ntfNumPedido.getText().toString();
-        final String dataRepartidor = ntfAukdeliver.getText().toString();
-        String[] admins = {"nS8J0zEj53OcXSugQsXIdMKUi5r1", "UnwAmhwRzmRLn8aozWjnYFOxYat2",
-                "9sjTQMmowxWYJGTDUY98rAR2jzB3"};
-
-        for (int i = 0; i < admins.length; i++) {
-        tokenProvider.getToken(admins[i]).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String token = dataSnapshot.child("token").getValue().toString();
-                    String ruta = photo.getText().toString();
-                    Map<String, String> map = new HashMap<>();
-                    map.put("title", "Pedido #" + numPedNotify);
-                    map.put("body", "El repartidor " + dataRepartidor + "\nha RECHAZADO el pedido!");
-                    map.put("path", ruta);
-                    FCMBody fcmBody = new FCMBody(token, "high", map);
-                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
-                        @Override
-                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                            if (response.body() != null) {
-                                if (response.body().getSuccess() == 1) {
-                                    //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<FCMResponse> call, Throwable t) {
-                            Log.d("Error", "Error encontrado" + t.getMessage());
-                        }
-                    });
-                } else {
-                    Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    }
-
-    private void sendAcceptNotification(){
-        final String numPedNotify = ntfNumPedido.getText().toString();
-        final String dataRepartidor = ntfAukdeliver.getText().toString();
-        String[] admins = {"nS8J0zEj53OcXSugQsXIdMKUi5r1", "UnwAmhwRzmRLn8aozWjnYFOxYat2",
-                "9sjTQMmowxWYJGTDUY98rAR2jzB3"};
-
-        for (int i = 0; i < admins.length; i++) {
-            tokenProvider.getToken(admins[i]).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String token = dataSnapshot.child("token").getValue().toString();
-                        String ruta = photo.getText().toString();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("title", "Pedido #" + numPedNotify);
-                        map.put("body", "El repartidor " + dataRepartidor + "\nha ACEPTADO el pedido!");
-                        map.put("path", ruta);
-                        FCMBody fcmBody = new FCMBody(token, "high", map);
-                        notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
-                            @Override
-                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                if (response.body() != null) {
-                                    if (response.body().getSuccess() == 1) {
-                                        //Toast.makeText(RealizarPedido.this, "Notificación enviada", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toasty.error(Notificacion.this, "No se envió la notificación", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<FCMResponse> call, Throwable t) {
-                                Log.d("Error", "Error encontrado" + t.getMessage());
-                            }
-                        });
-                    } else {
-                        Toast.makeText(Notificacion.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    public void actualizarCronometro(double tiempo) {
-        int s = (int)tiempo%60;
-        int m = (int)tiempo/60;
-        int h = (int)(tiempo/(60*60))%24;
-        textoCronometro.setText(String.format("%02d:%02d:%02d", h,m,s));
-        sendTime();
-    }
-
-    private void sendTime(){
-        mDatabase.child("Tiempo").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String , Object> tiempo = new HashMap<>();
-                tiempo.put("tiempo",textoCronometro.getText().toString());
-                mDatabase.child("Tiempo").child(mAuth.getUid()).updateChildren(tiempo);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void hora(){
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    final String key = childSnapshot.getKey();
-                    mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String , Object> map = new HashMap<>();
-                            map.put("tiempo1",formatoHora);
-                            mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).child("tiempo").updateChildren(map);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    }
-                }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
-    private void horaAdmin(){
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("PedidosPorLlamada").child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                   final String key = childSnapshot.getKey();
-                    //Toast.makeText(DetallePedido.this, "Id : "+key, Toast.LENGTH_SHORT).show();
-                    mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("tiempo1",formatoHora);
-                            mDatabase.child("PedidosPorLlamada").child("pedidos").child(key).child("tiempo").updateChildren(map);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void estadoAceptadoAukdeliver(){
-        String dataNumPedido = ntfNumPedido.getText().toString();
-        Query reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").orderByChild("numPedido").equalTo(dataNumPedido);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    final String key = childSnapshot.getKey();
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("estado", "En proceso");
-                            mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getUid()).child("pedidos").child(key).updateChildren(map);
-                        }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @Override
     protected void onPause() {

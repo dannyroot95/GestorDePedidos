@@ -29,6 +29,7 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -221,15 +222,21 @@ public class MenuAukdeliver extends AppCompatActivity implements PopupMenu.OnMen
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
-                        .setTitle("Proporciona los permisos para continuar")
+                        .setTitle("Proporciona los permisos para continuar!")
                         .setCancelable(false)
-                        .setMessage("Esta aplicación requiere los permisos para continuar")
+                        .setMessage(Html.fromHtml("<font color='#FC0000'>Esta aplicación recopila datos de ubicación para habilitar :<b>\n-Ubicación en tiempo real\n-Notificación de pedidos</b>\nincluso cuando la aplicación está cerrada o no está en uso.</font>"))
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ActivityCompat.requestPermissions(MenuAukdeliver.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                             }
-                        })
+                        }).setNegativeButton("Refrescar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(MenuAukdeliver.this,MenuAukdeliver.class));
+                        finish();
+                    }
+                })
                         .create()
                         .show();
             } else {

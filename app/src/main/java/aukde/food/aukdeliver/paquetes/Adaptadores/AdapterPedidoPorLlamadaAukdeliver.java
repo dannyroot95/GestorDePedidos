@@ -125,7 +125,7 @@ public class AdapterPedidoPorLlamadaAukdeliver extends RecyclerView.Adapter<Adap
         return Math.min(pedidoLlamadaList.size(), limit);
     }
 
-    public class viewHolderPedidos extends RecyclerView.ViewHolder {
+    public static class viewHolderPedidos extends RecyclerView.ViewHolder {
         TextView txtNumeroPedido,txtHoraList,txtFechaList,txtClienteList,txtDireccion,txtPos1,
                 txtPos2,txtPos3,txtPos4,txtPos5,txtPos6,txtListEstado,txttelefono,txtHoraRegistro,
                 txtFechaRegistro , txtTotalProducto , txtClientePaga , txtTotalACobrar , txtVuelto

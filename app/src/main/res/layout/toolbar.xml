@@ -7,7 +7,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5bbd00"
+        android:background="#239B56"
         android:textStyle="bold"
         android:fontFamily="@font/futura"
         app:theme="@style/toolbarTheme"

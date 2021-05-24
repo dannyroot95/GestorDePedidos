@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import aukde.food.aukdeliver.R;
+import aukde.food.aukdeliver.paquetes.Actividades.MapDriverActivity;
 import aukde.food.aukdeliver.paquetes.Inclusiones.MiToolbar;
 import aukde.food.aukdeliver.paquetes.Menus.MenuAukdeliver;
 import aukde.food.aukdeliver.paquetes.Providers.AuthProviders;
@@ -71,9 +72,6 @@ public class LoginAukdeliver extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         vibrator.vibrate(tiempo);
-        mDialog.setCancelable(false);
-        mDialog.show();
-        mDialog.setMessage("Cargando...");
         startActivity(new Intent(LoginAukdeliver.this,RecuperarAukdelivery.class));
       }
     });
@@ -101,7 +99,7 @@ public class LoginAukdeliver extends AppCompatActivity {
                   if(dataSnapshot.exists()){
                     editor.putString("usuario","aukdeliver");
                     editor.apply();
-                    Intent intent = new Intent(LoginAukdeliver.this, MenuAukdeliver.class);
+                    Intent intent = new Intent(LoginAukdeliver.this, MapDriverActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                   }
@@ -145,11 +143,10 @@ public class LoginAukdeliver extends AppCompatActivity {
     }
   }
 
-
   protected void onStart() {
     super.onStart();
     if (FirebaseAuth.getInstance().getCurrentUser() != null){
-          Intent intent = new Intent(LoginAukdeliver.this, MenuAukdeliver.class);
+          Intent intent = new Intent(LoginAukdeliver.this, MapDriverActivity.class);
           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
           startActivity(intent);
         }
