@@ -10,12 +10,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -23,7 +23,6 @@ import aukde.food.aukdeliver.R;
 import aukde.food.aukdeliver.paquetes.Adaptadores.CartItemsListAdapter;
 import aukde.food.aukdeliver.paquetes.Mapas.MapClient;
 import aukde.food.aukdeliver.paquetes.Modelos.Order;
-import aukde.food.aukdeliver.paquetes.Modelos.PedidoLlamada;
 
 public class DetailOrder extends AppCompatActivity {
 
@@ -32,12 +31,12 @@ public class DetailOrder extends AppCompatActivity {
              subtotal , shipping , total;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-    Button btnMapClient;
+    MaterialButton btnMapClient , btnCompleteOrder;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme2);
+        setTheme(R.style.ColorButtonMaterial);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_order);
         recyclerView = findViewById(R.id.rv_my_order_items_list);
@@ -58,6 +57,8 @@ public class DetailOrder extends AppCompatActivity {
         shipping = findViewById(R.id.tv_order_details_shipping_charge);
         total = findViewById(R.id.tv_order_details_total_amount);
 
+        btnCompleteOrder = findViewById(R.id.btn_complete_order);
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         final Order order = (Order) bundle.getSerializable("detail");
@@ -77,7 +78,7 @@ public class DetailOrder extends AppCompatActivity {
             status.setTextColor(Color.parseColor("#F1C40F"));
         }
 
-        CartItemsListAdapter items = new CartItemsListAdapter(this,order.getItems());
+        CartItemsListAdapter items = new CartItemsListAdapter(this,order.getItems(),order.getTitle());
         recyclerView.setAdapter(items);
 
         type_address.setText(order.getAddress().getType());
@@ -103,11 +104,20 @@ public class DetailOrder extends AppCompatActivity {
             }
         });
 
-        subtotal.setText(order.getSub_total_amount());
-        shipping.setText(order.getShipping_charge());
-        total.setText(order.getSub_total_amount());
+        Double dSubTotal = Double.parseDouble(order.getSub_total_amount());
+        Double dShipping = Double.parseDouble(order.getShipping_charge());
+        double sum = dSubTotal+dShipping;
+        subtotal.setText("S/"+order.getSub_total_amount());
+        shipping.setText("S/"+order.getShipping_charge());
+        total.setText("S/"+(sum));
 
-
+        btnCompleteOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = order.getUser_id();
+                Toast.makeText(DetailOrder.this, id, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

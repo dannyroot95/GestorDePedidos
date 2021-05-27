@@ -10,17 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import aukde.food.aukdeliver.R;
 import aukde.food.aukdeliver.paquetes.Actividades.Pedidos.DetailOrder;
-import aukde.food.aukdeliver.paquetes.Actividades.Pedidos.DetallePedidoAukdeliver;
 import aukde.food.aukdeliver.paquetes.Modelos.Order;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.viewHolder>{
@@ -41,6 +36,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.viewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrdersAdapter.viewHolder holder, int position) {
+
 
         final Order ls = orders.get(position);
         String dateFormat = "dd MMM yyyy HH:mm";

@@ -1,6 +1,7 @@
 package aukde.food.aukdeliver.paquetes.Actividades;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.NavUtils;
@@ -10,14 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +54,7 @@ public class OrdersList extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     ProgressDialog mDialog;
     FirebaseAuth mAuth;
+    FirebaseFirestore mFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,7 @@ public class OrdersList extends AppCompatActivity {
         MiToolbar.Mostrar(this,"Lista de pedidos",true);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         recyclerView = findViewById(R.id.recyclerViewOrders);
         searchView = findViewById(R.id.searchViewOrders);
@@ -69,7 +82,7 @@ public class OrdersList extends AppCompatActivity {
         mDialog.setContentView(R.layout.dialog_data);
         mDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getCurrentUser().getUid()).child("orders").addValueEventListener(new ValueEventListener() {
+        /*mDatabase.child("Usuarios").child("Aukdeliver").child(mAuth.getCurrentUser().getUid()).child("orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -91,6 +104,31 @@ public class OrdersList extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toasty.error(OrdersList.this, "Error de base de datos", Toast.LENGTH_SHORT,true).show();
+            }
+        });*/
+        mFirestore.collection("orders").whereEqualTo("driver_id",mAuth.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                orders.clear();
+                if (value != null){
+                    for (DocumentSnapshot snapshot : value){
+                        Order data = snapshot.toObject(Order.class);
+                        orders.add(data);
+                    }
+                    Collections.reverse(orders);
+                    ordersAdapter.notifyDataSetChanged();
+                    mDialog.dismiss();
+                }
+                else {
+                    Toasty.info(OrdersList.this, "Sin Pedidos", Toast.LENGTH_SHORT,true).show();
+                    mDialog.dismiss();
+                }
+
+                if (error != null) {
+                    Toasty.info(OrdersList.this, "Error", Toast.LENGTH_SHORT,true).show();
+                    Log.w( "Listen failed.", error);
+                }
+
             }
         });
 

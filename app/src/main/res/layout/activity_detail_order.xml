@@ -233,15 +233,18 @@
                         android:textSize="14sp"
                         tools:text="+64 123456789" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:id="@+id/btn_map_client"
-                        android:drawableLeft="@drawable/ic_mapa"
-                        android:text="Ver ubicación"
-                        android:textColor="#fff"
-                        android:foreground="@drawable/selecion"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:drawableLeft="@drawable/icono_mapa"
+                        android:text="  Ver ubicación"
+                        android:includeFontPadding="false"
+                        android:textColor="#000"
+                        app:cornerRadius="15sp"
+                        android:layout_margin="2dp"
+                        app:strokeColor="#239B56"
                         android:textSize="14sp"
-                        android:backgroundTint="#000"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -367,6 +370,33 @@
                     android:text="Contra entrega"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="2dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:paddingBottom="2dp"
+                android:layout_height="wrap_content">
+                
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_complete_order"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="Completar pedido"
+                    android:includeFontPadding="false"
+                    android:textColor="#000"
+                    android:layout_weight="1"
+                    app:cornerRadius="8sp"
+                    android:layout_margin="2dp"
+                    app:strokeColor="#239B56"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
         </LinearLayout>

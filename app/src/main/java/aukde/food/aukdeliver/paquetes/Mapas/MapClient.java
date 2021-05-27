@@ -28,7 +28,9 @@ public class MapClient extends FragmentActivity implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         lat = getIntent().getDoubleExtra("latitude",0.0);
         lon = getIntent().getDoubleExtra("longitude",0.0);
@@ -42,5 +44,10 @@ public class MapClient extends FragmentActivity implements OnMapReadyCallback {
         LatLng client = new LatLng(lat, lon);
         mMap.addMarker(new MarkerOptions().position(client).title("Cliente")).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(client,17f));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
