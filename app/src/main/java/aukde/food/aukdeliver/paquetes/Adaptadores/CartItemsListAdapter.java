@@ -71,17 +71,22 @@ public class CartItemsListAdapter
             ((MyView) holder).tv4.setTextColor(Color.parseColor("#F1C40F"));
         }
 
+        else if (model.getStatus() == -1){
+            ((MyView) holder).tv4.setText("Cancelado");
+            ((MyView) holder).tv4.setTextColor(Color.parseColor("#fc0000"));
+        }
+
         else if (model.getStatus() == 2){
-            ((MyView) holder).tv4.setText("Entregado");
-            ((MyView) holder).tv4.setTextColor(Color.parseColor("#F1C40F"));
+            ((MyView) holder).tv4.setText("Recibido");
+            ((MyView) holder).tv4.setTextColor(Color.parseColor("#5BBD00"));
         }
 
         else{
-                ((MyView) holder).tv4.setText("Recibido por conductor");
+                ((MyView) holder).tv4.setText("Completado");
             ((MyView) holder).tv4.setTextColor(Color.parseColor("#5bbd00"));
             }
 
-        if (model.getStatus() == 0){
+        if (model.getStatus() == 1){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -113,6 +113,7 @@ public class OrdersList extends AppCompatActivity {
                 if (value != null){
                     for (DocumentSnapshot snapshot : value){
                         Order data = snapshot.toObject(Order.class);
+                        data.setId(snapshot.getId());
                         orders.add(data);
                     }
                     Collections.reverse(orders);

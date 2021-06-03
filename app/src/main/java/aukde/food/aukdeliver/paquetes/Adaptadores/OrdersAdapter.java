@@ -58,6 +58,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.viewHolder
             holder.tv4.setTextColor(Color.parseColor("#F1C40F"));
         }
 
+        else if(holder.tv4.getText().toString().equals("2")){
+            holder.tv4.setText("Recibido");
+            holder.tv4.setTextColor(Color.parseColor("#154360"));
+        }
+        else if(holder.tv4.getText().toString().equals("3")){
+            holder.tv4.setText("Completado");
+            holder.tv4.setTextColor(Color.parseColor("#5BBD00"));
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

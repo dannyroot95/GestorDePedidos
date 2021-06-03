@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -15,16 +16,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.aukdeliver.R;
+import aukde.food.aukdeliver.paquetes.Modelos.FCMBody;
+import aukde.food.aukdeliver.paquetes.Modelos.FCMResponse;
 import aukde.food.aukdeliver.paquetes.Modelos.Order;
+import aukde.food.aukdeliver.paquetes.Providers.NotificationProvider;
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FirestoreClass {
 
     FirebaseFirestore mFirestore;
     private ProgressDialog mDialog;
+    NotificationProvider notificationProvider;
 
     public FirestoreClass(){
         mFirestore = FirebaseFirestore.getInstance();
+        notificationProvider = new NotificationProvider();
 
     }
 
@@ -65,7 +74,7 @@ public class FirestoreClass {
                     map2.put("price",order.getItems().get(position).getPrice());
                     map2.put("product_id",order.getItems().get(position).getProduct_id());
                     map2.put("provider_id",order.getItems().get(position).getProvider_id());
-                    map2.put("status",3);
+                    map2.put("status",2);
                     map2.put("stock_quantity",order.getItems().get(position).getStock_quantity());
                     map2.put("title",order.getItems().get(position).getTitle());
                     map2.put("user_id",order.getItems().get(position).getUser_id());
@@ -91,6 +100,55 @@ public class FirestoreClass {
                 mDialog.dismiss();
             }
         });
+    }
+
+    public void updateStatusDriverToClient(Activity activity , String tokenIDser ,
+                                            String numOrder , String photo){
+
+        mFirestore.collection("token").document(tokenIDser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                if (documentSnapshot.exists()){
+                    String token = documentSnapshot.getString("token");
+                    Map<String , String> map = new HashMap<>();
+                    map.put("title","Pedido "+numOrder);
+                    map.put("body","ha sido completado satisfactoriamente!");
+                    map.put("path",photo);
+                    FCMBody fcmBody = new FCMBody(token, "high", map);
+                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                        @Override
+                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                            if (response.body() != null) {
+                                if (response.body().getSuccess() == 1){
+                                    activity.finish();
+                                    Toasty.success(activity, "Actualizado!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else{
+                                Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FCMResponse> call, Throwable t) {
+                            Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
 }

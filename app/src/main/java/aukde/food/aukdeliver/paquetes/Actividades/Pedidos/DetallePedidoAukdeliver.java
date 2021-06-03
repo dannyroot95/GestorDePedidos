@@ -759,7 +759,6 @@ public class DetallePedidoAukdeliver extends AppCompatActivity implements PopupM
                 else {
                     Toast.makeText(DetallePedidoAukdeliver.this, "No existe token se sesión", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override

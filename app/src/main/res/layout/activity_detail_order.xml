@@ -242,8 +242,8 @@
                         android:includeFontPadding="false"
                         android:textColor="#000"
                         app:cornerRadius="15sp"
-                        android:layout_margin="2dp"
                         app:strokeColor="#239B56"
+                        android:layout_margin="2dp"
                         android:textSize="14sp"
                         android:layout_height="wrap_content"/>
 
