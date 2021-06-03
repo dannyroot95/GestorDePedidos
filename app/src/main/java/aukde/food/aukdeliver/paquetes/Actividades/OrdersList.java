@@ -73,7 +73,7 @@ public class OrdersList extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         orders = new ArrayList<>();
-        ordersAdapter = new OrdersAdapter(orders);
+            ordersAdapter = new OrdersAdapter(orders,this);
         recyclerView.setAdapter(ordersAdapter);
 
         mDialog = new ProgressDialog(this,R.style.MyAlertDialogData);
@@ -158,7 +158,7 @@ public class OrdersList extends AppCompatActivity {
             else {
             }
         }
-        OrdersAdapter adapter = new OrdersAdapter(list);
+        OrdersAdapter adapter = new OrdersAdapter(list,this);
         recyclerView.setAdapter(adapter);
     }
 

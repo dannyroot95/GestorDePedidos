@@ -3,6 +3,7 @@ package aukde.food.aukdeliver.paquetes.Firestore;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aukde.food.aukdeliver.R;
+import aukde.food.aukdeliver.paquetes.Actividades.OrdersList;
 import aukde.food.aukdeliver.paquetes.Modelos.FCMBody;
 import aukde.food.aukdeliver.paquetes.Modelos.FCMResponse;
 import aukde.food.aukdeliver.paquetes.Modelos.Order;
@@ -85,12 +87,11 @@ public class FirestoreClass {
                         @Override
                         public void onSuccess(Void aVoid) {
                             mDialog.dismiss();
-                            ((Activity) context).finish();
+                            context.startActivity(new Intent(context, OrdersList.class));
+                            ((Activity)context).finish();
                             Toasty.success(context,"Item actualizado!",Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import aukde.food.aukdeliver.R;
+import aukde.food.aukdeliver.paquetes.Actividades.OrdersList;
 import aukde.food.aukdeliver.paquetes.Adaptadores.CartItemsListAdapter;
 import aukde.food.aukdeliver.paquetes.Firestore.FirestoreClass;
 import aukde.food.aukdeliver.paquetes.Mapas.MapClient;
@@ -88,7 +89,7 @@ public class DetailOrder extends AppCompatActivity {
 
         setupUI(order,formatter,date);
         reactiveData(order,formatter,date);
-        
+
     }
 
     /**
@@ -161,16 +162,24 @@ public class DetailOrder extends AppCompatActivity {
             btnCompleteOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String id = order.getId();
+                    int ctx = 0;
                     for (int i = 0 ; i<order.getItems().size() ; i++){
+                        ctx ++;
                         if (order.getItems().get(i).getStatus() == 0){
                             showAlerdialog();
+                            break;
                         }
                         else if (order.getItems().get(i).getStatus() == 1){
                             showAlerdialog();
+                            break;
+                        }
+                        else if (ctx == order.getItems().size()){
+                            changeStatusToCompleted();
+                            break;
                         }
 
                     }
+
                 }
             });
         }
@@ -199,6 +208,7 @@ public class DetailOrder extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot document, @Nullable FirebaseFirestoreException e) {
                 if (document != null){
+                        recyclerView.setAdapter(null);
                         order = document.toObject(Order.class);
                         setupUI(order,format,date);
                 }
@@ -228,4 +238,9 @@ public class DetailOrder extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(DetailOrder.this, OrdersList.class));
+        finish();
+    }
 }

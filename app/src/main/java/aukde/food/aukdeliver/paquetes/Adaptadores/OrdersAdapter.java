@@ -1,6 +1,8 @@
 package aukde.food.aukdeliver.paquetes.Adaptadores;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,9 +23,11 @@ import aukde.food.aukdeliver.paquetes.Modelos.Order;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.viewHolder>{
 
     List<Order> orders;
+    Activity context;
 
-    public OrdersAdapter(List<Order> ordersCTX){
+    public OrdersAdapter(List<Order> ordersCTX , Activity context){
         this.orders = ordersCTX;
+        this.context = context;
     }
 
     @NonNull
@@ -67,16 +71,20 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.viewHolder
             holder.tv4.setTextColor(Color.parseColor("#5BBD00"));
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailOrder.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("detail",ls);
-                intent.putExtras(bundle);
-                v.getContext().startActivity(intent);
-            }
-        });
+        if (ls.getStatus() != 3){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DetailOrder.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("detail",ls);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                    context.finish();
+                }
+            });
+        }
+
 
     }
 
