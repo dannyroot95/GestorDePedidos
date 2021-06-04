@@ -86,9 +86,9 @@ public class FirestoreClass {
                                     "items",FieldValue.arrayUnion(map2)).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mDialog.dismiss();
                             context.startActivity(new Intent(context, OrdersList.class));
                             ((Activity)context).finish();
+                            mDialog.dismiss();
                             Toasty.success(context,"Item actualizado!",Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -104,47 +104,71 @@ public class FirestoreClass {
     }
 
     public void updateStatusDriverToClient(Activity activity , String tokenIDser ,
-                                            String numOrder , String photo){
+                                            String numOrder , String photo , String document , Integer status){
 
-        mFirestore.collection("token").document(tokenIDser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        mDialog = new ProgressDialog(activity, R.style.ThemeOverlay);
+        mDialog.setMessage("Actualizando...");
+        mDialog.setCancelable(false);
+        mDialog.show();
+
+        mFirestore.collection("orders").document(document).update("status",status).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
+            public void onSuccess(Void aVoid) {
 
-                if (documentSnapshot.exists()){
-                    String token = documentSnapshot.getString("token");
-                    Map<String , String> map = new HashMap<>();
-                    map.put("title","Pedido "+numOrder);
-                    map.put("body","ha sido completado satisfactoriamente!");
-                    map.put("path",photo);
-                    FCMBody fcmBody = new FCMBody(token, "high", map);
-                    notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
-                        @Override
-                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                            if (response.body() != null) {
-                                if (response.body().getSuccess() == 1){
-                                    activity.finish();
-                                    Toasty.success(activity, "Actualizado!", Toast.LENGTH_SHORT).show();
+                mFirestore.collection("token").document(tokenIDser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        if (documentSnapshot.exists()){
+                            String token = documentSnapshot.getString("token");
+                            Map<String , String> map = new HashMap<>();
+                            map.put("title","Pedido "+numOrder);
+                            map.put("body","ha sido completado satisfactoriamente!");
+                            map.put("path",photo);
+                            FCMBody fcmBody = new FCMBody(token, "high", map);
+                            notificationProvider.sendNotificacion(fcmBody).enqueue(new Callback<FCMResponse>() {
+                                @Override
+                                public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                    if (response.body() != null) {
+                                        if (response.body().getSuccess() == 1){
+                                            activity.startActivity(new Intent(activity,OrdersList.class));
+                                            activity.finish();
+                                            mDialog.dismiss();
+                                            Toasty.success(activity, "Actualizado!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else{
+                                            mDialog.dismiss();
+                                            Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                    else{
+                                        mDialog.dismiss();
+                                        Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                                else{
-                                    Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
+
+                                @Override
+                                public void onFailure(Call<FCMResponse> call, Throwable t) {
+                                    mDialog.dismiss();
+                                    Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            else{
-                                Toasty.error(activity, "NO se pudo ENVIAR la notificación!", Toast.LENGTH_LONG).show();
-                            }
+                            });
                         }
 
-                        @Override
-                        public void onFailure(Call<FCMResponse> call, Throwable t) {
-                            Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mDialog.dismiss();
+                        Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
+                    }
+                });
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                mDialog.dismiss();
                 Toasty.error(activity, "ERROR!", Toast.LENGTH_LONG).show();
             }
         });

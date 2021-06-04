@@ -186,21 +186,11 @@ public class DetailOrder extends AppCompatActivity {
     }
 
     private void changeStatusToCompleted() {
-        mDialog.setMessage("Completando pedido...");
-        mDialog.setCancelable(false);
-        mDialog.show();
-        mFirestore.collection("orders").document(document).update("status",3).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                firestoreClass.updateStatusDriverToClient(DetailOrder.this,order.getUser_id(),order.getTitle(),URLSuccess);
-                mDialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                mDialog.dismiss();
-            }
-        });
+        firestoreClass.updateStatusDriverToClient(
+                DetailOrder.this,
+                order.getUser_id(),
+                order.getTitle(),
+                URLSuccess,document,3);
     }
 
     private void reactiveData(Order orderID , SimpleDateFormat format , Date date){
